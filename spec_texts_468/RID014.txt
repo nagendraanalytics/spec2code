@@ -1,0 +1,69 @@
+Report ID: RID014
+
+Report Title:
+Subjects With More Than One AE With Action of Discontinued
+
+Description:
+This report identifies subjects with more than one AE with action of discontinued
+
+Column Heading:
+1. Country
+
+2. Site
+
+3. Subject Number
+
+4. AE Seq
+
+5. AE Term
+
+6. Discontinued Study Medication
+
+Logic:
+This report will output subjects who have more than one records of "Discontinued" for Action Taken With Study Medication on the AE Form.
+
+Note：
+
+1.Report should not display deleted records.
+
+2.If "Randomized only" parameter selection checkbox is checked, the report should only output subjects with Randomization number that is not null.
+
+3.For studies with multiple study medications used, within check AE action taken with Study Medication.
+
+For studies with single study medication used, check overall AE action taken with Study Medication, and Column Heading #6 leave as blank.
+
+Report Scenarios:
+Scanrio1 Output=Y
+
+There are more than one records with Action Taken With Study Medication =Discontinued on AE form, within check each Study Medication.
+
+Scanrio 2 Output=N
+
+There is only one record with Action Action Taken With Study Medication =Discontinued on AE form, within check each Study Medication.
+
+Scanrio 3 Output=N
+
+There is one record with Action Action Taken With Study Medication1 =Discontinued and one record with Action Action Taken With Study Medication2 =Discontinued on AE form, within check each Study Medication.
+
+Scanrio 4 Output=N
+
+Don't consider deleted records.
+
+Sorting:
+Country, Site, Subject Number, AE Seq
+
+Parameter Selection:
+Country, First Site, Last Site, First Subject, Last Subject, List of Subjects, Randomized Only
+
+Form.Item Names:
+1. Subject Assignment.Site Country
+
+2. Subject Assignment.Site Mnemonic
+
+3. Subjects.Subject Number
+
+4. Adverse Events Form.Sequence Number
+
+5. Adverse Events Form.AE Term
+
+6. Derive Study Medication used in study

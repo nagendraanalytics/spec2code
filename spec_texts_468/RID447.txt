@@ -1,0 +1,159 @@
+Report ID: RID447
+
+Report Title:
+Incorrect radiation treatment administration
+
+Description:
+This report will check that radiation is administered based on protocol conditions
+
+Column Heading:
+Table 1:
+
+1. Country
+
+2. Site
+
+3. Subject Number
+
+4. STR visit
+
+5. STR Seq
+
+6. Start Date/time
+
+7. Oncologic Surgery form
+
+8. Oncologic Surgery seq#
+
+9. OS Date/Time Performed
+
+10. OS Post Op result
+
+Table 2:
+
+1. Country
+
+2. Site
+
+3. Subject Number
+
+4. STR Visit
+
+5. STR Seq
+
+6. Start Date/time
+
+7. PTHA Visit
+
+8. PTHA seq
+
+9. PTHA Date of Assessment
+
+10. Extracapsular Extension Present
+
+Logic:
+Table 1:
+
+Logic 1.1: STR. Start Date/Time <> NULL
+
+AND
+
+Logic 1.2: [OSOFL. Post Op Result = “Complete Resection=R0” OR “Unresectable” OR “Unknown”] OR [OSOF. Post Op Result = “Complete Resection” OR “Unknown”]
+
+Table 2:
+
+Logic 2.1: STR. Start Date/Time <> NULL
+
+AND
+
+Logic 2.2: PTHA. Extracapsular Extension Present = “No”
+
+Notes:
+
+Note 1: Please exclude deleted record and Erroneous Visit from programming
+
+Note 2: For the Oncologic Surgery form within table 1, please update the prompt with all available forms. If no form is selected within the prompt, please use the available form to check logic 1.2
+
+Report Scenarios:
+Table 1:
+
+SCENARIO A: NO
+
+STR. Start Date/Time <> NULL AND [OSOFL. Post Op Result <> “Complete Resection-R0” OR “Unresectable” OR “Unknown”] OR [OSOF. Post Op Result <> “Complete Resection” OR “Unknown”]
+
+SCENARIO B: NO
+
+STR. Start Date/Time = NULL AND [OSOFL. Post Op Result = “Complete Resection=R0” OR “Unresectable” OR “Unknown”] OR [OSOF. Post Op Result = “Complete Resection” OR “Unknown”]
+
+SCENARIO C: YES
+
+STR. Start Date/Time <> NULL AND [OSOFL. Post Op Result = “Complete Resection=R0” OR “Unresectable” OR “Unknown”] OR [OSOF. Post Op Result = “Complete Resection” OR “Unknown”]
+
+Table 2:
+
+SCENARIO D: NO
+
+STR. Start Date/Time = NULL AND PTHA. Extracapsular Extension Present = “No”
+
+SCENARIO E: NO
+
+STR. Start Date/Time <> NULL AND PTHA. Extracapsular Extension Present = “Yes”
+
+SCENARIO F: YES
+
+STR. Start Date/Time <> NULL AND PTHA. Extracapsular Extension Present = “No”
+
+SCENARIO G: NO
+
+Erroneous visit and deleted records
+
+Sorting:
+Country, Site, Subject Number, STR Seq
+
+Parameter Selection:
+Country, Site, Subject Number, Oncologic Surgery form
+
+Form.Item Names:
+Table 1:
+
+1. Subject Assignment.Site Country
+
+2. Subject Assignment.Site Mnemonic
+
+3. Subjects.Subject Number
+
+4. STR. Visit mnemonic
+
+5. STR.Sponsor ID number
+
+6. STR.Start Date/Time
+
+7. Oncologic Surgery form
+
+8. Oncologic Surgery form.Sponsor ID number
+
+9. Oncologic Surgery form. Date and Time Performed
+
+10. Oncologic Surgery form. Post Op Result
+
+Table 2:
+
+1. Subject Assignment.Site Country
+
+2. Subject Assignment.Site Mnemonic
+
+3. Subjects.Subject Number
+
+4. STR. Visit mnemonic
+
+5. STR.Sponsor ID number
+
+6. STR.Start Date/Time
+
+7. PTHA.Visit mnemonic
+
+8. PTHA.Sponsor ID number
+
+9. PTHA Date of Assessment
+
+10. PTHA. Extracapsular Extension Prese

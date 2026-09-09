@@ -1,0 +1,161 @@
+Report ID: RID065
+
+Report Title:
+Reconciliation of Covid relatedness in Disposition forms versus AE form
+
+Description:
+The report will display inconsistencies between the subject status associated to COVID-19 recorded in the disposition forms and the information in Adverse Event Form
+
+Column Heading:
+1. Country
+
+2. Site
+
+3. Subject Number
+
+4. Status Form
+
+5. Form Date
+
+6. Trial Segment
+
+7. Discontinuation due to Covid-19
+
+8. Scenario
+
+Logic:
+Logic 1:
+
+Logic 1.1: OEDRA form is present in study
+
+AND (OEDRA.Was Subject Discontinued due to [Covid-19]? = Yes)
+
+AND (OEDRA. Status of Subject at End of This Trial Segment = DISCONTINUED - ADVERSE EVENT)
+
+AND (There is no AE Term contains 'COVID' OR AE PT contains any of the words listed in Note 1)
+
+OR
+
+Logic 1.2: PMST form is present in study
+
+AND (PMST.Was Subject Discontinued due to [Covid-19]?  = Yes)
+
+AND (PMST. Status of Subject at end of all Study Treatments = DISCONTINUED - ADVERSE EVENT)
+
+AND (There is no AE Term contains 'COVID' OR AE PT that contains any of the words listed in Note 1)
+
+OR
+
+Logic 1.3: PMS1 or PMS1A form present in study
+
+(PMS1/PMS1A.Was Study Medication Discontinued due to [Covid-19]? = Yes AND (PMS1/PMS1A). Status of Study Medication at the End of This Trial Segment= DISCONTINUED - ADVERSE EVENT)
+
+OR (PMS1/PMS1A.Was Subject Discontinued From This Trial Segment Due To [COVID-19]? = Yes AND PMS1/PMS1A.Status of Subject at End of This Trial Segment= DISCONTINUED - ADVERSE EVENT)
+
+AND (There is no AE Term contains 'COVID' OR AE PT contains any of the words listed in Note 1)
+
+Logic 2:
+
+AE Term contains 'COVID' OR AE PT contains any of the words listed on Note 1 AND AE.Outcome of AE= FATAL
+
+AND
+
+[Logic 2.1: OEDRA form is present in study
+
+AND (OEDRA. Date of Assessment >= DS01.Date of Disposition)
+
+AND (OEDRA.Was Subject Discontinued due to [Covid-19]? WITHIN (No,Unknown))
+
+OR
+
+Logic 2.2: PMST form is present in study
+
+AND (PMST. Date of Assessment >= DS01.Date of Disposition)
+
+AND (PMST.Was Subject Discontinued due to [Covid-19]? WITHIN (No,Unknown))
+
+OR
+
+Logic 2.3:
+
+DS01. Was Subject Discontinued due to [COVID-19]? WITHIN (No,Unknown)
+
+OR
+
+Logic 2.4: PMS1 or PMS1A form is present in study
+
+AND (PMS1/PMS1A.Was Study Medication Discontinued due to [Covid-19]? WITHIN (No,Unknown))
+
+AND (PMS1/PMS1A.Date of Assessment >= DS01.Date of Disposition)
+
+OR
+
+Logic 2.5: PMS1 or PMS1A form is present in study
+
+AND (PMS1/PMS1A.Was Subject Discontinued From This Trial Segment Due To [COVID-19]? WITHIN (No,Unknown))
+
+AND (PMS1/PMS1A.Date of Assessment >= DS01.Date of Disposition)
+
+Note1:  consider any AE PT (codified term) that contains any of the following
+
+- COVID-19
+
+- SARS-CoV-2
+
+- SARS COV2
+
+- SARS Coronavirus 2
+
+- SARS Coronavirus
+
+*Report should identify the listed as key words e.g: If AE PT is “SARS-COV-2 sepsis” outputs is expected since it contains “SARS-CoV-2”
+
+Note 2: Please exclude deleted AE records
+
+Note 3: Please display one output for each sub-logic met (1.1 , 1.2 , 2.1…)
+
+Note 4: For Logic 2 output should be produce if the first statement and one of the sub-logics is met
+
+Report Scenarios:
+A –Yes
+
+[PMS1, PMST and/or OEDRA] discontinuation associated to COVID-19 as "Yes" and Reason for Discontinuation is "Adverse Event", but there is no COVID-19 adverse event in AE form with onset date prior or equal to the Date of Assessment in the disposition form.
+
+B- No
+
+[PMS1, PMST and/or OEDRA] discontinuation associated to COVID-19 as "Yes" and Reason for Discontinuation is "Adverse Event", but there is no COVID-19 adverse event in AE form with onset date prior or equal to the Date of Assessment in the disposition form.
+
+C –Yes
+
+There is a subject with a fatal COVID-19 adverse event but the subject status associated to COVID-19  is completed as “No” or “Unknown”  in PMS1, PMST, DS01 and/or OEDRA with a date after or on the same date than the start date of the AE.
+
+D –No
+
+There is a subject with a fatal COVID-19 adverse event but the subject status associated to COVID-19  is completed as “Yes” in PMS1, PMST, DS01 and/or OEDRA with a date after or on the same date as the start date of the AE.
+
+E –No
+
+There is a subject with a fatal COVID-19 adverse event but the subject status associated to COVID-19  is completed as “No” or “Unknown” in PMS1, PMST, DS01 and/or OEDRA with a date before the start date of the AE.
+
+Form.Item Names:
+1. SA. Country
+
+2. SA. Site
+
+3. SA. Subject Number
+
+4. DS01/OEDRA/PMST/PMS1/PMS1A.Form Mnemonic. Display the name of the form that caused the output (PMS1 or PMST or OEDRA or DS01 or PMS1X)
+
+5. OEDRA/PMST/PMS1/PMS1A.Date of Assessment OR DS01.Date of Disposition. Display the corresponding date of assessment of the form that caused the output
+
+6. OEDRA/PMST/PMS1/PMS1A.Trial Segment Reference OR For DS01 display NA. Display the corresponding Trial Segment Reference of the form that caused the output
+
+7. PMST/DS01/OEDRA.Was Subject Discontinued due to [Covid-19]? OR
+
+PMS1/PMS1A.Was Study Medication Discontinued due to [Covid-19]?  OR
+
+PMS1/PMS1A.Was Subject Discontinued From This Trial Segment Due To [COVID-19]?
+
+Display the answer for the question on ACDC related to the form that caused the output
+
+8. Display 'Scenario 1' if Logic 1 is met, 'Scenario 2' if Logic 2 is met

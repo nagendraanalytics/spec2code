@@ -1,0 +1,143 @@
+Report ID: RID201
+
+Report Title:
+SMP-SMA Medication Mismatch
+
+Description:
+This report outputs subjects who have Dose Number and/or Date Prepared discrepancies between Study Medication (SMAU/SMAB) and Study Medication Preparation (SMPU/SMPB)
+
+Column Heading:
+1. Country
+
+2. Site
+
+3. Subject Number
+
+4. Visit
+
+5. Date of Visit
+
+6. Dose Number
+
+7. SMA Form
+
+8. SMA Seq
+
+9. SMP Form
+
+10. SMP Seq
+
+11. SMA Start Date/Time
+
+12. SMP Date/Time Prepared
+
+13.Different hours between SMP date prepared and SMA start date
+
+14. Issue
+
+Logic:
+This report will produce output for all subjects who have:
+
+Scenario 1
+
+Missing dose number on (SMPB/SMAB and SMPU/SMAU) forms within the same visit when system date is later than Date of viist plus "Data entry window".   Issue: "Dose Number Missing"
+
+Scenario 2
+
+ For same Dose Number and visit, SMA start date outside of SMP Date prepared and SMP Date prepared + XX hours. Report will include an "Issues" column with output of "Date Mismatch" when only Date is not congruent, "Time Mismatch" when only Time is not congruent, and "Date/Time mismatch" apply to all the rest scenarios.
+
+* Mandatory prompt: Window of Hours prompt should be defaulted to zero. "Data entry window" prompt should be defaulted to zero.
+
+* "Date/Time Mismatch" should consider time.
+
+* Please don't include deleted data/erroneous visit data into programming.
+
+* If any of SMPB/SMAB or SMPU/SMAU is not initialized, please do not output.
+
+* If SMA, SMP Date/Time entered by UNK, records should be output for Scenario 2 with Issue='Date/Time mismatch'.
+
+* Different hours between SMP date prepared and SMA start date is caulated as SMAU/SMAB.Start Date/Time- SMPU/SMPB.Date/Time Prepared, round to 2 decimal. When UNK entered, display as "SMP contains UNK" or "SMA contains UNK" or "SMP/SMA contain UNK".
+
+* If SMA, SMP Date/Time is not entered, please do not output for date mismatch.
+
+* If SMA, SMP Dose Number contain special character, please ignore special character when compare Dose Number.
+
+* Parameter "Data entry window" only apply to scenario 1, it should count the amount of days from the DOV if present, otherwise, if DOV is not present display output regardless of the data entry window provided by the user.
+
+Report Scenarios:
+1) Output=YES
+
+SMP has dose number that does not exist in SMA at the same visit and the data entry window has elapsed from DOV
+
+Issue: "Dose Number Missing"
+
+2) Output=YES
+
+SMA has dose number that does not exist in SMP at the same visit and the data entry window has elapsed from DOV
+
+Issue: "Dose Number Missing"
+
+3) Output=YES
+
+SMA start date is outside of SMP Date prepared and SMP Date prepared+XX hours for the same dose number and visit
+
+Issue: "Date mismatch" when only Date is not congruent.
+
+"Time mismatch" when only Time is not congruent.
+
+"Date/Time mismatch" apply to all the rest scenarios.
+
+4) Output=NO
+
+Dose numbers at the same visits are present both in SMP and SMA
+
+5) Output=NO
+
+SMA start date is within SMP Date prepared and SMP Date prepared+XX hours for the same dose number and visit
+
+6) Output=NO
+
+Deleted records
+
+7) Output=NO
+
+Records in Erroneous visits
+
+8) Output=NO
+
+Any of SMPB/SMAB or SMPU/SMAU is not initialized
+
+Sorting:
+Country, Site, Subject Number, Visit, SMA Form, Dose Number, SMA Seq, SMP Seq
+
+Parameter Selection:
+Country, First site, Last Site, First subject, Last subjects, List of subjects，Randomized only, Window of hours, Data entry window(day)
+
+Form.Item Names:
+1. Subject Assignment.Country
+
+2. Subject Assignment.Site
+
+3. Subject.Subject Number
+
+4. SMAU/SMAB/SMPU/SMPB.Visit Mnemonic
+
+5. SMAU/SMAB/SMPU/SMPB.Date of Visit
+
+6. SMAU/SMAB/SMPU/SMPB.Dose Number
+
+7. SMAU/SMAB.Form Mnemonic
+
+8. SMAU/SMAB.Formidx
+
+9. SMPU/SMPB.Form Mnemonic
+
+10. SMPU/SMPB.Formidx
+
+11. SMAU/SMAB.Start Date/Time
+
+12. SMPU/SMPB.Date/Time Prepared
+
+13.SMAU/SMAB.Start Date/Time- SMPU/SMPB.Date/Time Prepared
+
+14. Hardcode: 1) "Dose Number Missing", 2) "Date/Time Mismatch"，"Date Mismatch" ,"Time Mismatch"

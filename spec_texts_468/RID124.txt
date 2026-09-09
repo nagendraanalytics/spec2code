@@ -1,0 +1,83 @@
+Report ID: RID124
+
+Report Title:
+Reconciliation between calculated QTCB and InForm derived QTCB
+
+Description:
+This report outputs if there is a >10 msec difference between the recalculated QTCB and the InForm derived QTCB.
+
+Column Heading:
+1.  Country
+
+2.  Site
+
+3.  Subject Number
+
+4.  Visit
+
+5. DOV
+
+6. eCRF
+
+7. Seq
+
+8. QTCB
+
+9. Recalculated QTCB
+
+10. Difference
+
+Logic:
+The report will output LECG records where the absolute difference between the Inform derived QTCB and the calculated QTCB is greater than 10.
+
+The Recalculated QTCB is defined as follows:
+
+(QT Interval / (60/ Ventricular Rate ))^(1/2)
+
+Deleted records should not be outputted.
+
+Records in erroneous visits should not be considered.
+
+Report Scenarios:
+1) Output = YES
+
+Recalculated QTCB - InForm QTCB > 10
+
+2) Output = YES
+
+InForm QTCB - Recalculated QTCB > 10
+
+3) Output = NO
+
+Recalculated QTCB - InForm QTCB <= 10
+
+4) Output = NO
+
+InForm QTCB - Recalculated QTCB <= 10
+
+Sorting:
+Country, Site, Subject Number, Visit, eCRF, Seq
+
+Parameter Selection:
+Country, Site, Subject, Randomized only, List of Subjects
+
+Form.Item Names:
+1.  Subject Assignment.Site Country
+
+2.  Subject Assignment.Site Mnemonic
+
+3.  Subjects.Subject Number
+
+4.  Electrocardiogram form.Visitmnemonic
+
+5.  Date of Visit form.DOV
+
+6.  Electrocardiogram form.Formmnemonic
+
+7.  Electrocardiogram form.formidx
+
+8.  Electrocardiogram form.QTCB
+
+9.  Recalculated QTCB=(QT Interval / (60/ Ventricular Rate ))^(1/2)
+
+10. ABS(Recalculated QTCB - QTCB)

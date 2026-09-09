@@ -1,0 +1,179 @@
+Report ID: RID377
+
+Report Title:
+Overall Response vs Lesion Evaluation measurements
+
+Description:
+This listing contains details about the type of lesions reported under Lesion Identification/ Tumor identification item on LSNPC (Target, Non-target, and New) and the corresponding Overall PCWG2-modified RECIST Response recorded in ORPC.
+
+- For the Target lesions (Target Nodal or Target Extra nodal) the listing will show the Target Lesion Measurement for each lesion and the Sum of the diameters (SOD) for all the lesions evaluated on the same date. If the item "Was the Lesion Evaluable?" is selected as No, the lesion expected response will appear as Not evaluable.
+
+ - For the Non-target lesions (Non-Target Nodal or Non-Target Extra nodal), the listing will show the total number of lesions for each Non-Target lesion status evaluated on the same date (Absent, Present, Enlargement). If the item "Was the Lesion Evaluable?" is selected as No, the lesion expected response will appear as Not evaluable.
+
+- For the New lesions (New Soft Tissue Lesion Since Last Evaluation or New Bone Lesion), the listing will show the total number of lesions for each New Lesion status (Absent, Present, Enlargement) evaluated on the same date.
+
+- For the Bone Lesion, the listing will show the total number of lesions for each Bone Lesion Status (Absent, Present) evaluated on the same date.
+
+- For the Target lesions, the report will show also the variation from Baseline and Nadir on each evaluation date to easily calculate the Response.
+
+% change from Baseline:
+
+[(SOD from current Timepoint / Baseline SOD) - 1] x 100
+
+% from Nadir:
+
+[(SOD from current time point – Nadir SOD) / Nadir SOD] x 100%.
+
+Nadir: Is the smallest SOD since Baseline.
+
+Note: SOD = sum of longest diameters for extra nodal or short axis  for nodal of all Target lesions.
+
+Note: To be used with PCWG2-modified RECIST and Overall Response
+
+Column Heading:
+1. Country
+
+2. Site
+
+3. Subject Number
+
+4. ORPC Seq
+
+5. Date Response Determined
+
+6. Target Lesion Response(new)
+
+7. Non-Target Lesion Response(new)
+
+8. New Soft Tissue Lesions Since Last Evaluation(new)
+
+9. Soft Tissue Response(new)
+
+10. Bone Lesion Response(new)
+
+11. Overall Response
+
+12. Associated Lesion Number
+
+13. Lesion Identification
+
+14. Date of Lesion Evaluation
+
+15. SOD of Target Lesion
+
+16. % Change from Baseline
+
+17. % Change from Nadir
+
+18. Non-Target Lesion Status/Total number
+
+19. Bone Lesion Status/Total number
+
+20. New Soft Tissue Lesion Status/Total Number (new)
+
+21. New Bone Lesion Status/Total Number(new)
+
+22. Was the Lesion Evaluable?
+
+Logic:
+Report will output the subjects who meet following criteria.
+
+Logic 1: ORPC.Date Response Determined AND ORPC.Overall Response is not Null
+
+AND
+
+Logic 2:
+
+LSNPC.Lesion identification = 'Target Nodal, Target Extra Nodal, non-Target Nodal, non-Target Extra Nodal, New Soft Tissue Lesion Since Last Evaluation, New Bone Lesion or Bone Lesion'
+
+AND
+
+Logic 3: ORPC. Date Response Determined – x days <= LSNPC. Evaluation Entry with Date of Lesion Evaluation
+
+AND
+
+Logic 4: LSNPC.Date of Lesion Evaluation >= ORPC. Date Response Determined + x days
+
+AND
+
+Logic 5: LSNPC. Was the Lesion Evaluable? <> 'No'
+
+Note1: Deleted data should be excluded from programming.
+
+Note2: “x” is the Allowed Window entered as parameter.
+
+Report Scenarios:
+A- Yes List Overall Response of ORPC and its corresponding LSNPC (Target Nodal, Target Extra Nodal, non-Target Nodal, non-Target Extra Nodal, New Soft Tissue Lesion Since Last Evaluation, New Bone Lesion, and Bone Lesion)
+
+B- Yes List Overall Response of ORPC which has no corresponding LSNPC or LSNPC which has  no corresponding ORPC
+
+C- Yes LSNPC cannot evaluate
+
+D- No Deleted record
+
+Sorting:
+Country, Site, Subject Number, Date of Lesion Evaluation, Date Response Determined If some rows of output have both ORPC date and LSNPC date, consider sort by ORPC date first then LSNPC date
+
+Parameter Selection:
+Country, First Site, Last Site, First Subject, Last Subject, List of Subjects, Allowed Window (Text Box) (by default set to 7)
+
+Form.Item Names:
+1.	SA.Country
+
+2.	SA.Site
+
+3.	SA.Subject Number
+
+4.	ORPC.Formidx
+
+5.	ORPC.Date Response Determined
+
+6.	ORPC.Target Lesion Response
+
+7.	ORPC.Non-Target Lesion Response
+
+8.	ORPC.New Soft Tissue Lesions Since Last Evaluation
+
+9.	ORPC.Soft Tissue Response
+
+10.	ORPC.Bone Lesion Response
+
+11.	ORPC.Overall Response
+
+12.	LSNPC.Associated Lesion number (if there are more than one Lesion number for each Lesion identification, display them all and joined by colon)
+
+13.	LSNPC.Lesion Identification (Display “Target”, “Non-Target”, “New” or “Bone Lesion” correspondingly. "Target" if Lesion identification = Target Extra Nodal or Target Nodal. “Non-Target” if Lesion identification = Non-Target Extra Nodal or Non-Target Nodal. "New" if Lesion identification = New Soft Tissue Lesion Since Last Evaluation or New Bone Lesion. “Bone Lesion” if Lesion Identification= Bone Lesion.
+
+14.	LSNPC.Date of Current Lesion Evaluation (Scan/Image/Physical Exam)
+
+15.	SOD is calculated as Sum of ‘Target Lesion Measurement’ of all records of Evaluation Entry of LSNPC which Lesion identification = Target Extra Nodal or Target Nodal and have same Date of Evaluation. SOD should only display for logic 3 and 6 when Lesion identification is = Target Extra Nodal or Target Nodal. Display the whole addition expression like “1.5+2.5=3.0”, not only “3.0”.
+
+16.	% Change from Baseline is calculated as [(SOD from current Timepoint - SOD from Baseline)/SOD from Baseline]*100%.
+
+Baseline SOD corresponds to the SOD of the Baseline assessment, i.e., evaluation done prior first Dose. If SOD from Baseline is equal to 0, ignore calculation and display "Baseline is zero".
+
+17.	% Change from Nadir is calculated as [(SOD from current Timepoint - SOD from Nadir)/SOD from Nadir]*100%. Nadir SOD corresponds to the smallest SOD of all prior lesion evaluations of current Timepoint. If SOD from Nadir is equal to 0, ignore calculation and display "Nadir is zero".
+
+18.	Non-Target Lesion Status/Total number should display as below format: ex “Absent=” , “Present=”, “Enlargement=” , “Not Evaluable =” in sequence. If there are multiple status, display them all in this column and joined by colon. Total number is
+
+calculated as the total record number of Evaluation Entry of LSNPC which Lesion identification=Non-Target Extra Nodal or
+
+Non-Target Nodal and have same Date of Evaluation. This column should only display for logic 3 and 6 when Lesion identification is Non-Target Extra Nodal or Non-Target Nodal. Please display as the actual radio button of non-target lesion status.
+
+19.	Bone Lesion Status/Total number should display as below format: ex “Absent=” , “Present=”,  “Not Evaluable =” in sequence.
+
+If there are multiple status, display them all in this column and joined by colon. Total number is calculated as the total record number of Evaluation Entry of LSNPC which Lesion identification= Bone Lesion and have same Date of Evaluation. This column should only display for logic 3 and 6 when Lesion identification is Bone Lesion. Please display as the actual radio
+
+button of Bone Lesion Status.
+
+20.	New Soft Tissue Lesion Status/Total number should display as below format: ex “Absent=” , “Present=”,  “Enlargement=”, “Not Evaluable =” in sequence. If there are multiple status, display them all in this column and joined by colon. Total number is calculated as the total record number of Evaluation Entry of LSNPC which Lesion identification= New Soft Tissue Lesion Since Last Evaluation and have same Date of Evaluation. This column should only display for logic 3 and 6 when Lesion
+
+identification is New Soft Tissue Lesion Since Last Evaluation. Please display as the actual radio button of New Soft Tissue
+
+Lesion Status.
+
+21.	New Bone Lesion Status/Total Number should display as below format: ex “Absent=”, “Present=”, “Not Evaluable =” in sequence.
+
+If there are multiple status, display them all in this column and joined by colon. Total number is calculated as the total record number of Evaluation Entry of LSNPC which Lesion identification= New Bone Lesion and have same Date of Evaluation. This column should only display for logic 3 and 6 when Lesion identification is New Bone Lesion. Please display as the actual radio button of New Bone Lesion Status.
+
+22.	LSNPC form, Evaluation Entry section. Was the Lesion Evaluable? This column should only display when logic 9 is met.

@@ -1,0 +1,96 @@
+Report ID: RID321
+
+Report Title:
+Reconcile response data
+
+Description:
+1)This report will display subjects that have a complete response and  high risk lesions identified on the LSNBC.
+
+2) This report will display subjects that have a response of Progressive  Disease and no corresponding lesions identified on the LSNBC.
+
+Column Heading:
+1. Country
+
+2. Site
+
+3. Subject Number
+
+4. OABC Seq
+
+5. OABC - Overall Response
+
+6. OABC - Date Response
+
+7. LSNBC - Date of Lesion
+
+8. LSNBC - Lesion Grade
+
+9. Error Message
+
+Logic:
+Report should output subjects who meet the following criteria:
+
+(Scenario 1)
+
+Logic 1: OABC. 'Overall Response' = 'Complete Response' AND 'Date Response Determined' = LSNBC. 'Date of Lesion Evaluation' AND 'Lesion Grade' =  THREE SCALE SYSTEM-HIGH
+
+OR
+
+(Scenario 2)
+
+Logic 2.1: [OABC. 'Overall Response' = 'Progressive Disease' AND there is not a LSNBC record with LSNBC. 'Date of Lesion Evaluation' = OABC. 'Date Response Determined'
+
+OR
+
+Logic 2.2: LSNBC = Null AND OABC. 'Overall Response' = 'Progressive Disease']
+
+Note: Deleted records should not be considered in the programming and output.
+
+Report Scenarios:
+A - Yes
+
+OABC. 'Overall Response' is equal to 'Complete Response' AND 'Date Response Determined' is equalt to LSNBC. 'Date of Lesion Evaluation' AND 'Lesion Grade' is equal to THREE SCALE SYSTEM-HIGH
+
+B - Yes
+
+OABC. 'Overall Response' is equal to 'Progressive Disease' AND 'Date Response Determined' is different to LSNBC. 'Date of Lesion Evaluation'
+
+C - Yes
+
+OABC. 'Overall Response' is equal to 'Progressive Disease' AND LSNBC is null
+
+D - No
+
+OABC. 'Overall Response' is equal to 'Complete Response' AND 'Date Response Determined' is equalt to LSNBC. 'Date of Lesion Evaluation' AND 'Lesion Grade' is different to THREE SCALE SYSTEM-HIGH
+
+E - No
+
+OABC. 'Overall Response' is equal to 'Progressive Disease' AND 'Date Response Determined' is equal to LSNBC. 'Date of Lesion Evaluation'
+
+F - No
+
+The records are deleted.
+
+Parameter Selection:
+Country, Site, Subject, Randomized Only
+
+Form.Item Names:
+1. SUBJECT ASSIGNMENT.Country
+
+2. SUBJECT ASSIGNMENT. Site
+
+3. SUBJECT ASSIGNMENT. Subject Number
+
+4. OVERALL ASSESSMENT NON-MUSCLE INVASIVE BLADDER CANCER. Sponsor ID Number
+
+5. OVERALL ASSESSMENT NON-MUSCLE INVASIVE BLADDER CANCER. Overall Response
+
+6. OVERALL ASSESSMENT NON-MUSCLE INVASIVE BLADDER CANCER.Date Response Determined
+
+7. LESION EVALUATION - NON-MUSCLE INVASIVE BLADDER CANCER. Date of Lesion Evaluation
+
+8. LESION EVALUATION - NON-MUSCLE INVASIVE BLADDER CANCER. Lesion Grade
+
+9. Error Message.
+
+Note: For 'Error Message', display 'Scenario 1' for Logic1; display 'Scenario 2' for Logic 2.

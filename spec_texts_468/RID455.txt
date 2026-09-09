@@ -1,0 +1,119 @@
+Report ID: RID455
+
+Report Title:
+First and Last Dose Reconciliation
+
+Description:
+Reconciliation of the Actual First and Last Dose of Study Radiation Administered
+
+Column Heading:
+1. Country
+
+2. Site
+
+3. Subject Number
+
+4. Label Description
+
+5. Visit Mnemonic
+
+6. Sequence Number
+
+7. Start date
+
+8. Stop date
+
+9. First dose
+
+10. Last dose
+
+11. Scenario
+
+Logic:
+Logic 1. The start date/time of STR record on STR form with the same Label Description is prior the STR entry start date/time and with first dose selected.
+
+OR
+
+Logic 2. The stop date/time of STR record on STR form with the same Label Description is after the STR entry stop date/time and with last dose selected.
+
+OR
+
+Logic 3. There is more than one STR record with the same Label Description with First dose selected
+
+Logic 4. There is more than one STR record with the same Label Description with Last dose selected.
+
+Note 1: Deleted record or erroneous visit are excluded from the report.
+
+Note 2: Time should be considered in logic and display.
+
+Note 3: If time is UNK:UNK then consider as 23:59
+
+Note 4: for scenario 3 and 4 display on columns 5, 6, 7 and 8 the information for both records separated by commas.
+
+Note 5: for scenario 3 display column 9 blank. for scenario 4, display column 9 blank.
+
+Report Scenarios:
+Scenario 1 - YES
+
+   The start date/time of STR record on STR form with the same Label Description is prior to the STRentry with first dose selected.
+
+Scenario 2 - Yes
+
+   The stop date/time of STR record on STR form with the same Label Description is after the STR entry with last dose selected.
+
+Scenario 3 - Yes
+
+   There is more than one STR record with the same Label Description with First dose selected.
+
+Scenario 4 - Yes
+
+   There is more than one STR record with the same Label Description with Last dose selected.
+
+Scenario 5 - No
+
+   Erroneous visit or deleted record.
+
+Scenario 6 -No
+
+   The start date/time of STR record on STR form  with the same Label Description with first dose selected  is the minimum STR Date
+
+   and
+
+   the stop date/time of STR record on STR form with the same Label Description with last dose selected is the maximum STR Date for each study medication.
+
+   and
+
+   there is only one STR record with the same Label Description with First dose selected
+
+   and
+
+  there is one STR record with the same Label Description with Last dose selected.
+
+Sorting:
+Country, Site Number, Subject Number, Visit Mnemonic
+
+Parameter Selection:
+Country, Site Number, Subject Number, List of Subjects
+
+Form.Item Names:
+1. SA. Site Country
+
+2. SA. Site Mnemonic
+
+3. SA. Subject Number
+
+4. SA. Label Description
+
+5. STR.with first/last dose checked. Visit Mnemonic
+
+6. STR. Form Idx
+
+7. STR. Start Date/Time
+
+8. STR. Stop Date/Time
+
+9. STR. Please Indicate if this is the First Dose for this Label Description. Display "First Dose" if item is checked,  Display as blank if the checkbox is not checked.
+
+10. STR. Please Indicate if this is the Last Dose for this Label Description. Display "Last Dose" if item is checked, Display as blank if the checkbox is not checked.
+
+11. Display as "Scenario 1" when meet logic1;display as "Scenario 2" when meet logic2;display as "Scenario 3" when meet logic3;display as "Scenario 4" when meet logic4.

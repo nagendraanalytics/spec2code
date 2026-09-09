@@ -1,0 +1,99 @@
+Report ID: RID094
+
+Report Title:
+External Vendor Data Listing
+
+Description:
+This report displays the external vendor data loaded into the GEFCF,  views of the InForm reporting schema.  If Blinded Flag is set on a GEFCF record, the fields with blinded data will display 'xxxx'. Recommended format: Excel or csv.
+
+Column Heading:
+1. Country
+
+2. Site
+
+3. Screening Number
+
+4. Subject Number
+
+5. eCRF
+
+6. Seq
+
+Specific fields of each eCRF
+
+Logic:
+This report should retrieve all external vendor GEFCF data.
+
+If Blinding flag='B' for GEFCF then the following fields should display 'xxxx':
+
+- Result or Finding in Original Units
+
+- Character Result/Finding in Standard Format
+
+- Numeric Result/Finding in Standard Units
+
+- Normal/Reference Range Indicator
+
+- Specimen Condition
+
+- Toxicity
+
+- Toxicity Grade
+
+- Severity
+
+Report should not display deleted records.
+
+                                                                                                                                                                                                                                                      The eCRF used is GEFCF: 03Jul2013
+
+If any of the field names on the eCRF coincide with the standard report fields, then the form mnemonic precedes the eCRF field name.
+
+Report Scenarios:
+This report should retrieve all external vendor GEFCF data.
+
+If Blinding flag='B' for GEFCF then the following fields should display 'xxxx':
+
+- Result or Finding in Original Units
+
+- Character Result/Finding in Standard Format
+
+- Numeric Result/Finding in Standard Units
+
+- Normal/Reference Range Indicator
+
+- Specimen Condition
+
+- Toxicity
+
+- Toxicity Grade
+
+- Severity
+
+Report should not display deleted records.
+
+                                                                                                                                                                                                                                                      The eCRF used is GEFCF: 03Jul2013
+
+If any of the field names on the eCRF coincide with the standard report fields, then the form mnemonic precedes the eCRF field name.
+
+Sorting:
+Country, Site, Subject Number, eCRF
+
+Parameter Selection:
+Country, Site, Subject Number, Randomized Only, Vendor, List of Subjects, Category
+
+Form.Item Names:
+1. Subject Assignment.Site Country
+
+2. Subject Assignment form.Site Mnemonic
+
+3. Subject Assignment form.Screening Number
+
+4. Subject Assignment form.Randomization Number
+
+5. Form Mnemonic
+
+6. Formidx
+
+Specific fields from
+
+GENERIC EXTERNAL FINDINGS Form

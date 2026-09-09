@@ -1,0 +1,297 @@
+Report ID: RID268
+
+Report Title:
+Missing Data between Inform and Vendor
+
+Description:
+This report displays the following patient scenarios between invoice forms and external data:
+
+1. Inform Specimen collection tracking is present at particular visit, but there are no corresponding external vendor data records for an specific sample
+
+2. External vendor record is present for a particular visit but there are no corresponding Specimen collection tracking records for an specific Visit
+
+Column Heading:
+1. Country
+
+2. Site
+
+3. Screening Number
+
+4. Subject Number
+
+5. Inform Visit Mnemonic
+
+6. Inform Date
+
+7. Inform Specimen Type
+
+8. Inform Testing to be Performed
+
+9. Inform Collection Status
+
+10. Vendor Name
+
+11. Vendor eCRF
+
+12. Vendor Visit
+
+13. Vendor Collection Date
+
+14. Vendor Specimen Type
+
+15. Vendor Battery ID
+
+16. Sample Requisition Number
+
+17. Scenario
+
+Logic:
+Logic Scenario 1
+
+Logic 1.1: SPECT.Date/Time Specimen(s) Obtained <> Null AND SPECT.Specimen Collection Status <> Not Obtained
+
+AND
+
+Logic 1.2: SPECT.Medium or Sample Type = Inform Specimen Type from supporting document
+
+AND
+
+Logic 1.3: SPECT.Testing to be Performed = Inform Testing to be Performed from supporting document
+
+AND
+
+Logic 1.4: SPECT.Visitmnemonic = Inform Visitmnemonic from supporting document
+
+AND
+
+There is no corresponding external record with:
+
+Logic 1.5: EXT_form.Date/Time = SPECT Date/Time Specimen(s) Obtained
+
+AND
+
+Logic 1.6: EXT_form.Form = External ecrf from supporting document
+
+AND
+
+Logic 1.7: EXT_form.Vendor = External Vendor from supporting document
+
+AND
+
+Logic 1.8: EXT_form.Specimen = External Specimen Type from supporting document
+
+AND
+
+Logic 1.9: EXT_form.Battery ID = External Battery ID from supporting document
+
+AND
+
+Logic 1.10: EXT_form.Visit ID or Number = External Visit ID or Number from supporting document
+
+Logic Scenario 2: Logic 2.1: EXT_form.Date/Time <> Null
+
+AND
+
+Logic 2.2: EXT_form.Form = External ecrf from supporting document
+
+AND
+
+Logic 2.3: EXT_form.Vendor = External Vendor from supporting document
+
+AND
+
+Logic 2.4: EXT_form.Specimen = External Specimen Type from supporting document
+
+AND
+
+Logic 2.5: EXT_form.Battery ID = External Battery ID from supporting document
+
+AND
+
+Logic 2.6: EXT_form.Visit ID or Number = External Visit ID or Number from supporting document
+
+AND There is no corresponding inform record with:
+
+AND Logic 2.7: SPECT.Medium or Sample Type = Inform Specimen Type from supporting document
+
+AND
+
+Logic 2.8: SPECT.Testing to be Performed = Inform Testing to be Performed from supporting document
+
+AND
+
+Logic 2.9: SPECT.Visitmnemonic = Inform Visitmnemonic from supporting document
+
+AND
+
+Logic 2.10: SPECT.Specimen Collection Status <> Not Obtained
+
+Logic Scenario 3
+
+Logic 3.1 EXT_form.Date/Time <> Null
+
+AND
+
+Logic 3.2: EXT_form.Form = External ecrf from supporting document
+
+AND
+
+Logic 3.3: EXT_form.Vendor = External Vendor from supporting document
+
+AND
+
+Logic 3.4: EXT_form.Specimen = External Specimen Type from supporting document
+
+AND
+
+Logic 3.5: EXT_form.Battery ID = External Battery ID from supporting document
+
+AND
+
+Logic 3.6: EXT_form.Visit ID or Number = External Visit ID or Number from supporting document
+
+AND
+
+Logic 3.7: SPECT.Medium or Sample Type = Inform Specimen Type from supporting document
+
+AND
+
+Logic 3.8: SPECT.Testing to be Performed = Inform Testing to be Performed from supporting document
+
+AND
+
+Logic 3.9: SPECT.Visitmnemonic = Inform Visitmnemonic from supporting document
+
+AND
+
+Logic 3.10: SPECT.Specimen Collection Status <> Not Obtained
+
+AND
+
+Logic 3.11: EXT_form.Date/Time <>  SPECT Date/Time Specimen(s) Obtained
+
+Note:
+
+Note 1: Please exclude erroneous visits and deleted records
+
+Note 2: Check only the date, exclude the time when If reconcil Time = N. Check both date and time when If reconcil Time = Y.
+
+Note 3: EXT_form.Date/Time: LABS - LABS.Actual Collection Date and Time, GEFCF - GEFCF.Date/Time of Measurement
+
+Note 4: EXT_form.Specimen: LABS - LAB.Specimen Material Name, GEFCF - GEFCF.Specimen Type
+
+Note 5: EXT_form.Battery ID: LABS - LABS.Battery ID, GEFCF - do not check logic 1.9 and logic 2.5
+
+Note 6: Check all Inform/External data visits when Inform Visitmnemonic and/or External Visit Name is NA
+
+Requires supporting document to be named ONC_EVD_005_supp_.csv and will contain the following columns and associated content: 1 row for each group of Inform Visit Mnemonic and its equivalent in LABS/GEFCF, with additional criteria per protocol. Please refer to the PSA Scheduled Visit Table.
+
+1. Group - numbers that identify the different groups of tests.
+
+Expected individual tests per form will appear with a unique Group number. If two or more tests could be done interchangeably, i.e. completing only one of them is enough, then all those rows need to have the same Group number.
+
+2.Criteria_Form - Unique value in each group, specified as 'NA' if it is checked for all subjects
+
+3.Criteria_Itemquestion - Unique value in each group, specified as 'NA' if it is checked for all subjects
+
+4.Criteria_Value - Unique value in each group, specified as 'NA' if it is checked for all subjects
+
+5.Inform Visitmnemonic - corresponding to the visit where the SPECT tests are expected. Put NA if information should be reviewed in all visits
+
+6.External Visit Name - Please refer to the PSA Scheduled Visit Table. Put NA if information should be reviewed in all visits
+
+7.External Visit ID or Number - Please refer to the PSA Scheduled Visit Table. Put NA if information should be reviewed in all visits
+
+8.External eCRF - LABS/GEFCF
+
+9.External Vendor - Vendor Name
+
+10.Inform Specimen Type - SPECT Medium or Sample Type
+
+11.External Specimen Type - LAB.Specimen Material Name/GEFCF.Specimen Type
+
+12.Inform Testing to be Performed - SPECT.Testing to be Performed
+
+13.External Battery ID - LABS.Battery ID. For GEFCF, leave it as 'NA'
+
+ e.g. Group,Criteria Form,Criteria Itemquestion,Criteria Value,Inform Visitmnemonic,External Visit Name,External Visit ID or Number,External eCRF,External Vendor,Inform Specimen Type,External Specimen Type,Inform Testing to be Performed,External Battery ID
+
+1,NA,NA,NA,Screening,Screening,1,LABS,Q2LAB,Serum,Serum,Chemistry,Chemistry 2,NA,NA,NA,Screening,Screening,1,LABS,Q2LAB,Blood,Blood,Coagulation,Coagulation
+
+3,NA,NA,NA,Cycle 2,Cycle 2,5,LABS,Q2LAB,Serum,Serum,Chemistry,Chemistry
+
+4,NA,NA,NA,Cycle 2,Cycle 2,5,LABS,Q2LAB,Blood,Blood,Coagulation,Coagulation 5,NA,NA,NA,Screening,Screening,1,GEFCF,CLARIENT,TISSUE,TISSUE,Coagulation,NA
+
+6,SR,Cohort,Cohort 1,Screening,COHORT 1 SCRN PV01,1,LABS,Q2LAB,Serum,Serum,Biomarker Analysis,Chemistry
+
+7,SR,Cohort,Cohort 2,Screening,COHORT 2 SCRN PV01,1,LABS,Q2LAB,Serum,Serum,Biomarker Analysis,Chemistry
+
+8,NA,NA,NA,NA,Unscheduled,99,GEFCF,Q2LAB,Blood,Blood,Genaric Analysis,NA
+
+9,NA,NA,NA,NA,NA,NA,GEFCF,Q2LAB,Blood,Blood,Genaric Analysis,NA
+
+The number of rows in the supporting document will be represented in the Report Header as ""# of rows for Supporting doc"". The actual information provided by the supporting doc can be outputted by selecting Y in the parameter ""Supporting doc Page"".
+
+Report Scenarios:
+Scenario 1 Output Yes:
+
+If eCRF = GEFCF There is an SPECT record and there is no GEFCF record with the same date (and time)  and corresponding visit, vendor and specimen type in supporting document If eCRF = LABS There is an SPECT record and there is no LABS record with the same date (and time) and corresponding visit, vendor, specimen type and test in supporting document
+
+Scenario 1 Output No: If eCRF = GEFCF There is an SPECT record and there is a GEFCF record with the same date (and time)  and corresponding visit, vendor and specimen type in supporting document If eCRF = LABS There is an SPECT record and there is a LABS record with the same date (and time) and corresponding visit, vendor, specimen type and test in supporting document
+
+Scenario 2 Output Yes: If eCRF = GEFCF There is a GEFCF record and there is no SPECT record with the same date (and time)  and corresponding visit, specimen type in supporting document If eCRF = LABS There is a LABS record and there is no SPECT record with the same date (and time)  and corresponding visit, specimen type and Testing to be Performed in supporting document
+
+Scenario 2 Output No: If eCRF = GEFCF There is a GEFCF record and there is a SPECT record with the same date (and time)  and corresponding visit, specimen type If eCRF = LABS There is a LABS record and there is a SPECT record with the same date (and time)  and corresponding visit, specimen type and Testing to be Performed in supporting document
+
+Scenario 3 Output Yes:
+
+If eCRF = GEFCF There is a GEFCF record and there is a SPECT record with the same corresponding visit, specimen type but with different dates (and time)
+
+If eCRF = LABS There is a LABS record and there is a SPECT record with the same date and corresponding visit, specimen type and Testing to be Performed in supporting document but with different dates (and time)
+
+Scenario 3 Output No:
+
+If eCRF = GEFCF There is a GEFCF record and there is a SPECT record with the same corresponding visit, specimen type and with the same dates (and time)
+
+If eCRF = LABS There is a LABS record and there is a SPECT record with the same date and corresponding visit, specimen type and Testing to be Performed in supporting document and with the same dates (and time)
+
+Sorting:
+Country, Site Number, Subject Number
+
+Parameter Selection:
+Country, First Site, Last Site, First Subject, Last Subject, List of Subjects, Randomized Only, Supporting Doc Page (N/Y, Default as N) , Vendor, eCRF Vendor (All, LABS, GEFCF), If reconcil Time (N/Y, Default as N)
+
+Form.Item Names:
+1. SA.Country
+
+2. SA.Site
+
+3. SA.Screening Number
+
+4. SA.Subject Number
+
+5. SPECT.Visit Mnemonic
+
+6. SPECT.Date/Time Specimen(s) Obtained
+
+7. SPECT.Medium or Sample Type
+
+8. SPECT.Testing to be Performed
+
+9. SPECT.Specimen Collection Status
+
+10. For all Scenarios Display External Vendor Name
+
+11. For Scenario 1 display External eCRF as per supporting doc; for Scenario 2 and 3 display GEFCF/LABS as corresponds.
+
+12. GEFCF/LABS. Visit Name
+
+13. GEFCF.Date/Time of Measurement / LABS.Actual Collection Date
+
+14. GEFCF.Specimen Type / LABS.Specimen Material Name
+
+15. LABS.Battery ID (for GEFCF leave blank)
+
+16.LABS. Accession ID or Number
+
+17. Display “Scenario 1” if GEFCF/LABS information is missing or “Scenario 2” if SPECT information is missing or ""Scenario 3"" if there is a date mismatch between GEFCF/LABS and SPECT

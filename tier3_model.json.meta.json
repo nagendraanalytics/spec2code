@@ -1,0 +1,15 @@
+{
+  "feature_names": [
+    "has_overlap",
+    "has_identical_term",
+    "has_encoding",
+    "has_ae_domain",
+    "has_vaccine",
+    "text_length",
+    "logic_bullet_count",
+    "mentions_ongoing"
+  ],
+  "dataset_size": 4,
+  "loo_accuracy": 0.0,
+  "trained_on": "4 real hand-verified examples -- see DATASET in train_xgboost.py"
+}

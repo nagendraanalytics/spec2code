@@ -1,0 +1,121 @@
+Report ID: RID316
+
+Report Title:
+Incorrect Non-Target Lesion Status after lesion reappearance
+
+Description:
+Output is produced when Non-Target Lesions Status on <LSN form> is entered as Present instead of <Worsening/Enlargement From Nadir/Further Enlargement From Nadir> when previous Lesion Non-Target Lesion Response on <Oncology Response Forms> is <CR response> and lesion reappears.
+
+Column Heading:
+1. Country
+
+2. Site
+
+3. Subject Number
+
+4. Lesion Evaluation Form
+
+5. Lesion Number
+
+6. Lesion/Tumor Identification
+
+7. Date of Lesion Evaluation
+
+8. Non Target Lesion Status
+
+9.Response Form
+
+10.Response Form Seq
+
+Logic:
+Logic:
+
+'Lesion/Tumor Identification' = Selected as 'Lesion Type' in supporting document
+
+AND
+
+'Non Target Lesion Status' = Selected as 'Lesion Status1' in supporting document
+
+AND
+
+There is a next 'Lesion Type' entry in chronological order present
+
+AND
+
+The next 'Lesion Type' entry in chronological order based on "Date of Lesion evaluation" where 'Non Target Lesion Status' <> 'Lesion Status1' in supporting document
+
+AND
+
+The next entry in chronological order based on 'Date of Lesion evaluation' where 'Non Target Lesion Status' <> 'Lesion Status2' in supporting document
+
+AND
+
+There is at least one of 'Oncology Response Forms' with 'Non-Target Response item' = Selected as 'CR Response' in supporting document is prior to the 'Date of Lesion evaluation'
+
+Note1: Ignore deleted entries.
+
+Note2: Ignore entries where 'Non Target Lesion Status' is blank.
+
+Note3: Ignore entries where 'Non-Target Lesion response' is blank
+
+Note4: Please consider only the nearest date in 'Oncology Response Form' which is prior to the 'Date of Lesion evaluation' .
+
+Requires supporting document to be named ONC_LSN_024_supp_<xxxxxxx>.csv and will contain the following columns and associated content:
+
+1. LSN eCRF: Enter the form mnemonic for the corresponding lesion evaluation form
+
+2. Lesion/Tumor Identification item: Enter item name used for tumor identification under LSN eCRF
+
+3. Date of Lesion Evaluation item: Enter item name used for providing date of lesion identification under LSN eCRF
+
+4. Non Target Lesion Status item: Enter item name used for recording Non Target lesion status under LSN eCRF
+
+5. Lesion Type: Enter lesion type corresponding to Non-Target lesion
+
+6. Lesion Status 1: Enter the status which identifies that lesion disappeared
+
+7. Lesion Status 2: Enter the status that indicates the lesion progressed
+
+8. Response eCRF: Enter the form mnemonic for the corresponding lesion response form
+
+9. Date of Response item: Enter item name used for providing date of procedure for Non-Target Lesion response under Response eCRF
+
+10. Non-Target Response item: Enter item name used for provide status of Non-Target Lesion Response under Response eCRF
+
+11. CR Response: Enter the response which indicates Non-Target response is Completed Response.
+
+e.g.
+
+LSNEV, Lesion Identification, Date of Lesion Evaluation, Non Target Lesion Status, Non-Target Nodal, Absent, Worsening, ORST, Date of Procedure for Overall Response (Scan/Image/Physical Exam), Non-Target Response, Complete Response
+
+LSNEV, Lesion Identification, Date of Lesion Evaluation, Non Target Lesion Status, Non-Target Extra Nodal, Absent, Worsening, ORST, Date of Procedure for Overall Response (Scan/Image/Physical Exam), Non-Target Response, Complete Response
+
+Report Scenarios:
+Output = Yes Which satisfies logic, Output = No Which doesn't satisfies logic
+
+Sorting:
+Country, Site Number, Subject Number
+
+Parameter Selection:
+Country, Site Number, Subject Number
+
+Form.Item Names:
+1. Subject Assignment. Site Country
+
+2. Subject Assignment. Site Mnemonic
+
+3. Subject Assignment. Subject Number
+
+4. Lesion Evaluation Form selected in supporting document
+
+5. “Lesion Evaluation Form”. Lesion Number
+
+6. “Lesion Evaluation Form”. ‘Lesion/Tumor Identification’ selected in supporting document
+
+7. “Lesion Evaluation Form”. ‘Date of Lesion Evaluation’ selected in supporting document
+
+8. “Lesion Evaluation Form”. ‘Non Target Lesion Status’ selected in supporting document
+
+9.Response Form selected in supporting document
+
+10."Response Form".Sponsor ID Number

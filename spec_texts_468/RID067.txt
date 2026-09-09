@@ -1,0 +1,87 @@
+Report ID: RID067
+
+Report Title:
+Procedure/Lab test is Listed as an Adverse Event
+
+Description:
+This report displays subjects who have a medical or therapeutic procedure or lab test term listed as an Adverse Event (SOC = 'Surgical and medical procedures' or SOC = ‘Investigations’ and PT term does NOT include ‘increased’, or ‘decreased’, or ‘present’, or ‘abnormal’, or ‘prolonged’, or ‘shortened’, or ‘below’, or ‘above’, or ‘fluctuation’, or ‘fluctuating’, or ‘low’, or ‘high’, or ‘immeasurable’, or ’Indeterminable’，or ‘identified’, or ‘incompatible’, or ‘reduced’, or ‘worsened’, or ‘change’, or ‘depression’, or ‘elevation’, or ‘altered’, or ‘inversion’, or ‘palpable’, or ‘irregular’, or ‘Unevaluable’, or ‘undetectable’, or 'positive', or ‘shift’, or 'murmur', or 'inverted', or 'inactive', or 'ECG signs of', or 'spike', or 'pattern', or 'phenomenon', or 'alternans', or 'biphasic', or 'prominent', or 'bruit', or 'moderate', or 'abnormality', or 'apoptosis', or 'Myocardial strain', or  'Pus in stool', or 'Vaccine-induced seroconversion', or 'Xanthochromia', or 'Conjunctival staining', or 'Hypophonesis', or 'Cells in urine', or 'Urine zinc', or 'Blood pressure difference of extremities', or 'Temperature difference of extremities', or 'Vascular waterfall' or 'prolongation' or 'elevated' or 'indeterminate' or 'alternans'.)
+
+Column Heading:
+1. Country
+
+2. Site
+
+3. Subject Number
+
+4. Form Name
+
+5. Seq
+
+6. AE Term
+
+7. LLT
+
+8. PT
+
+9. SOC
+
+Logic:
+Report should display Adverse Event terms on AE/SAEI/SAEP/APAE form
+
+where SOC = 'Surgical and medical procedures'
+
+OR
+
+where SOC = 'Investigations' and PT term does NOT 'increased', or 'decreased', or 'present', or 'abnormal', or 'prolonged', or 'shortened', or 'below', or 'above', or 'fluctuation', or 'fluctuating', or 'low', or 'high', or 'immeasurable', or 'Indeterminable', or 'identified', or 'incompatible', or 'reduced', or 'worsened', or 'change', or 'depression', or 'elevation', or 'altered', or 'inversion', or 'palpable', or 'irregular' or 'unevaluable', or 'undetectable', or 'positive', or 'shift', or 'murmur', or 'inverted', or 'inactive', or 'ECG signs of', or 'spike', or 'pattern', or 'phenomenon', or 'alternans', or 'biphasic', or 'prominent', or 'bruit', or 'moderate', or 'abnormality', or 'apoptosis', or 'Myocardial strain', or  'Pus in stool', or 'Vaccine-induced seroconversion', or 'Xanthochromia', or 'Conjunctival staining', or 'Hypophonesis', or 'Cells in urine', or 'Urine zinc', or 'Blood pressure difference of extremities', or 'Temperature difference of extremities', or 'Vascular waterfall' or 'prolongation' or 'elevated' or 'indeterminate' or 'alternans'.)'
+
+Display row count in footer.
+
+Report should not display deleted records.
+
+If ""Randomized only"" parameter selection checkbox is checked, the report should only output subjects with Randomization number that is not null.
+
+this report should not be case-sensitive
+
+Note: Report should run for AE if other mandatory forms are not present in study and error message should be removed.
+
+Report Scenarios:
+1A- Yes
+
+SOC of AE= Surgical and medical procedures.
+
+1B- No
+
+SOC of AE<> 'Surgical and medical procedures' or 'Investigations'
+
+2A- Yes
+
+SOC = 'Investigations' and PT term does NOT include 'increased', or 'decreased', or 'present', or 'abnormal', or 'prolonged', or 'shortened', or 'below', or 'above', or 'fluctuation', or 'fluctuating', or 'low', or 'high', or 'immeasurable', or 'Indeterminable', or 'identified', or 'incompatible', or 'reduced', or 'worsened', or 'change', or 'depression', or 'elevation', or 'altered', or 'inversion', or 'palpable', or 'irregular' or 'unevaluable', or 'undetectable', or 'positive', or 'shift', or 'murmur', or 'inverted', or 'inactive', or 'ECG signs of', or 'spike', or 'pattern', or 'phenomenon', or 'alternans', or 'biphasic', or 'prominent', or 'bruit', or 'moderate', or 'abnormality', or 'apoptosis', or 'Myocardial strain', or  'Pus in stool', or 'Vaccine-induced seroconversion', or 'Xanthochromia', or 'Conjunctival staining', or 'Hypophonesis', or 'Cells in urine', or 'Urine zinc', or 'Blood pressure difference of extremities', or 'Temperature difference of extremities', or 'Vascular waterfall' or 'prolongation' or 'elevated' or 'indeterminate' or 'alternans'.)
+
+2B- No
+
+SOC = 'Investigations' and PT term does INCLUDES 'increased', or 'decreased', or 'present', or 'abnormal', or 'prolonged', or 'shortened', or 'below', or 'above', or 'fluctuation', or 'fluctuating', or 'low', or 'high', or 'immeasurable', or 'Indeterminable', or 'identified', or 'incompatible', or 'reduced', or 'worsened', or 'change', or 'depression', or 'elevation', or 'altered', or 'inversion', or 'palpable', or 'irregular' or 'unevaluable', or 'undetectable', or 'positive', or 'shift', or 'murmur', or 'inverted', or 'inactive', or 'ECG signs of', or 'spike', or 'pattern', or 'phenomenon', or 'alternans', or 'biphasic', or 'prominent', or 'bruit', or 'moderate', or 'abnormality', or 'apoptosis', or 'Myocardial strain', or  'Pus in stool', or 'Vaccine-induced seroconversion', or 'Xanthochromia', or 'Conjunctival staining', or 'Hypophonesis', or 'Cells in urine', or 'Urine zinc', or 'Blood pressure difference of extremities', or 'Temperature difference of extremities', or 'Vascular waterfall' or 'prolongation' or 'elevated' or 'indeterminate' or 'alternans'.)
+
+Sorting:
+Country, Site, Subject Number, Form Name,  Seq
+
+Parameter Selection:
+Country, Site, Subject Number, AE Term, LLT, PT, Randomized Only, List of Subjects
+
+Form.Item Names:
+1. Subject Assignment.Site Country
+
+2. Subject Assignment.Site Mnemonic
+
+3. Subject Assignment.Subject Number
+
+4. Forms.Form Mnemonic
+
+5. Adverse Events Form/Serious Adverse Events - Infant/Serious Adverse Events – Partner/Associated Persons Adverse Events.Sequence Number
+
+6. Adverse Events Form/Serious Adverse Events - Infant/Serious Adverse Events – Partner/Associated Persons Adverse Events.AE Term
+
+7. Adverse Events Form/Serious Adverse Events - Infant/Serious Adverse Events – Partner/Associated Persons Adverse Events.LLT
+
+8. Adverse Events Form/Serious Adverse Events - Infant/Serious Adverse Events – Partner/Associated Persons Adverse Events.PT
+
+9. Adverse Events Form/Serious Adverse Events - Infant/Serious Adverse Events – Partner/Associated Persons Adverse Events.SOC

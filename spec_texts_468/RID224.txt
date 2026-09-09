@@ -1,0 +1,83 @@
+Report ID: RID224
+
+Report Title:
+Missing conditional/Incorrect value items
+
+Description:
+This report displays missing/incorrect item when conditions that being used to the trial.
+
+Column Heading:
+1. Country
+
+2. Site
+
+3. Subject Number
+
+4. Target Form
+
+5. Target Visit
+
+6. Target Seq Number
+
+7. Target item Name
+
+8. Target item Value
+
+9. Conditions
+
+10. Scenario
+
+Note: Item 5 and 6 is derived from Inform database. Item 4, 7, 8 and 9 are derived from Supporting Document. For item 9, it will conbine condform, conditem, condsymbol and condresult from supporting document, such as: CM; Medication Category=Adverse Event.
+
+Logic:
+LOGIC: Prior to processing, apply condition(s) according to supporting document
+
+At Visit X the target item is meets criteria according to the supporting document if all the conditional items meet the criteria in supporting document.
+
+Note: Exclude erroneous visit and when programming.
+
+Report Scenarios:
+SCENARIOS: Scenario A - Yes
+
+At Visit X the target item is meets criteria according to the supporting document if all the conditional itemes meet the criteria in supporting document
+
+Scenario B - No
+
+At Visit X the target item is not meets criteria according to the supporting document if all the conditional itemes meet the criteria in supporting document
+
+Scenarion C- No
+
+At Visit X the target item is not meets criteria according to the supporting document if all the conditional itemes don't meet the criteria in supporting document
+
+Scenario D - No
+
+At Visit X the target item meets criteria according to the supporting document but all the conditional itemes don't meet the criteria in supporting document
+
+Sorting:
+Default
+
+Parameter Selection:
+Default
+
+Form.Item Names:
+1. SA.Country
+
+2. SA.Site Mnemonic
+
+3. SA. Subject Number
+
+4. Suporting Document.Form
+
+5. Target Form.VISIT
+
+6. Target Form.Sequence Number
+
+7. Suporting Document.Itemquestion
+
+8. Suporting Document.Value
+
+9. Display all condform, conditem, condsymbol and condresult from supporting document in the same column
+
+10. Display the Scenario meet
+
+Note: Item 5 and 6 is derived from Inform database. Item 4, 7, 8 and 9 are derived from Supporting Document. For item 9, it will conbine condform, conditem, condsymbol and condresult from supporting document, such as: CM; Medication Category=Adverse Event.

@@ -1,0 +1,111 @@
+Report ID: RID200
+
+Report Title:
+SMP-SM  Medication Mismatch
+
+Description:
+This report outputs subjects who have Dose Number and/or Date Prepared discrepancies between Study Medication (SMAU/SMAB/SM01/SM02/SM04) and Study Medication Preparation (SMPU/SMPB/SMP)
+
+Column Heading:
+1. Country
+
+2. Site
+
+3. Subject Number
+
+4. Visit
+
+5. Dose Number
+
+6. Form (SMA/SM)
+
+7. Seq (SMA/SM)
+
+8. Form (SMP)
+
+9. Seq (SMP)
+
+10. Start Date of SMA/SM
+
+11. Date of Dose Prepared
+
+12. Issue
+
+Logic:
+This report will produce output for all subjects who have:
+
+1) missing dose numbers on (SMPB/SMAB and SMPU/SMAU) OR (SM01/SM02/SM04 and SMP) forms within the same visit. Issue: "Dose Number Missing"
+
+2) For same Dose Number and visit, SMA/SM start date outside of SMP Date prepared and SMP Date prepared+XX hours. Issue: "Date/Time Mismatch"
+
+* Mandatory prompt: Window of Hours prompt should be defaulted to zero.
+
+*"Date/Time Mismatch" should calculate into minutes.
+
+* Please don't include deleted data/erroneous visit data into programming.
+
+Report Scenarios:
+1) Output=YES
+
+SMP has dose number that does not exist in SMA/SM at the same visit
+
+Issue: "Dose Number Missing"
+
+2) Output=YES
+
+SMA has dose number that does not exist in SMP at the same visit
+
+Issue: "Dose Number Missing"
+
+3) Output=YES
+
+SMA start date is outside of SMP Date prepared and SMP Date prepared+XX hours for the same dose number and visit
+
+Issue: "Date/Time Mismatch"
+
+4) Output=NO
+
+Dose numbers at the same visits are present both in SMP and SMA/SM
+
+5) Output=NO
+
+SMA start date is within SMP Date prepared and SMP Date prepared+XX hours for the same dose number and visit
+
+6) Output=NO
+
+Deleted records
+
+7) Output=NO
+
+Records in Erroneous visits
+
+Sorting:
+Country, Site, Subject Number, Visit, Form (SMA), Form (SMP), Dose Number, Seq (SMA), Seq (SMP)
+
+Parameter Selection:
+Country, First site, Last Site, First subject, Last subjects, Randomized only, Window of hours
+
+Form.Item Names:
+1.  SITECOUNTRY (CV_SAFM)
+
+2.  SITEMNEMONIC (CV_SAFM)
+
+3.  ENRMSUBJNUMIT (CV_SAFM)
+
+4.  VISITMNEMONIC (CV_SMABFM, CV_SMAUFM, CV_SMPBFM, CV_SMPUFM, CV_SMFM, CV_SMPFM)
+
+5. SMABEXDOSSEQIT (CV_SMABFM), SMAUEXDOSSEQIT (CV_SMAUFM), SMPBEXDOSSEQIT (CV_SMPBFM), SMPUEXDOSSEQIT (CV_SMPUFM)
+
+6.  FORMMNEMONIC (CV_SMABFM or CV_SMAUFM or CV_SMFM)
+
+7.  FORMIDX (CV_SMABFM or CV_SMAUFM or CV_SMFM)
+
+8.  FORMMNEMONIC (CV_SMPUFM or CV_SMPBFM or CV_SMPFM)
+
+9.  FORMIDX (CV_SMPUFM or CV_SMPBFM or CV_SMPFM)
+
+10. TMS_SMABEXSTDTCIT (CV_SMABFM) or TMS_SMAUEXSTDTCIT (CV_SMAUFM) or DT_SMPEXPRPDTCIT (CV_SMPFM )
+
+11. TMS_SMPBEXPRPDTCIT (CV_SMPBFM) or TMS_SMPUEXPRPDTCIT (CV_SMPUFM)
+
+12.  hardcode: 1) "Dose Number Missing", 2) "Date/Time Mismatch"

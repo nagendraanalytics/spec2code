@@ -1,0 +1,65 @@
+Report ID: RID303
+
+Report Title:
+Lesion Merged or Split but lesion Number do not exist
+
+Description:
+This report will list lesions that have been selected as Merged or Split but the lesion number provided do not exist in any previous lesion evaluation record.
+
+Column Heading:
+1. Country
+
+2. Site
+
+3. Subject Number
+
+4. Form Mnemonic
+
+5. Seq#
+
+6. Associated Lesion Number not present
+
+Logic:
+If Indicate if Lesion Merged or Split = Merged (Provide Associated Lesion Number) OR Split (Provide Associated Lesion Number) AND the value entered in any of the text boxes do not match with any Lesion Number present in the Lesion evaluation form.
+
+Notes:
+
+Note 1: Do not consider deleted records.
+
+Note 2: Lesion evaluation forms should be considered according to the forms in the master LSN_supp_doc.csv
+
+Note 3: The items [Lesion form/ Lesion Merged or Split/ Associated Lesion Number] should be used from the items in the ‘itemquestion’ column in the master LSN_supp_doc.csv
+
+Note 4: If there are multiple Lesion evaluation form selected from the master LSN_supp_doc.csv. that meet the criteria, please check them all.
+
+Report Scenarios:
+A - No
+
+Indicate if Lesion Merged or Split = Null
+
+B - No
+
+Indicate if Lesion Merged or Split = Merged (Provide Associated Lesion Number) OR Split (Provide Associated Lesion Number) AND the value entered in all of the text boxes do match with any Lesion Number present in the Lesion evaluation form.
+
+C - Yes
+
+Indicate if Lesion Merged or Split = Merged (Provide Associated Lesion Number) OR Split (Provide Associated Lesion Number) AND the value entered in any of the text boxes do not match with any Lesion Number present in the Lesion evaluation form.
+
+Sorting:
+Country, Site Number, Subject Number
+
+Parameter Selection:
+Country, Site Number, Subject Number, List of Subjects
+
+Form.Item Names:
+1. SA. Country
+
+2. SA. Site Mnemonic
+
+3. SA. Subject number
+
+4. Lesion.Form Mnemonic selected from LSN_supp_doc.csv
+
+5. Lesion. Sponsor ID Number selected from LSN_supp_doc.csv
+
+6.Lesion. Indicate if Lesion Merged or Split selected from LSN_supp_doc.csv. Display the Option selected "Merge" or "Split" followed by the values entered in the text boxes that are not present separated by commas.

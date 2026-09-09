@@ -1,0 +1,54 @@
+SELECT
+  base.Country AS `Country`,
+  base.SiteNumber AS `Site`,
+  base.SubjectNumber AS `Subject Number`,
+  base.ScreeningNumber AS `Screening Number`,
+  base.FormName AS `Local Lab eCRF`
+FROM
+(
+  SELECT
+    `@HDR`.`Site`.`Country` AS Country,
+    `@HDR`.`Site`.`Number` AS SiteNumber,
+    `@HDR`.`Subject`.`Name` AS SubjectNumber,
+    SCRNNOIT AS ScreeningNumber,
+    `@Form`.`Name` AS FormName,
+    `@HDR`.`Subject`.`ID` AS SubjectID
+  FROM `EDC`.`SLCNRFM`
+  WHERE `@Form`.`Status` = 'submitted__v'
+    AND (DELETEDFM = 'N' OR DELETEDFM IS NULL)
+    AND SCRNNOIT IS NOT NULL
+
+  UNION ALL
+
+  SELECT
+    `@HDR`.`Site`.`Country` AS Country,
+    `@HDR`.`Site`.`Number` AS SiteNumber,
+    `@HDR`.`Subject`.`Name` AS SubjectNumber,
+    SCRNNOIT AS ScreeningNumber,
+    `@Form`.`Name` AS FormName,
+    `@HDR`.`Subject`.`ID` AS SubjectID
+  FROM `EDC`.`SLHNRFM`
+  WHERE `@Form`.`Status` = 'submitted__v'
+    AND (DELETEDFM = 'N' OR DELETEDFM IS NULL)
+    AND SCRNNOIT IS NOT NULL
+
+  UNION ALL
+
+  SELECT
+    `@HDR`.`Site`.`Country` AS Country,
+    `@HDR`.`Site`.`Number` AS SiteNumber,
+    `@HDR`.`Subject`.`Name` AS SubjectNumber,
+    SCRNNOIT AS ScreeningNumber,
+    `@Form`.`Name` AS FormName,
+    `@HDR`.`Subject`.`ID` AS SubjectID
+  FROM `EDC`.`SLONRFM`
+  WHERE `@Form`.`Status` = 'submitted__v'
+    AND (DELETEDFM = 'N' OR DELETEDFM IS NULL)
+    AND SCRNNOIT IS NOT NULL
+) base
+WHERE base.ScreeningNumber NOT LIKE '%00001'
+ORDER BY
+  base.Country,
+  base.SiteNumber,
+  base.ScreeningNumber,
+  base.FormName

@@ -1,0 +1,237 @@
+Report ID: RID451
+
+Report Title:
+AE Action vs Dose Variation
+
+Description:
+This report reconciles Dose Variation vs Action Taken of Increased, Discontinued, Reduced, or Interrupted within a window of days
+
+Column Heading:
+Table 1.
+
+1. Country
+
+2. Site
+
+3. Subject Number
+
+4.STR Visit
+
+5. STR seq#
+
+6. STR Study Period
+
+7. Start Date/Time
+
+8. STR Label Description
+
+9. Reason for Dose Variation
+
+10. Expected minimum AE stop date
+
+Table 2.
+
+1. Country
+
+2. Site
+
+3. Subject Number
+
+4. AE Seq
+
+5. AE Term
+
+6. AE onset date
+
+7. AE end date
+
+8. AE action taken with Study Medication
+
+9. Study Medication
+
+10. Expected STR Start Date period
+
+Logic:
+Scenario 1
+
+Logic 1: STR. Reason for Dose Variation with [STR Label Description] = Adverse Event
+
+AND
+
+[
+
+Logic 2a: There is NOT any AE with [AE Action Taken item] = Increased or Discontinued or Reduced or Interrupted with AE.onset date or AE.end date is within [X] days (inclusive) before the STR.start date with [STR Label Description]
+
+OR
+
+Logic 2b: There is NOT any AE with [AE Action Taken item] = Increased or Discontinued or Reduced or Interrupted with AE.end date as "ongoing" and AE.onset date is before STR.start date with [STR Label Description]
+
+]
+
+Scenario 2
+
+Logic 1 : AE with [AE Action Taken item] = Increased or Discontinued or Reduced or Interrupted
+
+AND
+
+[
+
+Logic 2a : There is NOT ANY STR with [STR Label Description] with Reason for Dose Variation = Adverse Event and STR.start date between AE.start date and AE.end date (inclusive) OR AE is "ongoing"
+
+OR
+
+Logic 2b : There is NOT ANY STR with [STR Label Description] with Reason for Dose Variation = Adverse Event and STR.start date is after AE end date within [x] days inclusive
+
+]
+
+Notes
+
+1. Exclude deleted data and erroneous visit from programming.
+
+2. [X] days should be provided by the user using the ‘Window of Days’ from supporting document. Only numeric values are accepted
+
+3. Disregard time if available, for comparison.
+
+4. Display scenario 1 in Table 1 and Scenario 2 in Table 2
+
+5. Please take expected minimum AE stop date as: STR start date – X days <= AE stop date <= STR start date
+
+6. [AE Action Taken item] and [STR Label Description] are taken from supporting document.
+
+Requires Supporting Document to be named ONC_STR_006_supp_<xxxxxxx>.csv and will contain the following columns and associated content:
+
+1. Criteria Form1 - Arm/Cohort/Stratification Form Mnemonic SR/SRIVRS/TRIG. If applies for all subjects regardless the Arm/Cohort/Stratification, enter NA
+
+2. Criteria Itemquestion1 - Arm/Cohort/Stratification Itemquestion1. If applies for all subjects regardless the Arm/Cohort/Stratification, enter NA OR if the Itemquestion1 is not applicable for the protocol, enter NA
+
+3. Criteria Value1 - Arm/Cohort/Stratification Value. If applies for all subjects regardless the Arm/Cohort/Stratification, enter NA OR if the itemValue1 is not applicable for the protocol, enter NA
+
+4. AE Action Taken item- specify according to protocol design
+
+5. STR Label Description – Specify according to protocol design
+
+6. Window of Days
+
+e.g.:
+
+Criteria Form1, Criteria Itemquestion1, Criteria Value1, AE Action Taken item, STR Label Description, Window of Days
+
+SR, Arm, Arm 1, Action Taken with Radiation, Radiation, 30
+
+NA, NA, NA, Action Taken with Brachytherapy, Brachytherapy, 60
+
+NA, NA, NA, Action Taken with EBRT, EBRT, 120
+
+Report Scenarios:
+Scenario 1
+
+SCENARIO A: NO
+
+STR. Reason for Dose Variation = [Adverse Event] AND there is any AE duration with action taken of within [X] (inclusive) before the STR start date AND AE end date and time is within [x] days prior STR date/time AND with Action Taken = Increased or Discontinued or Reduced or Interrupted
+
+OR
+
+AE end date and time is ongoing”  AND Action Taken = Increased or Discontinued or Reduced or Interrupted
+
+Note: when AE end date and time is ongoing AE onset date and time must be within [x] days
+
+SCENARIO B: NO
+
+STR. Reason for Dose Variation <> [Adverse Event] AND There is NOT an AE duration with action taken of within [X] (inclusive) before the STR Start Date/Time AND AE with Action Taken = Increased or Discontinued or Reduced or Interrupted
+
+SCENARIO C: YES
+
+STR. Reason for Dose Variation = [Adverse Event AND there is NOT AE duration with action taken of within [X] (inclusive) before the STR start date AND AE end date and time is within [x] days prior STR date/time AND with Action Taken = Increased or Discontinued or Reduced or Interrupted
+
+OR
+
+AE end date and time is ongoing” AND Action Taken = Increased or Discontinued or Reduced or Interrupted
+
+Note: when AE end date and time is ongoing AE onset date and time must be within [x] days
+
+SCENARIO D: YES
+
+STR. Reason for Dose Variation = [Adverse Event] AND There is an AE duration with action taken of within [X] (inclusive) before the STR Start Date/Time AND AE with Action Taken <> Increased or Discontinued or Reduced or Interrupted
+
+Note: Output is expected ONLY when  there is an STR with RfDV = AE and there is not at least one corresponding AE within window with Action Taken = Increased or Discontinued or Reduced or Interrupted , if there is at least one AE within window with Action Taken = Increased or Discontinued or Reduced or Interrupted  Other AEs within timeframe with Action Taken <> Increased or Discontinued or Reduced or Interrupted  can be  omitted and report should not show output.
+
+Scenario 2
+
+SCENARIO C: NO
+
+AE with Action Taken <> Increased or Discontinued or Reduced or Interrupted AND there is a STR. Reason for Dose Variation <> [Adverse Event] should remain.
+
+SCENARIO D: YES
+
+AE with Action Taken = Increased or Discontinued or Reduced or Interrupted AND there is NOT any STR. Reason for Dose Variation = [Adverse Event] with STR.start date between AE start date to AE end date (inclusive)
+
+OR
+
+AE with Action Taken = Increased or Discontinued or Reduced or Interrupted AND there is NOT any STR. Reason for Dose Variation = [Adverse Event] with STR.start date after AE end date within [x] days inclusive AND AE end date is ongoing
+
+SCENARIO E: NO
+
+AE with Action Taken = Increased or Discontinued or Reduced or Interrupted AND there is  any STR. Reason for Dose Variation = [Adverse Event] with STR.start date between AE start date to AE end date (inclusive)
+
+OR
+
+there is  any STR. Reason for Dose Variation = [Adverse Event] with STR.start date after AE end date within [x] days inclusive AND AE end date is ongoing
+
+OR
+
+AE with Action Taken = Increased or Discontinued or Reduced or Interrupted AND there IS/ARE any STR. Reason for Dose Variation = [Adverse Event] with STR.start date after AE start date WITHIN [x] days inclusive AND AE end date is ongoing
+
+SCENARIO F: NO
+
+Deleted records
+
+Sorting:
+Country, Site Number, Subject Number
+
+Parameter Selection:
+Country, Site, Subject number, List of Subjects
+
+Form.Item Names:
+Table 1.
+
+1. Subject Assignment. Site Country
+
+2. Subject Assignment. Site Mnemonic
+
+3. Subject Assignment. Subject Number
+
+4. STR. Visitmnemonic
+
+5. STR. Sponsor ID Number
+
+6. STR. Study Period
+
+7. STR. Start Date/Time
+
+8. STR. Label Description
+
+9. STR. Reason for Dose Variation
+
+10. Hardcode as 'STR Start date/time – Window of Days
+
+Table 2.
+
+1. Subject Assignment. Site Country
+
+2. Subject Assignment. Site Mnemonic
+
+3. Subject Assignment. Subject Number
+
+4. Adverse Event. Sequence Number
+
+5. Adverse Event. AE Term
+
+6. Adverse Event. Onset Date and Time
+
+7. Adverse Event. End Date and Time
+
+8. Adverse Event. Action taken with Study Medication
+
+9. Hardcode as name of study medication taken from item AE. Action taken with Study Medication
+
+10. Hardcode as 'AE start date' to 'AE end date + Window of Days’

@@ -1,0 +1,77 @@
+Report ID: RID466
+
+Report Title:
+Progressive Disease vs ORST
+
+Description:
+Report will output if a subject has a Subject Disposition of Discontinued, and the reason discontinued is Progressive Disease, but ORST Overall Assessment of Progressive Disease does not exist, ORST Form is not initialized, or the Date of Discontinuation is before the Date Response Determined on ORST form when Overall Assessment is Progressive Disease.
+
+Column Heading:
+1. Country
+
+2. Site
+
+3. Screening Number
+
+4.  Subject Number
+
+5. ORST Date Response Determined
+
+6. ORST Overall Response
+
+7. EOT DOV
+
+8. Message
+
+Logic:
+Logic 1 : Subject's DS02 Status = Discontinued AND
+
+Reason Discontinued = Progressive Disease AND
+
+( Logic 2 : ORST form not initialized OR
+
+ORST form is missing Overall Response = Progressive Disease )
+
+OR
+
+( Logic 3 : End of Treatment DOV < ORST Date Response Determined (exclusive) and
+
+Overall Response = Progressive Disease.)
+
+Report Scenarios:
+Logic 1 : Subject's DS02 Status = Discontinued AND
+
+Reason Discontinued = Progressive Disease AND
+
+( Logic 2 : ORST form not initialized OR
+
+ORST form is missing Overall Response = Progressive Disease )
+
+OR
+
+( Logic 3 : End of Treatment DOV < ORST Date Response Determined (exclusive) and
+
+Overall Response = Progressive Disease.)
+
+Sorting:
+Country,site, screening number, subject number
+
+Parameter Selection:
+Country(ies), Site Mnemonic(s), Screening Number(s),  Subject Number(s)
+
+Form.Item Names:
+1. SA.Country
+
+2. SA.Site
+
+3. SA.Screening Number
+
+4. SA. Subject Number
+
+5. ORST.ORST Date Response Determined
+
+6. ORST.Overall Response
+
+7. DOV.End OF Treatment
+
+8. Display message as “Date of Discontinuation is before the Assessment Date on ORST form when Overall Assessment is Progressive Disease” when Logic 3 is met,  “Reason Discontinued is Progressive Disease, but ORST Overall Assessment of Progressive Disease is missing” when Logic 2 is met.

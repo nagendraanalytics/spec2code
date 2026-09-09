@@ -1,0 +1,121 @@
+Report ID: RID044
+
+Report Title:
+CM vs AE  reconciliation report
+
+Description:
+################
+
+Column Heading:
+1.  Country
+
+2.  Site
+
+3.  Subject Number
+
+4.  AE Seq
+
+5.  AE Start
+
+6. AE End
+
+7. CM Seq
+
+8. CM Term
+
+9. CM Start
+
+10. CM End
+
+11. Reason for Therapy
+
+12. Category
+
+13. Scenario
+
+Logic:
+LOGIC: Table 1: For CM and AE associations this report will list scenarios of date discrepancies as below:
+
+Logic 1:
+
+CM is associated to an AE AND CM start date > AE end date
+
+Error Message: Scenario 1a
+
+Logic 2:
+
+CM is associated to an AE AND CM start date < AE start date
+
+Error Message: Scenario 1b
+
+Note:  If CM term is associated to multiple AE term, AE start and AE end dates are consecutive, consider earliest AE start date( min(AE start date) for the comparison.
+
+In case of AE dates are not consecutive, individual dates will be compared. Overlap dates are considered as consecutive.
+
+Table 2: For CM and AE reconciliation. CM category the report will list scenarios as below:
+
+Logic 3:
+
+CM category recorded = CM Category selected from parameter AND There is no AE associated with CM
+
+Error Message: Scenario 2a
+
+Logic 4:
+
+CM is associated with an AE AND CM category <> CM Category selected from parameter
+
+Error Message: Scenario 2b
+
+Note 1: Parameter "CM Category for reconciliation" will be used for report logic scenarios on Table 2.
+
+Note 2: Report logic should include itemrefanmes for CM 20210726 version of eCRF
+
+Report Scenarios:
+REPORT SCENARIOS: Scenario 1a: Output Yes
+
+CM and AE associated but CM start date is after the associated AE end date
+
+Scenario 1b: Output Yes
+
+CM and AE associated but CM start date is prior to the associated AE start date
+
+Scenario 2a: Output yes
+
+CM category selected from parameter is not associated to any AE
+
+Scenario 2b:
+
+CM is associated with an AE but CM category is not equal to CM category selected from parameter
+
+Sorting:
+Country, Site Number, Subject Number, AE Seq, CM Seq
+
+Parameter Selection:
+Country, Site Number, Subject Number, Randomized Only, CM Category for reconciliation, Scenario
+
+Form.Item Names:
+1. Subject Assignment.Site Country
+
+2. Subject Assignment.Site Mnemonic
+
+3. Subject. Subject Number
+
+4. Adverse Event Form.Form Index
+
+5. Adverse Event Form.Onset Date and Time
+
+6. Adverse Event Form.End Date and Time
+
+7. Concomitant Medication Form.Form Index
+
+8. Concomitant Medication Form.Medication Name
+
+9. Concomitant Medication Form.Start Date and Time
+
+10. Concomitant Medication Form.Stop Date and Time
+
+11. Concomitant Medication Form.Reason for Therapy
+
+12. Concomitant Medication Form.Category
+
+13. Report Scenario to be run

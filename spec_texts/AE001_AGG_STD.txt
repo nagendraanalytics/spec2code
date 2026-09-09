@@ -1,0 +1,128 @@
+Report ID: AE001_AGG_STD
+
+Report Title:
+Count of subjects with AE action taken of discontinued versus subjects with Study Drug discontinuation due to AE
+
+Description:
+This report displays the number of randomized subjects with AEs with Action Taken for SM as "Discontinued", versus the number of randomized subjects where PMS1/DS02/DS01/PMST has reason for discontinuation entered as "Adverse Event".
+
+Column Heading:
+1. Country
+
+2. Site
+
+3. Number of Randomized Subjects per Treatment Phase
+
+4. Number of Subjects with Action Taken with Study Medication as Discontinued
+
+5. Form
+
+6. Number of Forms as Discontinued due to AE
+
+7. Rate of Subjects Discontinued due to AE
+
+8. Treatment Phase
+
+Logic:
+The report is a listing and will output as follows:
+
+Column 3: Display the Total Number of Subjects per site for the corresponding treatment phase with the "DATE OF VISIT" of "First Visitmnemonic of Treatment Phase" NOT NULL in the eCRF from "Group 1"
+
+Column 4: Display the Total Number of subjects per site for the corresponding treatment phase with at least one AE record with the "OVERALL ACTION TAKEN" = "Discontinued" in the eCRF from "Group 4 "
+
+Column 6: Display the Total Number of records per site for the corresponding treatment phase with the "STATUS" = "Adverse Event" in the eCRF from "Group 5"
+
+Notes:
+
+1-	Erroneous visits and deleted records are excluded from programming
+2-	Report should be programmed for randomized subjects only
+3-	STUDY PHASE SUPPORTING DOCUMENT NOTE:
+
+	This supporting document is only required to be created once per trial. If it was already created and uploaded, there is no need to duplicate it.
+
+The supporting document should be named as study_phase_supp_</Vxxxxxxx>.csv and will contain the following columns and associated content:
+
+One row for each Treatment Phase
+
+1. Phase Order: required, the order on which phases will appear on protocol
+2. Treatment Phase: name of each study phase (Intial Treatment Phase, Neodjuvant Phase, Second Course Phase)
+3. First Visitmnemonic of Treatment Phase: required, the first visit on which treatment is expected to be administered on each phase.
+
+e.g.
+
+Phase Order,Treatment Phase,First Visitmnemonic of Treatment Phase
+1, Initial Treatment Phase, Cycle 1
+2, Second Course Phase, Cycle 1 Course 2
+3, Crossover Phase, Crossover Cycle 1
+
+The actual information provided by the optional supporting doc can be outputted by selecting Y in the parameter "Study Phase Page".
+
+The report logic should be checked within the same treatment phase defined in the supporting document.
+
+For example, if user provides two Treatment Phases in supporting document like below:
+
+Phase Order, Treatment phase, First Visitmnemonic of Treatment Phase
+1,Initial Treatment Phase,Cycle 1
+2,Second Course Phase,Second Course Cycle 1
+
+The treatment phase will be identified as following:
+
+Initial Treatment Phase: Cycle 1 <= Date < Second Course Cycle 1
+Second Course Phase: Second Course Cycle 1 <= Date
+
+Date includes: "ONSET DATE" in eCRF from "Group 2", "DATE OF ASSESSMENT" in eCRF from "Group 3"
+
+The forms DS01 and DS02 will be considered as part of the last treatment phase initiated for a subject, for example, if the trial has 2 treatment phases and for subject 1 the last treatment phase initiated was phase 1 then the DS01/DS02 will be considered as part of phase 1, if for subject 2 the last treatment phase initiated was phase 2 then the DS01/DS02 will be considered as part of phase 2.
+
+4-	AE001_AGG_supp_doc explanation:
+
+This supporting document contains the information that is used for programming to allow the report to have the flexibility enough to get updated at any time with a simple update in the supp doc instead of resubmitting a new spec
+
+The report builder will link the spec with the supp doc using the “STANDARDIZED ITEMQUESTION”
+
+Layout Notes:
+
+1-	Column 5 will display the Formmnemonic using the eCRF from "Group 5"
+2-	Column 7 will display the result of the following operation:
+
+Number of Forms as Discontinued due to AE per site for the corresponding treatment phase/Number of Randomized Subjects per Site and for the corresponding treatment phase
+
+e.g. 1
+
+Number of Forms as Discontinued due to AE per site for the initial treatment phase = 8/Number of Randomized Subjects per Site and for the initial treatment phase = 10
+
+Result = 0.80
+
+e.g. 2
+
+Number of Forms as Discontinued due to AE per site for the crossover phase = 3/Number of Randomized Subjects per Site and for the crossover phase = 5
+
+Result: 0.60
+
+3-	Column 8 will display the treatment phase name as specified in the column 2 of the study_phase_supp_</VXXXXXXX>.csv
+
+Report Scenarios:
+As per the defined logic and test data
+
+Sorting:
+Country, Site
+
+Parameter Selection:
+Country, First Site, Last Site, First Subject, Last Subject, List of Subjects, Study Phase Page (Y/N, default as N)
+
+Form.Item Names:
+1. Subject Assignment.Site Country
+
+2. Subject Assignment.Site Mnemonic
+
+3. As specified in the logic section
+
+4. As specified in the logic section
+
+5. As specified in Note 1 in the Layout Notes
+
+6. As specified in the logic section
+
+7. As specified in Note 2 in the Layout Notes
+
+8. As specified in Note 3 in the Layout Notes

@@ -1,0 +1,45 @@
+SELECT
+  base.Country AS `Country`,
+  base.Site AS `Site`,
+  base.SubjectNumber AS `Subject Number`,
+  base.SeqNum AS `Seq#`,
+  base.MHTerm AS `Medical History Term`,
+  base.PTTerm AS `PT term`,
+  base.PrimaryDiagnosis AS `Primary Diagnosis`
+FROM
+(
+  SELECT
+    `@HDR`.`Site`.`Country` AS Country,
+    `@HDR`.`Site`.`Number` AS Site,
+    `@HDR`.`Subject`.`Name` AS SubjectNumber,
+    MHFM.MHSPIDSEQIT AS SeqNum,
+    MHFM.MHTERMIT AS MHTerm,
+    CODEDTERM(MHFM.MHTERMIT, 'PT') AS PTTerm,
+    ODBHFFM.ODBHFRSORRESBRIT AS PrimaryDiagnosis
+  FROM `EDC`.`MHFM` MHFM
+  LEFT JOIN `EDC`.`ODBHFFM` ODBHFFM
+    ON `@HDR`.`Subject`.`ID` = `@HDR`.`Subject`.`ID`
+    AND ODBHFFM.`@Form`.`Status` = 'submitted__v'
+    AND (ODBHFFM.DELETEDFM = 'N' OR ODBHFFM.DELETEDFM IS NULL)
+  WHERE MHFM.`@Form`.`Status` = 'submitted__v'
+    AND (MHFM.DELETEDFM = 'N' OR MHFM.DELETEDFM IS NULL)
+    AND NOT EXISTS (
+      SELECT 1 FROM `EDC`.`DOVFM` dov
+      WHERE `@HDR`.`Subject`.`ID` = `@HDR`.`Subject`.`ID`
+        AND dov.`@Form`.`Status` = 'submitted__v'
+        AND dov.DOVSERRORVIT = true
+        AND dov.`@HDR`.`Event`.`Name` = MHFM.`@HDR`.`Event`.`Name`
+    )
+    AND (
+
+-- Condition = IN: exact PT term match against user-specified list
+      CODEDTERM(MHFM.MHTERMIT, 'PT') IN ('Breast Cancer', 'Colon Cancer', 'Lung Cancer')
+      -- Condition = LIKE: partial/wildcard match against user-specified list
+      OR CODEDTERM(MHFM.MHTERMIT, 'PT') LIKE '%Adrenocortical carcinoma%'
+      OR CODEDTERM(MHFM.MHTERMIT, 'PT') LIKE '%Alveolar rhabdomyosarcoma%'
+    )
+) base
+ORDER BY
+  base.Country,
+  base.Site,
+  base.SubjectNumber

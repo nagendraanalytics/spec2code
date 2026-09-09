@@ -1,0 +1,91 @@
+Report ID: RID416
+
+Report Title:
+Overall Oncologic Response missing
+
+Description:
+This report displays subjects who have the Overall response items missing or have a section partially completed.
+
+Column Heading:
+1.Country
+
+2.Site
+
+3.Subject Number
+
+4.Response form
+
+5.Sequence
+
+6.Date Response Determined
+
+Logic:
+Scenario 1:
+
+Logic 1: Date Response Determined is completed AND Both Overal Response items are blank
+
+Note 1: for ORPI form items are: "Overall Response (PCWG-Modified RECIST)" and "Overall Response (PCWG-Modified irRECIST)". for RRIR items are: "Overall RECIST Response" and "Overall IRRECIST Response".
+
+Scenario 2:
+
+Logic 2: Overal Response item is completed but at least one of the items in the corresponding section is blank.
+
+Note 2: for ORPI form when "Overall Response (PCWG-Modified RECIST)" is completed then items "Non-Target Lesion Response", "Target Lesion Response", "Are There At Least 2 New Bone Lesions On The Bone Scan That Were Not
+
+Present At Baseline/Re-Baseline?", "Bone Lesion Response", "New Lesions Since Last Evaluation" should be completed.
+
+Note 3: for ORPI form when "Overall Response (PCWG-Modified irRECIST)" is completed then items "Non-Target Lesion irRECIST Response", "Target Lesion irRECIST Response", "Bone Lesion Response", "New irRECIST Lesions Since Last Evaluation", "Status of Prior irRECIST New Lesions Identified Since Baseline"  should be completed.
+
+Note 4: For RRIR form when "Overall RECIST Response" is completed then items "Non-Target Lesion RECIST Response", "Target Lesion RECIST Response", "New RECIST Lesions Since Last Evaluation", should be completed.
+
+Note 5: For RRIR form when "Overall IRRECIST Response" is completed then items "Non-Target Lesion (Identified At Baseline)
+
+irRECIST Response", "Target Lesion (Identified at Baseline) irRECIST Response", "New irRECIST Lesions Since Last Evaluation", "Status of Prior irRECIST New Lesions Identified Since Baseline" should be completed.
+
+Report Scenarios:
+Scenario 1: Output YES --- EC
+
+in forms ORPI, RRIR Both Overall RECIST and IRRECIST response are blank.
+
+Scenario 2: Output YES
+
+in forms  ORPI, RRIR Overall RECIST response is completed AND at least one of the items in the corresponding section is blank
+
+OR
+
+in forms ORPI, RRIR Overal IRRECIST response is completed AND at least one of the items in the corresponding section is blank
+
+Scenario 3: Output Yes
+
+Both Overall RECIST and IRRECIST response are completed
+
+Scenario 4: Output No
+
+only one between Overall RECIST and IRRECIST response are completed and corresponding section is completed.
+
+Scenario 5: Output No
+
+All items in the RECIST section are completed
+
+Scenario 6: Output No
+
+All items in the IRECIST/IRRECIST section are completed
+
+Sorting:
+Country, Site Number, Subject Number
+
+Parameter Selection:
+Randomized only, Country, Site Number, Subject Number, List of Subjects, Reponse Form
+
+Form.Item Names:
+1. SA.Country
+
+2. SA.Site Mnemonic
+
+3. SA.Subject Number
+
+4. ORPI/RRIR
+
+5. ORPI/RRIR. Sponsor ID Number
+
+6. ORPI/RRIR. Date Response Determined

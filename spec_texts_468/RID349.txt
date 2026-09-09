@@ -1,0 +1,109 @@
+Report ID: RID349
+
+Report Title:
+Image assessment reported after a New Antineoplastic Therapy
+
+Description:
+This report will display all subject's image assessments reported in the lesion evaluation eCRF after the first date of a New Antineoplastic Therapy reported in the oncologic drugs and biologics for follow-up eCRF.
+
+Column Heading:
+1. Country
+
+2. Site
+
+3. Subject Number
+
+4. Lesion Evaluation eCRF
+
+5. Associated Sponsor ID Number
+
+6. Date of Lesion Evaluation
+
+7. ODB Follow-up eCRF/ORAD2/OS Follow-up eCRF
+
+8. Sponsor ID Number
+
+9. Start Date of Regimen
+
+Logic:
+Scenario1:
+
+Logic1: Evaluation form Date > Oncologic Follow-up forms Date
+
+OR
+
+Scenario2:
+
+Logic2: Evaluation form Date > ORAD2.Start date
+
+AND
+
+Logic3: ORAD2.Reason for Radiation <> Palliative Treatment or Symptom Control / Palliative Treatment or Symptom Control of Metastatic Disease
+
+AND
+
+Logic4: ORAD2.Treatment Category <> Palliative
+
+Note:
+
+1. Deleted records and erroneous visits should not be taken into account.
+
+2. Evaluation form Date means:
+
+LSN.DATE OF LESION EVALUATION from LSN_Supp Global supp doc if the form present in the parameter is present in the LSN global supp doc.
+
+For ORAJ - Date of Assessment (Scan Image Physical Exam)
+
+For OSCN - Scan Date
+
+For SCAN - Start Date/Time of Procedure
+
+3. Oncologic Follow-up forms Date means: MIN Imputed Start Date of Regimen/ MIN Imputed Start Date of Medication (MIN is calculated by subject), using Imputed Start Date of Regimen if both exist. These items are retrieved from ODBF_supp global supp doc.
+
+4.For those forms not present in ODBF global supp doc but in OSOF global supp doc (Such as OSOFL and OSOF) should be consider ALL available “Date” options for the form (ADMISSION DATE, DATE OF ASSESSMENT, DATE OF SURGERY, DISCHARGE DATE from OSOF_supp global supp doc), using MIN of these four dates to execute the logic (MIN is calculated by Subject)
+
+5. Logic only consider Lesion form entered in parameter " Evaluation form" and ODB_FORM entered in parameter " Oncologic Follow-up forms"
+
+6. ORAD2.Start Date:  Calculate min Start Date by subject
+
+7. Do not exclude records if ORAD2.Reason for Radiation or ORAD2.Treatment Category is blank
+
+8. Consider Date only
+
+Report Scenarios:
+A – Yes Evaluation form Date is after Oncologic Follow-up forms Date
+
+B – No Evaluation form Date is before Oncologic Follow-up forms Date
+
+Sorting:
+1. Country
+
+2. Site
+
+3. Subject Number
+
+4. Lesion Evaluation eCRF
+
+5. Associated Sponsor ID Number
+
+Parameter Selection:
+Country, First Site, Last Site, First Subject, Last Subject, List of Subjects, Evaluation form (Text box, Required, if multiple options entered should be separated by comma), Oncologic Follow-up forms (Text box, Required, if multiple options entered should be separated by comma)
+
+Form.Item Names:
+1. SA. Country
+
+2. SA. Site
+
+3. SA. Subject Number
+
+4. Evaluation form from parameters
+
+5. LSN.Associated Sponsor ID Number from LSN global supp doc
+
+6. Lesion Evaluation eCRF.Date of Lesion Evaluation from LSN global supp doc/ ORAJ - Date of Assessment (Scan Image Physical Exam)/ OSCN - Scan Date/ SCAN - Start Date/Time of Procedure
+
+7. Oncologic Drugs and Biologics - Follow-up eCRF OR Oncologic Radiation eCRF OR Oncology Surgery Follow-up eCRF.
+
+8. Oncologic Drugs and Biologics - Follow-up eCRF.ASSOCIATED SPONSOR ID NUMBER from ODBF global supp doc  OR Oncologic Radiation. Sponsor ID Number eCRF OR OSOF.SPONSOR ID NUMBER
+
+9. Oncologic Drugs and Biologics - Follow-up eCRF.Imputed Start Date of regimen OR Imputed Start Date of Medication  OR Oncologic Radiation eCRF (ORAD2.Start date) OR OSOF.DATE ITEM based on Note 4.

@@ -1,0 +1,105 @@
+------------------------------------------------------------------------- 
+Report ID: ABC011_JR 
+------------------------------------------------------------------------- 
+SR #: 
+------------------------------------------------------------------------- 
+Merge SR #: 
+------------------------------------------------------------------------- 
+Report Version: 6.0 
+------------------------------------------------------------------------- 
+Spec Version: 6.0 
+------------------------------------------------------------------------- 
+Version Reason: New/Revise Existing Spec Ingredients 
+------------------------------------------------------------------------- 
+INC Number: 
+------------------------------------------------------------------------- 
+Request Identification: New / Major 
+------------------------------------------------------------------------- 
+Priority: 
+------------------------------------------------------------------------- 
+Report Category: DVR 
+------------------------------------------------------------------------- 
+Platform: 
+------------------------------------------------------------------------- 
+Blinded: N 
+------------------------------------------------------------------------- 
+Report Type: Core 
+------------------------------------------------------------------------- 
+Therapy Area: NA 
+------------------------------------------------------------------------- 
+Standard / MK #: Standard 
+------------------------------------------------------------------------- 
+Development Stage: 
+------------------------------------------------------------------------- 
+Supporting Doc: N 
+------------------------------------------------------------------------- 
+Reference Report ID: 
+------------------------------------------------------------------------- 
+Report Title: Subjects With More Than One AE With Action of Drug Withdrawn 
+------------------------------------------------------------------------- 
+Report Description: This report identifies subjects with more than one AE with action of Drug Withdrawn 
+------------------------------------------------------------------------- 
+Column Heading: 1. Country 
+2. Site 
+3. Subject Number
+4. AE Seq
+5. AE Term
+6. Drug Withdrawn Study Medication 
+------------------------------------------------------------------------- 
+Form.Item Names: 1. RM_AE.SITECOUNTRY/RM_VAE.SITECOUNTRY
+2. RM_AE.SITEMNEMONIC/RM_VAE.SITEMNEMONIC
+3. RM_AE.MERCKNUM/RM_VAE.MERCKNUM
+4. RM_AE.AESPID/RM_VAE.AESPID
+5. RM_AE.AETERM/RM_VAE.AETERM
+6. Derive Study Medication used in study 
+------------------------------------------------------------------------- 
+Sorting: Country, Site, Subject Number, AE/VAE Seq 
+------------------------------------------------------------------------- 
+Parameter Selection: Randomized Only 
+------------------------------------------------------------------------- 
+Report Scenarios: Scenario 1 Output=Y
+
+There are more than one records with Action Taken With Study Medication = Drug Withdrawn on AE/VAE form, within check each Study Medication.
+
+Scenario 2 Output=N
+
+There is only one record with Action Taken With Study Medication = Drug Withdrawn on AE/VAE form, within check each Study Medication.
+
+Scenario 3 Output=N
+
+There is one record with Action Taken With Study Medication1 =Drug Withdrawn and one record with Action Taken With Study Medication2 =Drug Withdrawn on AE/VAE form, within check each Study Medication. 
+------------------------------------------------------------------------- 
+Logic: This report will output subjects who have more than one records of "Drug Withdrawn" for Action Taken With Study Medication on the AE/VAE Form.
+
+Note:
+
+1. SAS Names for Action Taken With Study Medication = ACN1 and/or ACN2 and/or ACN3 and/or ACN4 and/or ACN5 and/or ACN6 and/or ACN7 and/or ACN8 and/or ACN9 and/or ACN10 and/or AEACNBLD
+2. Report should not display deleted records.
+3. If "Randomized only" parameter selection checkbox is checked, the report should only output subjects with Randomization number that is not null. 
+4. Report should not consider add entry section when checking for duplications. 
+5. For blinded studies, SAS Names for blinded Study Medication = SMB and SAS Names for Action Taken = AEACNBLD
+6. Please only check the blinded study medication related item in AE/VAE form when it exists in the trial.
+7. VAE form exists report should run for VAE, otherwise report will run for AE.
+8. Use SMn column if the data is captured there, if not use SMnH column. 
+------------------------------------------------------------------------- 
+Spec Note: 
+------------------------------------------------------------------------- 
+Required: Y 
+------------------------------------------------------------------------- 
+eCRFs Related: VAE / AE 
+------------------------------------------------------------------------- 
+Interpretation Guidelines: Output is produced if a subject has more than one AE with action of Drug Withdrawn 
+------------------------------------------------------------------------- 
+Query Wording Guidance: Multiple AEs have been reported with action taken of "Drug Withdrawn". Please select the primary AE as reason for Discontinuation if possible. 
+------------------------------------------------------------------------- 
+Special Consideration: Trial Specific (if any to follow)
+
+==Trial Specific (if any to follow)== 
+------------------------------------------------------------------------- 
+Responsibility: CDM 
+------------------------------------------------------------------------- 
+Recommended Frequency: Weekly 
+------------------------------------------------------------------------- 
+SOP Reference: 
+------------------------------------------------------------------------- 
+Revision History: 

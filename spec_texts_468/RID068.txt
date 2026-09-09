@@ -1,0 +1,65 @@
+Report ID: RID068
+
+Report Title:
+Inconsistent Encoding of Verbatim Terms
+
+Description:
+This report generates a listing of verbatim terms which were encoded to more than one Preferred Term.
+
+Column Heading:
+1. Country
+
+2. Site
+
+3. Subject Number
+
+4. Form
+
+5. Seq
+
+6. Verbatim Term
+
+7. Encoded Term
+
+Logic:
+The report should display output if verbatim terms from Adverse Events, Medical History, Procedures, Primary Diagnosis, Death Autopsy Results, Death, MHA, SAEI, SAEP, APAE, APMH, APPRC which were encoded to more than one Preferred term.  Comparisons should not be case-sensitive, and report should not compare terms across fields or forms.
+
+Display row count in footer
+
+Report should not display deleted records.
+
+If "Randomized only" parameter selection checkbox  is checked, the report should only output subjects with Randomization number that is not null.
+
+Report Scenarios:
+1) Output=Yes
+
+If verbatim terms from Adverse Events, Medical History, Procedures, Primary Diagnosis, Death Autopsy Results, Death, MHA, SAEI, SAEP, APAE, APMH, APPRC which were encoded to more than one Preferred term.
+
+2) Output=No
+
+If verbatim terms from Adverse Events, Medical History, Procedures, Primary Diagnosis, Death Autopsy Results, Death, MHA, SAEI, SAEP, APAE, APMH, APPRC which were encoded to one Preferred term respectively.
+
+3) Output=No
+
+Deleted record
+
+Sorting:
+Form, Verbatim Term, Encoded Term, Country, Site, Subject Number, Seq
+
+Parameter Selection:
+Form, Country, Site, Subject Number, Verbatim Term, Encoded Term, Randomized Only, List of Subjects
+
+Form.Item Names:
+1. Subject Assignment.Site Country
+
+2. Subject Assignment.Site Mnemonic
+
+3. Subjects.Subject Number
+
+4. Form Mnemonic
+
+5. Form Index
+
+6. ADVERSE EVENTS Form.AE Term/MEDICAL HISTORY Form.Medical History Term/PROCEDURES Form.Procedure Term/PRIMARY DIAGNOSIS Form.Primary and/or Secondary Diagnosis/DEATH AUTOPSY RESULTS Form.Autopsy Determined Cause of Death/DEATH Form.Primary Reported Cause of Death/MHA Form.Medical History Term/Serious Adverse Events - Infant Form.AE Term/Serious Adverse Events - Partner Form.AE Term/Associated Persons Adverse Events Form.AE Term/Associated Persons Medical History Form.Medical History Term/Associated Persons Procedures Form.Procedure Term
+
+7. ADVERSE EVENTS Form.PT/MEDICAL HISTORY Form.PT/PROCEDURES Form.PT/PRIMARY DIAGNOSIS Form.PT/DEATH AUTOPSY RESULTS Form.PT/DEATH Form.PT/MHA Form.PT/Serious Adverse Events - Infant Form.PT/Serious Adverse Events - Partner Form.PT/Associated Persons Adverse Events Form.PT/Associated Persons Medical History Form.PT/Associated Persons Procedures Form.PT

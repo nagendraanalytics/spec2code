@@ -1,0 +1,85 @@
+Report ID: RID325
+
+Report Title:
+Baseline Lesion is Not Measurable  - Hematology
+
+Description:
+This report will list subjects who do not have at least one measurable Lesion at baseline for each treatment phase
+
+Column Heading:
+1. Country
+
+2. Site
+
+3. Subject Number
+
+4. Lesion Evaluation Hematology Form
+
+5. Related First Visit Treatment Phase
+
+Logic:
+Report should output subjects who meet the following criteria
+
+Logic 1:
+
+DOV.Date of the visit (selected on [ First Visit of Treatment Phase] from supporting document) <> NULL and There is not at least one [Lesion evaluation hematology form] entry.
+
+Logic 2:
+
+DOV.[Date of the visit] <> NULL AND [Lesion evaluation hematology Form]  is initialized.
+
+AND in each lesion evaluation form There is NO entry with [Lesion evaluation hematology Form] form [Date of Initial Lesion Identification for This Trial] that is within[ X ]days (selected in "Window of days" from the supporting document) prior the DOV.Date of Assessment of the [First Visit of Treatment Phase]
+
+Note 1:  Erroneous visit or deleted record will not be considered in the programming or output.
+
+Note 2: If supp doc is not provided, display the message as " ONC_LSNHM_001_STD Supporting Document Not Present for This Trial".
+
+Note 3: Columns 5 should be left blank when logic 1 is met
+
+Note 4: [First Visit of Treatment Phase], [Lesion evaluation hematology form], [ X ](window days) are parameters determined in supporting document
+
+Note 5: Please regardless the treatment phase regarding lesion evaluation forms and compare with the baseline visits of each treatment phase with each related Lesion Evaluation eCRF according to the supporting document.
+
+Note 6: Requires supporting document to be named ONC_LSNHM_001_STD_supp_<xxxxxxx>.csv and will contain the following columns and associated content: 1 row for each expected Lesion Evaluation Hematology Form, First Visit of treatment Phase, Window of days
+
+Definition of each column criteria:
+
+1.Group – Row ID
+
+2. Lesion Evaluation Hematology Form – Lesion Evaluation form to use in the logic [LSNHM]
+
+3.First Visit of treatment phase - Visit to use as reference for the DOV.Date of visit used on Logic 1 and 2.
+
+4.Window of days – Number of days to use on Logic 2
+
+e.g.1
+
+Group, Lesion Evaluation Hematology Form, First Visit of treatment phase, Window of days
+
+1, LSNHM, Cycle 1 Day 1, 28
+
+2, LSNHM, Second Course Cycle 1, 30
+
+Report Scenarios:
+SCENARIO 1 [Output = Yes]
+
+A. Subjects who have no record on the Lesion Evaluation Hematology Form AND DOV.Date of the visit selected on First Visit of Treatment Phase from the supporting document has been completed
+
+B. Subjects who have records on the Lesion Evaluation Hematology form.Date of Assessment that is not within X days prior(selected in "Window of days" from the supporting document) from  DOV.Date of the visit selected on First Visit of Treatment Phase (from supporting document)
+
+Sorting:
+Country, Site, Subject Number
+
+Parameter Selection:
+Country, First Site, Last Site, First Subject, Last Subject, List of Subjects, Randomized Only (Y/N set by default to Y)
+
+Form.Item Names:
+1.Subject Assignment.Site Country
+
+2. Subject Assignment form.Site Mnemonic
+
+3. Subjects. Subject Number
+
+4. [Lesion Form (selected on supporting document)]
+
+5.Display the related First Visit of treatment phase from supp document to each inconsistency

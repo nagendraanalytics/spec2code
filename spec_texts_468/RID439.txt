@@ -1,0 +1,325 @@
+Report ID: RID439
+
+Report Title:
+Missing, incorrect or duplicate SPECT tests by visit
+
+Description:
+This report displays missing, incorrect or duplicate SPECT records based on "Scheduled Time", "Testing to be performed" and " Medium or Sample Type" items and protocol requirements.
+
+Column Heading:
+1. Country
+
+2. Site
+
+3. Subject Number
+
+4. Visit
+
+5. Scheduled Time
+
+6. Medium or Sample Type
+
+7. Testing to be performed
+
+8. Group
+
+9. Scenario: Scenario 1/Scenario 2/Scenario 3
+
+Logic:
+Scenario 1:
+
+Logic 1.1: Subject non-initialized on SPECT form (NOTE 5)
+
+OR
+
+Logic 1.2:
+
+Subject meets Criteria
+
+AND
+
+SPECT.Visitmnemonic  = 'Visitmnemonic'  of supp
+
+AND
+
+    (
+
+    SPECT.Scheduled Time = NULL
+
+    OR
+
+    SPECT.Testing = NULL
+
+    OR
+
+    SPECT.Medium or Sample Type = NULL
+
+    )
+
+OR
+
+Logic 1.3:
+
+Subject meets Criteria from supporting document
+
+AND
+
+SPECT.Visitmnemonic  = 'Visitmnemonic'  from supporting document
+
+AND
+
+    (
+
+    supp.Scheduled Time not exists in Spect.Scheduled Time on the same row
+
+    OR
+
+    supp.Medium or Sample Type  not exists in SPECT.Medium or Sample Type on the same row
+
+    OR
+
+    supp.Testing to be Performed not exists in SPECT.Testing to be Performed on the same row
+
+    )
+
+Scenario 2:
+
+Logic 2:
+
+Subject meets Criteria
+
+AND
+
+SPECT.Visitmnemonic  = 'Visitmnemonic'  of supp
+
+AND
+
+There is duplicate records that meet below logic
+
+(
+
+SPECT.Scheduled Time = 'Scheduled Time' of supp on the same row
+
+AND
+
+SPECT.Testing  = 'Testing' of supp on the same row
+
+AND
+
+SPECT.Medium or Sample Type = 'Medium or Sample Type' of supp on the same row
+
+)
+
+Scenario 3:
+
+Logic 3.1:
+
+Subject meets Criteria
+
+AND
+
+SPECT.Visitmnemonic  = 'Visitmnemonic'  of supp
+
+AND
+
+(
+
+SPECT.Scheduled Time <> NULL and SPECT.Scheduled Time <> 'Scheduled Time' of supp on the same row
+
+OR
+
+SPECT.Testing <> NULL and SPECT.Testing  <> 'Testing' of supp on the same row
+
+OR
+
+SPECT.Medium or Sample Type <> NULL and SPECT.Medium or Sample Type <> 'Medium or Sample Type' of supp on the same row
+
+)
+
+Logic 3.2:
+
+Subject didn't meet Criteria
+
+and there is a scheduled time not equal "Unscheduled" on SPECT.Visitmnemonic='Visitmnemonic' of supp
+
+Logic 3.3:
+
+For all subjects
+
+There is a scheduled time not equal "Unscheduled" on SPECT.Visitmnemonic not equal 'Visitmnemonic' of supp
+
+Note 1: If supporting doc is not provided, display the message as "ONC_SPECT _001_JR_STD Supporting Document Not Present for This Trial".
+
+Note 2: Please exclude deleted records and erroneous visits from programming.
+
+Note 3: Only display outputs when DOV of respective visit was initialized by providing Date of Visit.
+
+Note 4: Please exclude Scheduled Time “Unscheduled” from Logic 3 programming.
+
+Note 5: If parameter “Output for non-initialized SPECT form” is selected as Y then display output for Logic 1 for visits with non-initialized and initialized SPECT form, if parameter is selected as N then display output for Logic 1 only if SPECT form was initialized on the visit.
+
+Note 6: ‘Group’ will only be considered in scenario 1, not for scenario 2 and 3
+
+Note 7: For scenario 1, if two records are in the same group, one record match logic and one record does not, then output is not expected.
+
+Note 8: Scenario 1 only check the values supp doc defined
+
+Requires supporting document to be named ONC_SPECT_001_supp_<xxxxxxx>.csv and will contain the following columns and associated content:
+
+1 row for each group of SPECT records based on Criteria, Visit Mnemonic, Scheduled Time and Medium or Sample Type and Testing to be performed items that are required per protocol.
+
+If two or more tests could be done interchangeably, i.e. completing only one of them is enough, then all those rows need to have the same Group number.
+
+If there is a special character in item question, then quotes need to be used.
+
+Definition of Criteria: value specified in 4th column entered in item specified in 3rd column on form specified in 2nd column. For NA in all three mentioned columns please ignore Criteria condition and display output for all subjects.
+
+1) Group (Required, For scenario 1, if two records are in the same group, one record match logic and one record does not, then output is not expected.  )
+
+2) Criteria Form (Required, Please input NA if not criteria form)
+
+3) Criteria Itemquestion (Required, Please input NA if not criteria Itemquestion)
+
+4) Criteria Value (Required, Please input NA if not criteria Value)
+
+5) Visitmnemonic (Required)
+
+6) Scheduled Time (Required)
+
+7) Medium or Sample Type (Required)
+
+8) Testing to be Performed (Required)
+
+Group Criteria Form Criteria Itemquestion Criteria Value Visitmnemonic Scheduled Time Medium or Sample Type Testing to be Performed
+
+1 SR Stratification Interval Debulking+Bevacizumab use: YES+PDL1 status:CPS less than 10 Cycle 1 Scheduled Blood Biomarker Analysis
+
+1 SR Stratification Interval Debulking+Bevacizumab use: YES+PDL1 status:CPS less than 10 Cycle 1 Scheduled Blood RNA Analysis
+
+2 SR Stratification R0 Primary Debulking+Bevacizumab use: YES+PDL1 status:CPS less than 10 Cycle 1 Predose Plasma ctDNA Analysis
+
+3 NA NA NA Cycle 1 1 hour postdose Serum Genetic Analysis
+
+4 SR Stratification R0 Primary Debulking+Bevacizumab use: YES+PDL1 status:CPS less than 10 Cycle 2 Scheduled Plasma ctDNA Analysis
+
+5 NA NA NA Cycle 3 2 hours postdose Serum Genetic Analysis
+
+6 TRIGA ‘Based on the criteria specified above, select the appropriate response for this subject’ -3475 Cycle 4 Predose Serum Genetic Analysis
+
+The number of rows in the supporting document will be represented in the Report Header as "# of rows for customization".
+
+The actual information provided by the supporting doc can be outputted by selecting Y in the parameter "Supporting doc Page".
+
+Report Scenarios:
+SCENARIO A Output = Yes
+
+“Medium or Sample Type” AND “Testing to be Performed” AND “Scheduled Time” are missing within the same row on SPECT form for Visit Mnemonic for subjects who meet Criteria.
+
+AND
+
+[Subjects who meet Criteria and who have records in SPECT form, where “Medium or Sample Type” and “Testing to be performed” and “Scheduled Time” is = Null for Visit Mnemonic.
+
+OR
+
+Subjects who meet Criteria and who have records in SPECT form, where “Medium or Sample Type” <> Null and “Testing to be performed” and “Scheduled Time” is = Null for Visit Mnemonic.
+
+OR
+
+Subjects who meet Criteria and who have records in SPECT form, where “Medium or Sample Type” and “Scheduled Time”  <> Null and “Testing to be performed” is = Null for Visit Mnemonic.
+
+OR
+
+Subjects who meet Criteria and who have records in SPECT form, where “Medium or Sample Type” and “Testing to be performed” <> Null and “Scheduled Time”  is = Null for Visit Mnemonic.
+
+OR
+
+Subjects who meet Criteria and who have records in SPECT form, where “Medium or Sample Type” and “Testing to be performed” is = Null and “Scheduled Time” <> Null for Visit Mnemonic.
+
+OR
+
+Subjects who meet Criteria and who have records in SPECT form, where “Medium or Sample Type” and “Scheduled Time” is = Null and “Testing to be performed” <> Null for Visit Mnemonic.
+
+OR
+
+Subjects who meet Criteria and who have records in SPECT form, where “Medium or Sample Type” = Null and “Testing to be performed” and “Scheduled Time”  is <> Null for Visit Mnemonic.]
+
+OR
+
+Subjects who meet Criteria and do not have any records in SPECT form for Visit Mnemonic.]
+
+OR
+
+Subjects who meet Criteria and SPECT form is not initialized for Visit Mnemonic.]
+
+SCENARIO B Output = Yes
+
+There is more than one row with same “Scheduled Time” AND “Medium or Sample Type” AND “Testing to be Performed” for Visit Mnemonic for subjects who meet Criteria.
+
+SCENARIO C Output = Yes
+
+“Scheduled Time” AND “Medium or Sample Type” AND “Testing to be Performed” is incorrect for Visit Mnemonic and is not expected in Criteria.
+
+AND
+
+[Subjects who meet Criteria and who have records in SPECT form, where “Medium or Sample Type” and “Testing to be performed” and “Scheduled Time” is incorrect for Visit Mnemonic.
+
+OR
+
+Subjects who meet Criteria and who have records in SPECT form, where “Medium or Sample Type” is incorrect and “Testing to be performed” and “Scheduled Time” are correct for Visit Mnemonic.
+
+OR
+
+Subjects who meet Criteria and who have records in SPECT form, where “Medium or Sample Type” and “Testing to be performed” are correct and “Scheduled Time” is incorrect for Visit Mnemonic.
+
+OR
+
+Subjects who meet Criteria and who have records in SPECT form, where “Medium or Sample Type” and “Scheduled Time” are correct and “Testing to be performed” is incorrect for Visit Mnemonic.
+
+OR
+
+Subjects who meet Criteria and who have records in SPECT form, where “Medium or Sample Type” and “Testing to be performed” are incorrect and “Scheduled Time” is correct for Visit Mnemonic.
+
+OR
+
+Subjects who meet Criteria and who have records in SPECT form, where “Medium or Sample Type” and “Scheduled Time” are incorrect and “Testing to be performed” is correct for Visit Mnemonic.
+
+OR
+
+Subjects who meet Criteria and who have records in SPECT form, where “Medium or Sample Type” is correct and “Scheduled Time” and “Testing to be performed” are incorrect for Visit Mnemonic.]
+
+SCENARIO D Output = No
+
+Medium or Sample Type AND Testing to be Performed AND Scheduled Time are provided within the same row on SPECT form for the required Visit Mnemonic for subjects who meet Criteria.
+
+SCENARIO E Output = No
+
+There is not more than one row with same Scheduled Time AND Medium or Sample Type AND Testing to be Performed for Visit Mnemonic for subjects who meet Criteria
+
+SCENARIO F Output = No
+
+Medium or Sample Type AND Testing to be Performed AND Scheduled Time are correct within the same row on SPECT form for the required Visit Mnemonic for subjects who meet Criteria.
+
+Sorting:
+Country, Site, Subject Number, Visit
+
+Parameter Selection:
+Country, First Site, Last Site, First Subject, Last Subject, List of Subjects, Supporting Doc Page (N/Y, Default as N), Output for non-initialized SPECT form (N/Y, Default as Y)
+
+Form.Item Names:
+1. Subject Assignment.Site Country
+
+2. Subject Assignment form.Site Mnemonic
+
+3. Subjects.Subject Number
+
+4. Visits.Visitmnemonic from supporting document
+
+5. For logic 1 please display the value in Scheduled Time from supporting document. Please display values from Spect form for other logics.
+
+6. For logic 1  please display the value in Medium or Sample Type from supporting document. Please display values from Spect form for other logics.
+
+7. For logic 1  please display the value in Testing to be performed from supporting document. Please display values from Spect form for other logics.
+
+8. Please display 'Group' from supporting document and seperate them by comma, i.e. 2,3,4,5,6
+
+9. Display ‘Scenario 1’ for Logic 1, ‘Scenario 2’ for Logic 2, ‘Scenario 3’ for Logic 3

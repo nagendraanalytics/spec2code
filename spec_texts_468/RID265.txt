@@ -1,0 +1,227 @@
+Report ID: RID265
+
+Report Title:
+Missing or Mismatched Data between Inform and Vendor for Oncology specific form
+
+Description:
+This report displays the following patient scenarios between invoice forms and external data:
+
+1. Inform invoice record is present at particular visit, but there are no corresponding external vendor data records
+
+2. External vendor record is present for a particular visit but there are no corresponding Invoice data records.
+
+3. Data from both Inform & external vendor is present for the same visit but with different dates.
+
+Column Heading:
+1. Country
+
+2. Site
+
+3. Screening Number
+
+4. Subject Number
+
+5. Inform Visit Mnemonic
+
+6. Inform Form Mnemonic
+
+7. Inform Date
+
+8. Inform Specimen Collection Status
+
+9. Vendor eCRF
+
+10. Vendor Name
+
+11. Vendor Visit
+
+12. Vendor Collection Date/Time
+
+13. Vendor Sample ID
+
+14. Vendor Sample Requisition Number
+
+15. Issue
+
+Logic:
+Scenario 1: No External Data – if “Inform Visit” in supporting doc <> NA
+
+Logic 1.1: ""Inform eCRF"".Visitmnemonic=""Inform Visit""
+
+and
+
+Logic 1.2: ""Inform eCRF"".""Inform Date Item"" is not null
+
+and
+
+There is no corresponding external record meet below criteria:
+
+Logic 1.3: ""External Form"".Visit ID or Number = ""External Visit""
+
+and
+
+Logic 1.4: ""External Form"".Vendor = ""External Vendor""
+
+and
+
+Logic 1.5: ""External Form"".""External Date Item"" is not null
+
+Scenario 1: No External Data – if “Inform Visit” in supporting doc = NA
+
+Logic 1.6: ""Inform eCRF"".""Inform Date Item"" is not null
+
+and
+
+Logic 1.7: ""External Form"".Vendor = ""External Vendor""
+
+and
+
+There is no corresponding external record meet below criteria:
+
+Logic 1.8: ""External Form"".""External Date Item"" = ""Inform eCRF"".""Inform Date Item""
+
+Scenario 2: No Inform Data – if “External Visit” in supporting doc <> NA
+
+Logic 2.1: ""External Form"".Visit ID or Number = ""External Visit""
+
+and
+
+Logic 2.2: ""External Form"".Vendor = ""External Vendor""
+
+and
+
+Logic 2.3: ""External Form"".""External Date Item"" is not null
+
+and
+
+There is no corresponding external record meet below criteria:
+
+Logic 2.4: ""Inform eCRF"".Visitmnemonic=""Inform Visit""
+
+and
+
+Logic 2.5: ""Inform eCRF"".""Inform Date Item"" is not null
+
+Scenario 2: No Inform Data – if “External Visit” in supporting doc = NA
+
+Logic 2.6: ""External Form"".Vendor = ""External Vendor""
+
+and
+
+Logic 2.7: ""External Form"".""External Date Item"" is not null
+
+and
+
+There is no corresponding external record meet below criteria:
+
+Logic 2.8: ""External Form"".""External Date Item"" = ""Inform eCRF"".""Inform Date Item""
+
+Scenario 3: Date Mismatch
+
+Logic 3.1: ""External Form"".Visit ID or Number = ""External Visit""
+
+and
+
+Logic 3.2: ""External Form"".Vendor = ""External Vendor""
+
+and
+
+Logic 3.3: ""External Form"".""External Date Item"" is not null
+
+and
+
+Logic 3.4: ""Inform eCRF"".Visitmnemonic=""Inform Visit""
+
+and
+
+Logic 3.5: ""Inform eCRF"".""Inform Date Item"" is not null
+
+and
+
+Logic 3.6: ""External Form"".""External Date Item"" <> ""Inform eCRF"".""Inform Date Item""
+
+Note:
+
+Note 1: Programming excludes deleted records and erroneous visits.
+
+Note 2: ""Inform eCRF"", ""Inform Date Item"", ""Inform Visit"", ""External Form"", ""External Visit"", ""External Vendor"", ""External Date Item"" are values from supporting document.
+
+Note 3: If Inform Visit in supporting document is entered as NA, then ignore Logic 1.1/Logic 1.3/Logic 2.1/Logic 2.4.
+
+Note 4: If Inform Visit in supporting document is entered as NA, then the report will output when there is no at least one matching record between Inform Date Item and External Date Item for Logic 1/Logic 2.
+
+Note 5: Exclude external record if value in Blinding Flag is ""B"".
+
+Note 6: Only compare date for report logic.
+
+Note 7: Ignore UNK Date and Time for TSIF.
+
+Note 8: For Scenario 3: do not produce output if at least one ""External Form"".""External Date Item"" matches with ""Inform eCRF"".""Inform Date Item"" in the same visit. Execute only when parameter Ergodic comparison = “NO”.
+
+Note 9: When ""Ergodic comparison = NO"", Note 8 will be executed; when ""Ergodic comparison = YES,"" Note 8 will be ignored, and comparisons will be conducted one by one.
+
+Report Scenarios:
+A- Output: Yes
+
+There is an eCRF record from supporting document with Item Name <> NULL there is not at least one matching record between eCRF.Item Name and External Form.External Item.
+
+B- Output: No
+
+There is an eCRF record from supporting document with Item Name = NULL there is a matching record between eCRF.Item Name and External Form.External Item.
+
+C- Output: Yes
+
+There is an External Form record from supporting document with External Item <> NULL AND there is a matching record between External Form.External Item and eCRF.Item Name.
+
+D- Output: Yes
+
+There is an External Form record from supporting document with External Item = NULL AND there is no at least one matching record between External Form.External Item and eCRF.Item Name.
+
+E- Output: Yes
+
+There is an eCRF record from supporting document with Item Name <> NULL there is a matching record between eCRF.Item Name and External Form.External Item with a different date.
+
+F- Output: No
+
+There is an eCRF record from supporting document with Item Name = NULL there is a matching record between eCRF.Item Name and External Form.External Item with a different date.
+
+G- No
+
+Erroneous Visit and deleted data.
+
+Sorting:
+Country, Site, Subject Number, Date and Time Specimen Obtained/Date of Assessment/Date Specimen Obtained/Specimen Obtained Imputed Date/Date Sample Taken/Date of Tissue Biopsy/Resection/Date of Tissue Biopsy/Resection Imputed Date (TSIF) or Date of Assessment (UCTO) or Cystoscopy Date (CTO)
+
+Parameter Selection:
+Country, First Site, Last Site, First Subject, Last Subject, List of Subjects, Randomized Only (N/Y, Default as N), Supporting Doc Page (N/Y, Default as N), Vendor Name (Textbox, seperated by comma), Ergodic comparison Page (N/Y, Default as N)
+
+Form.Item Names:
+1. Subject Assignment.Site Country
+
+2. Subject Assignment.Site Mnemonic
+
+3. Subject Assignment.Screening Number
+
+4. Subjects.Subject Number
+
+5. TSIF.Visit Mnemonic or UCTO.Visit Mnemonic or CTO.Visit Mnemonic (leave blank if “Inform Visit” in supporting doc = NA)
+
+6.TSIF.Form Mnemonic or UCTO.Form Mnemonic or CTO.Form Mnemonic
+
+7. TSIF.Date and Time Specimen Obtained/Date of Assessment/Date Specimen Obtained/Specimen Obtained Imputed Date/Date Sample Taken/Date of Tissue Biopsy/Resection/Date of Tissue Biopsy/Resection Imputed Date or UCTO.Date of Assessment or CTO.Cystoscopy Date (please use the item name listed in a column 5 of the supporting document)
+
+8. TSIF.Specimen Collection Status
+
+9. LABS.Form Mnemonic or GEFCF.Form Mnemonic
+
+10. LABS.Transmission Source ID or GEFCF.Vendor Name
+
+11. LABS.Visit ID or Number or GEFCF.Visit Number
+
+12. LABS.Actual Collection Date and Time or GEFCF.Date/Time of Measurement
+
+13. LABS.Specimen ID or GEFCF.Kit ID
+
+14. LABS.Accession ID or Number or GEFCF.Specimen ID or GEFCF.Reference ID
+
+15. Hardcoded as specified No External data/No InForm data/Date mismatch

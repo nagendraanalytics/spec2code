@@ -1,0 +1,191 @@
+Report ID: RID267
+
+Report Title:
+Missing or Mismatched Data between Inform and Vendor for Oncology specific form
+
+Description:
+This report displays the following patient scenarios between invoice forms and external data:
+
+1. Inform invoice record is present, but there are no corresponding external vendor data records
+
+2. External vendor record is present but there are no corresponding Invoice data records.
+
+Column Heading:
+1. Country
+
+2. Site
+
+3. Screening Number
+
+4. Subject Number
+
+5. SSC Seq Number
+
+6. SSC Collection Date/Time
+
+7. SSC Sample Description
+
+8. SSC Collection Status
+
+9. Vendor
+
+10. Vendor Collection Date/Time
+
+11. Vendor Lab Test Name
+
+12. Vendor Specimen Material Name
+
+13. Vendor Battery ID
+
+14. Requisition Number
+
+15. Error Message
+
+Logic:
+Scenario 1
+
+Logic 1.1: SSC.Date/Time Specimen Obtained <> NULL
+
+AND
+
+Logic 1.2: SSC.Specimen Collection Status <> ‘Not Obtained’
+
+AND
+
+Logic 1.3: SSC.Sample Description = Inform Sample Description in Supporting Document
+
+AND
+
+Logic 1.4: There is no corresponding LABS record with:
+
+LABS.Actual Collection Date and Time = SSC.Date/Time Specimen Obtained
+
+AND
+
+LABS.Lab Test Name = External Lab Test Name in Supporting Document
+
+AND
+
+LABS.Specimen Material Name = External Specimen Type in Supporting Document
+
+AND
+
+LABS.Battery ID = External Battery ID in Supporting Document
+
+Scenario 2:
+
+Logic 2.1: LABS.Actual Collection Date and Time <> NULL
+
+AND
+
+Logic 2.2: LABS.Lab Test Name = External Lab Test Name in Supporting Document
+
+AND
+
+Logic 2.3: LABS.Specimen Material Name = External Specimen Type in Supporting Document
+
+AND
+
+Logic 2.4: LABS.Battery ID = External Battery ID in Supporting Document
+
+AND
+
+Logic 2.5: There is no corresponding SSC record with:
+
+SSC.Date/Time Specimen Obtained = LABS.Actual Collection Date and Time
+
+AND
+
+SSC.Sample Description = Inform Sample Description in Supporting Document
+
+AND
+
+SSC.Specimen Collection Status <> ‘Not Obtained’
+
+Notes:
+
+Note 1: Check only the date, exclude the time.
+
+Note 2: For scenario 2, if SSC record was deleted please output as this should be considered as missing in InForm
+
+Requires supporting document to be named ONC_EVD_004_supp_<xxxxxxx>.csv and will contain the following columns and associated content:
+
+1 row for each Inform Sample Description
+
+1.Inform Sample Description - SSC Sample Description
+
+2.External Lab Test Name - Lab Test Name
+
+3.External  Specimen Type - LABS. Specimen Material Name
+
+4.External Battery ID - LABS. Battery ID
+
+e.g.
+
+Inform Sample Description, External Lab Test Name, External  Specimen Type, External Battery IDScreening,Screening,1,Blood Sample for PSA,Blood Sample for PSA, SERUM, CHEMISTRY
+
+Blood Sample for PSA,Blood Sample for PSA , SERUM, CHEMISTRY
+
+Bone Marrow,Bone Marrow, SERUM, CHEMISTRY
+
+The number of rows in the supporting document will be represented in the Report Header as "# of rows for Supporting doc".
+
+The actual information provided by the supporting doc can be outputted by selecting Y in the parameter "Supporting doc Page".
+
+Report Scenarios:
+Scenario 1:
+
+A - Yes
+
+Inform invoice record is present, but there are no corresponding external vendor data records on the same date for the same test.
+
+B - No
+
+Inform invoice record is present, and there is acorresponding external vendor data records on the same date for the same test.
+
+Scenario 2:
+
+C - Yes
+
+External vendor record is present but there are no corresponding Invoice data records on the same date for the same test.
+
+D - No
+
+External vendor record is present and there are corresponding Invoice data records on the same date for the same test.
+
+Sorting:
+Country, Site, Subject Number
+
+Parameter Selection:
+First Site, Last Site, First Subject, Last Subject, List of Subjects,Randomized Only, Supporting Doc Page (N/Y, Default as N)
+
+Form.Item Names:
+1. Subject Assignment.Site Country
+
+2. Subject Assignment.Site Mnemonic
+
+3. Subject Assignment.Screening Number
+
+4. Subjects.Subject Number
+
+5. SPECIMEN SAMPLE COLLECTION INVOICE Form. Sponsor ID
+
+6. SPECIMEN SAMPLE COLLECTION INVOICE Form.Date/Time Specimen Obtained
+
+7. SPECIMEN SAMPLE COLLECTION INVOICE Form. Sample Description
+
+8. SPECIMEN SAMPLE COLLECTION INVOICE Form. Specimen Collection Status
+
+9. LABORATORY TESTS Form.Transmission Source ID
+
+10. LABORATORY TESTS Form.Actual Collection Date and Time
+
+11. LABORATORY TESTS Form. Lab Test Name
+
+12. LABORATORY TESTS Form. Specimen Material Name
+
+13.LABORATORY TESTS Form. Battery ID
+
+14. LABORATORY TESTS Form. Accession ID or Number
+
+15. Hardcoded as specified

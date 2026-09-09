@@ -1,0 +1,57 @@
+Report ID: RID219
+
+Report Title:
+Date reconciliation on items with both date and radio button option selected
+
+Description:
+Report will list eCRFs with items in which dates and also a radio button are selected.
+
+Column Heading:
+1. Country
+
+2. Site Number
+
+3. Subject Number
+
+4. Visit
+
+5. Form
+
+6. Seq
+
+7. Item
+
+Logic:
+Logic 1: This report will output the items where "Stop date/End date" is selected, while another radio bottom is not null;
+
+Logic 2: This report will output the items where the radio buttons as "continuing", "ongoing", ect is selected, whille the "Stop date/End date" is not null.
+
+Note:
+
+1. Report should take into account all initialed eCRFs with datapoints that combine both "Stop date/End date" and other radio buttons as "continuing", "ongoing", etc.
+
+2. Exclude deleted records and erroneous visit.
+
+Report Scenarios:
+Please find corresponding Test Case in Workbook
+
+Sorting:
+Country, Site, Subject, Visit, Form, Seq, Item
+
+Parameter Selection:
+Country, First Site, Last Site, First Subject, Last Subject, List of Subjects, Randomized Only
+
+Form.Item Names:
+1. SA Form. Site Country
+
+2. SA Form. Site Mnemonic
+
+3. SA Form. Subject Number
+
+4. Visitmnemonic
+
+5. Formmnemonic
+
+6. Sequence Number
+
+7. Itemquestion

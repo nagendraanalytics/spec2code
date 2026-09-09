@@ -1,0 +1,337 @@
+Report ID: RID153
+
+Report Title:
+Missing Items in PK External Vendor
+
+Description:
+This report displays all Aspera records (Data loaded by the vendor) with null values in required fields from External Data transfer performed for BA and Central vendors. Required fields may vary depending on the vendor and the external data collected. Fields to be checked for missing values should be confirmed with the QP2 of each study.
+
+Column Heading:
+1. Central Site
+
+2. Central Screen
+
+3. Central Subject
+
+4. Central NOMDAY
+
+5. Central NOMHOUR
+
+6. Central NOMTIME
+
+7. Central DDT
+
+8. Central DTM
+
+9. Central REFID
+
+10. Central ANALYTE
+
+11. Central SAMPLE
+
+12. BA Site
+
+13. BA Screen
+
+14. BA Subject
+
+15. BA NOMDAY
+
+16. BA NOMHOUR
+
+17. BA NOMTIME
+
+18. BA DDT
+
+19. BA DTM
+
+20. BA REFID
+
+21. BA ANALYTE
+
+22. BA SAMPLE
+
+23. Error Message
+
+Logic:
+Vendor = ALL
+
+Logic 1A
+
+NOMDAY = NULL in Central Vendor File
+
+Logic 1B
+
+NOMDAY = NULL in BA Vendor File
+
+Logic 2A
+
+NOMHOUR = NULL in Central Vendor File
+
+Logic 2B
+
+NOMHOUR = NULL in BA Vendor File
+
+Logic 3A
+
+ ANALYTE = NULL in Central Vendor File
+
+Logic 3B
+
+ANALYTE = NULL in BA Vendor File
+
+Logic 4A
+
+NOMTIME = NULL in Central Vendor File
+
+Logic 4B
+
+NOMTIME = NULL in BA Vendor File
+
+Logic 5A
+
+REFID = NULL in Central Vendor File
+
+Logic 5B
+
+REFID = NULL in BA Vendor File
+
+Logic 6A
+
+SAMPLE = NULL in Central Vendor File
+
+Logic 6B
+
+SAMPLE = NULL in BA Vendor File
+
+Logic 7A
+
+DDT = Null in Central File
+
+Logic 7B
+
+DDT = Null in BA File
+
+Logic 8A
+
+DTM = Y
+
+DTM = Null in Central File
+
+Logic 8B
+
+DTM = Y
+
+DTM = Null in BA File
+
+Comments:
+
+1. Parameter selection for Vendor. If Vendor = ALL, Central Vendor file and BA Vendor file should be included, if Vendor = BA, only BA Vendor file should be included, if Vendor = Central, only Central Vendor file should be included. Parameter selection is default ALL.
+
+2. Parameter selection for DTM. If DTM are not applicable for study they should be N (No) in parameter selection. Parameter selection is default Y (Yes).
+
+3. If more than one value = NULL and REFID, SCRNID match between files we expect cumulated error message e.g Missing NOMDAY in BA and NOMHOUR in CV' when Parameter for Vendor is ALL
+
+4. When SCRENID match but REFID does not, output should be present in separate rows.
+
+5. When Parameter selected is BA or Central only data columns for selected vendor should be present, columns for other vendor should be hidden.
+
+6.When individual vendor is selected there is no need of cummulative message.
+
+7.When selected parameter Vendor= ALL then sorting should consider variables mentioned in sorting columns from both files.
+
+Report Scenarios:
+Vendor = ALL, DTM =Y
+
+Logic 1A
+
+Output Yes: If NOMDAY = NULL in Central Vendor File
+
+Output No: If NOMDAY <> NULL in Central Vendor File
+
+Logic 1B
+
+Output Yes: If NOMDAY = NULL in BA Vendor File
+
+Output No: If NOMDAY <> NULL in BA Vendor File
+
+Logic 2A
+
+Output Yes: If NOMHOUR = NULL in Central Vendor File
+
+Output No: If NOMHOUR <> NULL in Central Vendor File
+
+Logic 2B
+
+Output Yes: If NOMHOUR = NULL in BA Vendor File
+
+Output No: If NOMHOUR <> NULL in BA Vendor File
+
+Logic 3A
+
+Output Yes: If NOMTIME = NULL in Central Vendor File
+
+Output No: If NOMTIME <> NULL in Central Vendor File
+
+Logic 3B
+
+Output Yes: If NOMTIME = NULL in BA Vendor File
+
+Output No: If NOMTIME <> NULL in BA Vendor File
+
+Logic 4A
+
+Output Yes: If DDT = NULL in Central Vendor File
+
+Output No: If DDT <> NULL in Central Vendor File
+
+Logic 4B
+
+Output Yes: If DDT = NULL in BA Vendor File
+
+Output No: If DDT <> NULL in BA Vendor File
+
+Logic 5A
+
+Output Yes: If DTM = NULL in Central Vendor File
+
+Output No: If DTM <> NULL in Central Vendor File
+
+Logic 5B
+
+Output Yes: If DTM = NULL in BA Vendor File
+
+Output No: If DTM <> NULL in BA Vendor File
+
+Logic 6A
+
+Output Yes: If REFID = NULL in Central Vendor File
+
+Output No: If REFID <> NULL in Central Vendor File
+
+Logic 6B
+
+Output Yes: If REFID = NULL in BA Vendor File
+
+Output No: If REFID <> NULL in BA Vendor File
+
+Logic 7A
+
+Output Yes: If ANALYTE = NULL in Central Vendor File
+
+Output No: If ANALYTE <> NULL in Central Vendor File
+
+Logic 7B
+
+Output Yes: If ANALYTE = NULL in BA Vendor File
+
+Output No: If ANALYTE <> NULL in BA Vendor File
+
+Logic 8A
+
+Output Yes: If SAMPLE = NULL in Central Vendor File
+
+Output No: If SAMPLE  <> NULL in Central Vendor File
+
+Logic 8B
+
+Output Yes: If SAMPLE = NULL in BA Vendor File
+
+Output No: If SAMPLE  <> NULL in BA Vendor File
+
+Vendor = BA Vendor, DTM =N
+
+Logic 1A
+
+Output Yes: If NOMDAY = NULL in BA Vendor File
+
+Output No: If NOMDAY <> NULL in BA Vendor File
+
+Logic 2A
+
+Output Yes: If NOMHOUR = NULL in BA Vendor File
+
+Output No: If NOMHOUR <> NULL in BA Vendor File
+
+Logic 3A
+
+Output Yes: If NOMTIME = NULL in BA Vendor File
+
+Output No: If NOMTIME <> NULL in BA Vendor File
+
+Logic 4A
+
+Output Yes: If DDT = NULL in BA Vendor File
+
+Output No: If DDT <> NULL in BA Vendor File
+
+Logic 5A
+
+Output Yes: If REFID = NULL in BA Vendor File
+
+Output No: If REFID <> NULL in BA Vendor File
+
+Logic 7A
+
+Output Yes: If ANALYTE = NULL in BA Vendor File
+
+Output No: If ANALYTE <> NULL in BA Vendor File
+
+Logic 8A
+
+Output Yes: If SAMPLE = NULL in BA Vendor File
+
+Output No: If SAMPLE  <> NULL in BA Vendor File
+
+Sorting:
+SITEID,SCRNID,SUBJID,NOMDAY, NOMHOUR, NOMTIME, ANALYTE, SAMPLE
+
+Parameter Selection:
+Protocol Number, First Site No., Last Site No.,First Subject No., Last Subject No., Vendor - ALL/Central Vendor/BA Vendor (dafault ALL), DTM - Y/N (default Y)
+
+Form.Item Names:
+1.Central File. SITEID
+
+2.Central File. SCRNID
+
+3.Central File.SUBJID
+
+4. Central File.NOMDAY
+
+5. Central File.NOMHOUR
+
+6. Central File.NOMTIME
+
+7. Central File.DDT
+
+8. Central File.DTM
+
+9. Central File.REFID
+
+10. Central File.ANALYTE
+
+11. Central File.SAMPLE
+
+12.BA File. SITEID
+
+13.BA File. SCRNID
+
+14.BA File.SUBJID
+
+15. BA File.NOMDAY
+
+16. BA File.NOMHOUR
+
+17. BA File.NOMTIME
+
+18. BA File.DDT
+
+19. BA File.DTM
+
+20. BA File.REFID
+
+21. BA File.ANALYTE
+
+22. BA File.SAMPLE
+
+23. Display as: for logic 1A: "Missing NOMDAY in CV", for logic 1B: "Missing NOMDAY in BA", for Logic 2A: "Missing NOMHOUR in CV", for logic 2B: "Missing NOMHOUR in BA", for Logic 3A: "Missing Analyte in CV", for logic 3B: "Missing Analyte in BA", for Logic 4A: "Missing Scheduled Time in CV", for Logic 4B: "Missing Scheduled Time in BA", for Logic 5A: "Missing Specimen ID in CV" for Logic 5B: "Missing Specimen ID in BA", for Logic 6A: "Missing Specimen Type in CV", for logic 6B: "Missing Specimen Type in BA", for Logic 7A: "Missing DDT in CV", for Logic 7B: "Missing DDT in BA", for Logic 8A: "Missing DTM in CV",  for Logic 8B: "Missing DTM in BA"

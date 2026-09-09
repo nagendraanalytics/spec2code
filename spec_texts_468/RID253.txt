@@ -1,0 +1,117 @@
+Report ID: RID253
+
+Report Title:
+BUN/Urea duplicate reconciliation
+
+Description:
+This report will list duplicates between Blood Urea Nitrogen (BUN) and Urea tests
+
+Column Heading:
+1. Country
+
+2. Site
+
+3. Subject Number
+
+4. Visit
+
+5. Form
+
+6. Seq#
+
+7. Result/Normal ranges
+
+8. Units
+
+9. Scenario
+
+Logic:
+Scenario 1:
+
+Logic 1: Urea and Blood Urea Nitrogen results and units are the same AND entered on the same CLAB row and visit
+
+Scenario 2:
+
+Logic 2: Urea and Blood Urea Nitrogen normal ranges and units are the same AND entered on the same SLCNR entry
+
+Notes:
+
+1.	Do not consider deleted and erroneous visit records
+
+2.	Only output if:
+
+-	CLAB: both the result and units are equal
+
+-	SLCNR: upper and lower ranges and units are equal
+
+3.	For column 7, please display: SLCNR. Test Lower Limit of Norma – SLCNR. Test Upper Limit of Normal
+
+Report Scenarios:
+Scenario 1
+
+Scenario A: YES
+
+CLAB. Blood Urea Nitrogen Result = CLAB. Urea Result AND CLAB. Blood Urea Nitrogen Units = CLAB. Urea Units
+
+Scenario B: NO
+
+CLAB. Blood Urea Nitrogen Result <> CLAB. Urea Result AND CLAB. Blood Urea Nitrogen Units = CLAB. Urea Units
+
+Scenario C: NO
+
+CLAB. Blood Urea Nitrogen Result = CLAB. Urea Result AND CLAB. Blood Urea Nitrogen Units <> CLAB. Urea Units
+
+Scenario D: NO
+
+CLAB. Blood Urea Nitrogen Result <> CLAB. Urea Result AND CLAB. Blood Urea Nitrogen Units <> CLAB. Urea Units
+
+Scenario 2
+
+Scenario E: YES
+
+SLCNR. Urea Upper Normal Range = SLCNR. Blood Urea Nitrogen Upper Normal Range AND SLCNR. Urea Lower Normal Range = SLCNR. Blood Urea Nitrogen Lower Normal Range AND SLCNR. Urea Unit = SLCNR. Blood Urea Nitrogen Units
+
+Scenario F: NO
+
+SLCNR. Urea Upper Normal Range <> SLCNR. Blood Urea Nitrogen Upper Normal Range AND SLCNR. Urea Lower Normal Range = SLCNR. Blood Urea Nitrogen Lower Normal Range AND SLCNR. Urea Unit = SLCNR. Blood Urea Nitrogen Units
+
+Scenario G: NO
+
+SLCNR. Urea Upper Normal Range = SLCNR. Blood Urea Nitrogen Upper Normal Range AND SLCNR. Urea Lower Normal Range <> SLCNR. Blood Urea Nitrogen Lower Normal Range AND SLCNR. Urea Unit = SLCNR. Blood Urea Nitrogen Units
+
+Scenario H: NO
+
+SLCNR. Urea Upper Normal Range = SLCNR. Blood Urea Nitrogen Upper Normal Range AND SLCNR. Urea Lower Normal Range = SLCNR. Blood Urea Nitrogen Lower Normal Range AND SLCNR. Urea Unit <> SLCNR. Blood Urea Nitrogen Units
+
+Scenario I: NO
+
+SLCNR. Urea Upper Normal Range <> SLCNR. Blood Urea Nitrogen Upper Normal Range AND SLCNR. Urea Lower Normal Range <> SLCNR. Blood Urea Nitrogen Lower Normal Range AND SLCNR. Urea Unit <> SLCNR. Blood Urea Nitrogen Units
+
+Scenarios J: NO
+
+Do not consider deleted records
+
+Sorting:
+Country, Site, Subject Number
+
+Parameter Selection:
+Country, First Site, Last Site, First Subject, Last Subject, List of Subjects, Randomized Only (Y/N set default to N)
+
+Form.Item Names:
+1. Subject Assessment.Country
+
+2. Subject Assessment.Site Mnemonic
+
+3. Subject Assessment.Subject Number
+
+4. Display CLAB visit OR SLCNR display NRL
+
+5. Display SLCNR/CLAB
+
+6. Display SLCNR. Sequence Number/CLAB row#
+
+7. Display duplicate result in CLAB/ Display SLCNR normal ranges as per note 3
+
+8. Display unit
+
+9. Display ‘Duplicate in CLAB’ if scenario 1 fulfills, display ‘Duplicate in SLCNR’ if scenario 2 fulfills

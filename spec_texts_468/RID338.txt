@@ -1,0 +1,87 @@
+Report ID: RID338
+
+Report Title:
+NATS, PMS1, PMS1A, PMST listing
+
+Description:
+This report will list subjects who have data in PMS1/PMS1A/PMST/NATS.
+
+Column Heading:
+1. Country
+
+2. Site
+
+3. Subject Number
+
+4. Visit Mnemonic
+
+5. Form Mnemonic
+
+6. NATS Seq #
+
+7. Date of Assessment
+
+8. Reason for Discontinuation
+
+9. Next Trial Segment
+
+10. Study Treatment Not Received
+
+11. Reason Study Treatment Not Received
+
+Logic:
+If PMS1/PMS1A/PMST/NATS.Date of Assessment AND PMS1.Status of Study Medication at the End of This Trial Segment/PMS1A.Status of Subject at End of This Trial Segment/PMST.Status of Subject at end of all Study Treatments AND PMS1/PMS1A/PMST.Select the Status of the Subject for the Next Trial Segment AND NATS. Study Treatment Not Received AND NATS.Reason Study Treatment Not Received are entered
+
+Notes:
+
+1. PMS1A.Status of Subject at End of This Trial Segment should only be considered if present in the study.
+
+2. NATS.Sponsor ID Number (NATS.Associated Sponsor ID Number), NATS.Study Treatment Not Received and NATS.Reason Study Treatment Not Received columns should be blank for PMS1, PMS1A and PMST forms.
+
+3. PMS1/PMS1A/PMST. Status of Study Medication at the End of This Trial Segment/Status of Subject at End of This Trial Segment/Status of Subject at end of all Study Treatments and PMS1/PMS1A/PMST.Select the Status of the Subject for the Next Trial Segment columns should be blank for NATS form.
+
+4. Deleted records and erroneous visit should not be considered
+
+5. PMST.Status of Subject at end of all Study Treatments should only be considered if present in the study.
+
+Report Scenarios:
+A- Yes
+
+PMS1/PMS1A/PMST/NATS.Date of Assessment AND PMS1.Status of Study Medication at the End of This Trial Segment/PMS1A.Status of Subject at End of This Trial Segment/PMST.Status of Subject at end of all Study Treatments AND PMS1/PMS1A/PMST.Select the Status of the Subject for the Next Trial Segment AND NATS. Study Treatment Not Received AND NATS.Reason Study Treatment Not Received are entered
+
+B- No
+
+One or more of the following times is missing: PMS1/PMS1A/PMST/NATS.Date of Assessment,  PMS1.Status of Study Medication at the End of This Trial Segment/PMS1A.Status of Subject at End of This Trial Segment/PMST.Status of Subject at end of all Study Treatments, PMS1/PMS1A/PMST.Select the Status of the Subject for the Next Trial Segment AND NATS. Study Treatment Not Received AND NATS.Reason Study Treatment Not Received are missing
+
+C- No
+
+NATS.Records are deleted
+
+Sorting:
+Country, Site, Subject Number, Date of Assessment
+
+Parameter Selection:
+Country, Site Number, Subject Number and List of Subjects
+
+Form.Item Names:
+1. SA. Site Country
+
+2. SA. Site Mnemonic
+
+3. SA. Subject Number
+
+4. PMS1/PMS1A/PMST/NATS. Visit Mnemonic
+
+5. Form Mnemonic
+
+6. NATS.Sponsor ID Number (NATS.Associated Sponsor ID Number)
+
+7. PMS1/PMS1A/PMST/NATS. Date of Assessment
+
+8. PMS1/PMS1A/PMST. Status of Study Medication at the End of This Trial Segment/Status of Subject at End of This Trial Segment/Status of Subject at end of all Study Treatments
+
+9. PMS1/PMS1A/PMST.Select the Status of the Subject for the Next Trial Segment
+
+10. NATS.Study Treatment Not Received
+
+11. NATS.Reason Study Treatment Not Received

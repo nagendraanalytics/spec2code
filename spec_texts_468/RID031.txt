@@ -1,0 +1,169 @@
+Report ID: RID031
+
+Report Title:
+Overlapping APCM Start and Stop Dates
+
+Description:
+This report displays subjects who have matching APCM Standardized Medication Name and overlapping Start and Stop dates for all medications taken within 14 days of an SAE/ECI Onset Date.
+
+APCM Term could be either Standardized Medication Name, Encoded Drug Name or Medication Class as selected from the Parameter Selection screen.
+
+The report checks for overlaps in a list of medications selected from the Parameter Selection screen.
+
+Column Heading:
+1. Country
+
+2. Site
+
+3. Subject Number
+
+4. Standardized Medication Name or Encoded Drug Name or Medication Class
+
+5. APCM 1 Seq
+
+6. APCM 1 Dose Per Administration
+
+7. APCM 1 Start Date
+
+8. APCM 1 Stop Date
+
+9. APCM 1 Freq
+
+10. APCM 1 Dose Form
+
+11. APCM 1 Route
+
+12. APCM 1 Reason for Therapy
+
+13. APCM 2 Seq
+
+14. APCM 2 Dose Per Administration
+
+15. APCM 2 Start Date
+
+16. APCM 2 Stop Date
+
+17. APCM 2 Freq
+
+18. APCM 2 Dose Form
+
+19. APCM 2 Route
+
+20. APCM 2 Reason for Therapy
+
+21. APAE SAE/ECI Seq
+
+22. APAE SAE/ECI Onset Date
+
+Logic:
+1. The report should display subjects with identical APCM Terms having overlapping start and stop dates. Each pair of overlapping APCM record should be on one line.
+
+APCM Term should be a radio button parameter with the following values: Standardized Medication Name, Encoded Drug Name and Medication Class. If Standardized Medication Name is selected, the report will display subjects with identical Standardized Medication Name and overlapping start and stop dates.
+
+2. The report should display subjects with identical APCM terms having overlapping start and stop dates for all medications taken within +/- 14 days of an SAE Onset Date. Each pair of overlapping APCM records should be on one line. A parameter selection checkbox named "APCM taken within +/- 14 days of SAE/ECI" should be available for user to select this check. Only if selected, these two columns are to be shown: SAE/ECI Seq and SAE/ECI Onset Date.
+
+The report should specifically check if:
+
+• APCM start date is within +/- 14 days of SAE/ECI onset date
+
+• APCM start date is more than 14 days prior to SAE/ECI onset date and
+
+APCM stop date is selected as Continuing or APCM stop date is > -14 days of SAE/ECI onset date.
+
+An APAE record is considered an SAE if any of the 8 serious AE criteria is marked Yes or ECI is marked Y.
+
+3. The following Optional Conditions should be available to restrict the output as needed.
+
+- Frequency - PRN: the overlapping pair has frequencies equal to or different from PRN
+
+- Dose Form: equal or different within the overlapping pair
+
+- Route of Administration: equal or different within the overlapping pair
+
+- Reason for Therapy: include the exact Reason for Therapy for the overlapping pair.
+
+Report should not display deleted records. If "Randomized only" parameter selection checkbox  is checked, the report should
+
+only output subjects with Randomization number that is not null.
+
+Report Scenarios:
+Refer to logic
+
+Sorting:
+Country,
+
+Site,
+
+Subject Number,
+
+Sorting Variable (Standardized Medication Name or Encoded Drug Name or Medication Class),
+
+APCM 1 Seq,
+
+APCM 2 Seq
+
+Parameter Selection:
+Country; Site; Subject, Randomized Only;
+
+APCM Taken Within +/- 14 days of SAE/ECI (Checkbox);
+
+Overlap in (Radio button): Standardized Medication Name (default value) / Encoded Drug Name / Medication Class;
+
+Optional Condition (combo):
+
+- (Radio button) Frequency - PRN: equal/different?;
+
+- (Radio button) Dose Form: equal/different?;
+
+- (Radio button) Route of Administration: equal/different?;
+
+- (Text box) Reason for Therapy equals
+
+Form.Item Names:
+1. Subject Assignment.Site Country
+
+2. Subject Assignment.Site Mnemonic
+
+3. Subjects.Subject Number
+
+4. ASSOCIATED PERSONS CONCOMITANT MEDICATION Form.Standardized Medication Name or
+
+    ASSOCIATED PERSONS CONCOMITANT MEDICATION Form.Encoded Drug Name or
+
+    ASSOCIATED PERSONS CONCOMITANT MEDICATION Form.Medication Class
+
+5. ASSOCIATED PERSONS CONCOMITANT MEDICATION Form.Sequence Number
+
+6. ASSOCIATED PERSONS CONCOMITANT MEDICATION Form.APCMAPCMDOSTOTTB ~ Dose Per Administration
+
+7. ASSOCIATED PERSONS CONCOMITANT MEDICATION Form.Date ~ Start Date
+
+8. ASSOCIATED PERSONS CONCOMITANT MEDICATION Form.Date ~ APCMENDTCDT ~ Stop Date
+
+9. ASSOCIATED PERSONS CONCOMITANT MEDICATION Form.Frequency of Administration
+
+10. ASSOCIATED PERSONS CONCOMITANT MEDICATION Form.Dose Form
+
+11. ASSOCIATED PERSONS CONCOMITANT MEDICATION Form.Route of Administration
+
+12. ASSOCIATED PERSONS CONCOMITANT MEDICATION Form.Reason for Therapy
+
+13. ASSOCIATED PERSONS CONCOMITANT MEDICATION Form.Sequence Number
+
+14. ASSOCIATED PERSONS CONCOMITANT MEDICATION Form.APCMAPCMDOSTOTTB ~ Dose Per Administration
+
+15. ASSOCIATED PERSONS CONCOMITANT MEDICATION Form.Date ~ Start Date
+
+16. ASSOCIATED PERSONS CONCOMITANT MEDICATION Form.Date ~ APCMENDTCDT ~ Stop Date
+
+17. ASSOCIATED PERSONS CONCOMITANT MEDICATION Form.Frequency of Administration
+
+18. ASSOCIATED PERSONS CONCOMITANT MEDICATION Form.Dose Form
+
+19. ASSOCIATED PERSONS CONCOMITANT MEDICATION Form.Route of Administration
+
+20. ASSOCIATED PERSONS CONCOMITANT MEDICATION Form.Reason for Therapy
+
+21. ASSOCIATED PERSONS ADVERSE EVENTS.Sequence Number (to be shown only when "APCM taken within +/- 14 days of SAE/ECI" checkbox is selected)
+
+22. ASSOCIATED PERSONS ADVERSE EVENTS.Onset Date (to be shown only when "APCM taken within +/- 14 days of SAE/ECI" checkbox is selected)

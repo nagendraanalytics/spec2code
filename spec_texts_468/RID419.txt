@@ -1,0 +1,74 @@
+Report ID: RID419
+
+Report Title:
+Reconciliation of Unconfirmed Progressive Disease
+
+Description:
+This report will output subjects who have Unconfirmed Progressive Disease reported as overall response, but this is not correct.
+
+Column Heading:
+1. Country
+
+2. Site
+
+3. Subject Number
+
+4. Seq
+
+5. Date Response Determined
+
+6. Scenario
+
+Logic:
+Scenario 1:
+
+Logic 1.1: ORPI.Overall Response (PCWG-Modified RECIST) / ORPI.Overall Response (PCWG-Modified irRECIST) / ORPC.Overall Response = Progressive Disease Unconfirmed or Unconfirmed Progressive Disease
+
+AND
+
+Logic 1.2: There is not an ORPI/ORPC.Date Response Determined > ORPI/ORPC.Date Response Determined of Logic 1.1
+
+AND
+
+Logic 1.3: PMS1A/OEDRA.Date of Assessment <> NULL
+
+Scenario 2:
+
+Logic 2.1: ORPI.Overall Response (PCWG-Modified RECIST) / ORPI.Overall Response (PCWG-Modified irRECIST) / ORPC.Overall Response = Progressive Disease Unconfirmed
+
+AND
+
+Logic 2.2: There is an ORPI/ORPC.Date Response Determined > ORPI/ORPC.Date Response Determined of Logic 2.1
+
+Note: 1. Deleted records should not be considered in the programming.
+
+2. Report should review logic of scenario 1 only if prompt of Scenario 1 is = Y.
+
+Report Scenarios:
+A – YES
+
+Overall Response = Progressive Disease Unconfirmed, there is not another ORPI/ORPC entry after and PMS1A/OEDRA Date of Assessment is completed
+
+B – YES
+
+Overall Response = Progressive Disease Unconfirmed and there is another ORPI/ORPC entry after.
+
+C – NO
+
+Overall Response <> Progressive Disease Unconfirmed
+
+Parameter Selection:
+Country, First Site, Last Site, First Subject, Last Subject, List of Subjects, Randomized Only (N/Y default as N), Scenario 1 (N/Y default as Y)
+
+Form.Item Names:
+1. SA.Country
+
+2. SA.Site
+
+3. SA.Subject number
+
+4. ORPI/ORPC.Sponsor ID Number
+
+5. ORPI/ORPC.Date Response Determined
+
+6. Display “Scenario 1” if Scenario 1 is met or “Scenario 2” if Scenario 2 is met

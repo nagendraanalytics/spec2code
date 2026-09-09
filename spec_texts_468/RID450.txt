@@ -1,0 +1,89 @@
+Report ID: RID450
+
+Report Title:
+AE Causality vs. Study Medication
+
+Description:
+The report generates a listing of subjects who have AE Relationship with Study Medication as "Related" and AE Onset date is after washout period of Last Dose.  A window of days is provided as a selection parameter and this defaults to 0 if not entered.
+
+Column Heading:
+1. Country
+
+2. Site
+
+3. Subject Number
+
+4. STR Visit
+
+5. STR Sequence
+
+6. STR Start Date/Time
+
+7. AE Sequence
+
+8. AE Onset Date
+
+Logic:
+Scenario 1:
+
+Logic 1.1: STR. Start Date/Time <> Null AND STR. Please Indicate if this is the Last Dose for this Label Description <> Null
+
+AND
+
+Logic 1.2: There is an AE with Relationship to Study Medication [x] = Related
+
+AND
+
+Logic 1.3: AE Onset Date is more than X days apart from STR. Start Date/Time from Logic 1.1
+
+Note 1: Please exclude deleted records and erroneous visits form programming.
+
+Note 2: X is taken from prompt Day Window.
+
+Note 3: Match Study Medication [x] on AE with Study Treatment on STR. For studies with single study medication, Overall Relationship to Study Medication is checked and a match on Study Medication name is not performed. for example, Study Treatment on STR is Radiation, then check item Relationship to Radiation
+
+Note 4: disregard time for comparison.
+
+Report Scenarios:
+Scenario 1 output yes
+
+there is an AE with Relationship to Radiation = Related AND Onset date is more than X days apart from STR date of last dose.
+
+Scenario 2 Output No
+
+there is an AE with Relationship to Radiation = Related AND Onset date is Equal or less than X days apart from STR date of last dose.
+
+Scenario 3 Output No
+
+there is no AE with Relationship to Radiation = Related
+
+Scenario 4 Output No
+
+There is no STR with date of last dose
+
+Scenario 5 Output No
+
+there is an AE with Relationship to Radiation = Not Related AND Onset date is more than X days apart from STR date of last dose.
+
+Sorting:
+Country, Site, Subject Number, Visit Mnemonic, STR. Sponsor ID Number
+
+Parameter Selection:
+Country, Site, Subject Number, List of subjects, Day Window (required, Textbox to enter numeric values, default to 0)
+
+Form.Item Names:
+1. SA Form. Site Country
+
+2. SA Form. Site Mnemonic
+
+3. SA Form. Subject Number
+
+4. STR. Visit Mnemonic
+
+5. STR. Sponsor ID Number
+
+6. STR. Start Date/Time
+
+7. AE. Sequence Number
+
+8. AE. Onset Date and Time

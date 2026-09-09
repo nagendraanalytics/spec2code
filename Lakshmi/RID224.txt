@@ -1,0 +1,46 @@
+SELECT
+  base.Country AS `Country`,
+  base.Site AS `Site`,
+  base.SubjectNumber AS `Subject Number`,
+  base.TargetForm AS `Target Form`,
+  base.TargetVisit AS `Target Visit`,
+  base.TargetSeqNumber AS `Target Seq Number`,
+  base.TargetItemName AS `Target item Name`,
+  base.TargetItemValue AS `Target item Value`,
+  base.Conditions AS `Conditions`,
+  base.Scenario AS `Scenario`
+FROM
+(
+  SELECT
+    `@HDR`.`Site`.`Country` AS Country,
+    `@HDR`.`Site`.`Number` AS Site,
+    `@HDR`.`Subject`.`Name` AS SubjectNumber,
+    `@Form`.`Name` AS TargetForm,
+    `@HDR`.`Event`.`Name` AS TargetVisit,
+    CMSPIDIT AS TargetSeqNumber,
+    'CMTRTIT' AS TargetItemName,
+    CMTRTIT AS TargetItemValue,
+    'CM; Medication Category=Adverse Event' AS Conditions,
+    CASE
+      WHEN CMCATIT = 'Adverse Event' THEN 'Yes'
+      ELSE 'No'
+    END AS Scenario
+  FROM `EDC`.`CMFM`
+  WHERE `@Form`.`Status` = 'submitted__v'
+    AND (DELETEDFM = 'N' OR DELETEDFM IS NULL)
+    AND NOT EXISTS (
+      SELECT 1 FROM `EDC`.`DOVFM` dov
+      WHERE dov.`@HDR`.`Subject`.`ID` = `@HDR`.`Subject`.`ID`
+        AND dov.`@HDR`.`Event`.`Name` = `@HDR`.`Event`.`Name`
+        AND dov.`@Form`.`Status` = 'submitted__v'
+        AND dov.DOVSERRORVIT = 'Y'
+    )
+) base
+WHERE base.Scenario = 'Yes'
+ORDER BY
+  base.Country,
+  base.Site,
+  base.SubjectNumber,
+  base.TargetForm,
+  base.TargetVisit,
+  base.TargetSeqNumber

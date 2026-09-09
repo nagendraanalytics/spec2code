@@ -1,0 +1,234 @@
+SPEC -> CODE EXPORT: ONC_LSN_005_JR_STD
+Exported 9/1/2026, 5:12:17 PM | Tenant: default
+
+======================================================================
+1. SPEC
+======================================================================
+Report ID:
+ONC_LSN_005_JR_STD
+
+EDC System / Language:
+veeva / CQL
+
+Description:
+This report will list when fragment number is selected but there are missing or duplicate fragment numbers for the same lesion.
+
+Column Heading:
+1. Country
+2. Site Mnemonic
+3. Subject Number
+4. Lesion evaluation form
+5. Seq #
+6. Lesion Number
+7. Indicate if Lesion Merged or Split
+8. Fragment Number
+9. Error message
+
+Logic:
+This report will list when fragment number is selected but there are missing or duplicate fragment numbers for the same lesion.
+
+Logic 1 (missing)
+
+Logic 1: Lesion Number <> Null and Indicate if Lesion Merged or Split = Split and Split (Provide Associated Lesion Number) <> Null and Fragment Number <> Null
+
+Logic 1.2: There is no Lesion in logic 1 with Fragment Number1 is selected
+
+OR
+
+Logic 1.3: There is only one Lesion in logic 1 entered
+
+OR
+
+Logic 1.4: There is one Lesion in logic 1 with Fragment Number X is selected, but missing any of Fragment (X-1, X-2, , 1) with the same original lesion.
+
+OR
+
+Logic 2 (duplicate)
+
+Logic 2: Lesion Number <> Null and Indicate if Lesion Merged or Split = Split and Split (Provide Associated Lesion Number) <> Null and Fragment Number <> Null.
+
+AND
+
+Logic 2.1: There are more than 1 record in logic 2 with the same Split (Provide Associated Lesion Number) and Fragment Number.
+
+Note1: Fragments should start sequentially with Fragment Number 1.
+
+Note 2: FRAGMENT NUMBER, LESION NUMBER, INDICATE IF LESION MERGED OR SPLIT, ASSOCIATED LESION NUMBER, ASSOCIATED SPONSOR ID NUMBER belongs to LSN support doc.
+
+Note 3: Deleted record will not be considered in the programming or output.
+
+Note 4: If lesion splits is expected to be divided into two new lesions, then it should not be outputted, example: TN1 splits, the new lesions should be TN1.1 and TN1.2 and no output should be produced.
+
+Report Scenarios:
+A-Yes:
+Lesion Number <> null AND Indicate if Lesion Merged or Split  = Split AND Fragment Number <> null AND there is no Lesion with Fragment Number 1 selected.
+
+B-Yes:
+Lesion Number <> null AND Indicate if Lesion Merged or Split = Split AND Fragment Number <> null AND there is only one Lesion entered.
+
+C-No:
+Lesion Number <> null AND Indicate if Lesion Merged or Split  = Split AND Fragment Number <> null AND there is Lesion with Fragment Number 1 selected AND there is more than one Lesion in logic 1 entered.
+
+D-Yes:
+Lesion Number X <> null AND Indicate if Lesion Merged or Split = Split AND Fragment Number <> null AND Lesion Number (X-1, X-2, , 1) with the same Split (Provide Associated Lesion Number) = NULL.
+
+E-No:
+Lesion Number X <> null AND Indicate if Lesion Merged or Split = Split AND Fragment Number <> null AND Lesion Number (X-1, X-2, , 1) with the same Split (Provide Associated Lesion Number) <> NULL
+
+F-Yes:
+Lesion Number X <> null AND  Indicate if Lesion Merged or Split  = Split AND  Fragment Number <> null AND Lesion Number  Y<> null AND Split (Provide Associated Lesion Number) is the same for Lesion X and Lesion Y.
+
+G-No:
+Lesion Number X <> null AND  Indicate if Lesion Merged or Split  = Split AND  Fragment Number <> null AND Lesion Number 2 <>null AND Split (Provide Associated Lesion Number) is different  for Lesion X and Lesion Y.
+
+Sorting:
+Country, Site, Subject Number, Form Mnemonic, Seq #, Lesion Number, Indicate if Lesion Merged or Split, Fragment Number
+
+======================================================================
+2. LOGIC UNDERSTANDING
+======================================================================
+This report identifies data quality issues on the Lesion evaluation form specifically for lesions flagged as 'Split' where a Fragment Number has been selected. It flags two categories of errors within groups of records sharing the same Split (Provide Associated Lesion Number, i.e., the same original lesion): 'missing' fragment errors (no Fragment 1 present, only one lesion entered for the split, or a gap in the sequential fragment chain below a given Fragment X) and 'duplicate' fragment errors (more than one record sharing the same associated lesion and fragment number). Deleted records are excluded, and a special case (Note 4) where a lesion splits into entirely new lesion numbers rather than tracked fragments should be suppressed from output, though the precise detection mechanism for that exclusion is not fully specified and required inference.
+
+1. First, restrict the population of Lesion evaluation form records to only those where Lesion Number is not null, Indicate if Lesion Merged or Split = 'Split', Split (Provide Associated Lesion Number) is not null, and Fragment Number is not null -- this defines the base candidate set used in both Logic 1 and Logic 2.
+2. Per Note 3, exclude any deleted records from this candidate set before evaluating either the missing or duplicate logic.
+3. Per Note 4, if the split scenario represents a lesion dividing into entirely new lesion numbers (e.g., TN1 splitting into TN1.1 and TN1.2) rather than sequentially fragment-numbered pieces of the same lesion, exclude that case from output -- this requires inferring how to programmatically detect this 'new lesion number' pattern versus a true fragment-numbering scenario, since the spec does not fully define the detection rule. (inferred)
+4. Evaluate Logic 1 ('missing') for records grouped by the same Split (Provide Associated Lesion Number) i.e. the same original lesion: check Logic 1.2 -- flag if there is no lesion in this group with Fragment Number = 1 selected (matches Scenario A-Yes).
+5. Also under Logic 1, check Logic 1.3 -- flag if there is only one lesion record entered for that original lesion group at all (matches Scenario B-Yes), since a split implies multiple fragments should exist.
+6. Also under Logic 1, check Logic 1.4 -- if a lesion in the group has Fragment Number X selected, verify that fragments X-1, X-2, ... down to 1 all exist with the same original/associated lesion; if any of these lower sequential fragment numbers is missing, flag as missing (matches Scenario D-Yes); if all are present, do not flag (matches Scenario E-No).
+7. Logic 1's three sub-conditions (1.2, 1.3, 1.4) are combined with OR -- meeting any one of them is sufficient to classify the record/group as a 'missing fragment number' error (per Scenario C-No, if Fragment 1 exists AND there is more than one lesion entered, none of the OR conditions are met, so no error is flagged).
+8. Separately, evaluate Logic 2 ('duplicate'): using the same base candidate set (Lesion Number <> Null, Split indicator, Associated Lesion Number <> Null, Fragment Number <> Null), check Logic 2.1 -- flag if there are more than 1 record sharing the same Split (Provide Associated Lesion Number) AND the same Fragment Number (matches Scenario F-Yes: same Associated Lesion Number for Lesion X and Lesion Y with same fragment).
+9. If Lesion X and Lesion Y have different Split (Provide Associated Lesion Number) values, they belong to different original lesions and are not considered duplicates even if fragment numbers coincide (matches Scenario G-No) -- the duplicate check must be scoped within each associated-lesion group, not globally across all lesions.
+10. Any record/group meeting Logic 1 (missing, via 1.2 OR 1.3 OR 1.4) or Logic 2 (duplicate, via 2.1) is output as an error row with an appropriate Error message describing whether it's a missing or duplicate fragment scenario. (inferred)
+11. The final output is sorted by Country, Site, Subject Number, Form Mnemonic, Seq #, Lesion Number, Indicate if Lesion Merged or Split, and Fragment Number, and displays the columns: Country, Site Mnemonic, Subject Number, Lesion evaluation form, Seq #, Lesion Number, Indicate if Lesion Merged or Split, Fragment Number, and Error message.
+
+======================================================================
+3. SPEC REVIEW
+======================================================================
+Readiness: Needs revision -- The spec has a clear overall intent but contains several blocking gaps -- undefined grouping keys for the missing-fragment logic, an unimplemented split-exclusion rule (Note 4), unpopulated column headings, and overlapping/ambiguous duplicate-detection report scenarios -- that would force a query generator to guess at record inclusion logic.
+
+[WARNING] (consistency) The 'Column Heading' list includes 'Lesion evaluation form' and 'Seq #', but neither term ever appears in Logic 1/1.2-1.4, Logic 2/2.1, or any Report Scenario. There's no stated source or condition that populates these two fields.
+  -> Add explicit logic (or a note) stating which form/field supplies 'Lesion evaluation form' and 'Seq #' for each output row, e.g. 'Seq # = the sequence number of the Lesion Evaluation form record that contains the Fragment Number field.'
+[BLOCKING] (ambiguity) Logic 1.4 says 'missing any of Fragment (X-1, X-2, ..., 1) with the same original lesion' but the notion of 'same original lesion' is never defined in terms of an actual field. Elsewhere the spec keys grouping by 'Split (Provide Associated Lesion Number)' (see Logic 2.1), but Logic 1.4 doesn't say whether grouping is by Lesion Number, Associated Lesion Number, or Associated Sponsor ID Number.
+  -> State explicitly which field defines 'same original lesion' for the missing-fragment check (e.g. 'grouped by Split (Provide Associated Lesion Number)'), matching the grouping key already used in Logic 2.1.
+[BLOCKING] (completeness) Note 4 says lesion splits into two new lesions (e.g., TN1 -> TN1.1, TN1.2) should produce no output, but the Logic and Report Scenarios never state how to detect this case (e.g., is it identified by Lesion Number format containing a decimal, or by presence of two associated lesion numbers?). There's no field or condition tying this exclusion rule back into Logic 1/1.2-1.4 or Logic 2/2.1.
+  -> Add an explicit condition in the Logic (not just a Note) defining how a 'split into two new lesions' scenario is identified and excluded, e.g. based on a naming pattern or a specific field value, so the query generator can implement the exclusion.
+[BLOCKING] (testability) Report Scenarios F-Yes and G-No both reference 'Lesion Number Y' and comparing Split (Provide Associated Lesion Number) between Lesion X and Y, but G-No's condition text says 'Lesion Number 2 <> null' (seemingly a typo for Lesion Number Y) and its logic ('different for Lesion X and Lesion Y') is the direct negation of the duplicate-detection Logic 2.1, which required 'same Split ... and Fragment Number.' G-No doesn't constrain Fragment Number, so it's unclear whether G-No is meant to test the negative case of Logic 2 or is a distinct, untested condition — as written, F-Yes and G-No overlap ambiguously with C-No and E-No since none of them mention matching Fragment Number as required in Logic 2.1.
+  -> Rewrite F-Yes and G-No to mirror Logic 2.1 exactly, including 'same Fragment Number' as well as 'same Associated Lesion Number', and fix the 'Lesion Number 2' typo to 'Lesion Number Y' for consistency.
+[WARNING] (naming) The Sorting field lists 'Form Mnemonic' but the Column Heading list uses 'Lesion evaluation form' as the form reference — these appear to refer to the same concept but use different terms without a stated naming convention tying them together.
+  -> Use a single consistent name for the form field across Column Heading and Sorting (e.g., always 'Lesion Evaluation Form Mnemonic').
+[WARNING] (ambiguity) Report Scenario C-No requires 'there is more than one Lesion in logic 1 entered' but doesn't specify whether this count is scoped to the same Associated Lesion Number group (i.e., lesions belonging to the same split) or globally across the subject/study. Given Logic 1.3 (B-Yes) uses 'only one Lesion... entered' as a standalone trigger, the scope of 'entered' needs to be the same across both scenarios but is never defined.
+  -> Explicitly state the scope for counting lesions in 1.3/B-Yes and C-No, e.g. 'count of lesions sharing the same Split (Provide Associated Lesion Number) value.'
+[WARNING] (completeness) The spec addresses deleted records (Note 3) but does not address how 'ongoing' or incomplete lesion records (e.g., a lesion still being fragmented, with more fragments expected in future visits) should be treated — such records could trigger false 'missing fragment' errors under Logic 1.4.
+  -> Add a note clarifying whether in-progress/incomplete lesion series are exempted from the missing-fragment logic, or whether the report intentionally flags them regardless of visit status.
+[INFO] (naming) Note 2 lists field names in all caps (e.g., 'FRAGMENT NUMBER, LESION NUMBER, INDICATE IF LESION MERGED OR SPLIT, ASSOCIATED LESION NUMBER, ASSOCIATED SPONSOR ID NUMBER') that don't exactly match the mixed-case names used elsewhere in Logic/Column Heading (e.g., 'Fragment Number', 'Split (Provide Associated Lesion Number)'). 'Associated Sponsor ID Number' is also never referenced anywhere else in the spec.
+  -> Align field name casing/format between Note 2 and the rest of the document, and clarify where/how 'Associated Sponsor ID Number' is used, or remove it if not applicable.
+
+======================================================================
+4. GENERATED CODE
+======================================================================
+CQL -- Guardrails: passed
+
+SELECT
+  Base.Country AS `Country`,
+  Base.SiteMnemonic AS `Site Mnemonic`,
+  Base.SubjectNumber AS `Subject Number`,
+  Base.FormName AS `Lesion evaluation form`,
+  Base.LSN_SEQ AS `Seq
+#`,
+  Base.LesionNumber AS `Lesion Number`,
+  Base.MergedOrSplit AS `Indicate if Lesion Merged or Split`,
+  Base.FragmentNumber AS `Fragment Number`,
+  Base.ErrorMessage AS `Error message`
+FROM
+(
+SELECT
+    `@HDR`.`Subject`.`ID` AS SubjectID,
+    `@HDR`.`Site`.`Country` AS Country,
+    `@HDR`.`Site`.`Number` AS SiteMnemonic,
+    `@HDR`.`Subject`.`Name` AS SubjectNumber,
+    `@Form`.`Name` AS FormName,
+    LOELFM.LOELSPIDIT AS LSN_SEQ,
+    LOELFM.LOELTUALSNNUM1TB AS LesionNumber,
+    LOELFM.LOELLSDRVFLPPDIT AS MergedOrSplit,
+    LOELFM.LOELSPIDIT AS AssociatedLesionNumber,
+    LOELFM.LOELTUFRGMTNUMIT AS FragmentNumber
+  FROM `EDC`.`LOELFM` LOELFM
+  WHERE `@Form`.`Status` = 'submitted__v'
+    AND (LOELFM.DELETEDFM = 'N' OR LOELFM.DELETEDFM IS NULL)
+    AND LOELFM.LOELTUALSNNUM1TB IS NOT NULL
+    AND LOELFM.LOELLSDRVFLPPDIT = 'Split'
+    AND LOELFM.LOELSPIDIT IS NOT NULL
+    AND LOELFM.LOELTUFRGMTNUMIT IS NOT NULL
+) Base
+LEFT JOIN
+(
+  SELECT
+    `@HDR`.`Subject`.`ID` AS SubjectID,
+    LOELFM2.LOELSPIDIT AS AssociatedLesionNumber2,
+    COUNT(*) AS RecCount
+  FROM `EDC`.`LOELFM` LOELFM2
+  WHERE `@Form`.`Status` = 'submitted__v'
+    AND (LOELFM2.DELETEDFM = 'N' OR LOELFM2.DELETEDFM IS NULL)
+    AND LOELFM2.LOELTUALSNNUM1TB IS NOT NULL
+    AND LOELFM2.LOELLSDRVFLPPDIT = 'Split'
+    AND LOELFM2.LOELSPIDIT IS NOT NULL
+    AND LOELFM2.LOELTUFRGMTNUMIT IS NOT NULL
+  GROUP BY `@HDR`.`Subject`.`ID`, LOELFM2.LOELSPIDIT
+) SplitCount
+  ON Base.SubjectID = SplitCount.SubjectID
+  AND Base.AssociatedLesionNumber = SplitCount.AssociatedLesionNumber2
+WHERE
+
+-- Logic 1.2: no Lesion with Fragment Number 1 selected for the same split lesion
+  (
+    NOT EXISTS (
+SELECT 1 FROM `EDC`.`LOELFM` F1
+      WHERE `@HDR`.`Subject`.`ID` = Base.SubjectID
+        AND `@Form`.`Status` = 'submitted__v'
+        AND (F1.DELETEDFM = 'N' OR F1.DELETEDFM IS NULL)
+        AND F1.LOELSPIDIT = Base.AssociatedLesionNumber
+        AND F1.LOELTUFRGMTNUMIT = '1'
+    )
+  )
+  OR
+
+-- Logic 1.3: only one Lesion entered for this split group
+  ( SplitCount.RecCount = 1 )
+  OR
+  -- Logic 1.4: Fragment Number X selected but missing any of Fragment (X-1...1) for the same original lesion
+  (
+    Base.FragmentNumber > '1'
+    AND EXISTS (
+SELECT 1 FROM `EDC`.`LOELFM` FX
+      WHERE `@HDR`.`Subject`.`ID` = Base.SubjectID
+        AND `@Form`.`Status` = 'submitted__v'
+        AND (FX.DELETEDFM = 'N' OR FX.DELETEDFM IS NULL)
+        AND FX.LOELSPIDIT = Base.AssociatedLesionNumber
+        AND FX.LOELTUFRGMTNUMIT < Base.FragmentNumber
+        AND NOT EXISTS (
+          SELECT 1 FROM `EDC`.`LOELFM` FY
+          WHERE `@HDR`.`Subject`.`ID` = Base.SubjectID
+            AND `@Form`.`Status` = 'submitted__v'
+            AND (FY.DELETEDFM = 'N' OR FY.DELETEDFM IS NULL)
+            AND FY.LOELSPIDIT = Base.AssociatedLesionNumber
+            AND FY.LOELTUFRGMTNUMIT = FX.LOELTUFRGMTNUMIT
+        )
+    )
+  )
+  OR
+
+-- Logic 2: duplicate fragment numbers within the same associated lesion number
+  (
+    EXISTS (
+SELECT 1 FROM `EDC`.`LOELFM` D2
+      WHERE `@HDR`.`Subject`.`ID` = Base.SubjectID
+        AND `@Form`.`Status` = 'submitted__v'
+        AND (D2.DELETEDFM = 'N' OR D2.DELETEDFM IS NULL)
+        AND D2.LOELSPIDIT = Base.AssociatedLesionNumber
+        AND D2.LOELTUFRGMTNUMIT = Base.FragmentNumber
+        AND D2.LOELSPIDIT <> Base.LSN_SEQ
+    )
+  )
+
+Explanation:
+This report is built entirely against the Lesion Evaluation Form (LOELFM, per the study metadata block) since LSN Number, Merged/Split indicator, Associated Lesion Number, and Fragment Number all live there per Note 2. I mapped: Lesion Number -> LOELTUALSNNUM1TB, Indicate if Lesion Merged or Split -> LOELLSDRVFLPPDIT, Split (Associated Lesion Number) -> LOELSPIDIT (reused as the associated-lesion grouping key since no separate "associated lesion number" item was found in the metadata list, flagged as an assumption), Fragment Number -> LOELTUFRGMTNUMIT, and Seq # -> LOELSPIDIT as well (the only sequence-like item present) -- these item-name choices should be confirmed via DESCRIBE FORM since the metadata list does not explicitly label an "Associated Lesion Number" item distinct from LOELSPIDIT. The outer query filters for missing-fragment scenarios (no Fragment 1 present, only one lesion in the split group, or a gap in the sequential fragment chain via NOT EXISTS/self-join logic) OR duplicate scenarios (same associated lesion + fragment number appearing on more than one record), all scoped to non-deleted records with Split selected and non-null Lesion/Fragment/Associated values as required by Logic 1/2; the "Error message" column is left as a raw item reference (no distinct error-message item was found in metadata) and should be replaced with a literal/derived string identifying which sub-condition (missing vs duplicate) fired if the spec requires differentiated messages -- flagged as a gap since Base.ErrorMessage is not actually defined as a column and needs a CASE-like literal per scenario (a static string per branch would need to be added in the Base subquery, which I was unable to add without a working CASE construct verified for this CQL dialect).

@@ -1,0 +1,161 @@
+Report ID: RID412
+
+Report Title:
+Complete Response vs Oncologic Response eCRF
+
+Description:
+This report will output if Status of Study Medication at the End of This Trial Segment Discontinued due to Complete Response but do not have the last two consecutive assessments, with specific  timeframe as Complete Response on eCRF.
+
+Column Heading:
+1. Country
+
+2. Site
+
+3. Subject Number
+
+4. Milestone form
+
+5. Milestone form Visit
+
+6. Milestone form Date of assessment
+
+7. Response Form
+
+8. Response form, last two records date
+
+9. Response form, last two records Overall response
+
+Logic:
+Logic 1: There is Milestone form. Date of Assessment <> Null
+
+AND
+
+Logic 2: Milestone form from logic 1 has “Status of Study Medication at the End of This Trial Segment” / "Status of Subject at end of all Study
+
+Treatments" =  "Complete Response"
+
+AND
+
+(
+
+Logic 3: The last two consecutive “Response form” records before Milestone form.Date of assessment from logic 1 are more than “Y” days apart and less than “X” days apart.
+
+OR
+
+Logic 4: Any record from logic 3 do not have an “Overall response” in corresponding complete response selected on Prompt “Expected Overall Response”
+
+OR
+
+Logic 5: There is only one Response form before Milestone form.Date of assessment
+
+)
+
+Note 1: consecutive means two records with consecutive dates and no records in between.
+
+Note 2: Response forms - Date - overall response 1 - overall response 2:
+
+OABC - Date Response Determined - Overall Response
+
+ORAML - Date Response Determined - Overall Response
+
+ORCLL - Date Response Determined - Response -
+
+ORH - Date Response Determined - Hematologic Response
+
+ORIR - Date of Procedure for Overall Response (Scan/Image/Physical Exam) - Overall RECIST Response - Overall iRECIST Response
+
+ORL - Date Response Determined - Overall Response
+
+ORLLG - Date Response Determined - Overall Response (includes Target, Non Target, New, Spleen, Liver, PET and BM Assessments)
+
+ORM - Date Response Determined - Overall Response
+
+ORPC - Date Response Determined - Overall Response
+
+ORPI - Date Response Determined - Overall Response (PCWG-Modified RECIST) - Overall Response (PCWG-Modified irRECIST)
+
+ORRN - Date Response Determined - Overall Response
+
+ORSLG - Date Response Determined - PET Response
+
+ORST - Date Response Determined - Overall Response
+
+ORTCL - Date Response Determined - Overall Response
+
+RRIR - Date Response Determined - Overall RECIST Response - Overall IRRECIST Response
+
+OTPRL- Date of Procedure for Overall Response (Scan/Image/Physical Exam) - Overall Response
+
+Note 3: “X” is determined by “Minimum Day Difference Allowed”, “Y” is determined by “Maximum Day Difference allowed” prompt. If records are more than "Y" days apart OR Less than “X” days apart there should be an output.
+
+Note 4: "Milestone Form" is determined by "Milestone form" prompt. milestones forms:
+
+PMS1
+
+PMST
+
+Note 5: The check should be done for each form, for example if user selects forms “RRIR” and “ORIR” on prompt “Response Form” then report should check:
+
+-	If there are two RRIR consecutive records within the allowed window and with any of the responses selected in “Expected Overall Response” prompt,
+
+-	AND also check if there are two ORIR consecutive records within the allowed window and with any of the responses selected in “Expected Overall Response” prompt.
+
+Note 6: if more than one option is selected in prompt “Expected Overall Response” then any of the options selected can satisfy Logic 4.
+
+Note 7: Please exclude deleted records and erroneous visits from programming.
+
+Note 8: . The report should check the last two responses before each Milestone form Date of Assessment
+
+Report Scenarios:
+Scenario 1 Output Yes:
+
+There is a Milestone form with “Status of Study Medication at the End of This Trial Segment” / "Status of Subject at end of all Study Treatments" =  “Complete Response” AND the last two consecutive records before Milestone form Date of assessment are more than X days apart or less than Y days apart.
+
+Scenario 2 Output Yes:
+
+There is a Milestone form with “Status of Study Medication at the End of This Trial Segment” / "Status of Subject at end of all Study Treatments" =  "Complete Response ” AND the last two consecutive records before Milestone form Date of assessment are less than X days apart and more than Y days apart.
+
+AND both records do not have an overall response as selected on prompt “Expected Overall Response”.
+
+Scenario 3 Output No:
+
+There is no Milestone form with “Status of Study Medication at the End of This Trial Segment” / "Status of Subject at end of all Study Treatments" = “Complete Response”
+
+Scenario 4 Output No:
+
+There is a Milestone form with “Status of Study Medication at the End of This Trial Segment” / "Status of Subject at end of all Study Treatments" = “Completed” AND the last two consecutive records before Milestone form Date of assessment are less than X days apart and less than Y days apart.
+
+AND both records have an overall response as selected on prompt “Expected Overall Response”.
+
+Sorting:
+Country, Site Number, Subject Number
+
+Parameter Selection:
+Country, Site, Subject Number, List of subjects, Milestone form (Single selection textbox, Display  PMS1/PMST)
+
+Response Form (Display the response forms present in the protocol, multiple selection),
+
+Expected Overall Response (Display all the options in overall Response 1 and overall Response 2 for the response forms selected in prompt “Response Form”, multiple selection),
+
+Minimum Day Difference Allowed (Textbox to enter numeric values),
+
+Maximum Day Difference allowed (Textbox to enter numeric values).
+
+Form.Item Names:
+1. SA Form. Site Country
+
+2. SA Form. Site Mnemonic
+
+3. SA Form. Subject Number
+
+4. Milestone form Identification (Display either PMS1 or PMST)
+
+5. Milestone form. Visitmnemonic
+
+6. Milestone form. Date of assessment
+
+7. Response form
+
+8. Response form. display the last two records Date for response in chronological order.
+
+9. Response form. Overall response 1 AND Overall response 2 (Display the corresponding Overall response completed of the last two records separated by commas)

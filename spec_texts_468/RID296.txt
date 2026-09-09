@@ -1,0 +1,281 @@
+Report ID: RID296
+
+Report Title:
+Missing Hematological Disease Assessment
+
+Description:
+This report will list subjects who are missing a Baseline Disease Evaluation as well if it is missed a  Lesion Evaluation for each lesion every specific interval of time following
+
+Date of randomization.
+
+Column Heading:
+Scenario 1:
+
+1. Country
+
+2. Site
+
+3. Subject Number
+
+4. Lesion Number
+
+5. SM/SMAU/SMAB
+
+6. Min Start Date and Time
+
+Scenario 2:
+
+1. Country
+
+2. Site
+
+3. Subject Number
+
+4. Randomization Date
+
+5. HDA Seq#
+
+6. Expected Lesion Evaluation Date Range
+
+7. System Date
+
+8. Date of Disposition
+
+9. DS01 Study status
+
+10. Date of Death
+
+11. Min ODBF Start date of Regimen
+
+12. Overall Response
+
+Logic:
+Scenario 1:
+
+Logic 1:  SM/SMAU/SMAB form. Start Date/Time is entered
+
+AND
+
+Logic 2: There is no HDA Date of Lesion  Evaluation for each lesion within <Specified Window of Days> days prior to minimum SM/SMAU/SMAB form. Start Date/Time (inclusive) (Only date is considered)
+
+OR
+
+Logic 3: HDA is not initialized
+
+Please exclude deleted record or erroneous visit from programmiing.
+
+Scenario 2:
+
+Logic1: SR Form. Date of Assessment < > Null
+
+AND
+
+Logic2: HDA form. There is a Lesion Number in the upper section
+
+AND
+
+Logic 3: In the add entry section of the Lesion Number mentioned in Logic 2, check all "Date of Lesion Evaluation"
+
+AND
+
+Logic 4: Missing any expected "Date of Lesion Evaluation" following randomization date
+
+AND
+
+Logic 5: System date minus expected time point for "Date of Lesion Evaluation" > Max window days
+
+Please exclude deleted record and erroneous visit from programming.
+
+Note:
+
+1. The Week# period should be provided by LCDM, e.g. <Week12 to Week48>  < every 6 weeks (+/- 7 days)>
+
+2. For Logic 4, e.g. 14-Feb-2015 is an expected time point for Date of Lesion Evaluation, then it is ok to enter any date between 7-Feb-2015 and 21-Feb-2015, if no date within this period entered, we consider evaluation of 14-Feb-2015 is missing.
+
+3. For Logic 5, we only consider evaluation missing when system date exceeds the maximum window. For the example in Note 2, we will output evaluation planned on 14-Feb-2015 as missing when system date arrives on 22-Feb-2015.
+
+4. If an expected Date of Lesion Evaluation is after Date of Disposition in DS01 form or max Date of Death or min Start Date of Regimen in ODBF form, it will not be displayed in output.
+
+5. For column 9-12, they are displayed in output for user's reference. Since there may be some false output and user should refer to these columns to determine if Lesion Evaluation is really missing.
+
+Please check column 12 to verify if there is a confirmed PD. If column 12 = Progressive Disease, check column 6 to verify if upper date is before ORST/ORH/ORMM /ORML Date Response Determined + 4w. Query can only be sent when expected evaluation date is before confirmed PD since evaluation date is not required after PD.
+
+Requires supporting document to be named ONC_HDA_001_supp_<xxxxxxx>.csv and will contain the following columns and associated content:
+
+1 row for each Scenario of required Window of days prior to first SM date or required frequency of week period, start week and end week for week period.
+
+1) scenario - Unique value for each scenario, if a scenario is not required, then it should not be include in the document.
+
+2) min_days - Unique value for scenario 1 which represents Window of days prior to first SM date, specified as 'NA' for scenario 2
+
+3) frequency - Unique value for scenario 2 which represents frequency of week period, specified as 'NA' for scenario 1
+
+4) start_week - Unique value for scenario 2 which represents start week for week period, specified as 'NA' for scenario 1
+
+5) end_week - Unique value for scenario 2 which represents end week for week period, specified as 'NA' for scenario 1
+
+e.g.
+
+scenario,min_days,frequency,start_week,end_week
+
+Scenario 1,28,NA,NA,NA
+
+Scenario 2,NA,9,9,108
+
+Report Scenarios:
+Scenario A: Yes
+
+Logic 1:  SM/SMAU/SMAB form. Start Date/Time is entered
+
+AND
+
+Logic 2: There is no HDA Date of Lesion  Evaluation for each lesion within <Specified Window of Days> days prior to minimum SM/SMAU/SMAB form. Start Date/Time (inclusive) (Only date is considered)
+
+Scenario B: Yes
+
+Scenario 1:
+
+Logic 1:  SM/SMAU/SMAB form. Start Date/Time is entered
+
+AND
+
+Logic 3: HDA is not initialized
+
+Scenario C: No
+
+Scenario 1:
+
+Logic 1:  SM/SMAU/SMAB form. Start Date/Time is entered
+
+AND
+
+Logic 2: There is HDA Date of Lesion  Evaluation for each lesion within <Specified Window of Days> days prior to minimum SM/SMAU/SMAB form. Start Date/Time (inclusive) (Only date is considered)
+
+Scenario D: No
+
+Scenario 1:
+
+Logic 1:  SM/SMAU/SMAB form. Start Date/Time is not entered
+
+AND
+
+Logic 2: There is no HDA Date of Lesion  Evaluation for each lesion within <Specified Window of Days> days prior to minimum SM/SMAU/SMAB form. Start Date/Time (inclusive) (Only date is considered)
+
+OR
+
+Logic 3: HDA is not initialized
+
+Scenario E: Yes
+
+Logic1: SR Form. Date of Assessment < > Null
+
+AND
+
+Logic2: HDA form. There is a Lesion Number in the upper section
+
+AND
+
+Logic 3: In the add entry section of the Lesion Number mentioned in Logic 2, check all "Date of Lesion Evaluation"
+
+AND
+
+Logic 4: Missing any expected "Date of Lesion Evaluation" following randomization date
+
+AND
+
+Logic 5: System date minus expected time point for "Date of Lesion Evaluation" > Max window days
+
+Scenario F: No
+
+Logic1: SR Form. Date of Assessment < > Null
+
+AND
+
+Logic2: HDA form. There is a Lesion Number in the upper section
+
+AND
+
+Logic 3: In the add entry section of the Lesion Number mentioned in Logic 2, check all "Date of Lesion Evaluation"
+
+AND
+
+Logic 4: Missing any expected "Date of Lesion Evaluation" following randomization date
+
+AND
+
+Logic 5: System date minus expected time point for "Date of Lesion Evaluation" = OR < Max window days
+
+Scenario G: No
+
+Logic1: SR Form. Date of Assessment = Null
+
+AND
+
+Logic2: HDA form. There is a Lesion Number in the upper section
+
+AND
+
+Logic 3: In the add entry section of the Lesion Number mentioned in Logic 2, check all "Date of Lesion Evaluation"
+
+AND
+
+Logic 4: Missing any expected "Date of Lesion Evaluation" following randomization date
+
+AND
+
+Logic 5: System date minus expected time point for "Date of Lesion Evaluation" > Max window days
+
+Scenario H: No
+
+Deleted record or erroneous visit
+
+Sorting:
+Scenario 1: Country, Site, Subject Number, Lesion Number
+
+Scenario 2: Country, Site, Subject Number, Randomization Date, HDA Seq#
+
+Parameter Selection:
+Country, Site, Subject Number, List of Subjects
+
+Form.Item Names:
+Scenario 1:
+
+1. Subject Assignment. Site Country
+
+2. Subject Assignment form. Site Mnemonic
+
+3. Subjects Assignment. Subject Number
+
+4. Hematological Disease Assessment. Lesion Number
+
+5. SM/SMAU/SMAB
+
+6. SM/SMAU/SMAB form. min Start Date and Time
+
+Scenario 2:
+
+1. SA Form. Site Country
+
+2. SA Form. Site Mnemonic
+
+3. SA Form. Subject Number
+
+4. SR Form. Date of Assessment
+
+5. HDA Form. Formidx
+
+6. Display date range when Lesion Evaluation expected
+
+7. Display system date when report running
+
+8. DS01 Form. Date of Disposition
+
+9. DS01 Form. Select the Status of the Subject for the Study
+
+10. DEATH Form. Date of Death
+
+      SFU Form. Date of Death (for this column display the maximum Date of Death among DEATH and SFU form if more than 1 death date is entered, if UNK is selected for Death Date, consider it as the min date)
+
+11. ODBF Form. Start date of Regimen (display the min date if more than 1 date existing)
+
+12. ORST Form. Overall Response/ORH Form. Hematologic Response/ORMM Form. Hematologic Response/ORML Form. Hematologic Response (display as Progressive Disease if there is one entry in these items equal to Progressive Disease; display as Non-PD if there is no Progressive Disease entered in these items)

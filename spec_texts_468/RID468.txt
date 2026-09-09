@@ -1,0 +1,69 @@
+Report ID: RID468
+
+Report Title:
+Duplicate Primary Diagnosis
+
+Description:
+This report displays subjects who have the primary diagnosis term entered in the Medical History eCRF.
+
+Column Heading:
+1. Country
+
+2. Site
+
+3. Subject Number
+
+4. Seq#
+
+5. Medical History Term
+
+6. PT term
+
+7. Primary Diagnosis
+
+Logic:
+Report should output subjects who meet the following criteria: Medical history PT term = primary diagnosis term specified by user Erroneous visit and deleted record will not be considered in programming or logic. If primary diagnosis is missing in ODD form then leave column 7 as blank. Primary diagnosis term should be specified by User for each protocol. If there are multiple terms for primary diagnosis, please include all of these in the logic. For example there are protocols that may enroll subjects who have Breast Cancer or Colon Cancer or Lung Cancer etc., and the DMS Lead would need to include all of these in the spec.
+
+Requires supporting document to be named ONC135 _supp_<xxxxxxx>.csv and will contain the following columns and associated content:
+
+1 row for each MH PT term along with the condition(either IN or LIKE) to be considered. This “Condition” column tells us how to compare Supporting document MH PT Terms with database values.
+
+1) MH PT Term - PT terms from MH form, Not Null
+
+2) Condition – Condition used to compare Supporting document MH PT terms, Not Null
+
+E.g:
+
+MHPTterm                                  Condition
+
+Adrenocortical carcinoma             LIKE
+
+Alveolar rhabdomyosarcoma      LIKE
+
+Alveolar soft part sarcoma           IN
+
+Anaplastic astrocytoma               IN
+
+Report Scenarios:
+Report should output subjects who meet the following criteria: Medical history PT term = primary diagnosis term specified by user Erroneous visit and deleted record will not be considered in programming or logic. If primary diagnosis is missing in ODD form then leave column 7 as blank. Primary diagnosis term should be specified by User for each protocol. If there are multiple terms for primary diagnosis, please include all of these in the logic. For example there are protocols that may enroll subjects who have Breast Cancer or Colon Cancer or Lung Cancer etc., and the DMS Lead would need to include all of these in the spec.
+
+Sorting:
+Country, Site, Subject
+
+Parameter Selection:
+Country, Site, Subject, Randomized Only
+
+Form.Item Names:
+1. Subject Assignment.Site Country
+
+2. Subject Assignment.Site Mnemonic
+
+3. Subjects.Subject Number
+
+4. MH Seq#
+
+5. MH.Medical History Term
+
+6. MH.PT
+
+7. MH.Primay Diagnosis

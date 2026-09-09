@@ -1,0 +1,173 @@
+Report ID: RID422
+
+Report Title:
+Missing New Therapy During Survival Follow-up or Survival Sweep
+
+Description:
+The report lists subjects with missing or inconsistent other therapy information between SFU or VST and oncologic therapies eCRFs.
+
+Column Heading:
+For Table 1:
+
+1. Country
+
+2. Site
+
+3. Subject number
+
+4. Visit Number
+
+5. SFU/VST seq. #
+
+6.Date of contact or last attempt of contact
+
+7. SFU/VST answer
+
+ For Tables: 2, 3:
+
+1. Country
+
+2. Site
+
+3. Subject number
+
+4. Visit Number
+
+5. SFU/VST seq. #
+
+6. Date of contact or last attempt of contact
+
+7. SFU/VST answer
+
+8. Form name of other therapy
+
+9. Seq# for other therapy
+
+10. Start Date of other therapy
+
+Logic:
+(Logic 1: SFU/VST form, 'Has subject received another therapy?'/'Has Subject Received A New Anti-Cancer Therapy?'/'Has Subject Received A New Anti-Cancer Therapy, such as surgery, radiation, drugs and/or biologics, since the Last Visit/Phone Contact?'/ 'Has Subject Received A New Anti-Cancer Therapy Since the Last Visit/Phone Contact? '/'Has Subject Received a New Anti-Cancer Treatment Since the Last Visit/Phone Contact?'
+
+ = Yes
+
+AND
+
+Logic 2: There is no at least one entry in ONCOLOGIC forms with Start date <= the minimum SFU/VST Date of Contact/Date of contact or last attempt of contact)
+
+OR
+
+(Logic 3: SFU/VST form 'Has subject received another therapy?'/'Has Subject Received A New Anti-Cancer Therapy?'/'Has Subject Received A New Anti-Cancer Therapy, such as surgery, radiation, drugs and/or biologics, since the Last Visit/Phone Contact? / 'Has Subject Received A New Anti-Cancer Therapy Since the Last Visit/Phone Contact? '/'Has Subject Received a New Anti-Cancer Treatment Since the Last Visit/Phone Contact?' = Yes
+
+AND
+
+Logic 4: SFU/VST form, 'Date of contact or last attempt of contact'/'Date of Contact' <> the minimum SFU/VST Date of contact or last attempt of contact /Date of contact
+
+AND
+
+Logic 5: There is no an entry in ONCOLOGIC forms with Start date > previous SFU/VST contact and <= to current SFU/VST contact)
+
+(Logic 6: There is at least one entry in ONCOLOGIC form with Start date > the last (maximum) (SFU form, 'Date of contact or last attempt of contact')
+
+(Logic 7: SFU/VST form, 'Has subject received another therapy?'/'Has Subject Received A New Anti-Cancer Therapy?'/'Has Subject Received A New Anti-Cancer Therapy, such as surgery, radiation, drugs and/or biologics, since the Last Visit/Phone Contact? / 'Has Subject Received A New Anti-Cancer Therapy Since the Last Visit/Phone Contact? '/ 'Has Subject Received a New Anti-Cancer Treatment Since the Last Visit/Phone Contact?' = No
+
+AND
+
+Logic 8: There is at least one entry in ONCOLOGIC form with Start date <= the minimum SFU/VST Date of contact or last attempt of contact/Date of contact)
+
+OR
+
+(Logic 9: SFU/VST form 'Has subject received another therapy?'/'Has Subject Received A New Anti-Cancer Therapy?'/'Has Subject Received A New Anti-Cancer Therapy, such as surgery, radiation, drugs and/or biologics, since the Last Visit/Phone Contact? / 'Has Subject Received A New Anti-Cancer Therapy Since the Last Visit/Phone Contact? '/ 'Has Subject Received a New Anti-Cancer Treatment Since the Last Visit/Phone Contact?'  = No
+
+AND
+
+Logic 10: SFU/VST form, 'Date of contact or last attempt of contact'/'Date of contact' <> the minimum SFU/VST Date of contact or last attempt of contact/Date of contact
+
+AND
+
+Logic 11: There is an entry in ONCOLOGIC form with Start date > previous SFU/VST contact and <=to current SFU/VST contact)
+
+Note 1: previous SFU/VST is defined as the previous SFU/VST entry based on dates.
+
+Note 2: Please exclude deleted records and erroneous visits from programming
+
+Note 3: Please exclude all ONCOLOGIC form records from programming if Start Date of Regimen/ Start of Medication < max SM/SMAU/SMAB Start Date with Last Dose is checked or SM04 Start Date recorded.
+
+Note 4. Please use Start Date of Regimen or Start Date of Medication for older versions of the form and Minimum Start Date of Medication for the last updates of the eCRFs ODBF or ODBHF or ODBNF or ODBCF. For ORAD2 use Start Date. For OS or OSOF or OSA or OSOFL use Date performed OR Date and Time performed. For OPROC use Procedure start Date.
+
+Note 5: For forms that have Date in both the general form and also in the add entry section, use the date of the general form i.e Start Date of Regimen instead of Start Date of medication. Note 6: Time can be ignored for the comparison.
+
+Note 7: If there is UNK Date, please use: first day of each month if day is UNK, first month of each year if month is UNK.
+
+Note 8: Has subject received another therapy?'/'Has Subject Received A New Anti-Cancer Therapy?'/'Has Subject Received A New Anti-Cancer Therapy, such as surgery, radiation, drugs and/or biologics, since the Last Visit/Phone Contact?/ 'Has Subject Received A New Anti-Cancer Therapy Since the Last Visit/Phone Contact? '/ 'Has Subject Received a New Anti-Cancer Treatment Since the Last Visit/Phone Contact?'  should be checked. The firsts ones for older versions of the form and the second for the last update of the eCRFs
+
+Note 9: ONCOLOGIC forms are ODBF/ODBHF/ODBNF/ODBCF/ORAD2/OS/OSOF/OSA/OSOFL/OPROC
+
+Note 10. For ONCOLOGIC Forms that has both “Start Date of Medication” and “Imputed Start Date of Medication”, use the “Imputed Start Date of Medication”
+
+Note 11. For logics where the forms are mentioned as SFU/VST, the logic should be checked independently for each form. Do not cross check the data between SFU and VST
+
+Note 12: The ítems should be optional as not all VST forms will have the ítem 'Has Subject Received A New Anti-Cancer Therapy, such as surgery, radiation, drugs and/or biologics, since the Last Visit/Phone Contact?’/'Has Subject Received a New Anti-Cancer Treatment Since the Last Visit/Phone Contact?'
+
+Report Scenarios:
+Scenario 1:
+
+A-Yes: Subjects who have 'Has subject received another therapy'/'Has Subject Received A New Anti-Cancer Therapy?' 'Has Subject Received A New Anti-Cancer Therapy, such as surgery, radiation, drugs and/or biologics, since the Last Visit/Phone Contact?' 'Has Subject Received a New Anti-Cancer Treatment Since the Last Visit/Phone Contact?' equal to Yes in the minimum SFU/VST contact, but have no entries in the ODBF or ODBHF or ODBNF or ODBCF or ORAD2 or OS or OSOF or OSA or OSOFL or OPROC forms before or equal to the minimum SFU contact.
+
+B-Yes: Subjects who have 'Has subject received another therapy'/'Has Subject Received A New Anti-Cancer Therapy?' 'Has Subject Received A New Anti-Cancer Therapy, such as surgery, radiation, drugs and/or biologics, since the Last Visit/Phone Contact?' 'Has Subject Received a New Anti-Cancer Treatment Since the Last Visit/Phone Contact?' equal to Yes in the current SFU/VST form, but have no entries in the ODBF or ODBHF or ODBNF or ODBCF or ORAD2 or OS or OSOF or OSA or OSOFL or OPROC between the previous and the current SFU contact.
+
+Scenario 2:
+
+C-Yes: Date of contact or last attempt of contact in the last (maximum) SFU is less than start date in ODBF or ODBHF or ODBNF or ODBCF or ORAD2 or OS or OSOF or OSA or OSOFL or OPROC
+
+Scenario 3:
+
+D-Yes: Subjects who have 'Has subject received another therapy'/'Has Subject Received A New Anti-Cancer Therapy?' 'Has Subject Received A New Anti-Cancer Therapy, such as surgery, radiation, drugs and/or biologics, since the Last Visit/Phone Contact?' 'Has Subject Received a New Anti-Cancer Treatment Since the Last Visit/Phone Contact?' equal to No in the minimum SFU/VST contact, but have entries in the ODBF or ODBHF or ODBNF or ODBCF or ORAD2 or OS or OSOF or OSA or OSOFL or OPROC forms before or equal to the minimum SFU contact.
+
+E-Yes: Subjects who have 'Has subject received another therapy'/'Has Subject Received A New Anti-Cancer Therapy?' 'Has Subject Received A New Anti-Cancer Therapy, such as surgery, radiation, drugs and/or biologics, since the Last Visit/Phone Contact?' 'Has Subject Received a New Anti-Cancer Treatment Since the Last Visit/Phone Contact?' equal to No in the current SFU/VST form, but have entries in the ODBF or ODBHF or ODBNF or ODBCF or ORAD2 or OS or OSOF or OSA or OSOFL or OPROC between the previous and the current SFU contact.
+
+F- No: Correct data entry.
+
+Sorting:
+Country, Site, Subject Number
+
+Parameter Selection:
+Country, First Site, Last Site, First Subject, Last Subject, List of Subjects
+
+Form.Item Names:
+For Table 1:
+
+1. SA.Country
+
+2. SA.Site
+
+3. SA.Subject number
+
+4. Visit.Visit Number
+
+5. SFU/VST.Formidx
+
+6.SFU/VST.Date of contact/Date of contact or last attempt of contact
+
+7. SFU. Has subject received another therapy?'/'Has Subject Received A New Anti-Cancer Therapy?'/'Has Subject Received A New Anti-Cancer Therapy, such as surgery, radiation, drugs and/or biologics, since the Last Visit/Phone Contact? /'Has Subject Received A New Anti-Cancer Therapy Since the Last Visit/Phone Contact?’
+
+For Tables: 2, 3:
+
+1. SA.Country
+
+2. SA.Site
+
+3. SA.Subject number
+
+4. Visit.Visit Number
+
+5. SFU/VST.Formidx
+
+6. SFU/VST.Date of contact/Date of contact or last attempt of contact
+
+7. SFU/VST.SFU/VST answer
+
+8. Form name of other therapy
+
+9. Seq# for other therapy
+
+10. Start Date of other therapy

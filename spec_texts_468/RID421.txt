@@ -1,0 +1,101 @@
+Report ID: RID421
+
+Report Title:
+SCTF vs Conditioning Regimen
+
+Description:
+The report lists inconsistency between Conditioning Regimen recorded in Oncologic Drugs and Biologics form and Stem Cell Transplant information.
+
+Column Heading:
+1. Country
+
+2. Site
+
+3. Subject Number
+
+4. ODBF Form
+
+5. ODBF Seq#
+
+6. ODBF Start Date of Regimen/Start Date of Medication
+
+7. SCTF Visit Mnemonic
+
+8. SCTF Seq
+
+9. SCTF Date of Transplant
+
+10. Scenario
+
+Logic:
+Scenario 1:
+
+Logic 1: ODBF eCRF.” TYPE OF CONDITIONING REGIMEN“ is completed
+
+AND
+
+Logic 2: There is no SCTF. Imputed Date of Transplant record within X days after ODBF eCRF.” IMPUTED START DATE OF REGIMEN” OR ODBF eCRF.“IMPUTED START DATE OF MEDICATION” from logic 1.
+
+OR
+
+Scenario 2:
+
+Logic 3: SCTF. Imputed Date of Transplant is completed
+
+AND
+
+Logic 4: There is no ODBF eCRF.” IMPUTED START DATE OF REGIMEN” OR ODBF eCRF.“IMPUTED START DATE OF MEDICATION” record within X days prior to SCTF. Imputed Date of Transplant record from logic 3 AND with ODBF eCRF.” TYPE OF CONDITIONING REGIMEN completed
+
+Note 1: Please exclude deleted records and erroneous visits from programming.
+
+Note 2: X is the number entered in prompt "Window of Days SCTF is expected after Conditioning Regimen"
+
+Note 3: Use the scenario selected on Prompt "Scenario", if none is selected use both scenarios.
+
+Note 4: ODBF eCRF.” IMPUTED START DATE OF REGIMEN”, ODBF eCRF.” IMPUTED START DATE OF MEDICATION” and ODBF eCRF.” TYPE OF CONDITIONING REGIMEN” are going to be retrieved from the ‘ODBF_supp_doc’ global supporting document column C.
+
+Note 5: For logic 2 and logic 4 only use the ODBF eCRF.”IMPUTED START DATE OF MEDICATION” if the form doesn’t have the ODBF eCRF.” IMPUTED START DATE OF REGIMEN” item present.
+
+Report Scenarios:
+Output Yes
+
+Type of conditioning regimen is completed and there is no SCTF date of transplant within the window of days after ODBF Start Date of Regimen/Start Date of Medication.
+
+Output Yes
+
+SCTF is completed and there is no conditioning regimen ODBF Start Date of Regimen/Start Date of Medication within the window of days prior to STCF Date of Transplant.
+
+Output No
+
+Type of conditioning regimen is completed and there is SCTF Date of Transplant within the window of days after ODBF Start Date of Regimen/Start Date of Medication.
+
+Output No
+
+SCTF is completed and there is conditioning regimen Start Date of Regimen/Start Date of Medication within the window of days before Start Date of Regimen/Start Date of Medication
+
+Sorting:
+Country, Site, Subject Number
+
+Parameter Selection:
+Country, First Site, Last Site, First Subject, Last Subject, List of Subjects, Randomized Only (N/Y, default as N), Scenario (multiple selection, display "Scenario 1" and "Scenario 2"), Window of Days SCTF is expected after Conditioning Regimen ( Text box for numeric, integer values, set default to 0)
+
+Form.Item Names:
+1. SA.Country
+
+2. SA.Site Mnemonic
+
+3. SA. Subject Number
+
+4. ODBF.formmnemonic
+
+5. ODBF.formidx
+
+6. ODBF.Imputed Start Date of Regimen/Imputed Start Date of Medication.
+
+7. SCTF.Visit Mnemonic
+
+8. SCTF.formidx
+
+9. SCTF.Imputed Date of Transplant
+
+10. Display "Scenario 1" or "Scenario 2" according to scenario that is completed

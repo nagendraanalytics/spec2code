@@ -1,0 +1,201 @@
+Report ID: RID203
+
+Report Title:
+Query Status Report
+
+Description:
+This report will display detail information on queries, and will be used for monitoring the status of queries issued by data reviewers and safety scientists.
+
+Column Heading:
+1. Query Status
+
+2. Country
+
+3. Site
+
+4. Subject Number
+
+5. Visit Mnemonic
+
+6. Date of Visit / Reference Date
+
+7. eCRF Name
+
+8. Seq
+
+9. Item Name
+
+10. Deleted Record
+
+11. Opened Date
+
+12. First Answered Date
+
+13. Last Reissued Date
+
+14. Last Answered Date
+
+15. Closed Date
+
+16. Days Outstanding
+
+17. Originating User
+
+18. Originating Group
+
+19. First Query Text
+
+20. Last Query Text
+
+21. Last Query Response
+
+22. Closing User
+
+23. Closing Group
+
+Logic:
+This report will be a listing of all queries in InForm that will be subset by the parameters selected.
+
+The query text and query response from Blinded Tables provided by the supporting document and SMPB/DISP/SR1 will be masked as 'xxxx'.
+
+The below Date of Visit / Reference Date should always be use for Common forms:
+
+VIEWNAME COLUMNNAME COLUMNLABEL
+
+CV_AEFM DT_AEAESTDTCIT Date ~ Onset Date and Time Lab collection date if lab AE
+
+CV_AEFM_AETOXICITYSN_AECFO_1 DT_AEAESTODTCIT Date ~ Toxicity Grade Onset Date
+
+CV_CMFM DT_CMSTDTCIT Date ~ Start Date and Time
+
+CV_HOSPFM DT_HOSPHODTCIT Date ~ Date of Assessment
+
+CV_PRG01FM DT_PRG01PYDTCIT Date ~ Date of Assessment
+
+CV_PRG02FM DT_PRG02PXDTASMTIT Date ~ Date of Assessment
+
+CV_PRG03FM DT_PRG03FFDTCIT Date ~ Date of Assessment
+
+CV_PRG04FM DT_PRG04FEDTCIT Date ~ Date of Assessment
+
+CV_PROCFM DT_PROCASMTDTCIT Date ~ Date of Assessment
+
+CV_SAEIFM DT_SAEIFESTDTCONSIT Date ~ Onset Date and Time Lab collection date if lab AE
+
+CV_SAEIFM_SAEIFETGSN_SAEIF_1 DT_SAEIFFSTDTCIT Date ~ Toxicity Grade Onset Date
+
+CV_SAEPFM DT_SAEPFESTDTCIT Date ~ Onset Date and Time Lab collection date if lab AE
+
+CV_SLABFM DT_SLABDTCIT Date ~ Date Time Collected
+
+CV_SM02FM DT_SM02EXSTDTCIT Date ~ Start Date and Time
+
+CV_SMFM DT_SMEXSTDTCIT Date ~ Start Date and Time
+
+CV_DEATHFM DT_DEATHSTDTCIT Date~ Date/Time of Death
+
+CV_DS01FM DT_DS01DTCLCIT Date~Date of Disposition
+
+CV_DARFM DT_DARSTDTCIT Date~ Date/Time of Death
+
+CV_DOLCFM DT_DOLCDSSTDTCLCIT Date ~ Date of Last Contact
+
+Output queries even in the case that no reference date is giving on supporting document for any eCRF.
+
+ For all the other Common forms present in the Study requires supporting document to be named TQ003_supp_<xxxxxxx>.csv and will contain the following columns and associated content (columns 1 to 3), Column 4 should include the list of eCRF with blinded data (THE FOLLOWING FORM SHOULD NOT BE PROVIDED: SMPB, DISP, SR1):
+
+1 row for each required field with the following columns:
+
+1. VIEWNAME
+
+2. COLUMNNAME
+
+3. COLUMNLABEL
+
+4. BLINDEDTABLES
+
+Eg.
+
+VIEWNAME,COLUMNNAME,COLUMNLABEL,BLINDEDTABLES
+
+CV_LSRIRFM,DT_LSRIRLSDTCIT,Date ~ Date of Assessment,DISP
+
+CV_LSRIRFM_LSRIR2SN_LSRIR2IS,DT_LSRIRLSDTCEIT,Date ~ Date of Lesion Evaluation,GEFCF
+
+CV_HSUFM,DT_HSUHODTCASMTIT,Date ~ Date and Time of Assessment,
+
+CV_ORAD2FM,DT_ORAD2PRDTCIT,Date ~ Date of Assessment,
+
+CV_RRIRFM,DT_RRIRRSDTCIT,Date ~ Date Response Determined,
+
+CV_ODBFFM,DT_ODBFCMSTDTIIT,Date ~ Imputed Start Date of Regimen,
+
+CV_ODBFFM_ODBFFUSN_ODBFFUIS,DT_ODBFCMSTINMDTIIT,Date ~ Imputed Start Date of Medication,
+
+The SMPB/DISP/SR1 eCRF should have mask the columns Query Text and Query Response
+
+For the other blinded forms included on column 4 of Supp Document Mask the query text and query response columns
+
+If supporting doc is not provided or supporting doc do not have column BLINDEDTABLES, show the error message as 'Blinded Tables are not provided for xxxxxxx. Please Update the supporting doc with column BLINDEDTABLES.'
+
+Report output will be displayed as .lst(.pdf) and .csv format.
+
+Note:For the queries with prefix 'ENC:', the original group will be hardcoded as 'Encoding', so that it could be filtered by parameter 'Originating Group'.
+
+Note 2: Column 10 "Deleted Record" will populate as "Yes" when the query is located on a deleted record and will populate as "No" when the query is located on a non-deleted record.
+
+Report Scenarios:
+This report will be a listing of all queries in InForm that will be subset by the parameters selected.
+
+Sorting:
+Query Status, Site, Subject, Date of Visit, Visit Order, eCRF Name, Item Name, Opened Date
+
+Parameter Selection:
+Country, First Site, Last Site, First Subject, Last Subject, List of Subjects, Randomized Only, Query Status, Date of visit, Query Open Date, Query Close Date, Originating Group, Originating User
+
+Form.Item Names:
+1. irv_query_revs.querystate (Derived - first record based on subjectid,visitid,visitindex,formid,formindex,itemid,itemsetid,itemsetindex,queryid)
+
+2. cv_safm.sitecountry
+
+3. cv_safm.sitemnemonic
+
+4. irv_cur_subject.subjectnumberstr
+
+5. irm_studyversion_visits.visitmnemonic
+
+6. irv_sv_subjectvisits.dov
+
+7. irv_form_revs.formmnemonic
+
+8. irv_ic_formitems/irv_form_items.formindex
+
+9. irv_item_revs.itemquestion
+
+10. As specified by Note 2
+
+11. irv_query_revs.querytime (Derived - first record based on subjectid,visitid,visitindex,formid,formindex,itemid,itemsetid,itemsetindex,queryid when qopened>0)
+
+12. irv_query_revs.querytime (Derived - first record based on subjectid,visitid,visitindex,formid,formindex,itemid,itemsetid,itemsetindex,queryid when qanswered>0)
+
+13. irv_query_revs.querytime (Derived - last record based on subjectid,visitid,visitindex,formid,formindex,itemid,itemsetid,itemsetindex,queryid when qreissued>0)
+
+14. irv_query_revs.querytime (Derived - last record based on subjectid,visitid,visitindex,formid,formindex,itemid,itemsetid,itemsetindex,queryid when qanswered>0)
+
+15. irv_query_revs.querytime (Derived - last record based on subjectid,visitid,visitindex,formid,formindex,itemid,itemsetid,itemsetindex,queryid when qclosed>0)
+
+16. sysdate - irv_cur_query.qstatustime
+
+17. irv_query_revs.queryuserid (Derived - first record based on subjectid,visitid,visitindex,formid,formindex,itemid,itemsetid,itemsetindex,queryid)
+
+18. irv_cur_user.rightsgroup
+
+19. irv_query_revs.querydata (Derived – first record based on subjectid,visitid,visitindex,formid,formindex,itemid,itemsetid,itemsetindex,queryid)
+
+20. irv_query_revs.querydata (Derived - last record based on subjectid,visitid,visitindex,formid,formindex,itemid,itemsetid,itemsetindex,queryid)
+
+21. irv_query_revs.querydata (Derived - last record based on subjectid,visitid,visitindex,formid,formindex,itemid,itemsetid,itemsetindex,queryid)
+
+22. irv_cur_user.username
+
+23. irv_cur_user.rightsgroup

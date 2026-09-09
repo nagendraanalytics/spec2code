@@ -1,0 +1,45 @@
+Report ID: RID057
+
+Report Title:
+IVR Contact Date Completed With Erroneous Visit Checked
+
+Description:
+This report shows when a IVR Contact Date is completed and the Erroneous Visit field is also checked.
+
+Column Heading:
+Country
+
+Site
+
+Subject Number
+
+Visit
+
+DOV
+
+IVR Contact Date
+
+Logic:
+This report shows when a IVR Contact Date is completed and the Erroneous Visit field is also checked.
+
+Report Scenarios:
+This report shows when a IVR Contact Date is completed and the Erroneous Visit field is also checked.
+
+Sorting:
+Country, Site, Subject Number
+
+Parameter Selection:
+Country, Site, Subject Number
+
+Form.Item Names:
+Subject Assignment.Site Country
+
+Subject Assignment.Site Mnemonic
+
+Subjects.Subject Number
+
+Visits.Visit Mnemonic
+
+Visits.DOV
+
+Visits.IVR Contact Date

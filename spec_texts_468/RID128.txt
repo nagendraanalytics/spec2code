@@ -1,0 +1,237 @@
+Report ID: RID128
+
+Report Title:
+Incorrect Subject Level Normal Ranges
+
+Description:
+This report matches subject level normal range data from Local Lab Normal Range eCRFs (CNR, HNR, ONR) with derived normal ranges for each test from the Site-level Normal Range eCRFs (SLCNR, SLHNR, SLONR) and Local Lab eCRFs (CLAB, HLAB and OLAB). The report will output any mismatches found with data present in SL NR Effective Date.
+
+Column Heading:
+1. Country
+
+2. Site
+
+3. Subject Number
+
+4. LL eCRF
+
+5. LL Visit
+
+6. LL Row #
+
+7. Associated NR Sequence Number
+
+8. SL seq
+
+9. NR Seq
+
+10. LL Laboratory Name
+
+11. SL Laboratory Name
+
+12. NR Laboratory Name
+
+13. LL Specimen Type
+
+14. SL Specimen Type
+
+15. NR Specimen Type
+
+16. LL Test Name
+
+17. Age at Collection
+
+18. Age at Collection Units
+
+19. Sex
+
+20. LL Collection Date
+
+21. LL Test Unit
+
+22. SL Lower Limit of Normal Range
+
+23. SL Upper Limit of Normal Range
+
+24. SL Normal Range Unit
+
+25. Subject Level Lower Limit of Normal Range
+
+26. Subject Level Upper Limit of Normal Range
+
+27. Subject Level Normal Range Unit
+
+28. SL NR Effective Date
+
+29. Subject Level Effective Date
+
+Logic:
+Determine the age at collection date for each subject on 1. Derive the normal ranges from site level local lab normal range eCRFs:
+
+Determine the age at collection date for each subject on the local lab eCRF from Date of Birth on the Demographics eCRF.
+
+1. For each subject on the local lab eCRF, match each site, test, units, specimen type (where applicable), laboratory name, age at collection and sex with site, test, units, specimen type, laboratory name, age range, sex, and closest effective date on the site level local lab normal range eCRF.
+
+Output mismatches in LL associated sequence number and SLNR sequence number corresponding to the closest normal range effective date.
+
+Closest normal range effective date would be the greatest date that is prior or equal to the collection date of the lab test.
+
+Each HLAB and CLAB test is a field on the local lab eCRF, with the field name specifying the test.
+
+2. For each subject, associated NR sequence number and test, output mismatches in normal ranges, units, specimen type and lab name, effective date between NR (CNR, HNR and ONR) and SLNR; and mismatches in units between LL and NR.
+
+3. Output missing subject level normal ranges.
+
+Assumptions for the site level local lab normal ranges (SLNR) for each vendor:
+
+a. Each set of new test ranges will be entered in a new record with a corresponding sequence number and a current effective date.
+
+b. The set of new test ranges will be considered as cumulative with the previous entered test ranges. Previous valid test ranges will not be re-entered in the new record.
+
+c. If any of the new test ranges already existed in previous records, then the previous test range will be considered valid from the previous effective date to the new effective date and the new test range will be considered valid from the new effective date.
+
+d. There could be valid records for the same lab, test, gender, age range but different units, so all those records should be considered as range reference.
+
+Assumptions for the subject level local lab normal ranges (NR) for each vendor:
+
+a. The previous test ranges will need to be considered as having the new test ranges' sequence number and effective date.
+
+b. If the new test ranges with new sequence number and current effective date update a given test that has not been performed by the subject, then these other tests will be matched to sequence number and effective dates corresponding the last record with any of those tests.
+
+Notes:
+
+1. Do not include deleted records.
+
+2. Do not include data from Erroneous Visits.
+
+3. Do not output for site level local lab normal ranges Effective Date in blank.
+
+4. Report output will be displayed as .lst(.pdf) and .csv format
+
+Report Scenarios:
+This report matches subject level normal range data from Local Lab Normal Range eCRFs (CNR, HNR, ONR) with derived normal ranges for each test from the Site Level Normal Range eCRFs (SLCNR, SLHNR, SLONR) and Local Lab eCRFs (CLAB, HLAB and OLAB). The report will output any mismatches found with data present in SL NR Effective Date.
+
+Sorting:
+Country, Site, Subject Number, Local Lab eCRF, Lab Name, Test Name
+
+Parameter Selection:
+Country, Site, Subject Number, List of Subjects, Randomized Only, LL eCRF, Test Name
+
+Form.Item Names:
+1. Subject Assignment.Site Country
+
+2. Subject Assignment.Site Mnemonic
+
+3. Subjects.Subject Number
+
+4. CHEMISTRY LAB Form.Form Mnemonic/
+
+HEMATOLOGY LAB Form. Form Mnemonic/
+
+OTHER LABORATORY FORM Form. Form Mnemonic
+
+5. CHEMISTRY LAB Form.Visitmnemonic/
+
+HEMATOLOGY LAB Form. Visitmnemonic/
+
+OTHER LABORATORY FORM Form.Visitmnemonic
+
+6. CHEMISTRY LAB Form.Form Index/
+
+HEMATOLOGY LAB Form. Form Index/
+
+OTHER LABORATORY FORM Form. Form Index
+
+7. CHEMISTRY LAB Form.Sequence Number/
+
+HEMATOLOGY LAB Form.Sequence Number/
+
+OTHER LABORATORY FORM Form.Sequence Number/
+
+8.SITE LEVEL CHEMISTRY LAB NORMAL RANGE.Sequence Number/
+
+SITE LEVEL HEMATOLOGY LAB NORMAL RANGE.Sequence Number/
+
+SITE LEVEL OTHER LAB NORMAL RANGE.Sequence Number
+
+9.SUBJECT LEVEL CHEMISTRY LAB NORMAL RANGE.Sequence Number/
+
+SUBJECT LEVEL HEMATOLOGY LAB NORMAL RANGE.Sequence Number/
+
+SUBJECT LEVEL OTHER LAB NORMAL RANGE.Sequence Number
+
+10.CHEMISTRY LAB Form.Laboratory Name/
+
+HEMATOLOGY LAB Form.Laboratory Name/
+
+OTHER LABORATORY FORM Form.Laboratory Name
+
+11.SITE LEVEL CHEMISTRY LAB NORMAL RANGE.Laboratory Name/
+
+SITE LEVEL HEMATOLOGY LAB NORMAL RANGE.Laboratory Name/
+
+SITE LEVEL OTHER LAB NORMAL RANGE.Laboratory Name
+
+12.SUBJECT LEVEL CHEMISTRY LAB NORMAL RANGE.Laboratory Name/
+
+SUBJECT LEVEL HEMATOLOGY LAB NORMAL RANGE.Laboratory Name/
+
+SUBJECT LEVEL OTHER LAB NORMAL RANGE.Laboratory Name
+
+13.CHEMISTRY LAB Form.Specimen Type/
+
+HEMATOLOGY LAB Form.Specimen Type/
+
+OTHER LABORATORY FORM Form.Specimen Type
+
+14.SITE LEVEL CHEMISTRY LAB NORMAL RANGE.Specimen Type/
+
+SITE LEVEL HEMATOLOGY LAB NORMAL RANGE.Specimen Type/
+
+SITE LEVEL OTHER LAB NORMAL RANGE.Specimen Type
+
+15.SUBJECT LEVEL CHEMISTRY LAB NORMAL RANGE.Specimen Type/
+
+SUBJECT LEVEL HEMATOLOGY LAB NORMAL RANGE.Specimen Type/
+
+SUBJECT LEVEL OTHER LAB NORMAL RANGE.Specimen Type
+
+16.Derive Local Level Test Name
+
+17. Derive (from DOB and Collection Date)
+
+18. Demographics.Age Units
+
+19. Demographics.Sex
+
+20. Date Specimen Collected
+
+21.CHEMISTRY LAB Form.Test Unit/
+
+HEMATOLOGY LAB Form.Test Unit/
+
+OTHER LABORATORY FORM Form.Test Unit
+
+22. SITE LEVEL CHEMISTRY LAB NORMAL RANGE.Lower Limit of Normal/SITE LEVEL HEMATOLOGY LAB NORMAL RANGE.Lower Limit of Normal/SITE LEVEL OTHER LAB NORMAL RANGE.Lower Limit of Normal
+
+23. SITE LEVEL CHEMISTRY LAB NORMAL RANGE.Upper Limit of Normal/SITE LEVEL HEMATOLOGY LAB NORMAL RANGE.Upper Limit of Normal/ SITE LEVEL OTHER LAB NORMAL RANGE.Upper Limit of Normal
+
+24. SITE LEVEL CHEMISTRY LAB NORMAL RANGE.Test Unit/ SITE LEVEL HEMATOLOGY LAB NORMAL RANGE.Test Unit/ SITE LEVEL OTHER LAB NORMAL RANGE.Test Unit
+
+25. CHEMISTRY LAB NORMAL RANGE.Lower Limit of Normal/HEMATOLOGY LAB NORMAL RANGE.Lower Limit of Normal/OTHER LAB NORMAL RANGE.Lower Limit of Normal
+
+26. CHEMISTRY LAB NORMAL RANGE.Upper Limit of Normal/HEMATOLOGY LAB NORMAL RANGE. Upper Limit of Normal/OTHER LAB NORMAL RANGE. Upper Limit of Normal
+
+27. CHEMISTRY LAB NORMAL RANGE.Unit/HEMATOLOGY LAB NORMAL RANGE.Unit/ OTHER LAB NORMAL RANGE.Test Unit
+
+28. SITE LEVEL CHEMISTRY LAB NORMAL RANGE.Effective Date/
+
+SITE LEVEL HEMATOLOGY LAB NORMAL RANGE.Effective Date/
+
+SITE LEVEL OTHER LAB NORMAL RANGE.Effective Date
+
+29.SUBJECT LEVEL CHEMISTRY LAB NORMAL RANGE.Effective Date/
+
+SUBJECT LEVEL HEMATOLOGY LAB NORMAL RANGE.Effective Date/
+
+SUBJECT LEVEL OTHER LAB NORMAL RANGE.Effective Date

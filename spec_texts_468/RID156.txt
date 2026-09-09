@@ -1,0 +1,89 @@
+Report ID: RID156
+
+Report Title:
+Incorrect PMS1
+
+Description:
+This report lists subjects who have duplicate  PMS1 selected
+
+Column Heading:
+1. Country
+
+2. Site
+
+3. Subject Number
+
+4. Visit
+
+5. Form
+
+6. Trial Segment
+
+7. Status
+
+8. Status Value
+
+Logic:
+Report will output the subjects who meet following criteria.
+
+Logic 1: For “Status of Study Medication at the End of This Trial Segment” in PMS1 and PMS1 variation forms across all visits which is not null have same 'trial segment reference' entered
+
+OR
+
+Logic2: For “Status of Subject at End of This Trial Segment” in PMS1 and PMS1 variation forms across all visits which is not null have same 'trial segment reference' entered
+
+OR
+
+Logic3: For “Select the Status of the Subject for the Next Trial Segment” in PMS1 and PMS1 variation forms across all visits which is not null have same 'trial segment reference' entered
+
+Logic4: For “Status of Subject at end of all Study Treatments” in PMST forms across all visits which is not null have same 'trial segment reference' entered
+
+Note1: Erroneous visit and deleted data should be excluded from programming
+
+Note2: Duplicate “Trial Segment Reference” must be output for each Logic. If some PMS1 and PMS1 variation forms meet more than one logic, then output them all. Ex. PMS1 in V1 and PMS1A in V2 meet logic 1 and logic 2 together, output PMS1 and PMS1A twice, and only display the corresponding “status” and “trial segment” in layout.
+
+Report Scenarios:
+A-Yes
+
+There are more than one  'trial segment reference' for each “Status of Study Medication at the End of This Trial Segment” or “Status of Subject at End of This Trial Segment “or “Select the Status of the Subject for the Next Trial Segment”  in PMS1 forms or "Status of Subject at end of all Study Treatments" in PMST forms across all visits.
+
+B- No
+
+There are more only  one  'trial segment reference' for each “Status of Study Medication at the End of This Trial Segment” or “Status of Subject at End of This Trial Segment “or “Select the Status of the Subject for the Next Trial Segment”  in PMS1 forms or "Status of Subject at end of all Study Treatments" in PMST forms  across all visits.
+
+C- No
+
+No PMS1/PMST form initialized.
+
+D-No
+
+Erroneous visit
+
+Sorting:
+Country, Site, Subject Number, Form(PMST, PMS1, PMS1A, PMS1B, etc),  Trial Segment, Visit order per Inform, Status
+
+Parameter Selection:
+Country(ies), Site(s) and Subject(s), Randomized Only, List of Subjects
+
+Form.Item Names:
+1. SA Form. Site Country
+
+2. SA Form. Site Mnemonic
+
+3. SA Form. Subject Number
+
+4. PMS1 or variation Form or PMST Form. Visit Mnemonic
+
+5. PMS1 or variation Form or PMST Form. Form Mnemonic
+
+6. PMS1 or variation Form or PMST Form. Trial Segment reference
+
+7. Hardcode the field name of “Status” per Logic: “Status of Study Medication at the End of This Trial Segment” or “Status of Subject at End of This Trial Segment” or “Select the Status of the Subject for the Next Trial Segment” or "Status of Subject at end of all Study Treatments"
+
+8. Display corresponding data value of “status” per Logic:
+
+PMS1 or variation Form. Status of Study Medication at the End of This Trial Segment or
+
+Status of Subject at End of This Trial Segment or
+
+Select the Status of the Subject for the Next Trial Segment or PMST Form. Status of Subject at end of all Study Treatments

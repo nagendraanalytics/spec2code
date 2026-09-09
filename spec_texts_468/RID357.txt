@@ -1,0 +1,147 @@
+Report ID: RID357
+
+Report Title:
+Missing tests at the same time of lesion evaluation
+
+Description:
+This report will identify if there are missing assessments of OLAB as specified per protocol.
+
+Column Heading:
+1.	Country
+
+2.	Site
+
+3.	Subject Number
+
+4.	LSN ECRF
+
+5.	LSN Seq
+
+6.	Date of Lesion Evaluation
+
+7.	Missing Test
+
+Logic:
+Logic 1.1: “Date of Lesion Evaluation” from “ITEMQUESTION” column on LSN_supp_doc.csv is NOT NULL
+
+AND
+
+Logic 1.2: There is not at least one “OLAB eCRF” record that meets the following criteria:
+
+Logic 1.3: Test Name = “OLAB Test”
+
+AND
+
+(Logic 1.4: Start Date Specimen Collected >= “Date of Lesion Evaluation” – “Lower Window of Days”
+
+AND
+
+Logic 1.5: Start Date Specimen Collected =< ”Date of Lesion Evaluation“ + ”Upper Window of Days“)
+
+AND
+
+Logic 1.6: System Date >= "Date of Lesion Evaluation" + "Upper Window of Days"
+
+Notes:
+
+1-	The item "Date of Lesion Evaluation" should be used from master LSN_supp_doc.csv
+
+2-	"OLAB ECRF", "OLAB Test", "Lower Window of Days" and "Upper Window of Days" are values from report-specific supporting document
+
+3-	Erroneous visits and deleted records are excluded from programming
+
+4-	"OLAB eCRF" is a visit-based form
+
+5-	Column 4 will display the LSN eCRF as provided in the ONC_OLAB_001_supp_doc.csv
+
+6-	Column 7 will display the tests that are missing for the same Date of Lesion Evaluation separated by comma, for example, "Cancer Antigen 15-3, Carcinoembryonic Antigen". Use the first sequence number on Column 5
+
+7-	Column 6 will display the date in format "DDMMMYYYY".
+
+Supporting Document Notes:
+
+1-
+
+Requires supporting document to be named ONC_OLAB_001_supp_<xxxxxxx>.csv and will contain the following columns and associated content:
+
+1 row for each OLAB Test that should be outputted by the report
+
+1- LSN eCRF – Required, enter the LSN Form Mnemonic applicable per protocol
+
+2- OLAB eCRF – Required, enter OLAB/OLABA/OLABB/OLABC/OLABD according to the study requirements
+
+3 - OLAB Test – Required, enter the Test Name from the OLAB eCRF that should be outputted
+
+4 – Lower Window of Days – Required, enter the Lower Window of Days allowed per protocol, if this window is not applicable per trial design, simply enter 0
+
+5 – Upper Window of Days - Required, enter the Upper Window of Days allowed per protocol, if this window is not applicable per trial design, simply enter 0
+
+Example:
+
+Headers:
+
+LSN eCRF,OLAB eCRF,OLAB Test,Lower Window of Days,Upper Window of Days
+
+Content:
+
+LSRIR,OLAB,CA 27.29,3,7
+
+LSNIR,OLABA, Cancer Antigen 15-3,10,10
+
+LSNIR,OLABB,Carcinoembryonic Antigen,0,0
+
+ If supporting doc is not provided, display the message as "ONC_OLAB_001_JR_STD Supporting Document Not Present for This Trial".
+
+The number of rows in the supporting document will be represented in the Report Header as "# of rows for Supporting doc".
+
+The actual information provided by the supporting doc can be outputted by selecting Y in the parameter "Supporting doc Page".
+
+2-
+
+This report also uses the master LSN_supp_doc.csv & LABS_supp_doc_csv. These supporting document should be uploaded only once at TA level per the GDO Oncology TAST authorized members and will be used to facilitate programming of the report. Report builder will use all the columns provided in the excel spreadsheet to create the programming code.
+
+Report Scenarios:
+Scenario: 1
+
+Output: Yes
+
+There is a “Date of Lesion Evaluation” from LSN eCRF and there is not at least one “OLAB eCRF” with: Test Name = “OLAB Test” and with Start Date Specimen Collected within Lower Window of Days and Upper Window of Days
+
+Scenario: 2
+
+Output: No
+
+There is a “Date of Lesion Evaluation” from LSN eCRF and there is at least one “OLAB eCRF” with: Test Name = “OLAB Test” and with Start Date Specimen Collected within Lower Window of Days and Upper Window of Days
+
+Scenario: 3
+
+Output : No
+
+LSN eCRF is not initialized OR “Date of Lesion Evaluation” is NULL
+
+Scenario: 4
+
+Output: Yes
+
+LSN eCRF is initialized and OLAB form is not initialized
+
+Sorting:
+Country, Site, Subject Number
+
+Parameter Selection:
+Country, First Site, Last Site, First Subject, Last Subject, List of Subjects, Randomized Only (Y/N), Supporting Doc Page (N/Y, Default as N)
+
+Form.Item Names:
+1.	SA.Site Country
+
+2.	SA.Site Mnemonic
+
+3.	SA.Subject Number
+
+4.	LSN.Form Mnemonic
+
+5.	LSN.Formidx
+
+6.	LSN.Date of Lesion Evaluation
+
+7.	Display the test that is missing

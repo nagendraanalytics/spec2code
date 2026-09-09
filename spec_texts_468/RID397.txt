@@ -1,0 +1,137 @@
+Report ID: RID397
+
+Report Title:
+Missing PFS2 assessment
+
+Description:
+This report displays subjects who have missing an PFS2 Date of Contact.
+
+Column Heading:
+Table 1:
+
+1.Country
+
+2.Site
+
+3.Subject Number
+
+4.OEDRA Visit
+
+5.Date of Assessment
+
+6.OEDRA Status
+
+7.New Anti-cancer Therapy Form
+
+8.New Anti-cancer Therapy Seq#
+
+9.New Anti-cancer Therapy Date
+
+10.Elapse days since PD or New Anti-cancer Therapy
+
+Table 2:
+
+1.Country
+
+2.Site
+
+3.Subject Number
+
+4.PFS2 Visit
+
+5.PFS2 Seq#
+
+6. Max PFS2 Date of Contact
+
+7.Days Elapse since PFS2
+
+Logic:
+Please output:
+
+Logic 1:
+
+Logic 1.a: [(System Date) minus (Oncologic Date <> NULL)] > Number of days AND
+
+Logic 1.b: OEFU. Date of Assessment = NULL AND
+
+Logic 1.c: There is no PFS2.Date of Contact <> NULL
+
+Logic 2:
+
+Logic 2.a: (System Date) - (Max. PFS2.Date of Contact) > (Number of days) AND
+
+Logic 2.b: OEFU. Date of Assessment = NULL
+
+Note 1: Please do not include deleted entries
+
+Note 2: Please do not evaluate visits where ‘Erroneous Visit’ checkbox is selected.
+
+Note 3: Please consider the Oncologic Date as the MINIMUM of the following: ODBF/ODBHF/ODBNF/ODBCF. Imputed Start Date of Medication or If not present please consider Start Date of Regimen ; ORAD2. Start Date; OSOF. Admission Date; (OEDRA. Date of Assessment AND OEDRA. ‘Status of Subject at End of this Trial Segment’ = ‘Progressive Disease’ OR ‘Clinical Progression’ OR ‘New Non-Study Anti-Cancer Therapy’)
+
+Note 5: If any date is entered as UNK please consider the maximum day of the month and the maximum month of the year.
+
+Report Scenarios:
+Scenario A – Output: Yes
+
+There is no PFS2 Date of Contact AND more than (Number of days) days have elapsed since the earliest of: [ODBF/ODBHF/ODBNF/ODBCF Start Date of Regimen OR ORAD2 Start Date OR OSOF Admission Date OR OEDRA Date of Assessment with Status at End of this Trial Segment= ‘Progressive Disease’ or ‘Clinical Progression’ or ‘New Non-Study Anti-Cancer Therapy’] AND OEFU Date of Assessment is not completed.
+
+Scenario B – Output: Yes
+
+This report displays subjects who are missing PFS2 Date of Contact and more than 70 days (maximum = 8 weeks + 14 days) have elapsed since the previous PFS2 Date of Contact.
+
+Scenario C – Output: No
+
+There is a PFS2 Date of Contact AND more than (Number of days) days have elapsed since the earliest of: [ODBF/ODBHF/ODBNF/ODBCF Start Date or regimen OR ORAD2 Start Date OR OEDRA Date of Assessment with Status at End of this Trial Segment= ‘Progressive Disease’ or ‘Clinical Progression’ or ‘New Non-Study Anti-Cancer Therapy’] AND OEFU Date of Assessment is not completed.
+
+Scenario D – Output: No
+
+There is no PFS2 Date of Contact AND more than (Number of days) days have elapsed since the earliest of: [ODBF/ODBHF/ODBNF/ODBCF Start Date or regimen OR ORAD2 Start Date OR OEDRA Date of Assessment with Status at End of this Trial Segment= ‘Progressive Disease’ or ‘Clinical Progression’ or ‘New Non-Study Anti-Cancer Therapy’] AND OEFU Date of Assessment is completed.
+
+Scenario E – Output: No
+
+More than (Number of days) days have elapsed since the Maximum Date of Contact in PFS2. BUT OEFU Date of Assessment is completed
+
+Sorting:
+Default
+
+Parameter Selection:
+Country, First Site, Last Site, First Subject, Last Subject, List of Subjects, Randomized Only (Y/N set default to N), Number of days (required, free text, set default to 70)
+
+Form.Item Names:
+Table 1:
+
+1. SA.Country
+
+2. SA.Site Mnemonic
+
+3. SA.Subject Number
+
+4. OEDRA. Visit Mnemonic
+
+5. OEDRA. Date of Assessment
+
+6. OEDRA. Status of Subject at End of this Trial Segment
+
+7. Please display the Form of the Oncologic Date used in Logic 1
+
+8. Please display the Formidx of the Oncologic Date used in Logic 1
+
+9. Please display the Oncologic Date used in Logic 1
+
+10. Calculate. (System Date – Oncologic date used in Logic 1)
+
+Table 2:
+
+1. SA.Country
+
+2. SA.Site Mnemonic
+
+3. SA.Subject Number
+
+4. Max PFS2. Visit Mnemonic
+
+5. Max PFS2. Formidx
+
+6. Max PFS2. Date of Contact
+
+7. Calculate. (System Date – Max. PFS2. Date of Contact)

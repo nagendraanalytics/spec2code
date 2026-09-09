@@ -1,0 +1,89 @@
+Report ID: RID457
+
+Report Title:
+Duplicate or overlap on study treatment radiation
+
+Description:
+This report identifies STR overlaps or duplicates based on radiation dates and body site location of administration.
+
+Column Heading:
+1. Country
+
+2. Site
+
+3. Subject Number
+
+4.STR sequence
+
+5.STR Start date
+
+6.STR Stop date
+
+7.Body Site Location of Administration
+
+8. Scenario
+
+Logic:
+Scenario 1:
+
+If there are 2 or more STR entries where STR.Start Date AND STR.Body Site Location of Administration are the same. Output is required.
+
+Scenario 2:
+
+If there are 2 or more STR entries where time frames overlap AND AND STR.Body Site Location of Administration are the same. Output is required.
+
+Note 1: Do not consider deleted records.
+
+Note 2: For Scenario 2, please consider time frame as the time between STR.Start Date To STR.Stop Date And if there is no STR.Stop date completed, please consider STR.Stop date as today (system date).
+
+Example 1:
+
+ STR entry 1: STR.Start Date=01/Jan/2020  and STR.Stop Date=01/Feb/2020  THEN time frame =    01/Jan/2020  to  01/Feb/2020
+
+STR entry 2: STR.Start Date=01/Feb/2020  and STR.Stop Date=01/Apr/2020 THEN time frame= 01/Feb/2020  to 01/Apr/2020
+
+In this example and output is required for scenario 2, since time for  STR entry 1 overlap with the time frame for STR entry 2 in day 01/Feb/2020 .
+
+Note 3: Only one output is required for each couple of overlaps. Using example only 1 output is required showing the overlap of STR entry 1 with STR entry 2. A second outputs showing an overlap of STR entry 2 with STR entry 1 is NOT required.
+
+Report Scenarios:
+Scenario 1:
+
+ Output is produced if there is a duplicate STR entry with matching Start date/time and overlapping body site location of administration
+
+Scenario 2:
+
+ Output is produced if a subject has overlapping start date/Stop date and  body site location of administration
+
+Sorting:
+Country, Site, Subject Number,STR.Start Date
+
+Parameter Selection:
+Country, First Site, Last Site, First Subject, Last Subject, List of Subjects, Randomized Only
+
+Form.Item Names:
+1. Subject Assignment.Site Country
+
+2. Subject Assignment.Site Mnemonic
+
+3. Subjects.Subject Number
+
+4. STR.Formidx (Show all sequences, separated by a comma. eje: "1,2,3")
+
+5.STR.Start Date (For the first STR)
+
+6. STR.Stop Date (For the first STR)
+
+7.STR.Body Site Location of Administration (Show all locations, separated by a comma. eje: “Lung,Liver”)
+
+8. Display "Scenario 1" OR "Scenario 2" depending on the scenario
+
+Notes:
+
+For scenario 1, please do not display any value in column 6. STR.Stop Date (For the first STR).
+
+For Scenario 2, please show 6. STR.Stop date
+
+Notes:
+
+1: Fos scneario 1

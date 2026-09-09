@@ -1,0 +1,123 @@
+Report ID: RID362
+
+Report Title:
+OSCN vs ORAJ reconciliation
+
+Description:
+The report will list the missing OSCN or ORAJ after surgery/radiation
+
+Column Heading:
+1. Country
+
+2. Site
+
+3. Subject Number
+
+4. Surgery/Radiation date
+
+5. ORAJ seq#
+
+6. ORAJ date
+
+7. OSCN seq#
+
+8. OSCN date
+
+9. Scenario
+
+Logic:
+Scenario 1:
+
+Logic 1.1: OSCN. Scan Date > ‘Surgical/Radiation visit’ from supp document. DOV
+
+AND
+
+Logic 1.2: There is NO ORAJ entry with ORAJ. Date of Assessment (Scan/Image/Physical Exam) /Date Response Determined = OSCN. Scan Date from Logic 1.1
+
+Scenario 2:
+
+Logic 2.1 ORAJ. Date of Assessment (Scan/Image/Physical Exam) /Date Response Determined > ‘Surgical/Radiation visit’ from supp document. DOV
+
+AND
+
+Logic 2.2 There is NO OSCN entry with OSCN. Scan Date = ORAJ. Date of Assessment (Scan/Image/Physical Exam) /Date Response Determined from Logic 2.1
+
+Note:
+
+1. Disregard erroneous visits and deleted records
+
+2. Requires supporting document to be named ONC_ORAJ_003_supp_<xxxxxxx>.csv and will contain the following columns and associated content:
+
+1. Criteria Form - Specified as NA if logic is applicable for all subjects or SR/TRIG
+
+2. Criteria Itemquestion - Specified as NA if logic is applicable for all subjects or Arm/Cohort/Stratification
+
+3. Criteria Value - Specified as NA if logic is applicable for all subjects or actual classification Arm A/Cohort 1/Stratification A
+
+4. Surgery/Radiation Visit: provide the visit mnemonic for the Surgery/Radiation visit for each Arm/Cohort
+
+e.g
+
+Criteria Form,Criteria Itemquestion,Criteria Value, Surgery/Radiation Visit
+
+SR,Arm Code,Arm A,Radical Cystectomy
+
+SR,Arm Code,Arm C,Radical Cystectomy
+
+SR,Arm Code,Arm B,Definitive Surgery
+
+SR,Cohort,Cohort 1,Surgery visit
+
+The number of rows in the supporting document will be represented in the Report Header as "# of rows for customization".
+
+The actual information provided by the supporting doc can be outputted by selecting Y in the parameter "Supporting doc Page".
+
+3. Display column 5 and 6 blank for scenario 1
+
+4. Display column 7 and 8 blank for scenario 2
+
+Report Scenarios:
+Scenario 1:
+
+A- YES
+
+There is a missing ORAJ date with OSCN. Scan Date = ORAJ. Date of Assessment (Scan/Image/Physical Exam)/Date Response Determined
+
+B- No
+
+There is an ORAJ. Date of Assessment (Scan/Image/Physical Exam) /Date Response Determined = OSCN. Scan Date
+
+Scenario 2:
+
+C- YES
+
+There is a missing OSCN date with ORAJ. Date of Assessment (Scan/Image/Physical Exam) /Date Response Determined = OSCN. Scan Date
+
+D- NO
+
+There is an ORAJ. Date of Assessment (Scan/Image/Physical Exam) /Date Response Determined = OSCN. Scan Date
+
+Sorting:
+Country, First Site, Last Site, First Subject, Last Subject, List of Subjects, Supporting Document (N/Y, Default as N) (If supporting doc is needed for the report)
+
+Parameter Selection:
+Country, Site, Subject
+
+Form.Item Names:
+1. Subject Assignment.Site Country
+
+2. Subject Assignment.Site Mnemonic
+
+3. Subject Assignment.Subject Number
+
+4. ‘Surgery/Radiation Visit’ form supp document. DOV
+
+5. ORAJ. Sponsor ID Number
+
+6. ORAJ. Date of Assessment (Scan/Image/Physical Exam)/Date Response Determined
+
+7. OSCN. Sponsor ID Number
+
+8. OSCN. Scan Date
+
+9. Display ‘Scenario 1’ for scenario 1 in logic OR Display ‘Scenario 2’ for scenario 2 in logic

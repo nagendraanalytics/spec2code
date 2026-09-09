@@ -1,0 +1,57 @@
+Report ID: RID052
+
+Report Title:
+Missing Date of Visit
+
+Description:
+This report generates a list of subjects who have IVR Contact date that is prior to the current date by a protocol specified "Days Window" and the "Date of Visit" is missing on DOV eCRF.  The "Days Window" should be entered as a parameter
+
+Column Heading:
+1. Country
+
+2. Site
+
+3. Subject Number
+
+4. Visit Mnemonic
+
+5. IVR Contact Date
+
+6. Days since IVR Contact
+
+7. Disposition Status
+
+Logic:
+This report will output subject's visit where the DOV is missing and the system date is greater than IVR contact date + x. The report should not check DOV forms where an Erroneous visit is indicated.
+
+X is the number of days entered using a "Days Window" parameter.
+
+Report should not display deleted records.
+
+If "Randomized only" parameter selection checkbox  is checked, the report should only output subjects with Randomization number that is not null.
+
+Report Scenarios:
+Check the scenarios on test data as reference
+
+Sorting:
+Country, Site, Subject Number, Visit
+
+Parameter Selection:
+Country, Site, Subject Number, Visit, Days Window,
+
+Randomized Only, Hide Days since IVR Contact
+
+Form.Item Names:
+1. Subject Assignment.Site Country
+
+2. Subject Assignment.Site Mnemonic
+
+3. Subject Assignment.Subject Number
+
+4. Date of Visit Form.Visit Mnemonic
+
+5. Date of Visit  Form.IVR Contact Date
+
+6. Derived: System date - IVR Contact Date
+
+7. Subject Disposition Form.Code ~ DS01DSTERMCMPRC

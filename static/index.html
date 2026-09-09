@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Spec &rarr; Code</title>
+<link rel="stylesheet" href="/style.css?v=20260822-1" />
+</head>
+<body>
+<div class="console">
+
+  <aside class="rail">
+    <div class="rail-brand">
+      <span class="rail-mark">Rx</span>
+      <div>
+        <div class="rail-title">Spec<span class="arrow">&rarr;</span>Code</div>
+        <div class="rail-sub">CDM report spec / Claude</div>
+      </div>
+    </div>
+
+    <nav class="rail-steps" aria-label="Workflow steps">
+      <button type="button" class="rail-step" data-step="spec" aria-current="step">
+        <span class="rail-step-num">1</span>
+        <span class="rail-step-label">
+          <span class="rail-step-name">Spec</span>
+          <span class="rail-step-hint">Load &amp; describe</span>
+        </span>
+      </button>
+      <button type="button" class="rail-step" data-step="understand" disabled>
+        <span class="rail-step-num">2</span>
+        <span class="rail-step-label">
+          <span class="rail-step-name">Understand</span>
+          <span class="rail-step-hint">Logic walkthrough</span>
+        </span>
+      </button>
+      <button type="button" class="rail-step" data-step="review" disabled>
+        <span class="rail-step-num">3</span>
+        <span class="rail-step-label">
+          <span class="rail-step-name">Review</span>
+          <span class="rail-step-hint">QC readiness</span>
+        </span>
+      </button>
+      <button type="button" class="rail-step" data-step="generate" disabled>
+        <span class="rail-step-num">4</span>
+        <span class="rail-step-label">
+          <span class="rail-step-name">Generate</span>
+          <span class="rail-step-hint">Code + validation</span>
+        </span>
+      </button>
+    </nav>
+
+    <button type="button" class="export-btn" id="export-pdf-btn" disabled title="Complete Generate first">
+      &#8681; Export to PDF
+    </button>
+    <button type="button" class="export-btn" id="copy-all-btn" disabled title="Complete Generate first">
+      &#128203; Copy All to Clipboard
+    </button>
+    <button type="button" class="export-btn" id="learned-patterns-btn" title="Review general patterns discovered from spec+code cross-references">
+      &#128218; Learned Patterns
+    </button>
+    <div id="learned-patterns-panel" class="learned-patterns-panel" hidden></div>
+
+    <div class="rail-tenant">
+      <label for="tenant-input">Tenant</label>
+      <input id="tenant-input" placeholder="default" autocomplete="off" spellcheck="false" />
+    </div>
+    <p class="rail-version" id="rail-version">build 20260822-1</p>
+  </aside>
+
+  <main class="stage">
+    <div id="error-banner" class="error-banner" hidden></div>
+
+    <!-- STEP 1: SPEC -->
+    <section class="step-panel" id="step-spec" data-active="true">
+      <div class="stage-card">
+        <h2 class="stage-card-title">Load spec from plain text</h2>
+        <p class="stage-card-hint">
+          Paste raw spec text (Notepad, Word, email — anything unstructured), or upload a .txt file.
+          Fields below will be populated for you to review and edit.
+        </p>
+        <textarea id="raw-text-input" rows="10" placeholder="Paste raw spec text here..."></textarea>
+        <div class="extract-row">
+          <input type="file" id="raw-text-file" accept=".txt" />
+          <button type="button" id="extract-btn" class="btn btn-ghost">Extract Fields</button>
+        </div>
+        <p class="extract-notes" id="extract-notes" hidden></p>
+        <div class="gap-chat-row" id="gap-chat-row" hidden>
+          <button type="button" class="btn btn-secondary" id="start-gap-chat-btn">&#128172; Chat to Fill Gaps</button>
+        </div>
+        <div id="gap-chat-panel"></div>
+      </div>
+
+      <div class="stage-card" id="sas-migration-panel">
+        <div class="stage-card-header">
+          <h2 class="stage-card-title">Migrate from existing SAS code (optional)</h2>
+        </div>
+        <p class="stage-card-hint">
+          Only relevant if this client is migrating off legacy SAS-based reporting. Paste or
+          upload SAS code that's already been written and confirmed working -- it will be
+          reverse-engineered into the same spec fields below, so it can then be regenerated for
+          whichever target (CQL, SAS, R, Python) this client actually needs. This does NOT
+          translate SAS syntax directly -- see the migration notes for why.
+        </p>
+        <textarea id="sas-code-input" rows="8" placeholder="Paste existing SAS code here..."></textarea>
+        <div class="extract-row">
+          <input type="file" id="sas-code-file" accept=".sas,.txt" />
+          <button type="button" id="migrate-sas-btn" class="btn btn-ghost">Understand SAS Code</button>
+        </div>
+        <p class="extract-notes" id="sas-migration-notes" hidden></p>
+        <div class="extract-row crossref-row">
+          <button type="button" id="crossref-sas-btn" class="btn btn-secondary" title="Requires an existing spec (Report ID + Description) to check the code against">
+            Cross-Reference Against Spec
+          </button>
+        </div>
+        <div id="crossref-panel"></div>
+      </div>
+
+      <div class="stage-card" id="study-metadata-panel">
+        <div class="stage-card-header">
+          <h2 class="stage-card-title">Study metadata (optional)</h2>
+        </div>
+        <p class="stage-card-hint">
+          Loading real Form/Item metadata for a study grounds generation in actual names instead
+          of inferred CDISC convention, and lets guardrails verify Forms actually exist.
+        </p>
+        <div class="field">
+          <label for="metadataStudyId">Study ID</label>
+          <input id="metadataStudyId" placeholder="e.g. PROTO-001" />
+        </div>
+        <div class="field">
+          <label for="metadataCsv">Metadata CSV (columns: form, item, label, data_type)</label>
+          <textarea id="metadataCsv" rows="4" placeholder="Form,Item,Label,Type&#10;AE,AESEQ,AE Sequence Number,Integer&#10;AE,AETERM,AE Verbatim Term,Text"></textarea>
+        </div>
+        <div class="extract-row">
+          <input type="file" id="metadataCsvFile" accept=".csv" />
+          <button type="button" id="upload-metadata-btn" class="btn btn-ghost">Upload Metadata</button>
+        </div>
+        <p class="extract-notes" id="metadata-upload-status" hidden></p>
+      </div>
+
+      <form class="stage-card" id="spec-form">
+        <div class="stage-card-header">
+          <h2 class="stage-card-title">Report specification</h2>
+          <select id="load-example" class="example-select">
+            <option value="">Load example spec&hellip;</option>
+          </select>
+        </div>
+
+        <div class="route-row">
+          <div class="route-field">
+            <label for="edcSystem">EDC system</label>
+            <select id="edcSystem">
+              <option value="veeva">Veeva</option>
+              <option value="rave">Rave</option>
+              <option value="oracle_clinical_one">Oracle Clinical One</option>
+            </select>
+          </div>
+          <div class="route-field">
+            <label for="language">Language</label>
+            <select id="language">
+              <option value="cql">CQL</option>
+              <option value="python">Python</option>
+              <option value="sql">SQL</option>
+              <option value="sas">SAS</option>
+              <option value="r">R</option>
+            </select>
+          </div>
+        </div>
+        <p class="route-hint" id="route-hint">Only Veeva/CQL and Veeva/Python have a verified generation path today.</p>
+        <label class="beta-optin" id="beta-optin-row" hidden>
+          <input type="checkbox" id="beta-optin-checkbox" />
+          I understand this output is UNVERIFIED and must be checked before use
+        </label>
+
+        <div class="field">
+          <label for="reportId">Report ID<span class="req">*</span></label>
+          <input id="reportId" placeholder="e.g. ABC002_JR" required />
+        </div>
+
+        <div class="stage-card" id="supporting-doc-panel" style="margin:0 0 16px;">
+          <div class="stage-card-header">
+            <h2 class="stage-card-title">Supporting document (optional)</h2>
+          </div>
+          <p class="stage-card-hint">
+            Upload this report's real View/Column mapping (e.g. an RID_supp_doc.csv export) to
+            ground Understand Logic and Generate in the exact column names this report actually
+            uses, instead of inferred ones. Keyed to the Report ID above -- fill that in first.
+          </p>
+          <div class="field">
+            <label for="supportingDocCsv">Supporting document CSV (columns: VIEWNAME, COLUMNNAME, ITEMQUESTION, ORIGINAL ITEMQUESTION, CONTROLLEVEL, PREFIX)</label>
+            <textarea id="supportingDocCsv" rows="4" placeholder="VIEWNAME,ORIGINAL ITEMQUESTION,ITEMQUESTION,CONTROLLEVEL,COLUMNNAME,PREFIX"></textarea>
+          </div>
+          <div class="extract-row">
+            <input type="file" id="supportingDocCsvFile" accept=".csv" />
+            <button type="button" id="upload-supporting-doc-btn" class="btn btn-ghost">Upload Supporting Document</button>
+          </div>
+          <p class="extract-notes" id="supporting-doc-upload-status" hidden></p>
+          <div id="supporting-doc-table"></div>
+        </div>
+
+        <div class="field">
+          <label for="studyId">Study ID (optional — links to uploaded metadata above)</label>
+          <input id="studyId" placeholder="e.g. PROTO-001" />
+        </div>
+
+        <div class="field">
+          <label for="description">Description<span class="req">*</span></label>
+          <textarea id="description" rows="4" placeholder="What does this report identify?" required></textarea>
+        </div>
+
+        <div class="field">
+          <label for="columnHeading">Column heading</label>
+          <textarea id="columnHeading" rows="6" placeholder="Output columns, one per line"></textarea>
+        </div>
+
+        <div class="field">
+          <label for="logic">Logic</label>
+          <textarea id="logic" rows="9" placeholder="The rule that determines what's included"></textarea>
+        </div>
+
+        <div class="field">
+          <label for="reportScenarios">Report scenarios</label>
+          <textarea id="reportScenarios" rows="6" placeholder="YES/NO test cases, if any"></textarea>
+        </div>
+
+        <div class="field">
+          <label for="sorting">Sorting</label>
+          <input id="sorting" placeholder="Output sort order" />
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-block" id="submit-btn">Understand Logic &rarr;</button>
+      </form>
+    </section>
+
+    <!-- STEP 2: UNDERSTAND -->
+    <section class="step-panel" id="step-understand" data-active="false">
+      <div id="understand-content"></div>
+    </section>
+
+    <!-- STEP 3: REVIEW -->
+    <section class="step-panel" id="step-review" data-active="false">
+      <div id="review-content"></div>
+    </section>
+
+    <!-- STEP 4: GENERATE -->
+    <section class="step-panel" id="step-generate" data-active="false">
+      <div id="generate-content"></div>
+    </section>
+
+    <!-- Populated only when Export to PDF is clicked; invisible on screen
+         (display:none), shown only under @media print. Kept as a single
+         flat document rather than reusing the interactive step panels,
+         since those have data-active="false" hiding most of them at any
+         given time -- print needs all four stages visible at once. -->
+    <div id="export-view" class="export-view"></div>
+  </main>
+</div>
+
+<script src="/app.js?v=20260908-1"></script>
+</body>
+</html>

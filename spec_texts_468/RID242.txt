@@ -1,0 +1,113 @@
+Report ID: RID242
+
+Report Title:
+Toxicity grade or Hematological Toxicity Grade for CLL vs Death check
+
+Description:
+This report lists subjects whose Maximum Toxicity Grade or Hematological Toxicity Grade for CLL is equal to selected toxicity grade (4 or 5), but AE outcome is not fatal or serious criteria is not Death. The report also lists subjects who have AE outcome that is fatal or Serious criteria is Death, but Maximum Toxicity Grade and Hematological Toxicity Grade for CLL is not equal to selected toxicity grade (4 or 5). Maximum Toxicity grade or Hematological Toxicity Grade for CLL is selected using the parameter selection screen.
+
+Column Heading:
+1. Country
+
+2. Site
+
+3. Subject Number
+
+4. AE Seq
+
+5. AE Term
+
+6. Outcome of AE
+
+7. Serious Criteria
+
+8. Toxicity Grade
+
+9. Hematological Toxicity Grade
+
+Logic:
+Logic 1 Scenario 1:
+
+(
+
+Logic 1.1: AE.Toxicity Grade = Value from “Toxicity Grade” prompt
+
+OR
+
+Logic 1.2: AE.Hematological Toxicity Grade for CLL = Value from “Hematological Toxicity Grade for CLL” prompt
+
+)
+
+AND
+
+(
+
+Logic 1.3: AE.Outcome of AE <> Fatal
+
+OR
+
+Logic 1.4: AE.Serious Criteria <> Death Event reported in autopsy as cause of death?
+
+)
+
+Logic 2 Scenario 2:
+
+(
+
+Logic 2.1: AE.Outcome of AE = Fatal
+
+OR
+
+Logic 2.2: AE.Serious Criteria = Death Event reported in autopsy as cause of death?
+
+)
+
+AND
+
+(
+
+Logic 2.3: There is not at least one record in the add entry section with:
+
+(
+
+Logic 2.4: AE.Toxicity Grade = Value from “Toxicity Grade” prompt
+
+OR
+
+Logic 2.5: AE.Hematological Toxicity Grade for CLL = Value from “Hematological Toxicity Grade for CLL” prompt
+
+)
+
+)
+
+Notes:
+
+1.	For Logic 2, if “AE.Serious Criteria” is different than “Death Event reported in autopsy as cause of death?”, then column 7 should be blank
+
+Report Scenarios:
+As per the defined logic
+
+Sorting:
+Country, Site, Subject Number, AE Seq
+
+Parameter Selection:
+Country, First Site, Last Site, First Subject, Last Subject, List of Subjects, Randomized Only (N/Y, default as N), Toxicity Grade (free textbox, default as 5), Hematological Toxicity Grade for CLL (free textbox, default as 5)
+
+Form.Item Names:
+1. SA. Site Country
+
+2. SA. Site Mnemonic
+
+3. SA. Subject Number
+
+4. AE. Formidx
+
+5. AE. AE Term
+
+6. AE. Outcome of AE
+
+7. AE. Serious Criteria
+
+8. AE. Toxicity Grade
+
+9. AE. Hematological Toxicity Grade

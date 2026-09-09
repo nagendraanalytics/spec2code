@@ -1,0 +1,141 @@
+Report ID: RID164
+
+Report Title:
+Procedures Overlapping with same subject for same PT/LLTs
+
+Description:
+This report identifies Procedure overlaps based on matching PT/LLT terms and overlapping onset/end dates.
+
+Column Heading:
+1. Country
+
+2. Site
+
+3. Subject Number
+
+4. Form
+
+5. Encoding Hierarchy
+
+6. PROC Encoded Term
+
+7. PROC 1 Seq (PROC 1 is the one with smaller Seq. No. between the pair of overlapping records)
+
+8. PROC 1 Verbatim
+
+9. PROC 1 Start Date
+
+10. PROC 1 Stop Date
+
+11. PROC 2 Seq (PROC 2 is the one with bigger Seq. No. between the pair of overlapping records)
+
+12. PROC 2 Verbatim
+
+13. PROC 2 Start Date
+
+14. PROC 2 Stop Date
+
+Logic:
+Output is produced if a subject has overlapping Procedure Start Date and Procedure Stop Date for identical Procedure PT or LLT Terms.  Each pair of overlapping Procedures should be output on one line.
+
+User should select PT or LLT for comparison in parameter. If nothing is selected, output for overlapping identical LLT or PT.
+
+Partial date also need to be considered while programming for identifying overlapping records
+
+If either of the PROC has blank onset date or end date, consider them as ongoing.
+
+If Procedure Start Date has UNK, please convert to the first day of the month and/or Jan;
+
+If Procedure Stop Date has UNK, please convert to the last day of the month and /or Dec.
+
+Deleted record and erroneous visits should not be considered.
+
+For APPRC consider taking start date as stop date, since stop date is not available on form
+
+Report Scenarios:
+Please check two forms: PROC and APPRC. Check within form only.
+
+a. If parameter LLT is selected:
+
+1) Output = YES
+
+two identical Procedure terms (with same LLT after encoding) have overlapping start dates/end dates
+
+2) Output = NO
+
+identical Procedure terms (with same LLT after encoding) have no overlapping start dates/end dates
+
+3) Output = NO
+
+different Procedure terms (with different LLT after encoding)
+
+4) Output = NO
+
+Deleted PROC record
+
+b. If parameter PT is selected, or no selection with PT/LLT or both selected:
+
+1) Output = YES
+
+two identical Procedure terms (with same PT and same LLT after encoding) have overlapping start dates/end dates
+
+2) Output = YES
+
+two identical Procedure terms (with same PT and different LLT after encoding) have overlapping start dates/end dates
+
+3) Output = NO
+
+identical Procedure terms (with same PT after encoding) have no overlapping start dates/end dates
+
+4) Output = NO
+
+different Procedure terms (with different PT after encoding)
+
+5) Output = NO
+
+Deleted PROC record
+
+Sorting:
+Country, Site, Subject Number, PROC 1 Seq
+
+Parameter Selection:
+Randomized Only, Country, Site, Subject, List of Subjects, LLT/PT
+
+Form.Item Names:
+1. Subject Assignment.Site Country
+
+2. Subject Assignment.Site Mnemonic
+
+3. Subjects.Subject Number
+
+4. PROC or APPRC
+
+5. Please display text:
+
+""LLT"" – when parameter is LLT;
+
+""PT"" - when parameter is PT
+
+""PT&LLT"" - when parameter is PT and LLT selected, or neither is selected
+
+6. PROCEDURES Form.LLT or APPRC. LLT
+
+PROCEDURES Form.PT or APPRC. PT
+
+PROCEDURES Form.PT/PROCEDURES Form.LLT or APPRC. LLT/ APPRC. PT (PT  and LLT terms are separated by slash. If same PT different LLT, display as PT/LLT 1/LLT 2)
+
+7. PROCEDURES Form.Formidx (1)  or APPRC.Formidx (1)
+
+8. PROCEDURES Form. Procedure Term (1) or APPRC. Procedure Term (1)
+
+9. PROCEDURES Form.Procedure Start Date and Time (1) or APPRC.Procedure Start Date (1)
+
+10. PROCEDURES Form.Procedure Stop Date and Time (1) or APPRC.Procedure Start Date (1)
+
+11.  PROCEDURES Form.Formidx (2) or APPRC.Formidx (2)
+
+12. PROCEDURES Form. Procedure Term (2) or or APPRC. Procedure Term (2)
+
+13. PROCEDURES Form.Procedure Start Date and Time (2) or APPRC.Procedure Start Date (2)
+
+14. PROCEDURES Form.Procedure Stop Date and Time (2) or APPRC.Procedure Start Date (1)

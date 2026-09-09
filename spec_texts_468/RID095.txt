@@ -1,0 +1,47 @@
+Report ID: RID095
+
+Report Title:
+External Vendor Data Record Count by data type
+
+Description:
+This report displays External Vendor Data record counts for each data type.
+
+Column Heading:
+1. eCRF
+
+2. Vendor
+
+3. Record Count
+
+Logic:
+The report should check for records in the external data eCRF, including but not limited to LABS, GEFCF, CIMG, SME views if available in a study.
+
+This report should contain a unique list of eCRF, vendor, and the record counts for that specific eCRF and vendor.
+
+Note:
+
+1.The record counts value is to count all the records for the specific eCRF and Vendor. For example, we have 2200 records for 220 patients in LABS for vendor PPDGCL, and the record counts should be displayed with 2200.
+
+2.Report shouldn't display deleted records.
+
+Report Scenarios:
+The report will count the external data record loaded into the EDC Reporting Module.
+
+Sorting:
+eCRF, Vendor,Subject Number
+
+Parameter Selection:
+eCRF, Vendor
+
+Form.Item Names:
+1.LABORATORY TESTS and GENERIC EXTERNAL FINDINGS and CENTRAL IMAGING AND CLINICAL DATA ASSESSMENTS and STUDY MEDICATION - EXTERNAL DATA LOAD
+
+2. LABORATORY TESTS Form.Transmission Source ID
+
+OR GENERIC EXTERNAL FINDINGS Form.Vendor Name
+
+OR CENTRAL IMAGING AND CLINICAL DATA ASSESSMENTS Form.Vendor Name
+
+OR STUDY MEDICATION - EXTERNAL DATA LOAD Form.Vendor Name
+
+3. Derive Count of Records

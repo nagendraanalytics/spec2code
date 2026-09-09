@@ -1,0 +1,71 @@
+Report ID: RID026
+
+Report Title:
+Associated AE Sequence Number(s) in DEATH vs Outcome of AE
+
+Description:
+This report lists subjects with mismatch between AE sequence number(s) in Death form and the AE sequence number that has outcome of AE as fatal.
+
+Column Heading:
+1. Country
+
+2. Site
+
+3. Subject Number
+
+4. AE Seq
+
+5. Outcome of AE
+
+6. Scenario
+
+Logic:
+This report will list subjects with mismatches in fatal AEs and DEATH.
+
+Display if:
+
+1) None of the Associated AE Sequence Numbers on the DEATH form corresponds to an AE with Outcome of AE = Fatal
+
+2) There is an AE with Outcome of AE = Fatal that has not been included on the DEATH form.
+
+Deleted records should not be considered.
+
+Report Scenarios:
+1) Output = YES
+
+Any of the Associated AE Sequence Numbers on the DEATH Form does not correspond to an AE with Outcome of AE = Fatal
+
+2) Output = YES
+
+AE with Outcome of AE = Fatal has not been included on the DEATH Form
+
+3) Output = NO
+
+At least one of the Associated AE Sequence Numbers on the DEATH Form corresponds to an AE with Outcome of AE = Fatal
+
+4) Outcome = NO
+
+All AE with Outcome of AE = Fatal have been included on the DEATH Form
+
+5) Output = NO
+
+Deleted records
+
+Sorting:
+Country, Site, Subject Number, AE Seq
+
+Parameter Selection:
+Country, Site, Subject, Randomized Only, List of Subjects
+
+Form.Item Names:
+1. Subject Assignment.Site Country
+
+2. Subject Assignment.Site Mnemonic
+
+3. Subjects.Subject Number
+
+4. ADVERSE EVENTS Form.formidx / DEATH Form.Associated AE Sequence Numbers
+
+5. ADVERSE EVENTS Form.Outcome of AE
+
+6. Hardcoded to 1 or 2 according to the logic

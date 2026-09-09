@@ -1,0 +1,157 @@
+Report ID: RID341
+
+Report Title:
+OABC reconciliation
+
+Description:
+Output is produced when subject was randomized and does not have a record in OABC every time a CTO is performed and when PMS1/PMST is completed as Persistent disease, progressive disease or recurrence/Relapsed Disease but there is no OABC with Persistent disease, progressive disease or recurrence/Relapsed Disease as overall response within selected window of days.
+
+Column Heading:
+1. Country
+
+2. Site
+
+3. Subject Number
+
+4. CTO Seq#
+
+5. CTO Date of Assessment
+
+6. OABC Seq#
+
+7. OABC Date Response Determined
+
+8. OABC Overall Response
+
+9. PMS1/PMST Visit
+
+10. PMS1/PMST Date of Assessment
+
+11. PMS1/PMST Status of Study Medication
+
+12. Scenario
+
+Logic:
+LOGIC 1
+
+Logic 1.1 (CTO.Date of assessment OR Cystoscopy Date <> NULL)
+
+AND
+
+(
+
+Logic 1.2 There is no OABC record
+
+OR
+
+Logic 1.3 There is no OABC record where OABC. Date Response Determined = CTO.Date of assessment OR Cystoscopy Date mentioned in Logic 1.1
+
+)
+
+LOGIC 2
+
+Logic 2.1
+
+PMS1. Status of Study Medication at the End of This Trial Segment/PMST.Status of Subject at end of all Study Treatments = PMS1/PMST Status (as provided in supp doc)
+
+AND There is no
+
+OABC. Date Response Determined => PMS1.Date of Assessment/PMST.Date of Assessment - Window of days (as provided in supp doc) AND <= PMS1.Date of Assessment/PMST.Date of Assessment
+
+OR
+
+Logic 2.2
+
+PMS1. Status of Study Medication at the End of This Trial Segment/PMST.Status of Subject at end of all Study Treatments = PMS1/PMST Status (as provided in supp doc)
+
+AND
+
+OABC. Date Response Determined => PMS1.Date of Assessment/PMST.Date of Assessment - Window of days (as provided in supp doc) AND <= PMS1.Date of Assessment/PMST.Date of Assessment
+
+AND
+
+OABC. Overall Response <> OABC Overall Response (as provided in supp doc for corresponding PMS1/PMST Status)
+
+Requires supporting document to be named ONC_OABC_002_supp_<xxxxxxx>.csv and will contain the following columns and associated content:
+
+PMS1/PMST Status – provide PMS1. Status of Study Medication at the End of This Trial Segment/PMST.Status of Subject at end of all Study Treatments to be verified for Scenario 2
+
+OABC Overall Response – provide OABC. Overall corresponding to the PMS1/PMST Status in the same row,
+
+Window of days – provide max allowed window of days between OABC and PMS1/PMST for Scenario 2
+
+For example:
+
+PMS1/PMST Status, OABC Overall Response, Window of days
+
+Stable Disease/Persistent Disease, Persistent Disease, 28
+
+Progressive Disease, Progressive Disease, 28
+
+Relapse/Recurrence, Recurrence/Relapsed Disease, 28
+
+Note 1: Deleted records or erroneous visits will be excluded
+
+Note 2: Leave column 6-11 blank when meet logic 1.1, 1.2, 1.3 ; Leave column 4-8 blank when meet logic 2.1; Leave column 4-5 blank when meet logic 2.2.
+
+Note 3: Report only checks randomized subjects.
+
+Report Scenarios:
+Scenario 1
+
+Output yes
+
+CTO was performed but no record in OABC was found.
+
+Output yes
+
+CTO was performed and OABC was found but CTO date of assessment is different than OABC date of assessment.
+
+Output No
+
+CTO was performed and OABC was found and CTO date of assessment is equal to OABC date of assessment
+
+Scenario 2
+
+Output yes
+
+PMS1/PMST was completed as provided in supporting doc and there is no OABC with Date within PMS1/PMST - window of days
+
+Output yes
+
+PMS1/PMST was completed as provided in supporting doc and there is OABC with Date within PMS1/PMST - window of days and OABC Overall Response is different than provided in supporting doc
+
+Output No
+
+PMS1/PMST was completed as provided in supporting doc and there is OABC with Date within PMS1/PMST - window of days and OABC Overall Response was completed as provided in supporting doc
+
+Sorting:
+Country, Site, Subject Number
+
+Parameter Selection:
+Country, First Site, Last Site, First Subject, Last Subject, List of Subjects
+
+Form.Item Names:
+1. Subject Assignment.Site Country
+
+2. Subject Assignment form.Site Mnemonic
+
+3. Subjects.Subject Number
+
+4. CTO. Sponsor ID Number
+
+5. CTO FORM.Date of Assessment
+
+6. OABC. Sponsor ID number
+
+7. OABC FORM.Date Response Determined
+
+8. OABC. Overall Response
+
+9. PMS1. Visit Mnemonic/PMST.Visit Mnemonic
+
+10. PMS1. Date of Assessment/PMST.Date of Assessment
+
+11. PMS1. Status of Study Medication at the End of This Trial Segment/PMST.Status of Subject at end of all Study Treatments
+
+12. Display ‘Scenario 1’ for Logic 1, display ‘Scenario 2’ for Logic 2

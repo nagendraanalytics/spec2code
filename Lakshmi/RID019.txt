@@ -1,0 +1,21 @@
+SELECT
+    ae.`@HDR`.`Site`.`Country` AS `Country`,
+    ae.`@HDR`.`Site`.`Number` AS `Site Number`,
+    ae.`@HDR`.`Subject`.`Name` AS `Subject Number`,
+    ae.AESPIDIT AS `AE Seq`,
+    ae.AEAETERMIT AS `AE Term`,
+    DATE_FORMAT(ae.AEAESTDTCIT, '%d-%m-%Y') AS `AE Onset Date`
+FROM `EDC`.`AEFM` ae
+WHERE `@Form`.`Status` = 'submitted__v'
+    AND CODEDTERM(ae.AEAETERMIT, 'PT') LIKE '%infusion%'
+    AND ae.AEAESTDTCIT IS NOT NULL
+    AND (ae.DELETEDFM = 'N' OR ae.DELETEDFM IS NULL)
+    AND NOT EXISTS (
+        SELECT 1
+        FROM `EDC`.`SMFM` sm
+        WHERE sm.`@HDR`.`Subject`.`ID` = ae.`@HDR`.`Subject`.`ID`
+            AND `@Form`.`Status` = 'submitted__v'
+            AND (sm.DELETEDFM = 'N' OR sm.DELETEDFM IS NULL)
+            AND RAWDATE(sm.SMEXSTDTCIT) BETWEEN SUBDATE(RAWDATE(ae.AEAESTDTCIT), INTERVAL @Timeframe DAY) AND RAWDATE(ae.AEAESTDTCIT)
+    )
+ORDER BY `Country`, `Site Number`, `Subject Number`

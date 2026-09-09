@@ -1,0 +1,69 @@
+Report ID: RID076
+
+Report Title:
+Incremental Encoding of Prior Concomitant Medication/Associated Persons Concomitant Medications Terms - Counts
+
+Description:
+This report displays distinct occurrences of the unique combination of Medication Name and Encoded Drug Name. It also displays the frequency for each distinct occurrence.
+
+Column Heading:
+1. eCRF
+
+2. Medication Name
+
+3. Standardized Medication Name
+
+4. Encoded Drug Name
+
+5. Broader Term
+
+6. Medication Class
+
+7. Medication Class Code
+
+8. ATC1 Term
+
+9. ATC2 Term
+
+10. Frequency
+
+Logic:
+The report should display output for unique combinations of Medication Name and Encoded Drug Name from Prior and Concomitant Medication form (CM)/Associated Persons Concomitant Medications form (APCM) with the frequency of occurrence.  Comparisons should be on non-null terms and should not be case-sensitive.
+
+Incremental outputs can be run by last modified date on Standardized Medication Name.
+
+Selection Criteria should be displayed on the first page of the entire report, above the output table, not within the header or footer. It should include Country, Site, Subject and Randomized Only, even when these items do not appear on the report output.
+
+Report should not display deleted records.
+
+If "Randomized only" parameter selection checkbox  is checked, the report should only output subjects with Randomization number that is not null.
+
+Report Scenarios:
+The report should display output for unique combinations of Medication Name and Encoded Drug Name from Prior and Concomitant Medication form (CM)/Associated Persons Concomitant Medications form (APCM) with the frequency of occurrence.
+
+Sorting:
+Medication Name, Encoded Drug Name, Standardized Medication Name, Frequency
+
+Parameter Selection:
+Country, Site, Subject, Randomized Only, Changed Data From, Changed Data To, List of Subjects
+
+Form.Item Names:
+1. PRIOR AND CONCOMITANT MEDICATION/Associated Persons Concomitant Medications Form.Form Mnemonic
+
+2. PRIOR AND CONCOMITANT MEDICATION/Associated Persons Concomitant Medications Form.Medication Name
+
+3. PRIOR AND CONCOMITANT MEDICATION/Associated Persons Concomitant Medications Form.Standardized Medication Name
+
+4. PRIOR AND CONCOMITANT MEDICATION/Associated Persons Concomitant Medications Form.Encoded Drug Name
+
+5. PRIOR AND CONCOMITANT MEDICATION/Associated Persons Concomitant Medications Form.Broader Term
+
+6. PRIOR AND CONCOMITANT MEDICATION/Associated Persons Concomitant Medications Form.Medication Class
+
+7. PRIOR AND CONCOMITANT MEDICATION/Associated Persons Concomitant Medications Form.Medication Class Code
+
+8. PRIOR AND CONCOMITANT MEDICATION/Associated Persons Concomitant Medications Form.ATC1 Term
+
+9. PRIOR AND CONCOMITANT MEDICATION/Associated Persons Concomitant Medications Form.ATC2 Term
+
+10. Derived: count of unique combinations of Medication Name and Encoded Drug Name

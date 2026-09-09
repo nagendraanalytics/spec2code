@@ -1,0 +1,187 @@
+Report ID: RID013
+
+Report Title:
+Action Taken with Study Medication vs Study Medication Last Dose and Label Description Status reconciliation
+
+Description:
+This report is used to identify patients with last dose checkbox missing and missing/incorrect Label Description Status.
+
+Column Heading:
+1. Country
+
+2. Site
+
+3. Subject Number
+
+4. AE Seq
+
+5. AE Term
+
+6. AE Action Taken with Study Medication [X]
+
+7. SM Visit
+
+8. SM eCRF
+
+9. SM Seq
+
+10. Study Medication
+
+11. Label Description/Dose Number
+
+12. SM Status
+
+13. Error Message
+
+Logic:
+Logic 1
+
+Logic 1.1 AE.Action Taken with Study Medication = Discontinued
+
+AND
+
+Logic 1.2 SM/SMAB/SMAU.Label Description/Study Medication = Study Medication
+
+AND
+
+Logic 1.3 SM/SMAB/SMAU.Label Description/Study Medication with maximum Stop Date/Time
+
+AND
+
+Logic 1.4 SM/SMAB/SMAU. Please Indicate if this is the Last Dose for this Label Description/Study Medication = null
+
+Error Message: Last Dose Missing
+
+Logic 2
+
+Logic 2.1 AE.Action Taken with Study Medication = Discontinued
+
+AND
+
+{Logic 2.2 SM/SMAB/SMAU.Label Description/Study Medication = Study Medication
+
+AND
+
+Logic 2.3 SM/SMAB/SMAU.Please Indicate if this is the Last Dose for this Label Description/Study Medication <> null
+
+AND
+
+Logic 2.4 SM. SM/SMAB/SMAU.Label description/Study Medication Status = null}
+
+Error Message: Label Description Status Missing
+
+Logic 3
+
+Logic 3.1 AE.Action Taken with Study Medication = Discontinued
+
+AND
+
+{Logic 3.2 SM/SMAB/SMAU.Label Description/Study Medication = Study Medication
+
+AND
+
+Logic 3.3 SM/SMAB/SMAU.Please Indicate if this is the Last Dose for this Label Description/Study Medication <> null
+
+AND
+
+Logic 3.4 SM. SM/SMAB/SMAU.Label description/Study Medication Status <> Adverse Event}
+
+Error Message: Incorrect Label Description Status
+
+Notes
+
+1. For studies with multiple study medications, match AE action taken with Study Medication [x] and Relationship to Study Medication [x] with Study Medication [x] on SM/SMAU/SMAB.
+
+For studies with single study medication, Overall Action Taken and/or Overall Relationship to Study Medication is checked and a match on Study Medication name is not performed.
+
+2. If pulldown lists Study Medication 1, Study Medication 2 etc. are available in the AE form, match the Action taken with Study Medication [x] and Relationship to Study Medication [x] with pulldown list value provided in Study Medication [x] and with Study Medication [x] on SM/SMAU/SMAB.
+
+3. Exclude deleted data and erroneous visit from programming
+
+7. For SM/SMAU/SMAB Study Medication, use SM.Label Description/SMAU.Dose Number/SMAB.Dose Number directly. If SM Label Description and SMAU/SMAB Dose Number are not exactly matched with Study Medication, using the optional supporting doc study_med_match_supp_.csv to define the mapping.
+
+The optional supporting document is only required in the following cases:
+
+- SM Label Description and SMAU/SMAB Dose Number are not exactly matched with Study Medication. This supporting document is only required to be created once per trial. If it was already created and uploaded, there is no need to duplicate it.
+
+Optional supporting document should be named as study_med_match_supp_.csv and will contain the following columns and associated content:
+
+1 row for each Label Description or Dose Number present in SM/SMAU/SMAB eCRFs.
+
+1. eCRF – SM/SMAU/SMAB
+
+2. Study Medication – Value of Study Medication
+
+3. Matching Item – SM Label Description or SMAU/SMAB Dose Number
+
+4. Matching Value – Value of SM Label Description or SMAU/SMAB Dose Number
+
+eCRF,Study Medication,Matching Item,Matching Value
+
+SM,-1439,Label Description,-1439 100 mg
+
+SM,Methadone,Label Description,Methadone Tablet 5 mg
+
+SM,Methadone,Label Description,Methadone Tablet 10 mg
+
+SMAB,3475/Placebo,Dose Number,3475/Placebo
+
+SMAU,Carboplatin,Dose Number,Carboplatin
+
+SMAU,Carboplatin,Dose Number,Carboplatin - Dose 1
+
+SMAU,Carboplatin,Dose Number,Carboplatin - Dose 2
+
+SMAU,Carboplatin,Dose Number,Carboplatin - Dose 3
+
+The actual information provided by the optional supporting doc can be outputted by selecting Y in the parameter "Study Med Match Page".
+
+Report Scenarios:
+Output: YES
+
+1. Output will be displayed when Adverse Event action taken with Study Medication is marked as Discontinued, but Study Medication last dose checkbox is missing
+
+2. Output will be displayed when Adverse Event action taken with Study Medication is marked as Discontinued, but Label Description Status for this Study Medication is missing.
+
+3. Output will be displayed when Adverse Event action taken with Study Medication is marked as Discontinued, but Label Description Status for this Study Medication is different than Discontinued due to Adverse Event.
+
+OUTPUT: NO
+
+4. Deleted AE or SM/SMAB/SMAU entries.
+
+5. Output will NOT be displayed when Adverse Event action taken with Study Medication is marked as Discontinued, and Label Description Status for this Study Medication is equal to Discontinued due to Adverse Event.
+
+6. Output will NOT be displayed when Adverse Event action taken with Study Medication is marked with something different from Discontinued.
+
+Sorting:
+Country, Site, Subject Number, Visit, AESeq, SM eCRF, SM Seq, Study Medication
+
+Parameter Selection:
+Country, First Site, Last Site, First Subject, Last Subject, List of Subjects, Randomized Only, Study Med Match Page (Yes/No)
+
+Form.Item Names:
+1. SA.Country
+
+2. SA.Site Mnemonic
+
+3. SA.Subject Number
+
+4. AE.FORMIDX
+
+5. AE.AE Term
+
+6. AE.Action taken with Study Medication [X]
+
+7. SM/SMAU/SMAB.VISITMNEMONIC
+
+8. SM/SMAU/SMAB.FORMMNEMONIC
+
+9. SM/SMAU/SMAB.FORMIDX
+
+10. SM/SMAU/SMAB.Study Medication
+
+11. SM.Label Description/SMAU.Dose Number/SMAB.Dose Number
+
+12. SM/SMAB/SMAU.Label description/Study Medication Status
+
+13. Logic.Error Message

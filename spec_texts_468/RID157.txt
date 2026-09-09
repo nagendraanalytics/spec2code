@@ -1,0 +1,291 @@
+Report ID: RID157
+
+Report Title:
+Missing Follow-Up Forms per schedule
+
+Description:
+This report displays subjects who are missing a Follow up Assessment based on specific interval.
+
+Column Heading:
+1. Country
+
+2. Site
+
+3. Subject Number
+
+4. Stratification
+
+5. Start Form of Follow Up
+
+6. Start Date of Follow Up
+
+7. Form for Calculation
+
+8. Date of Calculation
+
+9. Follow Up Visit
+
+10. Missing eCRF
+
+11. Week
+
+12. Expected Assessment Date Range
+
+Logic:
+There is NO ‘End of Follow Up CONDFORM.End of Follow Up CONDITEM’ that meets condition provided by ‘End of Follow Up CONDSYMBOL’ and ‘End of Follow Up CONDRESULT’
+
+AND
+
+‘CONDFORM.CONDITEM’ provided in Supporting document is <> NULL
+
+AND
+
+‘CONDFORM.CONDITEM’ meets condition provided by ‘CONDSYMBOL’ and ‘CONDRESULT’
+
+AND
+
+There is NO ‘eCRF.DATE OF eCRF’ in ‘VISIT’ which is within the ‘Week’ (see note 8) timeframe ‘DATEFORM.CALCDATE’ AND that is after ‘CONDFORM.CONDDATE’
+
+Logic 2: ‘Criteria form.Criteria itemquestion’ meets condition provided by ‘Criteria Value’
+
+Note 1: Deleted records and Erroneous Visits should not be taken into account for programming.
+
+Note 2: CONDSYMBOL can be entered as “=” that means that CONDFORM.CONDITEM should be = to CONDRESULT, or can be entered as “<>” that means that CONDFORM.CONDITEM should be <> to CONDRESULT
+
+Note 3: End of Follow Up CONDSYMBOL can be entered as “=” that means that End of Follow Up CONDFORM.End of Follow Up CONDITEM should be = to End of Follow Up CONDRESULT, or can be entered as “<>” that means that End of Follow Up CONDFORM. End of Follow Up CONDITEM should be <> to End of Follow Up.CONDRESULT
+
+Note 4: CONDRESULT can be entered as a Value or can be entered as “NULL”. NULL value means than CONDFORM.CONDITEM should be “=” or “<>” (according to CONDSYMBOL) to blank/null/not completed
+
+Note 5: End of Follow Up CONDRESULT can be entered as a Value or can be entered as “NULL”. NULL value means than End of Follow UpCONDFORM. End of Follow UpCONDITEM should be “=” or “<>” (according to CONDSYMBOL) to blank/null/not completed
+
+Note 6: For Column #12 display the date range expected by showing (the minimum day to maximum day) using the format: (dd-Mmm-yyyy TO dd-Mmm-yyyy). This expected range will be calculated using the items 'CALCDATE', ‘Expected Week’, 'Minimum days allowed’, 'Maximum days allowed'.
+
+Steps to calculate the 'Expected timeframe':
+
+A.      Calculate different timepoints by doing the following mathematical operation:
+
+Timepoint 1: CALCDATE + Expected Week
+
+Timepoint 2: CALCDATE + 2* Expected Week
+
+Timepoint 3: CALCDATE + 3* Expected Week
+
+Timepoint N: CALCDATE + (N)* Expected Week
+
+B.      Timepoints calculated on step A should be: CALCDATE + Expected Week <= Timepoint N <= CALCDATE + (N)* Expected Week
+
+C.      Expected Timeframe = From Timepoint N - 'Minimum days allowed’ to Timepoint N + 'Maximum days allowed'
+
+Example:
+
+A.      CALCDATE = 01-Jan-2020
+
+B.      CONDDATE = 20-Feb-2020
+
+C.      Expected week = 6
+
+D.      Minimum days allowed = 7
+
+E.      Maximum days allowed = 7
+
+Timepoint 1 = 01-Jan-2020 + 6 weeks = 12-Feb-2020  [NO OUTPUT, Outputs should only start for timepoints after CONDDATE]
+
+Expected Timeframe 1 = From 05-Feb-2020 to 19-Feb-2020  [NO OUTPUT, Outputs should only start for timepoints after CONDDATE]
+
+Timepoint 2 = 01-Jan-2020 + 6 weeks + 6 weeks = 25-Mar-2020  [OUTPUT]
+
+Expected Timeframe 2 = From 18-Mar-2020 to 01-Apr-2020  [OUTPUT]
+
+Timepoint 3 = 01-Jan-2020 + 6 weeks + 12 weeks = 06-May-2020  [OUTPUT]
+
+Expected Timeframe 3 = From 29-Apr-2020 to 13-May-2020  [OUTPUT]
+
+For column #11 the number will be equal to (N)*Expected Week
+
+Ej: eCRF: SPECT
+
+     DATE OF eCRF: 27-Sep-2021
+
+     DATEFORM: SR
+
+     CALCDATE: 01-Jan-2021
+
+     CONDFORM: PMS1
+
+     CONDDATE: 25-Sep-2021
+
+     Expected week Frequency: 16
+
+     Week 0 = [01-Jan-2021 - 7] TO [01-Jan-2021 + 7] = 25-Dec-20 TO 8-Jan-21
+
+     Week 16 = [01-Jan-2021 + (16 * 7) - 7] TO [01-Jan-2021+(16 * 7) + 7 days] = 16-Apr-2021  TO 30-Apr-2021
+
+     Week 32 = [01-Jan-2021+({2 * 16} * 7) - 7 ] TO [01-Jan-2021+({2 * 16} * 7) + 7 days] = 6-Aug-2021 TO 20-Aug-2021
+
+     Week 48 = [01-Jan-2021+({3 * 16} * 7) - 7 ] TO [01-Jan-2021+({3 * 16} * 7) + 7 days]  = 26-Nov-2021 TO 03-Dec-2021
+
+     Column #11  = 48
+
+     Columnd #12= 26-Nov-2021 TO 03-Dec-2021
+
+Note 7: Report should OUTPUT when the specific entry in eCRF in the specific VISIT is missing according to the timeframes defined (Expected Assessment Date Range). However, report only should display an output when the Maximum day expected for the eCRF is LESS than Current System Date.
+
+Note 8: Report should OUTPUT UNTIL there is a End of Follow Up CONDFORM. End of Follow Up CONDITEM (= or <> according to End of Follow Up CONDSYMBOL) to End of Follow Up CONDRESULT
+
+Note 9: Criteria Form, Criteria Itemquestion and Criteria Value can be entered as “NA” in supporting document. In that case Logic 2 is not applicable. In the report display “NA” for Criteria form.Criteria itemquestion.
+
+Note 10: Report requires supporting document to be named PMS002_supp_<xxxxxxx>.csv and will contain the following columns and associated content:
+
+1. Criteria form- Unique value in each group, specified as per each protocol and should reflect the appropriate form used to the stratification of the subjects. Specified as ‘NA’ if no criteria form is expected for any subject.
+
+2. Criteria itemquestion- Unique value in each group, specified as per each protocol and should reflect the cohort or arm that subject was randomized in. Specified as ‘NA’ if same cohort or arm with no different value in day window is check for all subjects.
+
+3. Criteria Value- Unique value in each group, specified as per each protocol and should reflect the study medication assigned for subjects regarding stratification form and cohort or arm.  Specified as NA if same medication and frequency is check for all subjects.
+
+4. VISIT– Follow Visit in where form is expected to be completed
+
+5. eCRF – Expected Form to be completed during the Follow Up Visit
+
+6. DATE OF eCRF – Date of the expected assessment
+
+7. CONDFORM - Conditional form from which the count of follow up visits will start (PMST/PMS1/NATS/NAPS/SM/SMAB/SMPB/STR/TACE).
+
+8. CONDITEM - Conditional item question within the CONDFORM form
+
+9. CONDSYMBOL – Conditional logic symbol expected for the CONDRESULT within the CONDITEM (= or <>)
+
+10. CONDRESULT - Condition result expected according to CONDFORM and CONDITEM (if it is expected that CONDITEM is not completed enter NULL)
+
+11.CONDDATE - Condition Date item question according to CONDFORM- CONDITEM- CONDSYMBOL and CONDRESULT and from which the count of follow up visits will start
+
+12. DATEFORM – Form where the calculation date will be present
+
+13. CALCDATE - Condition Date item question according to DATEFORM from which the count of follow up visits will start
+
+14. Expected Week Frequency – Frequency week after CONDATE in which form is expected to be completed, entered in number of weeks
+
+15. Minimum days allowed – Minimum window of days from expected Week
+
+16. Maximum days allowed - Maximum window of days from expected Week
+
+17. End of Follow Up CONDFORM – Cut off form for Follow Up Visits
+
+18. End of Follow Up CONDITEM - Cut off item form for Follow Up Visits
+
+19. End of Follow Up CONDSYMBOL - Conditional logic symbol expected for the End of Follow Up CONDRESULT within the End of Follow Up CONDITEM (= or <>)
+
+20. End of Follow Up CONDRESULT - - Condition result expected according to End of Follow Up CONDFORM and End of Follow Up CONDITEM (if it is expected that CONDITEM is not completed enter NULL)
+
+e.g.
+
+Criteria Form, Criteria Itemquestion, Criteria Value, VISIT, eCRF, DATE OF eCRF, CONDFORM, CONDITEM, CONDSYMBOL, CONDRESULT, CONDDATE, DATEFORM, CALCDATE, Expected Week, Minimum days allowed, Maximum days allowed, End of Follow Up, CONDFORM, End of Follow Up CONDITEM, End of Follow Up CONDSYMBOL, CONDRESULT
+
+SR, Cohort, Cohort A, Follow Up,ECOG,Date/Time of Assessment,PMS1,Select the Status of the Subject for the Next Trial Segment,=,Continuing into Follow Up Phase, Date of Assessment, PMS1,Date of Assessment, 12,7,7,PMS1A,Trial Segment Reference,=,End of Long Term Follow-Up
+
+SR, Cohort, Cohort A, Follow Up,ECOG, Date/Time of Assessment ,PMS1,Select the Status of the Subject for the Next Trial Segment,=,Continuing into Follow Up Phase, Date of Assessment, PMS1,Date of Assessment, 24,7,7,PMS1A,Trial Segment Reference,=,End of Long Term Follow-Up
+
+SR, Cohort, Cohort A ,Follow Up,ECOG, Date/Time of Assessment,PMS1,Select the Status of the Subject for the Next Trial Segment,=,Continuing into Follow Up Phase, Date of Assessment, PMS1, Date of Assessment, 36,7,7,PMS1A,Trial Segment Reference,=,End of Long Term Follow-Up
+
+SR, Cohort, Cohort B, Follow Up Year 1,CLAB, Enter date specimen collected,SMAU, Please Indicate if this is the Last Dose for this Label Description,<>,NULL, Start Date and Time, SMAU , Start Date and Time,12,14,14,PMS1A,Date of Assessment,<>,NULL
+
+NA, NA, NA, Follow Up Year 2,CLAB, Enter date specimen collected,SMAU, Please Indicate if this is the Last Dose for this Label Description,<>,NULL, Start Date and Time, SMAU, Start Date and Time,60,14,14,PMS1A,Date of Assessment,<>,NULL
+
+NA, NA, NA, Follow Up Year 3, CLAB, Enter date specimen collected,SMAU, Please Indicate if this is the Last Dose for this Label Description,<>,NULL, Start Date and Time, SMAU,  Start Date and Time,108,14,14,PMS1A,Date of Assessment,<>,NULL
+
+NA, NA, NA,Follow Up 1,SSRE, Date of Assessment,PMS1,Select the Status of the Subject for the Next Trial Segment,=,Continuing into Follow Up Phase, Date of Assessment, SR, Date of Assessment,12,7,7,OEFU, Select the Status of the Subject for the Next Trial Segment,=, Continuing into Survival Follow-up Phase
+
+The number of rows in the supporting document will be represented in the Report Header as "# of rows for customization".
+
+The actual information provided by the supporting doc can be outputted by selecting Y in the parameter "Supporting doc Page".
+
+*Example for supp doc entered as:
+
+Criteria Form, Criteria Itemquestion, Criteria Value, VISIT, eCRF, DATE OF eCRF, CONDFORM, CONDITEM, CONDSYMBOL, CONDRESULT, , CONDDATE, DATEFORM, CALCDATE, Expected Week, Minimum days allowed, Maximum days allowed, End of Follow Up, CONDFORM, End of Follow Up CONDITEM, End of Follow Up CONDSYMBOL, CONDRESULT
+
+SR, Arm, Arm1, Follow Up Year 3, SPECT, Date/Time Specimen(s) Obtained, STR, Please Indicate if this is the Last Dose for this Label Description, <>, NULL, SR, Start Date/Time, 12, 7, 7, PMS1A, Trial Segment Reference, =, End of Long Term Follow-Up
+
+SR, Arm, Arm1, Follow Up Year 3, SPECT, Date/Time Specimen(s) Obtained, STR, Please Indicate if this is the Last Dose for this Label Description, <>, NULL, SR, Start Date/Time, 25, 7, 7, PMS1A, Trial Segment Reference, =, End of Long Term Follow-Up
+
+SR, Arm, Arm1, Follow Up Year 3, SPECT, Date/Time Specimen(s) Obtained, STR, Please Indicate if this is the Last Dose for this Label Description, <>, NULL, SR, Start Date/Time, 38, 7, 7, PMS1A, Trial Segment Reference, =, End of Long Term Follow-Up
+
+SR, Arm, Arm1, Follow Up Year 3,SPECT, Date/Time Specimen(s) Obtained, STR, Please Indicate if this is the Last Dose for this Label Description, <>, NULL, SR, Date of Assessment, 51, 7, 7, PMS1A, Trial Segment Reference, =, End of Long Term Follow-Up
+
+SR, Arm, Arm1, Follow Up Year 3, SPECT, Date/Time Specimen(s) Obtained, STR, Please Indicate if this is the Last Dose for this Label Description, <>, NULL, SR, Date of Assessment, 64, 7, 7, PMS1A, Trial Segment Reference, =, End of Long Term Follow-Up
+
+And data entered as:
+
+SR.Arm: Arm1,
+
+Current System Date: 1Nov20
+
+STR. Please Indicate if this is the Last Dose for this Label Description <> NULL
+
+SR. Date of Assessment = 1Jan20
+
+There is NO PMS1A.Trial Segment Reference = End of Long Term Follow-Up
+
+Follow Up Year 3.SPEC.Date and Time Specimen(s) Obtained  = 18Mar20, 20Sep20
+
+Then calculation of weeks are:
+
+-Week 12: 18-Mar-2020 to 01-Apr-2020
+
+-Week 25: 17-Jun-2020 to 01-Jul-2020
+
+-Week 38: 16-Sep-2020 to 30-Sep-2020
+
+-Week 51: 16-Dec-2020 to 30-Dec-2020
+
+-Week 64: 17-Mar-2021 to 31-Mar-2021
+
+OUTPUT:
+
+-Week 12: Since subject has data on 18Mar20 (within expected range of Week 12), NO output expected
+
+-Week 25: No data present for expected frame 17-Jun-2020 to 01-Jul-2020 - Output expected
+
+-Week 38: Data present for expected range on 20Sep20 - NO output expected
+
+-Week 51: Maximun expected date is greater than Current System Date (30Dec20 > 1Nov20) - NO output expected
+
+-Week 64: Maximun expected date is greater than Current System Date (31Mar21 > 1Nov20) - NO output expected
+
+Report Scenarios:
+Output: Yes – A certain eCRF is missing for a Follow Up Visit according to protocol specific windows
+
+Output: No – A certain eCRF is completed for a Follow Up Visit according to protocol specific windows
+
+Output: No – Deleted records and Erroneous Visits
+
+(All the information required (Criteria Form, Criteria Itemquestion, Criteria Value, eCRF, Follow Up Visit, Expected Windows) will be provided by a supporting document described in logic section)
+
+Sorting:
+Country, Site, Subject Number
+
+Parameter Selection:
+Country, First Site, Last Site, First Subject, Last Subject, List of Subjects, Randomized Only (N/Y, Default as N), Supporting Doc Page (N/Y, Default as Y)
+
+Form.Item Names:
+. SA Form. Site Country
+
+2. SA Form. Site Mnemonic
+
+3. SA Form. Subject Number
+
+4. Display Criteria form.Criteria itemquestion provided in Supporting Document
+
+5. Display CONDFORM provided in Supporting Document
+
+6. Display CONDFORM. CONDDATE provided in Supporting Document
+
+7. Display DATEFORM provided in Supporting Document
+
+8. Display DATEFORM.CALCDATE provided in Supporting Document
+
+9. Display Follow Up Visit according to VISIT provided in Supporting Document
+
+10. Display missing eCRF according to eCRF provided in Supporting Document
+
+11. Display the Week when missing eCRF evaluation is expected according to calculation
+
+12. Display the data range in format (dd-Mmm-yyyy TO dd-Mmm-yyyy) when missing eCRF is expected to happen

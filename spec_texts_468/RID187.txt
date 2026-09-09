@@ -1,0 +1,211 @@
+Report ID: RID187
+
+Report Title:
+Randomized Subject Date of First Dose based on Study medication assigned
+
+Description:
+This report will display all randomized subjects who do NOT have a date of first dose for the applicable study medication assigned.
+
+Column Heading:
+1. Country
+
+2. Site
+
+3. Subject Number
+
+4. First Dose Visit
+
+5. First Dose Visit DOV
+
+6. SM Form Name
+
+7. First Dose Study Medication
+
+8. SM Period
+
+9. RNT Date of Assessment
+
+Logic:
+According to the values in the “Supporting document”:
+
+<Criteria Form1>.<Criteria Itemquestion1> = <Criteria Value1>  AND
+
+<Criteria Form2>.<Criteria Itemquestion2> = <Criteria Value2> AND
+
+<Criteria Form3>.<Criteria Itemquestion3> = <Criteria Value3> AND
+
+Report Logic: Prior to processing the logic, apply condition(s) according to the supporting doc to check if subjects match the criterial or not.
+
+Logic 1: SA. Treatment/Randomization Number < > Null
+
+AND
+
+There is no SM_Form record meet below criteria:
+
+Logic 2: SM_Form.Visit = Visit on supporting document
+
+AND
+
+Logic 3: SM_Form.Study Medication = Study Medication on supporting document
+
+AND
+
+Logic 4: SM_Form.Study Period = Study Period on supporting document
+
+AND
+
+Logic 5: SM_Form.Please Indicate if this is the First Dose for this Study Medication is checked
+
+Note:
+
+1. Exclude deleted data and erroneous visit from programming.
+
+2. SM_Form include SM/SMAU/SMAB/STR
+
+3. Only output when expected visit DOV.date of visit is not null.
+
+4. For Logic 2, follow below check rules
+
+For SM/STR: If visit provided in supp doc was initiated in DOV and not erroneous visit, check if there is SM/STR with first dose checked for provided study period.
+
+For SMAU/SMAB: check visitmnemonic. Since SMAU/SMAB is visit based repeating form, if First dose is expected at Visit2, then the SMAU entry with First Dose checked should be at Visit2 and disregard the dates
+
+5. For Logic 4: only check when Study Period on supporting document is not NA. It is optional since it is for cross over trials in which the SM will change according to SM period.
+
+For example, SR/TRIG has arm 1 and arm and 2 Subjects in arm 1 have to take study med 1 at period 1 and study med 2 at period 2; and subjects in arm 2 have to take study med 2 at period 1 and study med 1 at period 2.
+
+6a: IF SM Label Description and SMAU/SMAB Dose Number are exactly matched within forms For SM/SMAU/SMAB Study Medication, use SM.Label Description/SMAU.Dose Number/SMAB.Dose Number directly.
+
+6b: If SM Label Description and SMAU/SMAB Dose Number are not exactly matched with Study Medication, using the optional supporting doc study_med_match_supp_<xxxxxxx>.csv to define the mapping.
+
+7. RNT column (Date of Assessment), added only for review reference for each patient, not related to logic or scenarios. For studies without RNT form, please leave blank.
+
+Requires supporting document to be named SM019_supp_<xxxxxxx>.csv and will contain the following columns and associated content:
+
+1 row for each expexted Visit, SM Form, Study Medication, Study Period that are required per protocol.
+
+If different study medications are checked globally, i.e. SM1 with SM2, etc, then all those rows for SM1 and SM2 need to have the same Group Number. Otherwise, each study medication has unique Group Number.
+
+If Criteria is needed, for example, there are 2 Arms in study,then all stratifications should be listed in both DRP and spec.
+
+Definition of Criteria: value specified in Criteria Value column entered in item specified in Criteria Itemquestion column on form specified in Criteria Form column. For NA in all three mentioned columns please ignore Criteria condition and display output for all subjects.
+
+1) Group - Unique key for group of Arm/Cohort/Stratification, NOT NULL
+
+2) Criteria Form1 - Arm/Cohort/Stratification Form Mnemonic SR/SRIVRS/TRIG. If applies for all subjects regardless the Arm/Cohort/Stratification, enter NA
+
+3) Criteria Itemquestion1 - Arm/Cohort/Stratification Itemquestion1. If applies for all subjects regardless the Arm/Cohort/Stratification, enter NA OR if the Itemquestion1 is not applicable for the protocol, enter NA
+
+4) Criteria Value1 - Arm/Cohort/Stratification Value. If applies for all subjects regardless the Arm/Cohort/Stratification, enter NA OR if the itemValue1 is not applicable for the protocol, enter NA
+
+5) Criteria Form2 - Arm/Cohort/Stratification Form Mnemonic SR/SRIVRS/TRIG. If applies for all subjects regardless the Arm/Cohort/Stratification, or is not needed enter NA
+
+6) Criteria Itemquestion2 - Arm/Cohort/Stratification Itemquestion2. If applies for all subjects regardless the Arm/Cohort/Stratification, enter NA OR if the Itemquestion2 is not applicable for the protocol, or is not needed enter NA
+
+7) Criteria Value2 - Arm/Cohort/Stratification Value2. If applies for all subjects regardless the Arm/Cohort/Stratification, enter NA OR if the Value2 is not applicable for the protocol, enter NA
+
+8) Criteria Form3 - Arm/Cohort/Stratification Form Mnemonic SR/SRIVRS/TRIG. If applies for all subjects regardless the Arm/Cohort/Stratification, or is not needed enter NA
+
+9) Criteria Itemquestion3 - Arm/Cohort/Stratification Itemquestion3. If applies for all subjects regardless the Arm/Cohort/Stratification, enter NA OR if the Itemquestion3 is not applicable for the protocol, or is not needed enter NA
+
+10) Criteria Value3 - Arm/Cohort/Stratification Value3. If applies for all subjects regardless the Arm/Cohort/Stratification, enter NA OR if the Value3 is not applicable for the protocol, enter NA
+
+11) Visit - SM/SMAU/SMAB/STR visit
+
+12) SM Form - SM/SMAU/SMAB/STR
+
+13) Study Medication - Value of Study Medication on SM/SMAU/SMAB/STR
+
+14) Study Period - Value of Study Period on SM/SMAU/SMAB/STR. Optional, Enter NA if not applicable
+
+Example
+
+Group,Criteria Form1,Criteria Itemquestion1,Criteria Value1,Criteria Form2,Criteria Itemquestion2,Criteria Value2,Criteria Form3,Criteria Itemquestion3,Criteria Value3,Visit,SM Form,Study Medication,Study Period
+
+1, SR,Arm,-3475,SR,Cohort,Cohort A,NA,NA,NA,NA,NA,NA,Cycle 1,SMAU,-3475/Placebo,NA
+
+2, SR,Arm,Standard Treatment,SR,Cohort,Cohort B, SR,Stratification,Stratum 1,NA,NA,NA,Cycle 1,SM,Methotrexate,Cycle 1
+
+3, SR,Arm,Standard Treatment,SR,Cohort,Cohort B, SR,Stratification,Stratum 2,NA,NA,NA,Cycle 1,SM,Docetaxel,Cycle 1
+
+The number of rows in the supporting document will be represented in the Report Header as "# of rows for customization".
+
+The actual information provided by the supporting doc can be outputted by selecting Y in the parameter "Supporting doc Page".
+
+The optional supporting document is only required in the following cases:
+
+- SM Label Description and SMAU/SMAB Dose Number are not exactly matched with Study Medication.
+
+This supporting document is only required to be created once per trial. If it was already created and uploaded, there is no need to duplicate it.
+
+Optional supporting document should be named as study_med_match_supp_<xxxxxxx>.csv and will contain the following columns and associated content:
+
+1 row for each Label Description or Dose Number present in SM/SMAU/SMAB eCRFs.
+
+1. eCRF – SM/SMAU/SMAB
+
+2. Study Medication – Value of Study Medication
+
+3. Matching Item – SM Label Description or SMAU/SMAB Dose Number
+
+4. Matching Value – Value of SM Label Description or SMAU/SMAB Dose Number
+
+Example
+
+eCRF,Study Medication,Matching Item,Matching Value
+
+SM,-1439,Label Description,-1439 100 mg
+
+SM,Methadone,Label Description,Methadone Tablet 5 mg
+
+SM,Methadone,Label Description,Methadone Tablet 10 mg
+
+SMAB,3475/Placebo,Dose Number,3475/Placebo
+
+SMAU,Carboplatin,Dose Number,Carboplatin
+
+SMAU,Carboplatin,Dose Number,Carboplatin - Dose 1
+
+SMAU,Carboplatin,Dose Number,Carboplatin - Dose 2
+
+SMAU,Carboplatin,Dose Number,Carboplatin - Dose 3
+
+The actual information provided by the optional supporting doc can be outputted by selecting Y in the parameter "Study Med Match Page".
+
+Report Scenarios:
+A- Yes
+
+Missing first dose for specific Study medication at [Visit X]
+
+B- No
+
+First dose not missing for specific Study medication at [Visit X]
+
+C- No
+
+Deleted record and erroneous visit
+
+Sorting:
+Country, Site, Subject Number, First Dose Visit, SM Form, First Dose Study Medication
+
+Parameter Selection:
+Country, First Site, Last Site, First Subject, Last Subject, List of Subjects, Randomized Only, Study Medication, Study Period, Supporting Doc Page (N/Y, Default as N), Study Med Match Page (N/Y, Default as N)
+
+Form.Item Names:
+1. SA Form. Site Country
+
+2. SA Form. Site Mnemonic
+
+3. SA Form. Subject Number
+
+4. Visit. Visit Mnemonic. (Display the [Visit X] where first dose is expected)
+
+5. DOV Form. Date of Visit
+
+6. SM Form. FORMNEMONIC (Display the form name where First Dose should be recorded)
+
+7. SMAU/SMAB. Study Medication or SM. Label Description
+
+8. [SM Form]. [Study Period] (Display as blank if not applicable)
+
+9. RNT Form. Date of Assessment

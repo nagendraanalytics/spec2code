@@ -1,0 +1,243 @@
+Report ID: RID432
+
+Report Title:
+Adverse Event as reason for discontinuation reconciliation
+
+Description:
+This report identifies subjects that have a Reason Study Treatment Not Received in NATS or Reason Phase Not Started in NAPS or Label Description Status/Study Medication Status/Radiation Status in SM, STR, SMAU or SMAB selected as "Adverse Event" and there is missing AE with action taken of "Discontinued" for corresponding medications.
+
+Column Heading:
+1. Country
+
+2. Site
+
+3. Subject Number
+
+4. AE Sequence
+
+5. AE LLT
+
+6. AE Onset Date and Time
+
+7. AE End Date and Time
+
+8. Study Medication
+
+9. AE Action Taken
+
+10. eCRF
+
+11. Visit
+
+12. Seq#
+
+13. Label Description/Dose Number
+
+14. Date
+
+15. Radiation Status/Reason Phase Not Started/Reason Study Treatment Not Received/SM Discontinued or Not Administered
+
+16. Scenario
+
+Logic:
+Logic 1:
+
+For each SM.Label Description/SMAU.Dose Number/SMAB.Dose Number with (SM/SMAU/SMAB).Label description status or SM/SMAB.Study Medication Status or STR. Radiation Status = Adverse event and (SM/SMAU/SMAB).Start Date/Time or STR.Start Date <> NULL
+
+Generate an output if There is no equivalent AE.Action Taken with Study Medication = Discontinued with (AE.End Date and Time >= SM/SMAU/SMAB.Start Date/Time or AE.End Date and Time = Ongoing).
+
+Error Message: Scenario 1
+
+Logic 2A:
+
+For each AE.LLT <> Malignant Neoplasm Progression and Action Taken with Study Medication = Discontinued
+
+Generate output if there is no equivalent SM.Label Description/SMAU.Dose Number/SMAB.Dose Number with (SM/SMAU/SMAB).Label Description Status or SM/SMAB.Study Medication Status = Adverse event with SM/SMAU/SMAB.Start Date/Time <= AE.End Date and Time or AE.End Date and Time = Ongoing).
+
+Error Message: Scenario 2A
+
+Logic 2B:
+
+For each AE.LLT=Malignant Neoplasm Progression and Action Taken with Study Medication = Discontinued
+
+Generate output if there is no corresponding SM.Label Description Status or SM.Study Medication Status /SMAU.Label Description Status/SMAB.Label Description Status or SMAB.Study Medication Status = Clinical Progression or Progressive Disease.
+
+Error Message: Scenario 2B
+
+Logic 3:
+
+NATS.Reason Study Treatment Not Received = Adverse event and there is no AE with corresponding AE. Action Taken with Study Medication = Discontinued with (AE.Onset Date and Time <= NATS.Date of Assessment and  AE.End Date and Time >= NATS.Date of Assessment or AE.End Date and Time = Ongoing).
+
+Error Message: Scenario 3
+
+Logic 4:
+
+NATS.Reason Study Treatment Not Received and= Adverse event and there is no AE with AE.Overall Action taken with Study Medication= Discontinued with (AE.Onset Date and Time <= NATS.Date of Assessment and  AE.End Date and Time >= NAPS.Date of Assessment or AE.End Date and Time = Ongoing).
+
+Error Message: Scenario 4
+
+Logic 5:
+
+NAPS Reason Phase Not Started = Adverse event and there is no AE with AE.Overall Action taken with Study Medication= Discontinued with (AE.Onset Date and Time <= NAPS.Date of Assessment and  AE.End Date and Time >= NAPS.Date of Assessment or AE.End Date and Time = Ongoing).
+
+Error Message: Scenario 5
+
+Note 1 - NATS should be verified based on logic 3 or 4. The user will define in parameter selection which scenario is applicable based on study requirements. If scenario 3 is applicable for trial, then supporting document is required to match Study treatment Not Received on NATS with Action taken on AE page.
+
+If Scenario 3 is selected, then supporting document is required to match Study treatment Not Received on NATS with Action taken on AE page.
+
+Supporting document should be named ONC_SM_002_supp_<xxxxxxx>.csv and will contain the following columns and associated content:
+
+1 row for NATS Study Treatment Not Received and corresponding AE Action Taken with Study Medication for Scenario 3
+
+1.NATS Study Treatment Not Received
+
+2.AE Action Taken with Study Medication
+
+e.g.
+
+NATS Study Treatment Not Received,AE Action Taken with Study Medication
+
+Cisplatin,Action taken with Cisplatin
+
+-3475_Adjuvant,Action taken with -3475
+
+Radiation,Action taken with Radiation
+
+The actual information provided by the supporting doc can be outputted by selecting Y in the parameter "Supporting doc Page".
+
+Note 2 - Plase do not take into account deleted records or erroneous visits.
+
+Note 3 - When AE End Date and Time is blank, consider that AE as Ongoing.
+
+Note 4 - If more than one Action Taken with Study Medication is present, then the comparison with Study Medication in AE/SM is needed. If Only Overall Action Taken with Study Medication is present, then the comparison with Study Medication in AE/SM is not needed.
+
+Note 5 - For SM/SMAU/SMAB Study Medication, use SM.Label Description/SMAU.Dose Number/SMAB.Dose Number directly. If SM Label Description and SMAU/SMAB Dose Number are not exactly matched with Study Medication, using the optional supporting doc study_med_match_supp_<xxxxxxx>.csv to define the mapping.
+
+The optional supporting document is only required in the following cases:
+
+	- SM Label Description and SMAU/SMAB Dose Number are not exactly matched with Study Medication.
+
+This supporting document is only required to be created once per trial. If it was already created and uploaded, there is no need to duplicate it.
+
+Optional supporting document should be named as study_med_match_supp_<xxxxxxx>.csv and will contain the following columns and associated content:
+
+1 row for each Label Description or Dose Number present in SM/SMAU/SMAB eCRFs.
+
+1. eCRF – SM/SMAU/SMAB
+
+2. Study Medication – Value of Study Medication
+
+3. Matching Item – SM Label Description or SMAU/SMAB Dose Number
+
+4. Matching Value – Value of SM Label Description or SMAU/SMAB Dose Number
+
+e.g.
+
+eCRF,Study Medication,Matching Item,Matching Value
+
+SM,-1439,Label Description,-1439 100 mg
+
+SM,Methadone,Label Description,Methadone Tablet 5 mg
+
+SM,Methadone,Label Description,Methadone Tablet 10 mg
+
+SMAB,3475/Placebo,Dose Number,3475/Placebo
+
+SMAU,Carboplatin,Dose Number,Carboplatin
+
+SMAU,Carboplatin,Dose Number,Carboplatin - Dose 1
+
+SMAU,Carboplatin,Dose Number,Carboplatin - Dose 2
+
+SMAU,Carboplatin,Dose Number,Carboplatin - Dose 3
+
+The actual information provided by the optional supporting doc can be outputted by selecting Y in the parameter "Study Med Match Page".
+
+Report Scenarios:
+Scenario 1 output yes
+
+there is a study medication record with label description status/Study Medication Status selected as "Adverse Event" and there is no AE with action taken with corresponding study medication as Discontinued and end date equal or after study medication start date, or AE end date as ongoing.
+
+Or
+
+there is a Radiation Status on STR recorded as Adverse Event and there is no AE with action taken with corresponding study medication as Discontinued and end date equal or after STR radiation start date.
+
+Scenario 2A output yes
+
+there is an AE which LLT<>Malignant Neoplasm Progression and Action Taken with Study Medication = Discontinued and there is no corresponding SM, SMAU, SMAB record with label description status/Study Medication Status selected as "Adverse Event" for the maximum study medication administration record or the AE ended before the corresponding study medication (SM, SMAU, SMAB) was administered (AE End Date and Time is prior SM, SMAU, SMAB Start Date and Time).
+
+Scenario 2B output yes
+
+there is an AE with LLT=Malignant Neoplasm Progression and Action Taken with a Study Medication = Discontinued and there is no corresponding SM, SMAU, SMAB record with label description status/Study Medication Status selected as “Clinical Progression“ or “Progressive Disease” for the corresponding study medication (SM, SMAU, SMAB) was administered.
+
+Scenario 3 output yes
+
+there is a NATS with Reason Study Treatment Not Received = Adverse event and there is no corresponding AE record with Action Taken with Study Medication = Discontinued before NATS date of assessment
+
+or
+
+there is a NATS with Reason Study Treatment Not Received = Adverse event and there is at least one AE record with Action Taken with Study Medication = Discontinued which was ended before the date of assessment on NATS (AE End Date and Time is prior Date of Assessment on NATS).
+
+Scenario 4 output yes
+
+there is a NAPS with Reason Phase Not Started = Adverse event and there is no AE record with Overall Action taken with Study Medication= Discontinued before NAPS date of assessment
+
+or
+
+there is a NAPS with Reason Phase Not Started = Adverse event and there is AE record with Overall Action taken with Study Medication= Discontinued which was ended before the date of assessment on NAPS (AE End Date and Time is prior Date of Assessment on NAPS).
+
+Scenario 5 output no
+
+there is a study medication record with label description status/Study Medication Status as Adverse Event and there is equivalent AE with action taken with corresponding study medication as Discontinued and end date equal or after study medication start date, or AE end date as ongoing.
+
+Scenario 6 output no
+
+there is an AE with Action Taken with Study Medication = Discontinued and there is corresponding SM, SMAU, SMAB record with label description status/Study Medication Status selected as "Adverse Event", the AE started and has not been ended before the corresponding study medication (SM, SMAU, SMAB) was administered (AE End Date and Time was not prior SM, SMAU, SMAB Start Date and Time).
+
+Scenario 7 output no
+
+there is a NATS with Reason Study Treatment Not Received = Adverse event and there is AE with Action Taken with corresponding Study Medication = Discontinued, that started before NATS date of assessment (the AE has not been ended before NATS date of assessment).
+
+Scenario 8 output no
+
+there is a NAPS with Reason Phase Not Started  = Adverse event and there is AE record with Overall Action taken with Study Medication= Discontinued that started before NAPS date of assessment (the AE has not been ended before NAPS date of assessment).
+
+Sorting:
+Country, Site Number, Subject Number, AE sequence, Seq#
+
+Parameter Selection:
+Country, First Site, Last Site, First Subject, Last Subject, List of Subjects, Randomized Only, Scenario to check NATS (Scenario 3/Scenario 4/No NATS, Deafult as no NATS), Supporting doc Page (N/Y, Default as N), Study Med Match Page (N/Y, Default as N)
+
+Form.Item Names:
+1. SA.Country
+
+2. SA.Site Mnemonic
+
+3. SA.Subject Number
+
+4. AE.Formidx
+
+5. AE.LLT
+
+6. AE.Onset Date and Time
+
+7. AE.End Date and Time
+
+8. AE.Study Medication 1-10
+
+9. AE.Action Taken with Study medication 1-10
+
+10. SM/SMAU/SMAB/STR/NATS/NAPS Form Mnemonic
+
+11. SM/SMAU/SMAB/STR/NATS/NAPS Visit Mnemonic
+
+12. SM/SMAU/SMAB/STR/NATS/NAPS Formidx
+
+13. SM.Label Description/SMAU.Dose Number/SMAB.Dose Number
+
+14. SM.Start Date/Time/SMAU.Start Date/Time/SMAB.Start Date/Time/STR.Start Date/Time /NATS.Date of Assessment/NAPS.Date of Assessment/
+
+15. SM.Label Description Status or SM.Study Medication Status /SMAU.Label Description Status/SMAB.Label Description Status or SMAB.Study Medication Status / STR.Radition Status/ NATS.Reason Study Treatment Not Received/NAPS.Reason Phase Not Started
+
+16. Scenario: for scenario 1 show Scenario 1, for scenario 2A show Scenario 2A and so on

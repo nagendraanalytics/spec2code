@@ -1,0 +1,125 @@
+Report ID: RID189
+
+Report Title:
+Study Medication  vs TRIG or and SR or TRIGA
+
+Description:
+This report lists subjects who have different information between Cohort /arm /Stratus (entered in SR or TRIG or TRIGA) and Study Medication administered.
+
+Column Heading:
+1. Country
+
+2. Site
+
+3. Subject Number
+
+4. Visit
+
+5. eCRF
+
+6. Seq
+
+7. Study Medication
+
+8. Error Message
+
+Logic:
+<Criteria Form1>.<Criteria Itemquestion1> = <Criteria Value1>  AND
+
+<Criteria Form2>.<Criteria Itemquestion2> = <Criteria Value2> AND
+
+<Criteria Form3>.<Criteria Itemquestion3> = <Criteria Value3> AND
+
+This report displays subjects with mismatching and/or missing study medications based on the assigned treatment arm/cohort/stratum.
+
+-Error Message: Mismatch
+
+The study medication on SMAU, SMAB, SM, SM02, STR at a given visit does not match the study medication expected for the arm/cohort/stratum selected on TRIG/SR/TRIGA
+
+Records in erroneous visits should not be considered.
+
+Deleted records should not be considered.
+
+The study medication records on common logs, i.e. SM and SM02, should be assigned to the non-erroneous visit equal or immediately prior to the study med start date (date of visit <= start date of study med < next date of visit or today).
+
+Notes:
+
+1) If visit column on supporting document is completed as NA, check should be done across all entries for the corresponding Formmnemonic and Study Medication
+
+2) Requires Supporting Document to be named SM021_supp_<xxxxxxx>.csv and will contain the following columns and associated content:
+
+1. Criteria Form1 - Arm/Cohort/Stratification Form Mnemonic SR/SRIVRS/TRIG/TRIGA. If applies for all subjects regardless the Arm/Cohort/Stratification, enter NA
+
+2. Criteria Itemquestion1 - Arm/Cohort/Stratification Itemquestion1. If applies for all subjects regardless the Arm/Cohort/Stratification, enter NA OR if the Itemquestion1 is not applicable for the protocol, enter NA
+
+3. Criteria Value1 - Arm/Cohort/Stratification Value. If applies for all subjects regardless the Arm/Cohort/Stratification, enter NA OR if the itemValue1 is not applicable for the protocol, enter NA
+
+4. Criteria Form2 - Arm/Cohort/Stratification Form Mnemonic SR/SRIVRS/TRIG/TRIGA. If applies for all subjects regardless the Arm/Cohort/Stratification, or is not needed enter NA
+
+5. Criteria Itemquestion2 - Arm/Cohort/Stratification Itemquestion2. If applies for all subjects regardless the Arm/Cohort/Stratification, enter NA OR if the Itemquestion2 is not applicable for the protocol, or is not needed enter NA
+
+6. Criteria Value2 - Arm/Cohort/Stratification Value2. If applies for all subjects regardless the Arm/Cohort/Stratification, enter NA OR if the Value2 is not applicable for the protocol, enter NA
+
+7. Criteria Form3 - Arm/Cohort/Stratification Form Mnemonic SR/SRIVRS/TRIG/TRIGA. If applies for all subjects regardless the Arm/Cohort/Stratification, or is not needed enter NA
+
+8. Criteria Itemquestion3 - Arm/Cohort/Stratification Itemquestion3. If applies for all subjects regardless the Arm/Cohort/Stratification, enter NA OR if the Itemquestion3 is not applicable for the protocol, or is not needed enter NA
+
+9. Criteria Value3 - Arm/Cohort/Stratification Value3. If applies for all subjects regardless the Arm/Cohort/Stratification, enter NA OR if the Value3 is not applicable for the protocol, enter NA
+
+10. Visitmnemonic - If check should be done across all visits use NA
+
+11. Formmnemonic
+
+12. Study Medication
+
+e.g.1
+
+Criteria Form1,Criteria Itemquestion1,Criteria Value1, Criteria Form2,Criteria Itemquestion2,Criteria Value2, Criteria Form3,Criteria Itemquestion3,Criteria Value3,Visitmnemonic,Formmnemonic,Study Medication
+
+SR,Arm,Arm 1,SR,Stratification,Strat1,NA,NA,NA,Cycle 1,SMAU,-3475
+
+e.g.2
+
+Criteria Form1,Criteria Itemquestion1,Criteria Value1, Criteria Form2,Criteria Itemquestion2,Criteria Value2, Criteria Form3,Criteria Itemquestion3,Criteria Value3,Visitmnemonic,Formmnemonic,Study Medication
+
+SR,Stratification,Strat1,NA,NA,NA,NA,NA,NA,NA,SM,Carboplatin
+
+The number of rows in the supporting document will be represented in the Report Header as "# of rows for customization".
+
+The actual information provided by the supporting doc can be outputted by selecting Y in the parameter "Supporting doc Page".
+
+Report Scenarios:
+1) Output=No (Mismatch)
+
+The Study medication appears according to the visit, eCRF and arm/cohort/stratum as provided by the requestor
+
+2) Output=Yes (Mismatch)
+
+The Study medication appears at a different visit, eCRF and/or arm/cohort/stratum from the schema provided by the requestor
+
+3) Output=No (Mismatch)
+
+Deleted Study medication should not be considered
+
+Sorting:
+Country, Site, Subject Number, Visit, eCRF, Seq
+
+Parameter Selection:
+Country, First Site, Last Site, First Subject Number, Last Subject Number, List of Subjects, Randomized Only, Supporting Doc Page (N/Y, Default as N)
+
+Form.Item Names:
+1. Subject Assignment.Site Country
+
+2. Subject Assignment.Site Mnemonic
+
+3. Subjects.Subject Number
+
+4. SMAU/SMAB/SM/SM02/STR Forms.Visitmnemonic
+
+5. SMAU/SMAB/SM/SM02/STR Forms.Formmnemonic
+
+6. SMAU/SMAB/SM/SM02/STR Forms.Formidx or blank
+
+7. SMPU/SMPB/SM/SM02/STR Forms.Study Medication
+
+8. Hardcoded: Mismatch

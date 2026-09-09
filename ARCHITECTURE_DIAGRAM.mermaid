@@ -1,0 +1,39 @@
+%% Spec-to-Code architecture — status-coded to match ARCHITECTURE.md.
+%% Render in any Mermaid-compatible viewer (GitHub, mermaid.live, VS Code
+%% Mermaid extension, etc.) — classDef colors mark build status, not
+%% semantic meaning: green = built & verified, amber = stub, gray = design-only.
+
+flowchart TD
+    FE["Frontend<br/><small>vanilla JS built · Next.js design-only</small>"]
+    API["FastAPI (main.py)<br/><small>4 endpoints, tenant-scoped</small>"]
+    ORCH["LangGraph orchestrator<br/><small>not yet wired to main.py</small>"]
+
+    REVIEW["Spec Review<br/><small>gate, tested</small>"]
+    RAG["RAG Retrieval<br/><small>TF-IDF only</small>"]
+    T1["Tier 1 Rules<br/><small>verified, short-circuits</small>"]
+    T3["Tier 3 XGBoost<br/><small>stub — no labeled data</small>"]
+    T4["Tier 4 Fine-tuned LLM<br/><small>stub</small>"]
+    T5["Tier 5 Claude<br/><small>built, tested</small>"]
+    GUARD["Guardrails<br/><small>5 structural checks, verified</small>"]
+
+    DB["Multi-tenant persistence<br/><small>SQLite/Postgres, 7 isolation tests pass</small>"]
+    VEC["Vector DB / Graph RAG<br/><small>design-only</small>"]
+    MATRIX["Code-Gen Matrix<br/><small>Veeva CQL+Python verified only</small>"]
+    AUDIT["21 CFR Part 11 audit<br/><small>design-only</small>"]
+
+    FE --> API --> ORCH
+    ORCH --> REVIEW --> RAG --> T1
+    T1 -->|matched| GUARD
+    T1 -->|no match| T3 --> T4 --> T5 --> GUARD
+    GUARD --> DB
+    DB -.-> VEC
+    DB -.-> MATRIX
+    DB -.-> AUDIT
+
+    classDef built fill:#0f3d2e,stroke:#1fa97a,color:#e6fff5;
+    classDef stub fill:#3d3212,stroke:#d9a441,color:#fff6e0;
+    classDef design fill:#2a2a2a,stroke:#888,color:#eee;
+
+    class FE,API,ORCH,REVIEW,RAG,T1,T5,GUARD,DB built;
+    class T3,T4 stub;
+    class VEC,MATRIX,AUDIT design;

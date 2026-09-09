@@ -1,0 +1,165 @@
+Report ID: RID223
+
+Report Title:
+Missing or out of window test form required per protocol
+
+Description:
+This report will list subjects who are missing or out of window a test form every specific interval of time following the start date from the specified visit in the supporting document.
+
+Column Heading:
+1. Country
+
+2. Site
+
+3. Subject Number
+
+4. Form
+
+5. Starting Phase
+
+6. Starting Phase Date
+
+7. Expected Timeframe
+
+Logic:
+Logic 1.1 System date > 'Upper Value of Expected Timeframe'
+
+AND
+
+Logic 1.2 There is no 'Criteria Item' in 'Criteria Form' within the 'Expected Timeframe' for each 'Criteria Form' specified in supporting document.
+
+AND
+
+Logic 1.3 'End of Test Phase' Or 'End of Test Form' from Supporting Document in which Date of Visit >= 'Expected Timepoint'+“Upper Window of Days”
+
+Notes:
+
+1- ‘Criteria Form’, ‘Criteria Item’, ‘Start Phase’, Frequency’, ‘Lower Window of Days’, ‘Upper Window of Days', ‘End of Test Phase’, 'End of Test Form',  ‘Start Week’, ‘Stop Week’ are values from supporting document. ‘Expected Timepoint’ and ‘Expected Timeframe’ are values created by calculation.
+
+2. Report will work for randomized patients only
+
+3. Erroneous visits and deleted records will not be considered for programming
+
+4. If a date is displayed in the output the report will display it in format 'DDMMMYYYY'
+
+5. For column 7 the report will display the expected timeframe in format 'DDMMMYYYY to DDMMMYYYY' e.g., '01JAN2020 to 15JAN2020'
+
+6.The 'First Visitmnemonic of Treatment Phase' means the 'Criteria Item' in 'Criteria Form' or DOV (selected in prompt) in the 'Start Phase'.
+
+7. 'Expected Timeframe' and ‘Expected Timepoint’ will be calculated using the items 'First Visitmnemonic of Treatment Phase', 'Start week', 'Stop week', 'Frequency', 'Lower window of days', 'Upper window of days'.
+
+8.For Logic 1.3, if EOT date is not there, we should use system date.
+
+9. If there are no ‘Start Phase' but 'Criteria Item' which in ''Criteria Form'' entered, it will be not outputted until the 'Start Phase' entered.
+
+10. If there is a 'Start Phase' but 'Criteria Form' is not entered on that visit, output will be calculated with 'Start Phase' DOV as its start point.
+
+Steps to calculate the 'Expected Timeframe':
+
+A.      Calculate different timepoints by doing the following mathematical operation:
+
+‘Expected Timepoint’ 1: First Visitmnemonic of Treatment Phase + Start week
+
+‘Expected Timepoint’ 2: First Visitmnemonic of Treatment Phase + Start week + 1*Frequency
+
+‘Expected Timepoint’ 3: First Visitmnemonic of Treatment Phase + Start week + 2*Frequency
+
+‘Expected Timepoint’ N: First Visitmnemonic of Treatment Phase + Start week + (N-1)*Frequency
+
+B.      ‘Expected Timepoint’ calculated on step A should be: First Visitmnemonic of Treatment Phase + Start week <= Timepoint N <= First Visitmnemonic of Treatment Phase + Stop week
+
+C.      ‘Expected Timeframe’ = From ‘Expected Timepoint’ N - 'Lower window of days' to ‘Expected Timepoint’ N + 'Upper window of days'
+
+Example:
+
+A.      First Visitmnemonic of Treatment Phase = 01-Jan-2020
+
+B.      Start week = 6
+
+C.      Stop week = 30
+
+D.      Frequency = 6
+
+E.      Lower window of days = 7
+
+F.      Upper window of days = 7
+
+Expected Timepoint 1 = 01-Jan-2020 + 6 weeks = 12-Feb-2020
+
+Expected Timeframe 1 = From 05-Feb-2020 to 19-Feb-2020
+
+Expected Timepoint 2 = 01-Jan-2020 + 6 weeks + 6 weeks = 25-Mar-2020
+
+Expected Timeframe 2 = From 18-Mar-2020 to 01-Apr-2020
+
+Expected Timepoint 3 = 01-Jan-2020 + 6 weeks + 12 weeks = 06-May-2020
+
+Expected Timeframe 3 = From 29-Apr-2020 to 13-May-2020
+
+11. If supporting doc is not provided, display the message as "TQ041_JR_STD Supporting Document Not Present for This Trial"
+
+12. If Parameter Reference Form is entered as DOV, consider the start phase visit's DOV date from DOV form for calculating the expected timeframes; and if left blank, consider the criteria item date in criteria form (like, item in OLABA form) for calculating the expected timeframes.
+
+13. When 'End of Test Form' is initiated but the date on End of Test Form is null, will consider the 'Stop week’ as a stopping point.
+
+Requires supporting document to be named TQ041_supp_<xxxxxxx>.csv and will contain the following columns and associated content:
+
+1.Criteria Form- eCRF in which Criteria Item can be found.Item is required. Item is optional and if not used, please enter NA.
+
+2. Criteria Item – item that value would differentiate scan schedule. Item is required. Item is optional and if not used, please enter NA.
+
+3. Start Phase - Enter the visit name to define the first test was performed. item is required.
+
+4. Frequency - Enter the number of weeks when each test should be assessed from start week e.g., 'Date of assessment should be performed at Week 6 (42 ± 7 days), Week 12 (84 ± 7 days) and Week 18 (126 ± 7 days) from the date of randomization', then enter 6. If the frequency changes during the same treatment phase a new row is expected with a new frequency e.g., 'Subsequent test should be performed every 9 weeks (63 days ±7 days) until week 45', then enter 9. The value should always be in weeks. Item is required.
+
+5. Lower Window of Days - Enter the amount of days corresponding to the window applicable for each test timepoint e.g., 'test will occur every 6 weeks +/- 7', then enter 7. Item is required.
+
+6. Upper Window of Days - Enter the amount of days corresponding to the window applicable for each test timepoint e.g., 'test will occur every 6 weeks +/- 7', then enter 7. Item is required.
+
+7. Start Week - enter the week when the first test should occur from first visit applicable to each frequency e.g., 'The Date of assessment should be performed at Week 6 (42 ± 7 days), Week 12 (84 ± 7 days) and Week 18 (126 ± 7 days) from the date of randomization.', then enter 6. If the frequency changes during the same treatment phase then a new row is expected with a new start week e.g., 'Test should be performed every 9 weeks (63 days ±7 days) until week 45' then enter 27 (last stop week + new frequency 18+9 = 27) as the new start week. The value should always be in weeks.
+
+8. Stop Week -Enter the stop week when the last test should occur applicable to each frequency e.g., 'The Date of assessment should be performed at Week 6 (42 ± 7 days), Week 12 (84 ± 7 days) and Week 18 (126 ± 7 days) from the date of randomization.', then enter 18. If the frequency changes during the same treatment phase then a new row is expected with a new stop week e.g., 'test should be performed every 9 weeks (63 days ±7 days) until week 45' then enter 45 as the new stop week. Do NOT overlap start and stop week between multiple rows. If there is no 'stop week' simply enter as 'NA' and the report will output missing test until <End of Test Phase> or <End of Test Form> is completed e.g., 'The first on study test assessment should be performed at 12 weeks (84 days ±7 days) after the restart of treatment. Subsequent test should be performed every 12 weeks (84 days ±7 days) or more frequently if clinically indicated' then enter 'NA' as the stop week. The value should always be in weeks.
+
+9. End of Test Phase - Enter the visit name to define the last test was performed. Item is required. If form level is used, please mark NA
+
+10. End of Test Form- Enter the form name to define the last test was performed. Item is required. If visit level is used, please mark NA.
+
+Example:
+
+Criteria Form, Criteria Item, Start Phase, Frequency, Lower Window of Days, Upper Window of Days, Start Week, Stop Week, End of Test Phase, End of Test Form
+
+OLABA, Start Date Specimen Collected, Cycle 1, 9, 7, 7, 9, 18, NA, OEDRA
+
+Report Scenarios:
+Output Yes:
+
+A. There is not at least one Criteria Form Date within a Group specified in supporting document for each expected timeframe according to the start/stop week and frequency from Starting Point of each treatment phase and for each Criteria Form record that belong to each treatment phase
+
+Output No:
+
+A. There is not at least one Criteria Form Date within a Group specified in supporting document for each expected timeframe according to the start/stop week and frequency from Starting Point of each treatment phase and for each Criteria Form record that belong to each treatment phase but expected timepoint is after cutoff date
+
+B. There is at least one Criteria Form Date within a Group specified in supporting document for each expected timeframe according to the start/stop week and frequency from Starting Point of each treatment phase and for each Criteria Form record that belong to each treatment phase
+
+C. Patient is not randomized
+
+Sorting:
+Country, Site Number, Subject Number, Starting Phase Date
+
+Parameter Selection:
+Reference Form (Criteria form/DOV, Default as Criteria form from supp doc) free text box, Country, First Site, Last Site, First Subject, Last Subject, List of Subjects, Supporting Doc Page (N/Y, Default as N)
+
+Form.Item Names:
+1. SA form. Country
+
+2. SA form. Site
+
+3. SA form. Subject number
+
+4. Criteria Form (specified in Supporting document)/DOV
+
+5.First Visitmnemonic of Treatment Phase. Visit Mnemonic
+
+6. First Visitmnemonic of Treatment Phase. 'Criteria Item' in 'Criteria Form'/DOV
+
+7.As specified by Note 7

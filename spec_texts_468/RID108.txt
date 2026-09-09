@@ -1,0 +1,109 @@
+Report ID: RID108
+
+Report Title:
+Mismatch of number of units taken for First Dose and/or Last dose between SM and SME
+
+Description:
+This report will output subject with mismatching Number of Units taken for First Dose and/or Last dose between SM and SME
+
+Column Heading:
+1. Country
+
+2. Site
+
+3. Subject Number
+
+4. SM. Study Medication
+
+5. SM. Start Date/Time
+
+6. SM. Number of units taken
+
+7. SME. Study Medication
+
+8. SME. Start Date/Time
+
+9. SME. Number of units taken
+
+Logic:
+Report identifies mismatch number of units taken or Dose amount for First Dose and/or Last dose between SM and SME.
+
+Scenario 1:  First Dose/Last Dose for this Label Description” will be indicated
+
+Report derives the Number of Units taken or Dose amount for first/last dose as following,
+
+-SM form. Number of units taken or Dose amount where First dose/Last dose indicator checked for each label
+
+-SME form. Number of units taken or Dose amount where the First Dose/Last Dose is indicated for each label
+
+Scenario 2:  First Dose/Last Dose for this Label Description” will not indicated
+
+Report derives the Number of Units taken for first/last dose as following,
+
+-SM form. Number of units taken or Dose amount where First dose/Last dose indicator checked for each label
+
+-SM form. Number of units taken or Dose amount from minimum/maximum SME Start Date for each label.
+
+-SME form. Number of units taken or Dose amount where First dose/Last dose indicator checked for each label
+
+-SME form. Number of units taken or Dose amount from minimum/maximum SME Start Date for each label.
+
+This report requires  supp doc to be name EVD035_supp_xxxxxx.csv
+
+Vendor
+
+Label Description
+
+Ex.
+
+Vendor,Label Description
+
+QARC, Olaparib/Placebo
+
+Note: 1. Exclude deleted records
+
+          2. Consider the Number of Units Taken and/or Dose Amount
+
+          3. Please compare the records with same date between SM and SME form.
+
+Report Scenarios:
+Scenario A, Output: Yes
+
+Numbers of units taken or dose amount for First and/or Last dose are different between SM and SME
+
+Scenario B, Output: No
+
+Numbers of units taken or dose amount for First and/or Last dose are identical between SM and SME
+
+Scenario C, Output: No
+
+First or Last dose indicator is not checked in SM or SME form
+
+Sorting:
+Country
+
+Site
+
+Subject Number
+
+Parameter Selection:
+Country, Site, Subject Number, List of Subjects,  First Dose/Last Dose for this Label Description is transferred or not
+
+Form.Item Names:
+1. Subject Assignment.Site Country
+
+2. Subject Assignment.Site Mnemonic
+
+3. Subjects.Subject Number
+
+4. STUDY MEDICATION. Study Medication
+
+5. STUDY MEDICATION. Start Date/Time
+
+6. STUDY MEDICATION. Number of Units Taken or Dose Amount
+
+7. STUDY MEDICATION - EXTERNAL DATA LOAD. Study Medication
+
+8. STUDY MEDICATION - EXTERNAL DATA LOAD. Start Date/Time
+
+9. STUDY MEDICATION - EXTERNAL DATA LOAD. Number of Units Taken or Dose Amount

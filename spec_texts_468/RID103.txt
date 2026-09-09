@@ -1,0 +1,289 @@
+Report ID: RID103
+
+Report Title:
+External Vendor Data Listing
+
+Description:
+This report displays the external vendor data loaded into the SME views of the InForm reporting schema. Recommended format: Excel or csv.
+
+Column Heading:
+1. Country
+
+2. Site
+
+3. Subject Number
+
+4. Study Identifier
+
+5. Site ID or Number
+
+6. Screen ID or Number
+
+7. Subject ID or Number
+
+8. Seq
+
+9. Completion Status
+
+10. Reason Not Performed
+
+11. Vendor Name
+
+12. Visit Number
+
+13. Visit Name
+
+14. Visit Type
+
+15. Blinding Flag
+
+16. File Creation Date and Time
+
+17. Accession ID or Number
+
+18. Actual Collection Date and Time
+
+19. Test Status
+
+20. Domain Abbreviation
+
+21. Label Description
+
+22. Study Period
+
+23. Scheduled Time (or Scheduled Time Name depending on the eCRF)
+
+24. Scheduled Time Number
+
+25. Start Date/Time
+
+26. Please Indicate if this is the First Dose for this Label Description
+
+27. Stop Date/Time
+
+28. Please Indicate if this is the Last Dose for this Label Description
+
+29. Component ID
+
+30. Number of Units Taken
+
+31. Dose Amount
+
+32. Dose Unit
+
+33. Total Number of Fractions
+
+34. Administered By
+
+35. Body Site Location of Administration
+
+36. Laterality of Administration
+
+37. Reason For Dose Variation
+
+38. Form Category
+
+39. Formulation
+
+40. Route of Administration
+
+41. Dose Frequency
+
+42. Study Medication
+
+43. Treatment Stop Date
+
+44. Treatment Resume Date
+
+45. Number of Days of Treatment Interruption
+
+46. Supqual1
+
+47. Supqual2
+
+48. Supqual3
+
+49. Supqual4
+
+50. Supqual5
+
+51. Supqual6
+
+52. Supqual7
+
+53. Supqual8
+
+54. Supqual9
+
+55. Supqual10
+
+56. Supqual11
+
+57. Supqual12
+
+58. Supqual13
+
+59. Supqual14
+
+60. Supqual15
+
+61. Supqual16
+
+62. Supqual17
+
+63. Supqual18
+
+64. Supqual19
+
+65. Supqual20
+
+Logic:
+This report is a listing of the external SME data.
+
+Optional items will be shown or not according to their availability in the study.
+
+Deleted records should not be shown.
+
+This version of the report is based on Form Version #: 20180508
+
+Report Scenarios:
+A/Y undeleted records
+
+B/N deleted records
+
+Sorting:
+Country, Site, Subject Number, Seq #
+
+Parameter Selection:
+Country(ies), Site(s), Subject(s), List of Subjects
+
+Form.Item Names:
+1. SME.Country
+
+2. SME.Site
+
+3. SME.Subject Number
+
+4. SME.Study Identifier
+
+5. SME.Site ID or Number
+
+6. SME.Screen ID or Number
+
+7. SME.Subject ID or Number
+
+8. SME.Seq
+
+9. SME.Completion Status
+
+10. SME.Reason Not Performed
+
+11. SME.Vendor Name
+
+12. SME.Visit Number
+
+13. SME.Visit Name
+
+14. SME.Visit Type
+
+15. SME.Blinding Flag
+
+16. SME.File Creation Date and Time
+
+17. SME.Accession ID or Number
+
+18. SME.Actual Collection Date and Time
+
+19. SME.Test Status
+
+20. SME.Domain Abbreviation
+
+21. SME.Label Description
+
+22. SME.Study Period
+
+23. SME.Scheduled Time (or SME.Scheduled Time Name depending on the eCRF)
+
+24. SME.Scheduled Time Number
+
+25. SME.Start Date/Time
+
+26. SME.Please Indicate if this is the First Dose for this Label Description
+
+27. SME.Stop Date/Time
+
+28. SME.Please Indicate if this is the Last Dose for this Label Description
+
+29. SME.Component ID
+
+30. SME.Number of Units Taken
+
+31. SME.Dose Amount
+
+32. SME.Dose Unit
+
+33. SME.Total Number of Fractions
+
+34. SME.Administered By
+
+35. SME.Body Site Location of Administration
+
+36. SME.Laterality of Administration
+
+37. SME.Reason For Dose Variation
+
+38. SME.Form Category
+
+39. SME.Formulation
+
+40. SME.Route of Administration
+
+41. SME.Dose Frequency
+
+42. SME.Study Medication
+
+43. SME.Treatment Stop Date
+
+44. SME.Treatment Resume Date
+
+45. SME.Number of Days of Treatment Interruption
+
+46. SME.Supqual1
+
+47. SME.Supqual2
+
+48. SME.Supqual3
+
+49. SME.Supqual4
+
+50. SME.Supqual5
+
+51. SME.Supqual6
+
+52. SME.Supqual7
+
+53. SME.Supqual8
+
+54. SME.Supqual9
+
+55. SME.Supqual10
+
+56. SME.Supqual11
+
+57. SME.Supqual12
+
+58. SME.Supqual13
+
+59. SME.Supqual14
+
+60. SME.Supqual15
+
+61. SME.Supqual16
+
+62. SME.Supqual17
+
+63. SME.Supqual18
+
+64. SME.Supqual19
+
+65. SME.Supqual20

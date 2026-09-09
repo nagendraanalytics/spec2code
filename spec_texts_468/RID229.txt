@@ -1,0 +1,87 @@
+Report ID: RID229
+
+Report Title:
+Missing Derived Item Missing
+
+Description:
+This report displays derived item that is missing value based on supporting document
+
+Column Heading:
+1. Country
+
+2. Site Number
+
+3. Subject Number
+
+4. Visit
+
+5. Form
+
+6. Seq Number
+
+7. Item Name
+
+Logic:
+Logic 1: Items are listed in supporting document
+
+AND
+
+Logic 2: Target item value is null
+
+Notes:
+
+1) Output only when the form that contains the target item (listed in supporting document) is initiated;
+
+2) Exclude Erroneous Visit (if an initiated form containing the derivation item=null, but this form is located in an erroneous visit, do not output)
+
+3) Exclude deleted rows or forms
+
+Requires supporting document to be named TQ055_supp_</Vxxxxxxx>.csv and will contain the following columns and associated content. These can be obtained form TQ028_JR_STD. Derived item missing value will be output only if the that item is liseted in supporting doucment per below format.
+
+1. Form - Required, corresponding to the appropriate eCRFs
+
+2. Itemrefname - Required
+
+3. itemquestion - Required
+
+Eg, study team want to identify when derived item "Overall Action taken with Study Medication"=null in AE e-CRF
+
+AE | AEAEACNIT | Overall Action taken with Study Medication
+
+Report Scenarios:
+Scenario A: Yes
+
+Item is listed in supporting documents and the value is null
+
+Scenario B: No
+
+Item is NOT listed in supporting documents and the value is null
+
+Scenario C: No
+
+Item is listed in supporting documents and the value is null, AND the form that included this target item is not initiated yet
+
+Scenario D: No
+
+Item vaule is NOT null
+
+Sorting:
+Default
+
+Parameter Selection:
+Default
+
+Form.Item Names:
+1. SA. Site Country
+
+2. SA. Site Mnemonic
+
+3. SA. Subject Number
+
+4. Form.Visit Mnemonic
+
+5. Display Form from Supporting Document
+
+6. Form.Sequence Number
+
+7. Display Itemquestion from Supporting Document

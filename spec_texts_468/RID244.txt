@@ -1,0 +1,99 @@
+Report ID: RID244
+
+Report Title:
+Immune related AE
+
+Description:
+This report will display subjects with incorrectly reported "Is the AE Immune related" question.
+
+Column Heading:
+1. Country
+
+2. Site
+
+3. Subject number
+
+4. AE Seq
+
+5. AE Start date
+
+6. Study Medication
+
+7. Study Medication Start Date
+
+8. Is the AE Immune related?
+
+9. Cohort (if Applies)
+
+10. Arm (If Applies)
+
+Logic:
+Logic 1: CV_SMAUFM/CV_SMABFM/CV_SM01FM Study Medication=Study Medication selected  AND
+
+AE Onset date and time > or = than CV_SMAUFM/CV_SMABFM/CV_SM01FM First Dose AND
+
+"Is the AE Immune related" = Not Applicable
+
+Logic 2: CV_SMAUFM/CV_SMABFM/CV_SM01FM Study Medication=Study Medication selected  AND
+
+AE Onset date and time < than CV_SMAUFM/CV_SMABFM/CV_SM01FM First Dose AND
+
+"Is the AE Immune related" <> Not Applicable
+
+Logic 3: CV_SMAUFM/CV_SMABFM/CV_SM01FM Study Medication<> Study Medication selected  AND
+
+"Is the AE Immune related" <> Not Applicable
+
+Note 1: Please exclude deleted records from programming
+
+Note 2: For CV_SMAUFM and CV_SMABFM forms, item “Please Indicate if this is the First Dose for this
+
+Label Description” (SMABEXFDINDCCB_SMABEXFDIND_1/SMAUEXFDINDCCB_SMAUEXFDIND_1) should be checked.
+
+Note 3: "Study medication" should be derived from CV_SMPUFM/CV_SMPBFM form by using 'Dose Number+ Visit Number' between SMAUFM/CV_SMABFM and SMPUFM/CV_SMPBFM. For CV_SM01FM, Item is Study Medication due form design.
+
+Note 4. For Columns 9 and 10, it is depending on the desing of the trial to show te information. If not applies one of the item, please left it in blank.
+
+Note 5: For Logic 3, left blank columns 6 and 7.
+
+Report Scenarios:
+Scenario A/Yes:
+
+Subject is receiving 3475 AND AE Onset date is on or after first dose of Study Medication selected  AND "Is the AE Immune related" is "Not Applicable"
+
+Scenario B/Yes
+
+Subject is receiving 3475 AND AE Onset date is before first dose of Study Medication selected  AND "Is the AE Immune related" is not "Not Applicable"
+
+Scenario C/Yes
+
+Subject is NOT receiving Study Medication selected 5 AND "Is the AE Immune related" is "Not Applicable"
+
+Sorting:
+Country, Site, Subject Number
+
+Parameter Selection:
+Country, First Site, Last Site, First Subject Number, Last Subject Number, Study Medication (Multiple selection),  Randomized Only
+
+Form.Item Names:
+1. CV_AEFM.SITECOUNTRY
+
+2. CV_AEFM.SITEMNEMONIC
+
+3. CV_ENRFM.ENRMSUBJNUMIT
+
+4. CV_AEFM.FORMIDX
+
+5. CV_AEFM.DT_AEAESTDTCIT
+
+6. cv_smpbfm.smpbextrtit/ cv_smpufm.smpuextrtit/cv_sm01.SM01EXTRT1IT~cv_sm01.SM01EXTRT10IT
+
+7. . If there is no time collected then CV_SMABFM.DT_SMABEXSTDTCIT/CV_SMAUFM.DT_SMAUEXSTDTCIT/CV_SM01FM.DT_SM01EXSTDTC1IT~CV_SM01FM.DT_SM01EXSTDTC10IT;
+
+If time is collected then CV_SMABFM.DT_SMABEXSTDTCIT||' '||TMS_SMABEXSTDTCIT/CV_SMAUFM.DT_SMAUEXSTDTCIT||' '||TMS_SMAUEXSTDTCIT/CV_SM01FM.DT_SM01EXSTDTC1IT||' '||TMS_SM01EXSTDTC1IT~CV_SM01FM.DT_SM01EXSTDTC10IT||' '||TMS_SM01EXSTDTC10IT
+
+8. CV_AEFM.AEIMMUNRRC_AEIMMUNRIT
+
+9. CV_SRFM.SRSCORRESCOHRC_SRSCORRESCOHIT
+
+10. CV_SRFM.SRSCORRESARMRC_SRSCORRESARMIT

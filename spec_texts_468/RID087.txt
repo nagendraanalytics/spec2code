@@ -1,0 +1,251 @@
+Report ID: RID087
+
+Report Title:
+Duplicate CECG Records
+
+Description:
+This report lists all patients with duplicate ECG records based on the parameters selected from the CECG items.
+
+Column Heading:
+1. Country
+
+2. Site
+
+3. Screening Number
+
+4. Subject Number
+
+5. Vendor
+
+6. Visit Number
+
+7. Collection Date and Time
+
+8. Form Index
+
+9. Seq
+
+Logic:
+Report Logic: The report should output CECG records where Site, Subject ID or Number, Vendor Name AND All items EXCEPT for the selected items from parameter " CECG items to exclude" are equal.
+
+Parameter "CECG items to exclude " allows user to select items that can be equal or different within the record and should not be used to consider duplicates. This parameter can contain the following items:
+
+Site
+
+Study ID or Number
+
+Screen ID or Number
+
+Subject ID or Number
+
+ECG Provider Internal Patient ID
+
+Spare Subject ID
+
+Visit Number
+
+Visit Type
+
+Visit Name
+
+Planned Time Point
+
+Planned Time Point Number
+
+ECG Provider Internal ECG  ID
+
+ECG Received Date
+
+Collection Date and Time
+
+Ventricular Rate
+
+Ventricular Rate Units
+
+Ventricular Rate Category
+
+Heart Rate
+
+Heart Rate Units
+
+Heart Rate Category
+
+RR Interval
+
+RR Interval Units
+
+RR Interval Category
+
+RR Lead
+
+PR Interval
+
+PR Interval Units
+
+PR Interval Category
+
+QRS Interval
+
+QRS Interval Units
+
+QRS Interval Category
+
+QRS Lead
+
+QT Interval
+
+QT Interval Units
+
+QT Interval Category
+
+QT Lead
+
+QT Average
+
+QT Average Units
+
+QT Average Category
+
+QTcB Interval
+
+QTcB Interval Units
+
+QTcB Interval Category
+
+QTcB Average
+
+QTcB Average Units
+
+QTcB Average Category
+
+QTcB Lead
+
+QTcF Interval
+
+QTcF Interval Units
+
+QTcF Interval Category
+
+QTcF Average
+
+QTcF Average Units
+
+QTcF Average Category
+
+QTcF Lead
+
+QTcS Interval
+
+QTcS Interval Units
+
+QTcS Interval Category
+
+QTcS Average
+
+QTcS Average Units
+
+QTcS Average Category
+
+Tracing
+
+Comparison
+
+ST Segment Morphology
+
+ST Segment Morphology Category
+
+T Wave Morphology
+
+T Wave Morphology Category
+
+U Wave
+
+U Wave Category
+
+Diag Statement 1
+
+Diag Statement 1 Category
+
+Diag Statement 2
+
+Diag Statement 2 Category
+
+Diag Statement 3
+
+Diag Statement 3 Category
+
+Diag Statement 4
+
+Diag Statement 4 Category
+
+Diag Statement 5
+
+Diag Statement 5 Category
+
+Diag Statement 6
+
+Diag Statement 6 Category
+
+Diag Statement 7
+
+Diag Statement 7 Category
+
+Diag Statement 8
+
+Diag Statement 8 Category
+
+Diag Statement 9
+
+Diag Statement 9 Category
+
+Diag Statement 10
+
+Diag Statement 10 Category
+
+Cardiologist Comments
+
+File Type
+
+Note:
+
+1. Report should not display deleted records.
+
+2. If "Randomized only" parameter selection checkbox  is checked, the report should only output subjects with Randomization number that is not null.                                                                                                                                                                                                                                                                                                  3. Collection Date and Time field is formatted according to the ISO standard. An example for 12-Jul-2007 at noon is: 2007-07-12T12:00:00 (yyyy-mm-ddThh:mm:ss). However, not all time parts are always present.
+
+4. Visit numbers are formatted as a number without any leading zeros.
+
+5. If item selected on parameter " CECG items to exclude "=Null, that should be also considered as duplicate value. Per default, the report should consider items in Data Type such as Study Identifier, Site ID or Number, Screen ID or Number or Subject ID or Number to exclude duplicates.
+
+Report Scenarios:
+Output – Yes
+
+There are two records on CECG with all items equal (The items on “CECG items to exclude” can be equal or different, should be ignored)
+
+Output – No
+
+There are two records on CECG but at least one of the items NOT present in “CECG items to exclude” is different.
+
+Sorting:
+Country, Site, Subject Number, Collection Date and Time
+
+Parameter Selection:
+Country. Site, Subject Number, Vendor, Randomized Only,  CECG items to exclude
+
+Form.Item Names:
+1. Subject Assignment.Site Country
+
+2. Subject Assignment form.Site Mnemonic
+
+3. Subject Assignment form.Screening Number
+
+4. Subjects.Subject Number
+
+5. CENTRAL VENDOR ELECTROCARDIOGRAM Form.Vendor Name
+
+6. CENTRAL VENDOR ELECTROCARDIOGRAM Form.Visit Number
+
+7. CENTRAL VENDOR ELECTROCARDIOGRAM Form.Collection date and Time
+
+8. CENTRAL VENDOR ELECTROCARDIOGRAM Form.InForm FORMINDEX (long)
+
+9. CENTRAL VENDOR ELECTROCARDIOGRAM Form.Formidx

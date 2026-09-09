@@ -1,0 +1,73 @@
+Report ID: RID004
+
+Report Title:
+Reconciliation of the reason for discontinuation details associated to COVID-19
+
+Description:
+This report lists the discontinuation reason details in the subject/study medication status forms to identify inconsistencies to COVID-19 terminology.
+
+Column Heading:
+1. Country
+
+2. Site
+
+3. Subject Number
+
+4. Visit Mnemonic
+
+5. Form name
+
+6. Reason for Discontinuation Details
+
+Logic:
+Logic 1: Form.Date of Assessment (provided in the supp doc) > 1-Dec-2019
+
+AND
+
+Logic 2: Form. Reason details item (provided in the supp doc) <> NULL
+
+Requires supporting document to be named ACDC004_supp_<xxxxxxx>.csv. It will contain the following columns and associated content:
+
+1) Form – Each form where discontinuation is indicated
+
+2) Date of Assessment – Date of Assessment item for each form
+
+3) Visit Mnemonic – Visit where each form is triggered per T&E
+
+4) Reason details item – Reason details item for each form
+
+Eg.
+
+Form, Date of Assessment, Visit Mnemonic, Reason details item
+
+OEDRA, Date of Assessment, Follow-up Day 30, Reason for Discontinuation from This Trial Segment Details (see note immediately above)
+
+DS01, Date of Disposition, Final Status, Reason for Discontinuation from This Trial Segment Details (see note immediately above), Was the Discontinued Status of the Subject for the Study, Recorded on the DS01 Form
+
+PMS1, Date of Assessment, Discontinuation Visit, Reason for Discontinuation from This Trial Segment Details (see note immediately above)
+
+Report Scenarios:
+Output Yes: Form.Date of Assessment (provided in the supp doc) > 1-Dec-2019 AND Form. Reason details item (provided in the supp doc) <> NULL
+
+Output No: Form.Date of Assessment (provided in the supp doc) < 1-Dec-2019
+
+Output No: Form.Date of Assessment (provided in the supp doc) > 1-Dec-2019 AND Form. Reason details item (provided in the supp doc) = NULL
+
+Sorting:
+Default
+
+Parameter Selection:
+Country, First Site, Last Site, First Subject, Last Subject, List of Subjects, Randomized Only (Y/N set default to N)
+
+Form.Item Names:
+1. SA.Site Country
+
+2. SA.Site Mnemonic
+
+3. Subjects.Subject Number
+
+4. Visits.Visitmnemonic
+
+5. Display eCRF name (DS01/OEDRA/PMS1/PMS1A/PMST)
+
+6. Display Reason for Discontinuation Details (DS01.Reason for Study Discontinuation Details (see note immediately above) OR OEDRA/PMS1/PMS1A/PMST.Reason for Discontinuation from This Trial Segment Details (see note immediately above))

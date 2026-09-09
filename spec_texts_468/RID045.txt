@@ -1,0 +1,117 @@
+Report ID: RID045
+
+Report Title:
+CM missing items report
+
+Description:
+This report displays subjects who have missing items of the CM eCRF that need to be completed per a specific requirement.
+
+Column Heading:
+1.  Country
+
+2.  Site
+
+3.  Subject Number
+
+4.  Seq
+
+5.  Medication Name
+
+6.  Standardized Medication
+
+7.  Encoded Drug Name
+
+8.  Medication Class
+
+9. Medication Category
+
+10. Start Date
+
+11. Stop Date
+
+12. Prior CM
+
+Logic:
+This report displays CM records with missing items.
+
+Deleted records should not be considered.
+
+The requestor should define:
+
+1) The group of CMs, e.g. Medication Class containing the term "Benzodiazepine", Medication Category="ADVERSE EVENT"
+
+2) The CM items that need to be completed, e.g. Reason Medication Discontinued.
+
+The Medication Category column will be dynamically shown depending on whether the item is available on the CM form or not.
+
+Requires supporting document to be named CM015_supp_<xxxxxxx>.csv and will contain the following columns and associated content:
+
+Medicationterms, Matchedsymbol, MedicationValue are taken in combination. However, RequiredItem is to be applied for all the rows.
+
+1.Medicationterms: Please provide the item questions for medication terms or encoded terms.
+
+2.Matchedsymbol: Please provide the Symbols (=, <>, in, not in, like...).
+
+3.MedicationValue: Please provide the value for defined Medication Terms.
+
+4.RequiredItem: Please provide the item questions fields that should not be null.
+
+Eg:
+
+MedicationTerms, Matchedsymbol, MedicationValue, RequiredItem:
+
+Standardized Medication Name,in,fludrocortisone acetate,Total Daily Dose and Units
+
+Standardized Medication Name,in,amlodipine,Dose Form
+
+Medication Class,like,MINERALOCORTICOIDS,Route of Administration
+
+Medication Class,like,GLUCOCORTICOIDS,Dosage Strength
+
+Report Scenarios:
+1) Output=YES
+
+CM record of the specified group
+
+CM item missing
+
+2) Output=NO
+
+CM record not belonging to the specified group
+
+3) Output=NO
+
+CM record of the specified group
+
+CM items completed
+
+Sorting:
+Country, Site, Subject Number, Seq
+
+Parameter Selection:
+Country, Site, Subject, Randomized Only, List of Subjects
+
+Form.Item Names:
+1.  Subject Assignment.Site Country
+
+2.  Subject Assignment.Site Mnemonic
+
+3.  Subject.Subject Number
+
+4.  PRIOR AND CONCOMITANT MEDICATIONS Form.formidx
+
+5.  PRIOR AND CONCOMITANT MEDICATIONS Form.Medication Name
+
+6. .  PRIOR AND CONCOMITANT MEDICATIONS Form.Standardized Medication
+
+7.  PRIOR AND CONCOMITANT MEDICATIONS Form.Encoded Drug Name
+
+8.  PRIOR AND CONCOMITANT MEDICATIONS Form.Medication Class
+
+9. PRIOR AND CONCOMITANT MEDICATIONS Form.Medication Category
+
+10. PRIOR AND CONCOMITANT MEDICATIONS Form.Start Date and Time
+
+11. PRIOR AND CONCOMITANT MEDICATIONS Form.Stop Date and Time
+
+12. PRIOR AND CONCOMITANT MEDICATIONS Form.Was medication taken prior to the first dose of study medication?

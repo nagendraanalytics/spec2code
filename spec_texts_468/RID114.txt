@@ -1,0 +1,195 @@
+Report ID: RID114
+
+Report Title:
+Duplicate SME Records
+
+Description:
+This report lists all subjects with duplicate SME records
+
+Column Heading:
+1. Country
+
+2. Site
+
+3. Subject Number
+
+4. Formindex
+
+5. Vendor
+
+6. Label Description
+
+7. Start Date/Time
+
+8. Body site location of administration
+
+Logic:
+The report should output SME records where Vendor Name, Label Description, Start Date and Time，Body site location of administration AND All items EXCEPT for the selected items from supporting document " SME items to exclude" are equal.
+
+allows user to select items that can be equal or different within the record and should not be used to consider duplicates
+
+Note 1: Requires supporting document to be named  EVD039_supp_<xxxxxxx>.csv and  will allow user to select items that can be equal or different within the record and should not be used to consider duplicates, this supporting document will contain 1 column with the items the user wants to exclude from the duplicate comparation of records.
+
+Eg
+
+Item to exclude
+
+Study Identifier
+
+Site ID or Number
+
+Screen ID or Number
+
+Subject ID or Number
+
+Vendor Name
+
+Blinding Flag
+
+Completion Status
+
+Visit Number
+
+Visit Name
+
+Visit Type
+
+Blinding Flag
+
+File Creation Date and Time
+
+Accession ID or Number
+
+Actual Collection Date and Time
+
+Test Status
+
+Domain Abbreviation
+
+Study Period
+
+Scheduled Time Name
+
+Scheduled Time Number
+
+Please Indicate if this is the First Dose for this Label Description
+
+Stop Date/Time
+
+Please Indicate if this is the Last Dose for this Label Description
+
+Component ID
+
+Number of Units Taken
+
+Dose Amount
+
+Dose Unit
+
+Total Number of Fractions
+
+Administered by
+
+Laterality of Administration
+
+Reason for Dose Variation
+
+Form Category
+
+Formulation
+
+Route of Administration
+
+Dose Frequency
+
+Study Medication
+
+Treatment Stop Date
+
+Treatment Resume Date
+
+Number of Days of Treatment Interruption
+
+Supqual1
+
+Supqual2
+
+Supqual3
+
+Supqual4
+
+Supqual5
+
+Supqual6
+
+Supqual7
+
+Supqual8
+
+Supqual9
+
+Supqual10
+
+Supqual11
+
+Supqual12
+
+Supqual13
+
+Supqual14
+
+Supqual15
+
+Supqual16
+
+Supqual17
+
+Supqual18
+
+Supqual19
+
+Supqual20
+
+Transaction Type
+
+Note 2: Report should not display deleted records.
+
+Note 3: If item (Exclude the item selected on parameter) = Null across all compared records, output should be displayed for reference.
+
+Report Scenarios:
+: 1) Output=Yes
+
+Subject has duplicate SME records with same Start Date/Time AND Vendor Name AND Label Description AND Body site location of administration AND it is not present in “SME items to exclude “ supporting document.
+
+Output all duplicate records.
+
+2) Output=No
+
+Subject has SME records with any of Start Date/Time OR Vendor Name OR Label Description OR Body site location of administration OR  is present in “SME items to exclude “ supporting document
+
+3) Output=No
+
+Subject has SME records with different Start Date/Time AND Vendor Name AND Label Description AND Body site location of administration AND is present in “SME items to exclude “ supporting document.
+
+Sorting:
+Country, Site, Subject Number, Form index, Label Description
+
+Parameter Selection:
+Country, First Site, Last Site, First Subject, Last Subject, List of Subjects, Randomized Only (Y/N set default to N), Supporting Doc Page (N/Y, Default as N)
+
+Form.Item Names:
+1. Subject Assignment from.Site Country
+
+2. Subject Assignment form.Site Mnemonic
+
+3. Subjects.Subject Number
+
+4. STUDY MEDICATION – EXTERNAL DATA LOAD Form.InForm Formindex
+
+5. STUDY MEDICATION – EXTERNAL DATA LOAD Form.Vendor Name
+
+6. STUDY MEDICATION – EXTERNAL DATA LOAD Form.Label Description
+
+7. STUDY MEDICATION – EXTERNAL DATA LOAD Form.Start Date and Time
+
+8. STUDY MEDICATION – EXTERNAL DATA LOAD Form.Body Site Location of Administration

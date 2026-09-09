@@ -1,0 +1,130 @@
+Report ID: RID179
+
+Report Title:
+Incomplete doses within the same cycle
+
+Description:
+This report will output subjects with incomplete doses within the same cycle.
+
+Column Heading:
+1.	Country
+
+2.	Site
+
+3.	Subject Number
+
+4.	Study Medication
+
+5.             Study Period
+
+6.	Date of visit
+
+7.	Seq number Start date/time
+
+8.	Start date
+
+9.	Seq number Stop date/time
+
+10.	Stop date
+
+11.	Duration of SM
+
+Logic:
+Please refer to Supporting document and Test data in the following path for additional information: GCDI DM Trial DeliverablesOncology NLH-3475585585_ILR_Specs585_SupportingDocuments SM009_supp_3475585/SM009_JR_STD_Test_Data
+
+LOGIC:
+
+Supporting document is required, if it is not provided, display the message as "SM009_JR_STD Supporting Document Not Present for This Trial".
+
+Requires supporting document to be named SM009_supp_<xxxxxxx>.csv and will contain the following columns and associated content:
+
+1.	Group - Unique key for group of SM records, NOT NULL.
+
+2.	Study Medication- Value for specific SM.
+
+3.	Study Period- Where the SM is supposed to be given.
+
+4.	Window of days- Timeframe expected for the study medication is supposed to be given- Value is inclusive.
+
+5.            Show output as decimal value - Y- when studies collect date and time for SM. N- when studies only collect date for SM.
+
+e.g.
+
+1,Fluorouracil,Cycle 1,5,N
+
+1,Fluorouracil,Cycle 2,5,N
+
+2,Capecitabine,Cycle 1,14,N
+
+2,Capecitabine,Cycle 2,14,N
+
+Logic 1.1 (SM. Study medication  = Study Medication column provided at supporting document)
+
+AND
+
+Logic 1.2 (SM. Study Period different from Null)
+
+AND
+
+Logic 1.3 (SM. Start Date/Time different from Null)
+
+AND
+
+Logic 1.4 (SM. Stop Date/Time different from Null )
+
+AND
+
+Logic 1.5 The difference between (The earliest Start Date/Time and Maximum Stop Date/Time)+1 is different from the Window of days provided at supporting document.（Please include the whole SM period）
+
+Note:
+
+1)	For Logic 1.5 check the difference between (The earliest Start Date/Time and Maximum Stop Date/Time)  for each Study Period provided in supporting document in column Study Period.
+
+2)	For Logic 1.5 check the difference between (The earliest Start Date/Time and Maximum Stop Date/Time)  for each Study Medication provided in supporting document in column Study Medication.
+
+3)	Window of days provided at supporting document should be inclusive.
+
+4)	Deleted record will not be considered in programming and logic
+
+5)	If time is UNK just consider the date, time can be ignored. If has accurate time, the time need take into account.
+
+6）          For studies collect date and time please calculated days keep one decimal place in output.
+
+7)            For studies collect only date, calculated days without decimal value.
+
+8)            Common forms Study period should be match with dov. Visit mnemonic to fetch the dov date for column 6, if dov date  is missing display column 6 as blank.
+
+Report Scenarios:
+Output Yes:
+
+When for the study medication entered at the supp doc there is no administration given within the window entered at supporting document.
+
+Output No:
+
+When for the study medication entered at the supp doc there is administration given within the window entered at supporting document.
+
+Parameter Selection:
+Country, Site, Subject, Randomized Only.
+
+Form.Item Names:
+1.	SA. Country
+
+2.	SA. Site
+
+3.	SA. Subject Number
+
+4.	SM. Study Medication
+
+5.	SM. Study Period
+
+6.	DOV. Date of Visit
+
+7.	SM.Seq number Start date/time
+
+8.	SM.Start date
+
+9.	SM.Seq number Stop date/time
+
+10.	SM.Stop date
+
+11.	Display difference between (The earliest Start Date/Time and Maximum Stop Date/Time) per Study medication and Per Study Period. Duration of SM

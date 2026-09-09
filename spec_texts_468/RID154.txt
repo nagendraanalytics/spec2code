@@ -1,0 +1,316 @@
+Report ID: RID154
+
+Report Title:
+Tab 1: PK Invoice and BA Vendor Reconciliation
+
+Tab 2: PK Invoice and Central Lab Vendor Reconciliation
+
+Description:
+This report will output mismatches between INFORM, Central Lab and/or BA vendor.
+
+In case all 3 databases need to be reconciled (Inform - BA file and Central Lab), the report will show 2 TABS: eCRF Invoice VS BA file and eCRF invoice VS Central Lab.
+
+Column Heading:
+Tab 1: BA
+
+1. Country
+
+2. Site
+
+3. Subject Number
+
+4. PK seq
+
+5. Inform Analyte
+
+6. BA Analyte
+
+7. Inform Visit
+
+8. BA Visit
+
+9. Inform Specimen ID
+
+10. BA Specimen ID
+
+11. Inform Scheduled Time
+
+12. BA Schedule Time
+
+13. Inform Sample Collection-Date
+
+14. BA Sample Collection-Date
+
+15. Inform Sample Collection-Time
+
+16. BA Sample Collection-Time
+
+17. Inform Specimen Type
+
+18. BA Specimen Type
+
+19. Issue
+
+Tab 2: Central Lab
+
+1. Country
+
+2. Site
+
+3. Subject Number
+
+4. PK seq
+
+5. Inform Analyte
+
+6. Central Analyte
+
+7. Inform Visit
+
+8. Central Visit
+
+9. Inform Specimen ID
+
+10. Central Specimen ID
+
+11. Inform Scheduled Time
+
+12. Central Schedule Time
+
+13. Inform Sample Collection-Date
+
+14. Central Sample Collection-Date
+
+15. Inform Sample Collection-Time
+
+16. Central Sample Collection-Time
+
+17. Inform Specimen Type
+
+18. Central Specimen Type
+
+19. Issue
+
+Logic:
+This report displays subjects who have mismatches for either Visit, Subject Number, Schedule Time, Analyte, Date and Time of Sample Collection and/or Specimen Type between Inform vs BA vs Central. The following scenarios should be look into:
+
+The initial comparison should be Subject Assignment. Screening Number+ Subject Assignment. Specimen ID vs SCRNID+ REFID. Then the following scenarios should be look into:
+
+1.	Scheduled Time different than NOMHOUR (BA/Central). If different, output should be produced, and Scenario displayed as Schedule Time mismatch.
+
+2.	IF Visit Mnemonic is different than NOMDAY, output should be produced, and Scenario displayed as Visit mismatch.
+
+3.	IF Analyte is different than ANALYTE, output should be produced, and Scenario displayed as Analyte mismatch.
+
+4.	IF Date and Time of Sample Collection-Date is different than DDT, output should be produced, and Scenario displayed as Date mismatch.
+
+5.	IF Date and Time of Sample Collection-Time is different than DTM, output should be produced, and Scenario displayed as Time mismatch.
+
+6.	IF Specimen Type is different than SAMPLE, output should be produced, and Scenario displayed as Specimen Type mismatch.
+
+7.	If Treatment/Randomization Number is different than SUBJID, output should be produced, and Scenario displayed as PNE.
+
+Notes:
+
+1.	Please use the Supporting Document as guide to see which visit corresponds to the NOMDAY, the Schedule Time to the NOMHOUR and Analyte and Specimen Type matching.
+
+2.	Exclude samples from Inform when deleted records OR “If Sample Was Collected But Not Sent”, “Check if Sample Was Not Collected” is different than NULL.
+
+3.	DOV should be initialized, and visit should not be erroneous for all scenarios.
+
+4. For PNE scenario subject number should be displayed from Vendor files “SITEID+“--"+ SUBJID”.
+
+5. No case sensitive when comparing Specimen ID from INFORM and Vendor data.
+
+6. SITEID is always a 4-digit number, SCRNID is a 9-digit number and SUBJID is a 6-digit number if any of them have a smaller number of digits please complete with zeros at the left to make the comparison, i.e. SITEID: 100 should be 0100 to match with Site from InForm
+
+7.	It should be one tab for BA and another for Central Lab if data of both is included using the prompts.
+
+8.	For the same Subject Assignment. Screening Number+ Subject Assignment. Specimen ID it should show all the discrepancies in only one output concatenating the issue messages i.e. “Visit Mismatch, Analyte mismatch, Specimen Type mismatch”.
+
+9.	If Scheduled Time in Inform is “UNSCHEDULED”, for Visit mismatch scenario please use Unscheduled as Visit Mnemonic in the logic based on the relation (Visit Mnemonic-NOMDAY) present in the supporting document. The report output should display the real visit mnemonic in which the record in InForm is found. If Unscheduled is not included in the supporting document, please use the relation Unscheduled (Visit Mnemonic) – 997 (NOMDAY).
+
+10.	For PK05 form, scenarios of date and time of collection, report should check DDT and DTM against the item selected by user in the prompts.
+
+11.	If the trial does not collect the time in Inform, this scenario should not be evaluated, and outputs are not expected for Time mismatch scenario.
+
+Requires a supporting document to be named PK014_supp_XXXXXXX.csv (in csv format) and will contain the following columns and associated content:
+
+1. Analyte Inform
+
+2. Analyte BA/Central
+
+3. Visit Mnemonic - Please include all timepoints from specification. i.e. Unscheduled, Discontinuation, Early Discontinuation, etc..
+
+4. NOMDAY
+
+5. Scheduled Time
+
+6. NOMHOUR
+
+7. Specimen Type Inform
+
+8. Specimen Type BA/Central
+
+Note to LCDM: NOMDAY and NOMHOUR should match with the NOMDAY NOMHOUR specification sent to vendor. Please refer to 600-GDMS018-062.
+
+Each pair of columns in supporting document is independent of the others (1&2, 3&4, 5&6, 7&8) and they could have different amount of rows
+
+Example:
+
+Analyte Inform, Analyte BA/Central, Visit Mnemonic, NOMDAY, Scheduled Time, NOMHOUR, Specimen Type Inform, Specimen Type BA/Central
+
+Carboplatin, FREE CARBOPLATIN, Screening, 1, Pre Dose, 0,Serum,SERUM
+
+2140,-2140, Screening, 1, 0-4 Hours Post Dos3, 3,
+
+2140,2140, Unscheduled,997, , ,
+
+This report can be run on BA or Central Lab files or both.
+
+Report Scenarios:
+1) Output=YES
+
+The Scheduled Time (Inform)/NOMHOUR (BA/Central) does not match between Inform vs BA and/or Central.
+
+2) Output=NO
+
+The Scheduled Time (Inform)/NOMHOUR (BA/Central) does match between Inform vs BA and/or Central.
+
+3) Output=YES
+
+The Visit Mnemonic (Inform)/NOMDAY (BA/Central) does not match between Inform vs BA and/or Central.
+
+4) Output=NO
+
+The Visit Mnemonic (Inform)/NOMDAY (BA/Central) does match between Inform vs BA and/or Central.
+
+5) Output=YES
+
+The Analyte (Inform)/ ANALYTE (BA/Central) does not match between Inform vs BA and/or Central.
+
+6) Output=NO
+
+The Analyte (Inform)/ ANALYTE (BA/Central) does match between Inform vs BA and/or Central.
+
+7) Output=YES
+
+The Date and Time of Sample Collection (Date-Inform)/ DDT (BA/Central) does not match between Inform vs BA and/or Central.
+
+8) Output=NO
+
+The Date and Time of Sample Collection (Date-Inform)/ DDT (BA/Central) does match between Inform vs BA and/or Central.
+
+9) Output=YES
+
+The Date and Time of Sample Collection (Time-Inform)/ DTM(BA/Central) does not match between Inform vs BA and/or Central.
+
+10) Output=NO
+
+The Date and Time of Sample Collection (Time-Inform)/ DTM(BA/Central) does match between Inform vs BA and/or Central.
+
+11) Output=YES
+
+The Specimen Type (Inform)/ SAMPLE(BA/Central) does not match between Inform vs BA and/or Central.
+
+12) Output=NO
+
+The Specimen Type (Inform)/ SAMPLE(BA/Central) does match between Inform vs BA and/or Central.
+
+13) Output=YES
+
+The Treatment/Randomization Number (Inform)/ SUBJID (BA/Central) does not match between Inform vs BA and/or Central.
+
+14) Output=NO
+
+The Treatment/Randomization Number (Inform)/ SUBJID (BA/Central) does match between Inform vs BA and/or Central.
+
+15) Output=NO
+
+Deleted records OR “If Sample Was Collected But Not Sent, Indicate Reason” OR
+
+ “Check if Sample Was Not Collected” is different than NULL.
+
+Parameter Selection:
+Protocol Number, First Site No., Last Site No.,First Subject No., Last Subject No., Vendors: Central/BA/Both, Date Reconciliation ( Include option as PK05 Start Date[StartDate] and PK05 Stop Date[StopDate]), Randomized Only, Supporting Doc Page (N/Y, Default as N)
+
+Form.Item Names:
+Tab 1: BA
+
+1. Subject Assignment.Site Country
+
+2. Subject Assignment.Site Mnemonic
+
+3. concatenate ( Subject Assignment.Site Mnemonic + "--" + Subjects Assignment. Treatment/Randomization Number)
+
+4. PK.Seq
+
+5. PK.Analyte
+
+6. BA.ANALYTE
+
+7. DOV.Visit mnemonic
+
+8. BA. NOMDAY
+
+9. PK.Specimen ID
+
+10. BA.REFID
+
+11. PK.Scheduled Time
+
+12. BA.NOMHOUR
+
+13. PK.Date and Time of Sample Collection-Date
+
+14. BA.DDT
+
+15. PK.Date and Time of Sample Collection-Time
+
+16. BA.DTM
+
+17. PK.Specimen Type
+
+18. BA. SAMPLE
+
+19. Display Scenario (Visit mismatch, Analyte mismatch, Schedule Time mismatch, Date Mismatch, Time Mismatch, Specimen Type mismatch, PNE) according to logic
+
+Tab 2: Central Lab
+
+1. Subject Assignment.Site Country
+
+2. Subject Assignment.Site Mnemonic
+
+3 concatenate ( Subject Assignment.Site Mnemonic + "--" + Subjects Assignment. Treatment/Randomization Number
+
+4. PK.Seq
+
+5. PK.Analyte
+
+6. Central Lab.ANALYTE
+
+7. DOV.Visit mnemonic
+
+8. Central Lab. NOMDAY
+
+9. PK.Specimen ID
+
+10. Central Lab.REFID
+
+11. Central Lab.Scheduled Time
+
+12. Central Lab.NOMHOUR
+
+13. PK.Date and Time of Sample Collection-Date
+
+14. Central Lab.DDT
+
+15. PK.Date and Time of Sample Collection-Time
+
+16. Central Lab.DTM
+
+17. PK.Specimen Type
+
+18. Central Lab. SAMPLE
+
+19. Display Scenario (Visit mismatch, Analyte mismatch, Schedule Time mismatch, Date Mismatch, Time Mismatch, Specimen Type mismatch, PNE) according to logic

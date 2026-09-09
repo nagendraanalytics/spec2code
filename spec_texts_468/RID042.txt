@@ -1,0 +1,221 @@
+Report ID: RID042
+
+Report Title:
+Concomitant Medication to Study Medication reconciliation
+
+Description:
+Comparison of concomitant medication to start of Minimum First dose of study medication
+
+Column Heading:
+1. Country
+
+2. Site
+
+3. Subject Number
+
+4. CM Seq
+
+5. Medication
+
+6. Start Date
+
+7. CM taken prior to SM first dose?
+
+8. Min SM Visit
+
+9. Min SM form
+
+10. SM Seq
+
+11. Min first dose Start Date
+
+12. Issue
+
+Logic:
+This report is to check,
+
+CM Start Date= Start Date of Min First dose across SM/SMAB/SMAU
+
+AND
+
+Time is not present or time is UNK
+
+Scenario 1- Was medication taken prior to the first dose of study medication?/Did Medication Start Prior to the First Dose of Study Medication? is blank
+
+OR
+
+Time is present
+
+Scenario 2:
+
+If Time of CM is available:
+
+Time on CM is less than time on SM; and Was medication taken prior to the first dose of study medication?/Did Medication Start Prior to the First Dose of Study Medication? is not checked as YES (output if the question is answered NO or is blank)
+
+If Time of CM is not available:
+
+No output
+
+Scenario 3-time on CM is greater than time on SM; and Was medication taken prior to the first dose of study medication?/Did Medication Start Prior to the First Dose of Study Medication? is not checked as NO (output if the question is answered YES or is blank)
+
+This report is to check,
+
+CM Start Date= Start Date of Min First dose across SM/SMAB/SMAU
+
+AND
+
+Time is not present or time is UNK
+
+Scenario 1- Was medication taken prior to the first dose of study medication?/Did Medication Start Prior to the First Dose of Study Medication? is blank
+
+OR
+
+Time is present
+
+Scenario 2:
+
+If Time of CM is available:
+
+Time on CM is less than time on SM; and Was medication taken prior to the first dose of study medication?/Did Medication Start Prior to the First Dose of Study Medication? is not checked as YES  (output if the question is answered NO or is blank)
+
+If Time of CM is not available:
+
+No output
+
+Scenario 3-time on CM is greater than time on SM; and Was medication taken prior to the first dose of study medication?/Did Medication Start Prior to the First Dose of Study Medication? is  not checked as NO (output if the question is answered YES or is blank)
+
+CM Start Date<>Start Date of Min First dose across SM/SMAB/SMAU
+
+AND
+
+Scenario 4 : Was medication taken prior to the first dose of study medication?/Did Medication Start Prior to the First Dose of Study Medication? = YES, and CM Start Date/time >  SM  First dose entry.
+
+Scenario 5 : Was medication taken prior to the first dose of study medication?/Did Medication Start Prior to the First Dose of Study Medication? = NO, and start Date/time is < SM  First dose entry.
+
+ Do not include deleted/erroneous visit data into programming.
+
+For scenario 4 and 5:
+
+If CM Start date=UNK, but Month is available, CM Month and year will be compared with SM First dose Month and year, if same, there will be no output; if not same, there will be output based on logic scenario 4 and 5.
+
+SM/SMAU/SMAB can exist in a same study, also cannot.
+
+If the start date/time of first dose in SM/SMAU/SMAB are same and are min first dose, please display in separate row in output.
+
+For scenario 2/Scenario 3: If the min SM start date (the other first dose have start date>min first dose) have time=unk, please always don't output no matter what Was medication taken prior to the first dose of study medication?/Did Medication Start Prior to the First Dose of Study Medication? is entered.
+
+Apply for all scenarios: If more than one first dose has same start date and is min start date, and CM start date=this min SM Start date, when there is time=unk for any of the min start date record, then don't include this SM into comparison.
+
+Report Scenarios:
+This report is to check,
+
+CM Start Date= Start Date of Min First dose across SM/SMAB/SMAU
+
+AND
+
+Time is not present or time is UNK
+
+Scenario 1- Was medication taken prior to the first dose of study medication?/Did Medication Start Prior to the First Dose of Study Medication? is blank
+
+OR
+
+Time is present
+
+Scenario 2:
+
+If Time of CM is available:
+
+Time on CM is less than time on SM; and Was medication taken prior to the first dose of study medication?/Did Medication Start Prior to the First Dose of Study Medication? is not checked as YES  (output if the question is answered NO or is blank)
+
+If Time of CM is not available:
+
+No output
+
+Scenario 3-time on CM is greater than time on SM; and Was medication taken prior to the first dose of study medication?/Did Medication Start Prior to the First Dose of Study Medication? is  not checked as NO (output if the question is answered YES or is blank)
+
+CM Start Date<>Start Date of Min First dose across SM/SMAB/SMAU
+
+AND
+
+Scenario 4 : Was medication taken prior to the first dose of study medication?/Did Medication Start Prior to the First Dose of Study Medication? = YES, and CM Start Date/time >  SM  First dose entry.
+
+Scenario 5 : Was medication taken prior to the first dose of study medication?/Did Medication Start Prior to the First Dose of Study Medication? = NO, and start Date/time is < SM  First dose entry.
+
+ Do not include deleted/erroneous visit data into programming.
+
+For scenario 4 and 5:
+
+If CM Start date=UNK, but Month is available, CM Month and year will be compared with SM First dose Month and year, if same, there will be no output; if not same, there will be output based on logic scenario 4 and 5.
+
+SM/SMAU/SMAB can exist in a same study, also cannot.
+
+If the start date/time of first dose in SM/SMAU/SMAB are same and are min first dose, please display in separate row in output.
+
+For scenario 2/Scenario 3: If the min SM start date (the other first dose have start date>min first dose) have time=unk, please always don't output no matter what Was medication taken prior to the first dose of study medication?/Did Medication Start Prior to the First Dose of Study Medication? is entered.
+
+Apply for all scenarios: If more than one first dose has same start date and is min start date, and CM start date=this min SM Start date, when there is time=unk for any of the min start date record, then don't include this SM into comparison.
+
+include this SM into comparison.
+
+Sorting:
+Country
+
+Site
+
+Subject Number
+
+CM Seq
+
+Parameter Selection:
+Country
+
+Site
+
+Subject Number
+
+Randomized Only
+
+Form.Item Names:
+1. Subject Assignment.Site Country
+
+2. Subject Assignment.Site Mnemonic
+
+3. Subjects.Subject Number
+
+4. CM.Form IDX
+
+5. CM.Medication Name
+
+6. CM. Start Date and Time
+
+7. CM. Was medication taken prior to the first dose of study medication?/Did Medication Start Prior to the First Dose of Study Medication?
+
+8. SM/SMAU/SMAB. Visit Mnemonic
+
+9. SM/SMAU/SMAB. Form Mnemonic
+
+10. SM. Form IDX
+
+11. SM/SMAU/SMAB. Start Date/Time
+
+12. Hardcode
+
+      Scenario 1- Start dates same in SM and CM, Question=blank
+
+      Scenario 2-
+
+If Time of CM is available: Time on CM is less than time on SM, Question<>Yes
+
+If Time of CM is not available:Time on CM is less than time on SM, Question=blank
+
+      Scenario 3- Time on CM is greater than time on SM, Question<>No
+
+      Scenario 4- CM Start Date> SM Start Date, Question=Yes
+
+      Scenario 5- CM Start Date< SM Start Date, Question=No
+
+For scenario 4 and 5:
+
+If CM Start date=UNK, but Month is available, CM Month and year will be compared with SM First dose Month and year, if same, there will be no output; if not same, there will be output based on logic scenario 4 and 5.
+
+If CM Start date=UNK, but Month is UNK, CM year will be compared with SM First dose year, , if same, there will be no output; if not same, there will be output based on logic scenario 4 and 5.

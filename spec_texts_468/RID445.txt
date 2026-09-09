@@ -1,0 +1,97 @@
+Report ID: RID445
+
+Report Title:
+Incorrect Oncologic Surgery form associated with Symptomatic Skeletal Related Event
+
+Description:
+This report lists subjects who have incorrect form for Oncologic Surgery associated with SSRE.
+
+Column Heading:
+1. Country
+
+2. Site
+
+3. Subject Number
+
+4. Randomization date
+
+5. Seq number
+
+6. Associated Sponsor ID Number (from OS form)
+
+7. Associated Sponsor ID Number (from OSOF Form)
+
+8. Start Date of SSRE
+
+9. Scenario
+
+Logic:
+Logic 1
+
+Logic 1.1 There is a “SSRE Form” record with “Associated Sponsor ID Number (from OS form)” <> NULL
+
+AND
+
+Logic 1.2 “Start Date of SSRE” >= “SR.Date of Assessment”
+
+Logic 2
+
+Logic 2.1 There is a “SSRE Form” record with “Associated Sponsor ID Number (from OSOF form)” <> NULL
+
+AND
+
+Logic 2.2 “Start Date of SSRE” < “SR.Date of Assessment”
+
+Note 1: When UNK is selected as the day or month in SSRE, “Start Date of SSRE” use the first day of the month OR the first month of the year.
+
+Note 2: Deleted records and Erroneous visits should not be considered for programming
+
+Note 3: If logic 1 is satisfied display “scenario 1” on column 8. If Logic 2 is satisfied display “scenario 2” on column 8
+
+Report Scenarios:
+Scenario 1 Output Yes:
+
+A."Associated Sponsor ID Number (from OS form)" is completed and "Start Date of SSRE" is on or after "SR.Date of Assessment".
+
+Scenario 1 Output No:
+
+A."Associated Sponsor ID Number (from OS form)" is completed and "Start Date of SSRE" is before "SR.Date of Assessment".
+
+B."Associated Sponsor ID Number (from OS form)" or "Start Date of SSRE" is not completed
+
+Scenario 2 Output Yes:
+
+A."Associated Sponsor ID Number (from OSOF form)" is completed and the "Start Date of SSRE" is before "SR.Date of Assessment".
+
+Scenario 2 Output No:
+
+A."Associated Sponsor ID Number (from OSOF form)" is completed and "Start Date of SSRE" is on or after "SR.Date of Assessment".
+
+B. "Associated Sponsor ID Number (from OSOF form)" or "Start Date of SSRE" is not completed
+
+Sorting:
+Country, Site, Subject Number, Scenario, Sequence Number
+
+Parameter Selection:
+Country, First Site, Last Site, First Subject, Last Subject, List of Subjects, Randomized Only (N/Y, default as N)
+
+Form.Item Names:
+1. SA Form. Site Country
+
+2. SA Form. Site Mnemonic
+
+3. SA Form. Subject Number
+
+4. SR form, Date of Assessment
+
+5. SSRE form, Sponsor ID Number
+
+6. SSRE form, Associated Sponsor ID Number (from OS Form) Related to Surgical Intervention for Bone Metastasis
+
+7. SSRE form, Associated Sponsor ID Number (from OSOF Form) Related to Surgical Intervention for Bone Metastasis
+
+8. SSRE form, Start Date of SSRE
+
+9. Scenario, as specified by Note 3
+
+Note: Form items No 6 and 7, if there is more than one Associated Sponsor ID Number that meet the logic of Output = Yes show them in the same output separated by a comma

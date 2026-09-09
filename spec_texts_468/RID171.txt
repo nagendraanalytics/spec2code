@@ -1,0 +1,219 @@
+Report ID: RID171
+
+Report Title:
+ADA data missing in InForm or Vendor transfer file
+
+Description:
+SCI eCRF AND CENTRAL LAB/BA VENDOR RECONCILIATION
+
+The report will output when there is a SCI record in eCRF with no matching record in the external vendor transfer file.
+
+The report will also output when there is a ADA record in the external vendor transfer file that has no matching record in InForm.
+
+Column Heading:
+Tab 1: Inform Data with BA Vendor Data
+
+1. Country
+
+2. Site
+
+3. Screening Number
+
+4. Subject Number
+
+5. InForm Visit Name
+
+6. InForm Analyte
+
+7. InForm Schedule Time
+
+8. InForm Spec ID
+
+9. Inform Colection Date
+
+10. Inform Colection Time
+
+11. BA NOMDAY
+
+12. BA ANALYTE
+
+13. BA NOMHOUR
+
+14. BA Specimen ID
+
+15. BA Colection Date
+
+16. BA Colection Time
+
+17. Error Message
+
+Tab 2: Inform Data with Central Vendor Data
+
+1. Country
+
+2. Site
+
+3. Screening Number
+
+4. Subject Number
+
+5. InForm Visit Name
+
+6. InForm Analyte
+
+7. InForm Schedule Time
+
+8. InForm Spec ID
+
+9. Inform Colection Date
+
+10. Inform Colection Time
+
+11. Central NOMDAY
+
+12. Central ANALYTE
+
+13. Central NOMHOUR
+
+14. Central Specimen ID
+
+15. Central Colection Date
+
+16. Central Colection Time
+
+17. Error Message
+
+Logic:
+Scenario 1
+
+1A
+
+Output is displayed when a combination of screening number and Specimen ID entered in InForm cannot be found in vendor data. Output error message "Missing in Vendor"
+
+1B
+
+Output is displayed when a combination of screening number and Specimen ID loaded from vendor cannot be found in InForm data. Output error message "Missing in Inform"
+
+Notes:
+
+Note1. Logic takes the SCI record into consideration only when "Reason Specimen Not Collected and/or Not Sent" in that record is blank.
+
+Note2. Please do not consider deleted records from SCI forms in this logic.
+
+Note3. Report is NOT Case Sensitive between Specimen ID entered in InForm and Specimen ID loaded from vendor.
+
+Note4 : DOV should be initialized, and visit should not be erroneous for the record to be considered in the logic.
+
+Note5. SITEID is always a 4-digit number, SCRNID is a 9-digit number and SUBJID is a 6-digit number if any of them have a smaller number of digits please complete with zeros at the left to make the comparison, i.e. SITEID: 100 should be 0100 to match with Site from InForm
+
+Note6. In case of scenario "Missing in Inform", the Site and Screening Number will be displayed from vendor. The Subject number will be a combination of Site and Subjectid:
+
+For example,  BA/Central.Siteid + "--" + BA/Central.Subjid
+
+Report Scenarios:
+Scenario 1
+
+1A Output = Yes
+
+Output is displayed when a combination of screening  number and Specimen ID entered in InForm cannot be found in vendor data. Output error message "Missing in Vendor"
+
+1A Output = No
+
+Output is not displayed when a combination of screening number and Specimen ID entered in InForm can be found in vendor data.
+
+1B Output = Yes
+
+Output is displayed when a combination of screening number and Specimen ID loaded from vendor cannot be found in InForm data. Output error message "Missing in InForm"
+
+1B Output = No
+
+Output is not displayed when a combination of screening  number and Specimen ID loaded from vendor can be found in InForm data.
+
+Sorting:
+default
+
+Parameter Selection:
+Protocol Number
+
+First Site No.
+
+Last Site No.
+
+First Subject No.
+
+Last Subject No.
+
+Vendors: Central/BA/Both
+
+Form.Item Names:
+Tab 1: Inform Data with BA Vendor Data
+
+1. Subject Assignment.Site Country
+
+2. Subject Assignment.Site Mnemonic
+
+3. Subjects Assignment. Screening Number
+
+4. Subjects Assignment. Treatment/Randomization Number
+
+5. DOV.Visit mnemonic
+
+6. SCI.Analyte
+
+7. SCI.Scheduled Time
+
+8. SCI.Specimen ID
+
+9.SCI.Date Specimen(s) Obtained-Date
+
+10. SCI.Date Specimen(s) Obtained-Time
+
+11. BA.NOMDAY
+
+12. BA.ANALYTE
+
+13. BA.NOMHOUR
+
+14. BA.REFID
+
+15. BA.DDT
+
+16. BA.DTM
+
+17. Display Error Message in logic
+
+Tab 2:Inform Data with Central Vendor Data
+
+1. Subject Assignment.Site Country
+
+2. Subject Assignment.Site Mnemonic
+
+3. Subjects Assignment. Screening Number
+
+4. Subjects Assignment. Treatment/Randomization Number
+
+5. DOV.Visit mnemonic
+
+6. SCI.Analyte
+
+7. SCI.Scheduled Time
+
+8. SCI.Specimen ID
+
+9. SCI.Date Specimen(s) Obtained-Date
+
+10. SCI.Date Specimen(s) Obtained-Time
+
+11. Central.NOMDAY
+
+12. Central.ANALYTE
+
+13. Central.NOMHOUR
+
+14. Central.REFID
+
+15. Central.DDT
+
+16. Central.DTM
+
+17. Display Error Message in logic

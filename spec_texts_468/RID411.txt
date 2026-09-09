@@ -1,0 +1,230 @@
+Report ID: RID411
+
+Report Title:
+Disease progression by imaging vs Oncologic Response
+
+Description:
+This report will output a subject that discontinued treatment/trial and reason indicates disease progression by imaging but Oncologic response form was not completed accordingly.
+
+Column Heading:
+Table 1:
+
+1. Country
+
+2. Site
+
+3. Subject Number
+
+4. Max Study Medication Date
+
+5. Overall Response Seq
+
+6. Overall Response Date with PD
+
+7. PMS1/PMST Date
+
+8. Error Message
+
+Table 2:
+
+1. Country
+
+2. Site
+
+3. Subject Number
+
+4. PMS1/PMST Date
+
+5. Overall Response Deq
+
+6. Overall Response Date with PD
+
+7. Error Message
+
+Table 3:
+
+1. Country
+
+2. Site
+
+3. Subject Number
+
+4. End of Follow-Up Date of assessment
+
+5. End of Follow-Up Next trial segment
+
+6. Max Overall response seq
+
+7. Max Overall response Date with PD
+
+8. Error message
+
+Logic:
+Report Logic:
+
+Table 1 - Logic 1:
+
+Overall Response Field 1 or Overall Response Field 2 = [PD] or [iCPD] or [iUPD] or [psPD] or [PDu]
+
+And SM/SMAB/SMAU."START DATE" > "Date Response Determined"
+
+And PMS1/PMST.Milestone Status = 'PROGRESSIVE DISEASE' or 'RADIOGRAPHIC PROGRESSION'
+
+And there is no Overall Response Field = [PD] or [iCPD] or [iUPD] or [psPD] or [PDu] with (maximum SM/SMAB/SMAU."START DATE" <= Larger Response eCRF Date from Two Consecutive PD <= PMS1/PMST.Date of Assessment).
+
+Table 2 – Logic 2:
+
+Milestone Status = 'PROGRESSIVE DISEASE' or 'RADIOGRAPHIC PROGRESSION'
+
+And PMS1/PMST.Date of Assessment < Larger Response eCRF Date from Two Consecutive PD
+
+Table 3 – Logic 3:
+
+Next Trail Phase Field = 'Next trial segment' from supp
+
+And there is no Larger Response eCRF Date from Two Consecutive PD <= PMS1A/OEFU.Date of Assessment.
+
+Note 1: Exclude deleted and erroneous records.
+
+Note 2: The report will use master supporting documents RSP_supp_doc. This supporting documents should be uploaded only once at TA level per the GDO Oncology TAST authorized members and will be used to facilitate programming of the report. Report builder will use all the columns provided in the excel spreadsheet to create the programming code.
+
+Note 3: The distribution of items are as follows:
+
+"Date Response Determined", "Overall RECIST Response" or "Overall Response" or "Overall Response (PCWG-Modified RECIST)" or "Overall iRECIST Response" or "Overall Response (PCWG-Modified irRECIST)" belongs to RSP_supp_doc
+
+Note 4: Overall Response Field 1 refers to
+
+"OVERALL RESPONSE","OVERALL RECIST RESPONSE","OVERALL RESPONSE (PCWG-MODIFIED RECIST)" in RSP_supp_doc
+
+Note 5. Overall Response Field 2 refers to
+
+"OVERALL IRRECIST RESPONSE","OVERALL IRECIST RESPONSE" in RSP_supp_doc
+
+Note 6: Milestone Status refers to:
+
+PMS1.Status of Study Medication at the End of This Trial Segment or
+
+PMST.Status of Subject at end of all Study Treatments
+
+Note 7: Next Trail Phase Field refers to:
+
+PMS1A.Select the Status of the Subject for the Next Trial Segment or
+
+OEFU.Select the Status of the Subject for the Next Trial Segment
+
+Note 8. Two Consecutive PD = two Response eCRF records (chronologically after each other) with Overall Response Field = [PD] or [iCPD] or [iUPD] or [psPD] or [PDu] and their interval is: X Days <= Interval of Two Consecutive PD <= Y Days. (In supporting document X is 'Lower limit', Y is 'Upper limit'). For example, if lower limit is 8 and upper limit is NA, two consecutive records that are at least 8 days between each other are considered consecutive PDs;  if lower limit is 8 and upper limit is 24, two consecutive records that are >= 8 days and <= 24 days between each other are considered consecutive PDs.
+
+Note 9: Consecutive PD are as follows:
+
+[PD] followed by [PD]
+
+[iUPD] followed by [iCPD]
+
+[iCPD] followed by [iCPD]
+
+[psPD] followed by [psPD]
+
+[psPD] followed by [PD]
+
+[PDu] followed by [PDu]
+
+[PDu] followed by [PD]
+
+Note 10: Requires supporting document to be named ONC_RSP_001_supp_<xxxxxxx>.csv and will contain the following columns and associated content:
+
+1. RSP eCRF – Required, enter the RSP Form Mnemonic applicable per protocol
+
+2. PMS1/PMST – Required, enter PMS1/PMST eCRF that is associated with Discontinuation form Study Treatment
+
+3. PMS1A/OEFU - Required, enter PMS1A/OEFU that is associated with End of Follow-up Phase
+
+4. PMS1/PMST Visit Mnemonic – EoT Visit mnemonic per T&E
+
+5. Lower limit - Required, minimum number of days where the next record can be to be considered consecutive PDs. Enter a number >=0.
+
+6. Upper limit - Required, maximum number of days where the next record can be to be considered consecutive PDs. Or enter NA if upper limit is not needed. Lower/Upper limit will be identified by study phase for all logics. If PMS1/PMST is blank, the report cannot determine study phase and there will be no output.
+
+7. Next trial segment - Optional. Enter column value of PMST.Select the Status of the Subject for the Next Trial Segment or OEFU.Select the Status of the Subject for the Next Trial Segment.
+
+e.g.
+
+Headers:
+
+RSP eCRF,PMS1/PMST,PMS1A/OEFU,PMS1/PMST Visit Mnemonic,Lower limit,Upper limit,Next trial segment
+
+RRIR,PMS1,PMS1A,Discontinuation Visit,2,NA,Continuing into Survival Follow-up phase
+
+RRIR,PMS1,PMS1A,End of Treatment Course 2,2,28,Continuing into Survival Follow-up phase
+
+Note 11: Need to have calculation for logic 2 and logic 3 when there is only one PD in Response form.
+
+Report Scenarios:
+Scenario 1, Output: Yes If At least one Overall Response Field 1 or Overall Response Field 2 = [PD] or [iCPD] or [iUPD] and at least one Study Medication eCRF date is AFTER Response eCRF Date and PMS1.PMS1DSTERMSMC or PMST.PMSTDSATERMTS = PROGRESSIVE DISEASE or RADIOGRAPHIC PROGRESSION and there is no Overall Response Field 1 or Overall Response Field 2 = [PD] or [iCPD] or [iUPD] with (maximum Study Medication eCRF date <= Response eCRF Date <= PMS1.PMS1DSDTC or PMST.PMSTDSSTDTC).
+
+Scenario 2, Output: No There is at least one Overall Response Field 1 or Overall Response Field 2 = [PD] or [iCPD] or [iUPD] and at least one Study Medication eCRF date is AFTER Response eCRF Date and PMS1.PMS1DSTERMSMC or PMST.PMSTDSATERMTS = PROGRESSIVE DISEASE or RADIOGRAPHIC PROGRESSION and there is an Overall Response Field 1 or Overall Response Field 2 = [PD] or [iCPD] or [iUPD] with (maximum Study Medication eCRF date <= Response eCRF Date <= PMS1.PMS1DSDTC or PMST.PMSTDSSTDTC).
+
+Scenario 3, Output: Yes If PMS1.PMS1DSTERMSMC or PMST.PMSTDSATERMTS = PROGRESSIVE DISEASE or RADIOGRAPHIC PROGRESSION and PMS1.PMS1DSDTC or PMST.PMSTDSSTDTC < Max Response eCRF Date from Two Consecutive PD
+
+Scenario 4, Output: No If PMS1.PMS1DSTERMSMC or PMST.PMSTDSATERMTS = PROGRESSIVE DISEASE or RADIOGRAPHIC PROGRESSION and PMS1.PMS1DSDTC or PMST.PMSTDSATERMTS = > Max Response eCRF Date from Two Consecutive PD
+
+Scenario 5, Output: Yes If At least one Next Trial Phase Field = entered in parameter ‘Next trial segment’ and there is no Two Consecutive PD that have Response eCRF Date equal or less than End of Follow-Up eCRF date (consider date on entry with Next Trial Phase Field = entered in parameter ‘Next trial segment’).
+
+Scenario 6, Output: No If At least one Next Trial Phase Field = entered in parameter ‘Next trial segment’ and there are Two Consecutive PD that have Response eCRF Date equal or less than End of Follow-Up eCRF date (consider date on entry with Next Trial Phase Field = entered in parameter ‘Next trial segment’).
+
+Note: Need also to consider only one PD in response form.
+
+Parameter Selection:
+Country, First Site, Last Site, First Subject, Last Subject, List of Subjects, Randomized Only, Supporting Doc Page (N/Y, Default as N),Table 1(Y/N), Table 2(Y/N), Table 3(Y/N)
+
+Form.Item Names:
+Table 1:
+
+1. SA Form. Site Country
+
+2. SA Form. Site Mnemonic
+
+3. SA Form. Subject Number
+
+4. Max SM/SMAB/SMAU.Start Date/Time
+
+5. Response eCRF Seq Number
+
+6. Response eCRF Date
+
+7. PMS1/PMST.Date of Assessment
+
+8. Display "Missing additional PD"
+
+Table 2:
+
+1. SA Form. Site Country
+
+2. SA Form. Site Mnemonic
+
+3. SA Form. Subject Number
+
+4. PMS1/PMST.Date of Assessment
+
+5. Response eCRF Seq Number
+
+6. Response eCRF Date
+
+7. Display "Incorrect Date"
+
+Table 3:
+
+1. SA Form. Site Country
+
+2. SA Form. Site Mnemonic
+
+3. SA Form. Subject Number
+
+4. PMS1A/OEFU.Date of Assessment
+
+5. PMS1A.Select the Status of the Subject for the Next Trial Segment or OEFU.Select the Status of the Subject for the Next Trial Segment
+
+6. Response eCRF Seq Number
+
+7. Max Response eCRF Date
+
+8. Display "Missing consecutive PD"

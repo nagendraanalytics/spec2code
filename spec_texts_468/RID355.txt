@@ -1,0 +1,129 @@
+Report ID: RID355
+
+Report Title:
+OEDRA date reconciliation
+
+Description:
+This report will reconcile when OEDRA date of assessment is entered incorrectly based on the other disposition eCRFs
+
+Column Heading:
+1. Country
+
+2. Site
+
+3. Subject Number
+
+4. OEDRA Date of Assessment
+
+5. OEDRA Visit
+
+6. OEFU Date of Assessment
+
+7. OEFU Visit
+
+8. PMS Form
+
+9. PMS Visit
+
+10. PMS Date of Assessment
+
+11. OSCN Sponsor ID Number
+
+12. OSCN. Scan date
+
+13. Scenario
+
+Logic:
+Logic 1
+
+[OEFU]. Date of Assessment <> [OEDRA]. Date of Assessment
+
+AND
+
+[OEFU]. Select the Status of the Subject for the Next Trial Segment= “Next Trial Segment according to supp doc”
+
+Logic 2:
+
+[PMS1]. Date of Assessment OR [PMST]. Date of Assessment OR [OSCN]. Scan Date > [OEDRA]. Date of Assessment
+
+Note 1: Do not consider records in erroneous visit.
+
+Note 2: If protocol have both forms (PMS1 and PMST) and those were selected in the prompt and at least one of the forms meets the criteria output is expected.
+
+Note 3: for logic please take into account the PMS form prompt
+
+Note 4: Do not consider deleted records
+
+Note 5: When the Scenario is “Scenario 1” the columns 8, 9, 10 and 11 should be blank
+
+Note 6: When the Scenario is “Scenario 2” the columns 6 and 7 should be blank
+
+Note 7: When the scenario is “Scenario 2” the columns PMS Form, PMS Visit and OSCN Scan date and OSCN Sponsor ID Number should only be populated if the output meets the logic 2
+
+Requires supporting document to be named ONC_OEDRA_002_supp_<xxxxxxx>.csv and will contain the following columns and associated content:
+
+One row for each option available in the protocol:
+
+1.Next Trial Segment: option in OEFU that indicates the subject will not continue into the trial or follow up visits per protocol
+
+Eg.
+
+Next Trial Segment
+
+Continuing into Survival Follow-up Phase
+
+Not Continuing into Any Trial Phase
+
+Report Scenarios:
+Logic 1
+
+YES
+
+OEFU "Date of Assessment" is different to OEDRA "Date of Assessment" AND “Select the Status of the Subject for the Next Trial Segment” is “Not continuing into the trial or Follow up visits”
+
+NO
+
+OEFU "Date of Assessment" is different to OEDRA "Date of Assessment" AND “Select the Status of the Subject for the Next Trial Segment” is different to “Not continuing into the trial or Follow up visits”
+
+Logic 2
+
+YES
+
+PMS1/PMST "Date of Assessment" and OEDRA "Date of Assessment" and OSCN “Scan Date” are completed and OEDRA "Date of Assessment" is before to PMS1/PMST "Date of Assessment" OR OSCN “Scan Date”
+
+NO
+
+PMS1/PMST "Date of Assessment" and OEDRA "Date of Assessment" and OSCN “Scan Date are completed and OEDRA "Date of Assessment" is on or after PMS1/PMST "Date of Assessment" and OSCN “Scan Date”
+
+Sorting:
+Country, Site, Subject Number
+
+Parameter Selection:
+Country, First Site, Last Site, First Subject, Last Subject, List of Subjects, Randomized Only (N/Y, default as N), Supporting Doc Page (N/Y, Default as N), PMS form (PMS1/PMST, default to PMS1)
+
+Form.Item Names:
+1. SA Form. Site Country
+
+2. SA Form. Site Mnemonic
+
+3. SA Form. Subject Number
+
+4. OEDRA form. Date of Assessment
+
+5. OEDRA form. Visit Mnemonic
+
+6. OEFU form. Date of Assessment
+
+7. OEFU form. Visit Mnemonic
+
+8. PMS1/PMST.form
+
+9. PMS1/PMST.Visit Mnemonic
+
+10. PMS1/PMST.Date of Assessment
+
+11. OSCN Sponsor ID Number
+
+12. OSCN. Scan date
+
+13. Please display "Scenario 1" if logic 1 is fulfilled or "Scenario 2" if logic 2 is fulfilled.

@@ -1,0 +1,75 @@
+Report ID: RID309
+
+Report Title:
+Date mismatch between lesion evaluation section and baseline lesion evaluation at entry section
+
+Description:
+This report lists subjects where there is a mismatch between date reported in the lesion evaluation section and the minimum date at the evaluation entry section for the same lesion.
+
+Column Heading:
+1. Country
+
+2. Site
+
+3. Subject Number
+
+4. Lesion Evaluation Form
+
+5. Seq #
+
+6. Name of item on Lesion Evaluation Form
+
+7. Date
+
+8. Seq # Add Entry
+
+9. Name of item on Lesion Evaluation Form
+
+10. Earliest Date
+
+Logic:
+"DATE OF INITIAL IDENTIFICATION" <> the earliest "DATE OF LESION EVALUATION" per LSN seq
+
+Notes:
+
+Note 1: Report should not display deleted records.
+
+Note 2: This report uses the master LSN_supp_doc.csv. This supporting document should be uploaded only once at TA level per the GDO Oncology TAST authorized members and will be used to facilitate programming of the report. Report builder will use all the columns provided in the excel spreadsheet to create the programming code.
+
+Note 3: The items "DATE OF INITIAL IDENTIFICATION" and "DATE OF LESION EVALUATION" should be used from master LSN_supp_doc.csv.
+
+Report Scenarios:
+A= Yes
+
+Date of Assessment /Date of Initial Identification (Scan/Image/Physical Exam)/Date of Initial Lesion Identification for This Trial (Scan/Image/Physical Exam) <> the earliest Date of Current Lesion Evaluation (Scan/Image/Physical Exam)/Date of Lesion Evaluation in the add entry section of the “Lesion Evaluation Form”
+
+B= No
+
+Date of Assessment /Date of Initial Identification (Scan/Image/Physical Exam)/Date of Initial Lesion Identification for This Trial (Scan/Image/Physical Exam) = the earliest Date of Current Lesion Evaluation (Scan/Image/Physical Exam)/Date of Lesion Evaluation in the add entry section of the “Lesion Evaluation Form”
+
+Sorting:
+Country, Site, Subject Number
+
+Parameter Selection:
+Country(ies), Site(s),Subject(s), List of Subject(s), Lesion Evaluation Form(s), Randomized Only, LSN Form (Text box, seperated by comma)
+
+Form.Item Names:
+1. Subject Assessment.Country
+
+2. Subject Assessment.Site Mnemonic
+
+3. Subject Assessment.Subject Number
+
+4. Lesion Evaluation Form.Form Mnemonic
+
+5. Lesion Evaluation Form.Lesion Number
+
+6. Show “Date of Initial Identification” from “ITEMQUESTION” column on LSN_supp_doc.csv with the original_itemquestion depending on how the item is named regarding the Lesion Evaluation Form selected
+
+7. Show date value at “Date of Initial Identification” from “ITEMQUESTION” column on LSN_supp_doc.csv depending on how the item is named regarding the Lesion Evaluation Form selected
+
+8. Lesion Evaluation Form. Associated Sponsor ID Number
+
+9. Show “Date of Lesion Evaluation” from “ITEMQUESTION” column on LSN_supp_doc.csv with the original_itemquestion depending on how the item is named regarding the Lesion Evaluation Form selected
+
+10. Show Earliest add Entry date value at “Date of Lesion Evaluation” from “ITEMQUESTION” column on LSN_supp_doc.csv depending on how the item is named regarding the Lesion Evaluation Form selected.

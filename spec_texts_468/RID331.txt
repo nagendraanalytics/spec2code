@@ -1,0 +1,469 @@
+Report ID: RID331
+
+Report Title:
+New Lesion Response vs New Lesion status.
+
+Description:
+"This report contains details about the type of lesions reported under Tumor Identification New Lesion on LSRIR  and the corresponding RECIST and irRECIST Non Target Response recorded in RIRR.
+
+- For the New lesions (or New Lesion Since Last Evaluation), the report will show the total number of lesions for each New Lesion status (Absent, Present, Worsening, Not evaluable) evaluated on the same date.
+
+"
+
+Column Heading:
+Table 1
+
+1. Country
+
+2. Site
+
+3. Subject Number
+
+4. RRIR Seq
+
+5. New RECIST Lesions Since Last Evaluation
+
+6. New irRECIST Lesions Since Last Evaluation
+
+7. Date Response Determined
+
+8. LSRIR sequence
+
+9. LSRIR Date of assessment
+
+10. Scenario
+
+Table 2
+
+1. Country
+
+2. Site
+
+3. Subject Number
+
+4. LSRIR Seq/Itemset seq
+
+5. Date of Current Lesion Evaluation
+
+6. New Lesion status for this timepoint
+
+7. Was this lesion Evaluable? for new lesions.
+
+8. RRIR Seq
+
+9. Date Response Determined
+
+10. Status of Prior irRECIST New Lesions Identified Since Baseline
+
+11. Scenario
+
+Logic:
+Logic 1.1:
+
+Progression Event Category = Progression by objective response criteria on EEE
+
+AND
+
+Overall RECIST Response on RRIR= Progressive Disease
+
+OR
+
+Overall IRRECIST Response on RRIR= irProgressive Disease
+
+AND
+
+Date Response Determined on RRIR <> Date of Assessment on EEE
+
+Logic 1.2:
+
+Progression Event Category = Progression by objective response criteria on EEE
+
+AND
+
+Overall RECIST Response on RRIR<> Progressive Disease
+
+OR
+
+Overall IRRECIST Response on RRIR<> irProgressive Disease
+
+Logic 1.3:
+
+Progression Event Category = Clinical Progression on EEE
+
+"Table1
+
+Logic 1
+
+Logic 1.1 RRIR Form. New irRECIST Lesions Since Last Evaluation OR RRIR. New RECIST Lesions Since Last Evaluation = “Yes”
+
+AND
+
+Logig 1.2
+
+There is no LSRIR with:
+
+(LSRIR. Tumor Identification) = “New Lesion Since Last Evaluation” AND (LSRIR. New Lesion Status) = “Present” AND LSRIR. Date = RRIR. Date from logic 1.1.
+
+OR
+
+Logic 2
+
+Logic 2.1
+
+(LSRIR. Tumor Identification) = “New Lesion Since Last Evaluation” AND (LSRIR. New Lesion Status) = “Present” AND LSRIR. Date of assessment/Date of Initial Lesion Identification for This Trial (Scan/Image/Physical Exam) = LSRIR. Date of Lesion evaluation/LSRIR. Date of Current Lesion evaluation  (Scan/Image/Physical Exam).
+
+AND
+
+Logic 2.2
+
+There is no RRIR record with:
+
+RRIR Form. New irRECIST Lesions Since Last Evaluation OR RRIR. New RECIST Lesions Since Last Evaluation = Yes AND LSRIR. Date = RRIR. Date from logic 2.1.
+
+Table 2
+
+Progression of the disease (PD)
+
+Logic 3:
+
+RRIR. Status of Prior irRECIST New Lesions Identified Since Baseline = irProgressive Disease
+
+AND
+
+Logic 4:
+
+There is no records meet below condition: LSRIR. Date = RRIR. Date from logic 3 AND LSRIR (LSRIR. Tumor Identification) = “New Lesion Since Last Evaluation” AND LSRIR. New Lesion Status = “Worsening”.
+
+OR
+
+Logic 5:
+
+RRIR . Status of Prior irRECIST New Lesions Identified Since Baseline <> irProgressive Disease
+
+AND
+
+Logic 6:
+
+There is at least one LSRIR record with: LSRIR. Date = RRIR. Date from logic 5 AND (LSRIR. Tumor Identification) = “New Lesion Since Last Evaluation” AND (LSRIR. New Lesion Status)= “Worsening”.
+
+OR
+
+Complete Reponses (CR)
+
+Logic 7:
+
+RRIR Form. Status of Prior irRECIST New Lesions Identified Since Baseline <> irComplete Response
+
+AND
+
+Logic 8:
+
+ALL RECORDS WITH LSRIR. Date = RRIR. Date from logic 7 has  (LSRIR. Tumor Identification) = “New Lesion Since Last Evaluation” AND (LSRIR. New Lesion Status) =“Absent”.
+
+OR
+
+Logic 9:
+
+RRIR Form. Status of Prior irRECIST New Lesions Identified Since Baseline = irComplete Response
+
+AND
+
+Logic 10:
+
+There is one LSRIR record with: LSRIR. Date = RRIR. Date from logic 9 AND LSRIR (LSRIR. Tumor Identification) = “New Lesion Since Last Evaluation” AND (LSRIR. New Lesion Status) <> “Absent”.
+
+OR
+
+Not Evaluable
+
+Logic 11:
+
+RRIR Form. Status of Prior irRECIST New Lesions Identified Since Baseline = Not Evaluable
+
+AND
+
+Logic 12:
+
+ There is no records meet below condition: LSRIR. Date = RRIR. Date from logic 11 AND LSRIR. Tumor Identification = “New Lesion Since Last Evaluation” AND There is no (LSRIR.Was the lesion Evaluable = “NO” OR LSRIR. New Lesion Status = “Not Evaluable”)
+
+OR
+
+Logic 13:
+
+RRIR Form. Status of Prior irRECIST New Lesions Identified Since Baseline <> Not Evaluable
+
+AND
+
+Logic 14:
+
+LSRIR. Date = RRIR. Date from logic 13 has (LSRIR. Tumor Identification) = “New Lesion Since Last Evaluation” AND (LSRIR.Was the lesion Evaluable” = “No” OR LSRIR. New Lesion Status =“Not Evaluable”)
+
+OR
+
+Logic 15:
+
+RRIR From. Status of Prior irRECIST New Lesions Identified Since Baseline <> NULL
+
+AND
+
+RRIR From. Status of Prior irRECIST New Lesions Identified Since Baseline <> Not Applicable
+
+AND
+
+Logic 16
+
+There is no LSRIR record with LSRIR. Date = RRIR. Date from logic 16 has LSRIR (LSRIR. Tumor Identification) = “New Lesion Since Last Evaluation” AND (LSRIR. New Lesion Status) <> NULL.
+
+OR
+
+Logic 17:
+
+LSRIR (LSRIR. Tumor Identification) = “New Lesion Since Last Evaluation” AND (LSRIR. New Lesion Status) <> NULL  AND LSRIR. Date of assessment/Date of Initial Lesion Identification for This Trial (Scan/Image/Physical Exam) <> LSRIR. Date of Lesion evaluation/LSRIR. Date of Current Lesion evaluation  (Scan/Image/Physical Exam).
+
+AND
+
+Logic 18
+
+There is no RRIR record with Status of Prior irRECIST New Lesions Identified Since Baseline <> NULL AND RRIR From. Status of Prior irRECIST New Lesions Identified Since Baseline <> Not Applicable AND LSRIR. Date = RRIR. Date from logic 18
+
+Note 1: Do not consider deleted records
+
+Note 2: For Table 1 column 8, if there is matching LSRIR. Date of Lesion evaluation/LSRIR. Date of Current Lesion evaluation  (Scan/Image/Physical Exam)  on logic 2, please display the date, otherwise please leave column blank .
+
+Note 3: For Table 2, if {Logic 3, 4},{Logic 5,6}, {Logic 7,8}, {Logic 9,10}, {Logic 11,12} , {Logic 13,14}  are met please show only one output, show in columns 4, 5, 6 and 7 with the corresponding LSRIR information of the records with RRIR.date = LSRIR.date. If multiple records has LSRIR.date=RRIR.date show informormation of all records in one row on collumns 4, 6 and 7 as indicated.  If there is no record that meets the condition of RRIR.date = LSRIR.date show columns 4, 5, 6 and 7 with no information.
+
+Note 4: For Table 2, if {Logic 15,16} are met please leave columns 4-8 blank; if {Logic 17,18} are met please leave columns 9-10 blank.
+
+Note 5: For Table 1, LSRIR.Date refers to LSRIR. Date of assessment/Date of Initial Lesion Identification for This Trial (Scan/Image/Physical Exam); For Table 2, LSRIR.Date refers to LSRIR. Date of Lesion evaluation/LSRIR. Date of Current Lesion evaluation  (Scan/Image/Physical Exam).
+
+Note 6: RRIR.Date refers to RRIR. Date Response Determined."
+
+Report Scenarios:
+Table 1
+
+Scenario 1 – Output = Yes
+
+New irRECIST Lesions Since Last Evaluation  OR New RECIST Lesions Since Last Evaluation = Yes AND LSRIR Form. There is no LSRIR record with “Tumor identification” = “New Lesion Since Last Evaluation” AND LSRIR “New Lesion Status”= “Present” AND Date of assessment/Date of Initial Lesion Identification for This Trial (Scan/Image/Physical Exam) equal to RRIR. Date Response Determined
+
+Scenario 2 – Output = Yes
+
+New irRECIST Lesions Since Last Evaluation  OR New RECIST Lesions Since Last Evaluation <> Yes AND LSRIR Form. There is at least one LSRIR record with “Tumor identification” = “New Lesion Since Last Evaluation” AND LSRIR “New Lesion Status”= “Present” AND LSRIR. Date of assessment/Date of Initial Lesion Identification for This Trial (Scan/Image/Physical Exam) equal to RRIR. Date Response Determined
+
+Scenario 3 - Output = No
+
+New irRECIST Lesions Since Last Evaluation  OR New RECIST Lesions Since Last Evaluation = Yes AND LSRIR Form. There is LSRIR record with  “Tumor identification” = “New Lesion Since Last Evaluation” AND LSRIR “New Lesion Status”= “Present” AND LSRIR. Date of assessment/Date of Initial Lesion Identification for This Trial (Scan/Image/Physical Exam) equal to RRIR. Date Response Determined
+
+Table 2
+
+Progression of the disease (PD)
+
+Scenario 4 - No
+
+RRIR. Status of Prior irRECIST New Lesions Identified Since Baseline = irProgressive Disease
+
+AND
+
+There is at least one LSRIR record with:
+
+LSRIR “Tumor identification” = “New Lesion Since Last Evaluation” AND LSRIR “New Lesion Status”= “Worsening” for the LSRIR. Date of Lesion evaluation/LSRIR. Date of Current Lesion evaluation  (Scan/Image/Physical Exam)  equal to RRIR. Date Response Determined
+
+Scenario 5 - Yes
+
+RRIR. Status of Prior irRECIST New Lesions Identified Since Baseline = irProgressive Disease
+
+AND
+
+There is no LSRIR record with:
+
+LSRIR “Tumor identification” = “New Lesion Since Last Evaluation” AND LSRIR “New Lesion Status”= “Worsening” for the LSRIR. Date of Lesion evaluation/LSRIR. Date of Current Lesion evaluation  (Scan/Image/Physical Exam)  equal to RRIR. Date Response Determined
+
+Scenario 6 - Yes
+
+RRIR. Status of Prior irRECIST New Lesions Identified Since Baseline <> irProgressive Disease
+
+AND
+
+There is at least one LSRIR record with:
+
+LSRIR “Tumor identification” = “New Lesion Since Last Evaluation” AND LSRIR “New Lesion Status”= “Worsening” for the LSRIR. Date of Lesion evaluation/LSRIR. Date of Current Lesion evaluation  (Scan/Image/Physical Exam)  equal to RRIR. Date Response Determined
+
+Scenario 7 - No
+
+RRIR. Status of Prior irRECIST New Lesions Identified Since Baseline <> irProgressive Disease
+
+AND
+
+There is no LSRIR record with:
+
+LSRIR “Tumor identification” = “New Lesion Since Last Evaluation” AND LSRIR “New Lesion Status”= “Worsening” for the LSRIR. Date of Lesion evaluation/LSRIR. Date of Current Lesion evaluation  (Scan/Image/Physical Exam)  equal to RRIR. Date Response Determined
+
+Complete Response (CR)
+
+Scenario 8 - No
+
+RRIR. Status of Prior irRECIST New Lesions Identified Since Baseline <> irComplete Response
+
+AND
+
+There is at least one LSRIR record with:
+
+LSRIR “Tumor identification” = “New Lesion Since Last Evaluation” AND LSRIR “New Lesion Status” <> “Absent” for the LSRIR. Date of Lesion evaluation/LSRIR. Date of Current Lesion evaluation  (Scan/Image/Physical Exam)  equal to RRIR. Date Response Determined
+
+Scenario 9 - Yes
+
+RRIR. Status of Prior irRECIST New Lesions Identified Since Baseline <> irComplete Response
+
+AND
+
+There is no LSRIR record with:
+
+LSRIR “Tumor identification” = “New Lesion Since Last Evaluation” AND LSRIR “New Lesion Status” <>  “Absent” for the LSRIR. Date of Lesion evaluation/LSRIR. Date of Current Lesion evaluation  (Scan/Image/Physical Exam)  equal to RRIR. Date Response Determined
+
+Scenario 10 - Yes
+
+RRIR. Status of Prior irRECIST New Lesions Identified Since Baseline = irComplete Response
+
+AND
+
+There is at least one LSRIR record with:
+
+LSRIR “Tumor identification” = “New Lesion Since Last Evaluation” AND LSRIR “New Lesion Status” <> “Absent” for the LSRIR. Date of Lesion evaluation/LSRIR. Date of Current Lesion evaluation  (Scan/Image/Physical Exam)  equal to RRIR. Date Response Determined
+
+Scenario 11 - No
+
+RRIR. Status of Prior irRECIST New Lesions Identified Since Baseline = irComplete Response
+
+AND
+
+There is no LSRIR record with:
+
+LSRIR “Tumor identification” = “New Lesion Since Last Evaluation” AND LSRIR “New Lesion Status” <> “Absent” for the LSRIR. Date of Lesion evaluation/LSRIR. Date of Current Lesion evaluation (Scan/Image/Physical Exam)  equal to RRIR. Date Response Determined
+
+Not Evaluable Lesions
+
+Scenario 12 - Yes
+
+RRIR. Status of Prior irRECIST New Lesions Identified Since Baseline <> “Not Evaluable”
+
+AND
+
+There is at least one LSRIR record with:
+
+LSRIR “Tumor identification” = “New Lesion Since Last Evaluation” AND LSRIR “New Lesion Status” = “Not Evaluable” for the LSRIR. Date of Lesion evaluation/LSRIR. Date of Current Lesion evaluation  (Scan/Image/Physical Exam)  equal to RRIR. Date Response Determined
+
+AND
+
+There is no LSRIR record with:
+
+LSRIR “Tumor identification” = “New Lesion Since Last Evaluation” AND LSRIR “New Lesion Status” = “Worsening” for the LSRIR. Date of Lesion evaluation/LSRIR. Date of Current Lesion evaluation  (Scan/Image/Physical Exam)  equal to RRIR. Date Response Determined
+
+Scenario 13 - Yes
+
+RRIR. Status of Prior irRECIST New Lesions Identified Since Baseline <> “Not Evaluable”
+
+AND
+
+There is no LSRIR record with:
+
+LSRIR “Tumor identification” = “New Lesion Since Last Evaluation” AND LSRIR “New Lesion Status” <>  “Not Evaluable” for the LSRIR. Date of Lesion evaluation/LSRIR. Date of Current Lesion evaluation  (Scan/Image/Physical Exam)  equal to RRIR. Date Response Determined
+
+Scenario 14 - No
+
+RRIR. Status of Prior irRECIST New Lesions Identified Since Baseline = “Not Evaluable”
+
+AND
+
+There is at least one LSRIR record with:
+
+LSRIR “Tumor identification” = “New Lesion Since Last Evaluation” AND LSRIR “New Lesion Status” = “Not Evaluable” for the LSRIR. Date of Lesion evaluation/LSRIR. Date of Current Lesion evaluation  (Scan/Image/Physical Exam)  equal to RRIR. Date Response Determined
+
+AND
+
+There is no LSRIR record with:
+
+LSRIR “Tumor identification” = “New Lesion Since Last Evaluation” AND LSRIR “New Lesion Status” = “Worsening” for the LSRIR. Date of Lesion evaluation/LSRIR. Date of Current Lesion evaluation  (Scan/Image/Physical Exam)  equal to RRIR. Date Response Determined
+
+Scenario 15 - No
+
+RRIR. Status of Prior irRECIST New Lesions Identified Since Baseline = “Not Evaluable”
+
+AND
+
+There is no LSRIR record with:
+
+LSRIR “Tumor identification” = “New Lesion Since Last Evaluation” AND LSRIR “New Lesion Status” <> “Not Evaluable” for the LSRIR. Date of Lesion evaluation/LSRIR. Date of Current Lesion evaluation (Scan/Image/Physical Exam)  equal to RRIR. Date Response Determined
+
+Scenario 16 – Yes
+
+There is a LSRIR record with LSRIR “Tumor identification” = “New Lesion Since Last Evaluation” AND LSRIR “New Lesion Status” <> “NULL”
+
+AND
+
+No RRIR record with RRIR. Status of Prior irRECIST New Lesions Identified Since Baseline <> NULL AND RRIR From. Status of Prior irRECIST New Lesions Identified Since Baseline <> Not Applicable AND RRIR. Date Response Determined = LSRIR. Date of Lesion evaluation/LSRIR. Date of Current Lesion evaluation (Scan/Image/Physical Exam)
+
+Scenario 17 – Yes
+
+There is a RRIR record with RRIR. Status of Prior irRECIST New Lesions Identified Since Baseline <> NULL AND RRIR From. Status of Prior irRECIST New Lesions Identified Since Baseline <> Not Applicable
+
+AND
+
+There is NO LSRIR record with LSRIR. Date of Lesion evaluation/LSRIR. Date of Current Lesion evaluation (Scan/Image/Physical Exam)  equal to RRIR. Date Response Determined AND LSRIR “Tumor identification” = “New Lesion Since Last Evaluation” AND LSRIR “New Lesion Status” <> “NULL”
+
+Sorting:
+Table1 Country, Site, Subject Number, RRIR Seq Table 2 Country, Site, Subject Number, LSRIR Seq/Itemset seq
+
+Parameter Selection:
+Country, First Site, Last Site, First Subject, Last Subject, List of Subjects
+
+Form.Item Names:
+1. Subject ASSIGNMENT.Site Country
+
+2. Subject Assignment. Site Mnemonic
+
+3. Subject Assignment. Subject Number
+
+"Table 1
+
+1. SA Form. Site Country
+
+2. SA Form. Site Mnemonic
+
+3. SA Form. Subject Number
+
+4. RRIR Form. Formidx
+
+5. RRIR Form. New RECIST Lesions Since Last Evaluation
+
+6. RRIR Form. New irRECIST Lesions Since Last Evaluation
+
+7. RRIR. Form. Date Response Determined
+
+8. LSRIR Form. Lesion Number(LSRIR Add Entry Form. itemdix
+
+9. LSRIR. Date of Assessment/LSRIR. Date of  Lesion Identification for This Trial (Scan/Image/Physical Exam)
+
+10. If Logic 1 is met please display  ""Scenario 1A"" OR If Logic 2 is met please display  ""Scenario 1B""
+
+Table 2
+
+1. SA Form. Site Country
+
+2. SA Form. Site Mnemonic
+
+3. SA Form. Subject Number
+
+4. Display the LSRIR Form. Lesion Number(LSRIR Add Entry Form. itemdix) for all records for the same Date of Current Lesion Evaluation (Scan/Image/Physical Exam) separated by comma e.g 1(1), 2(1), 3(1) etc..
+
+5. LSRIR. Date of Lesion evaluation/LSRIR. Date of Current Lesion evaluation  (Scan/Image/Physical Exam)
+
+6.Display the following “Absent=”#ab , “Present=”#pr, “Worsening=”#wr , Not Evaluable = #ne where #ab is the count of New Lesions with LSRIR.New Lesion Status = ""Absent"" for the same Date of Current Lesion Evaluation (Scan/Image/Physical Exam), #pr is the count of New Lesions with LSRIR.New Lesion Status = ""Present"" for the same Date of Current Lesion Evaluation (Scan/Image/Physical Exam), #wr is the count of New Lesions with LSRIR.New Lesion Status = ""Worsening"", #ne is the count of New Lesions with LSRIR.New Lesion Status = ""Not Evaluable""  for the same Date of Current Lesion Evaluation (Scan/Image/Physical Exam). If count = 0 do not display the text nor the count for that New Target Lesion Status.
+
+7.Display the following “Y=”#ys , “N=”#ns where #ys is the count of New Lesions with LSRIR.Was the Lesion Evaluable? =""Yes"" for the same Date of Current Lesion Evaluation (Scan/Image/Physical Exam) AND #ns is the count of New Lesions with LSRIR with Was the Lesion Evaluable? =""No"" for the same Date of Current Lesion Evaluation (Scan/Image/Physical Exam) If count = 0 do not display the text nor the count for that  Was the Lesion Evaluable?.
+
+8. RRIR Form. Formidx
+
+9. RRIR Form. Date Response Determined
+
+10. Status of Prior irRECIST New Lesions Identified Since Baseline
+
+11. If Logic 3 AND 4 are met complete as “Scenario 2A” OR If Logic 5 AND 6 are  met complete as “Scenario 2B” OR If Logic 7 AND 8 are met complete as “Scenario 3A ” OR If Logic 9 AND 10 are  met complete as “Scenario 3B” OR If Logic 11 AND 12 are met complete as “ Scenario 4A” OR If Logic 13 AND 14 are  met complete as “Scenario 4B” OR If Logic 15 AND 16 are  met complete as “Scenario 5A” OR If Logic 17 AND 18 are  met complete as “Scenario 5B”

@@ -1,0 +1,226 @@
+Report ID: RID168
+
+Report Title:
+Specimen Collection Invoice Scheduled vs Actual Times Report
+
+Description:
+This report generates a listing of Specimen collection Invoice records from the SCI forms where the elapsed time is not within a window of scheduled time expected.
+
+Column Heading:
+1.	Country
+
+2.	Site
+
+3.	Subject Number
+
+4.	SCI Visit
+
+5.	SCI Form
+
+6.	SCI Seq
+
+7.	SCI Scheduled Time
+
+8.	Date/Time Specimen(s) Obtained
+
+9.	Study Medication
+
+10.	Start Date/Time
+
+11.	Stop Date/Time
+
+12.SM 	Study Period
+
+13.SM Schedule Time
+
+14.	Elapsed Days
+
+15.	Elapsed Time (hrs)
+
+16.	Elapsed Time (mins)
+
+17.	Specimen Collection Status
+
+Logic:
+<Criteria Form 1>,<Criteria Itemquestion 1> = <Criteria Value 1> AND
+
+<Criteria Form 2>,<Criteria Itemquestion 2> = <Criteria Value 2> AND
+
+<Criteria Form 3>,<Criteria Itemquestion 3> = <Criteria Value 3>
+
+AND
+
+Study period SM:
+
+If SM Form=SM AND SM.Scheduled time is present in SM form THEN Study Period SM= “<SM. Study Period> <SM.Scheduled time>”
+
+If SM Form=SM AND If SM.Scheduled time is not present in SM form THEN Study Period SM= SM.Study Period
+
+If SM Form<>SM, Study Period SM= SM_Table.Study Period
+
+AND
+
+Supporting Document Study medication
+
+Supporting Document Study medication = STUDY MEDICATION. Study Period (STUDY MEDICATION form according to supporting document-SM01/SM02/SM03/SM04/SM/SMAU/SMAB) AND STUDY MEDICATION. Scheduled time (STUDY MEDICATION form according to supporting document-SM01/SM02/SM03/SM04/SM/SMAU/SMAB.
+
+If Scheduled time = “NA”, should be only STUDY MEDICATION. Study Period (STUDY MEDICATION form according to supporting document-SM01/SM02/SM03/SM04/SM/SMAU/SMAB
+
+AND
+
+For Post dose:
+
+Output is produced if the elapsed time between the sample date/time and the last dosing date/time is outside window provided in supporting document compared to the expected scheduled time for the specific time point To compare between SCI Visit and Study Period SM Form, please use as Study Period from study medication forms (SM01/SM02/SM03/SM04/SM/SMAU/SMAB) = Study Period SM, AND Study Period from the supporting document = Supporting Document Study medication.
+
+The last dose date/time is taken from study medication forms (SM01/SM02/SM03/SM04/SM/SMAU/SMAB), and is derived as the most recent dosing Stop date/time prior to the sample date/time.
+
+For Pre dose:
+
+Output is produced if the elapsed time between the sample date/time and the most recent dosing Start date/time is outside window provided in supporting document. To compare between SCI Visit and Study Period SM Form, please use as Study Period from study medication forms (SM01/SM02/SM03/SM04/SM/SMAU/SMAB) = Study Period SM, AND Study Period from the supporting document = Supporting Document Study medication.
+
+The most recent dosing date/time is taken from study medication forms (SM01/SM02/SM03/SM04/SM/SMAU/SMAB) and is derived as the most recent dosing Start date/time after to the sample date/time.
+
+Note 1: This report should not display deleted records and erroneous visits.
+
+Note 2: zero dose records should also be excluded from the Study medication forms.
+
+Note 3: Please output if there is no SM dose to be compared with SCI Postdose or Predose record.
+
+Note 4: If on SCI/SM time is collected and it is UNK - the report should display output
+
+Note 5: Check that Criteria Form 1, Criteria Item question 1, and Criteria Value 1, Criteria Form 2, Criteria Item question 2, and Criteria Value 2, Criteria Form 3, Criteria Item question 3, and Criteria Value 3 matches data on InForm for each scenario logic according to the supporting doc provided.
+
+Note 6: If Scheduled time is present in SM form, please consider the Study period of the SM form as “<SM. Study Period> <SM.Scheduled time>”. For example: if SM.Scheduled time is present, and SM. Study Period= Cycle 1, and SM.Scheduled time = Day 1,  then the Study period SM should be “<SM. Study Period> <SM.Scheduled time>”= Cycle 1 Day 1. If SM.Scheduled time is not present at SM, then the Study period SM should be ““<SM. Study Period>”
+
+Note 7: For Supporting Document Study medication: If Scheduled time is <> NA in the supporting Document, please consider the Study period of the SM form as “<SM. Study Period> <SM.Scheduled time>”. For example: if at the supporting document Study Period= Cycle 1, and SM Scheduled time = Day 1,  then the Study period SM should be “<SM. Study Period> <SM.Scheduled time>”= Cycle 1 Day 1. If Study Period= Cycle 1, and SM Scheduled time = NA,  then the Study period SM should be “<SM. Study Period>”= Cycle 1.
+
+Note 8: SM_Table could be SM01/SM02/SM03/SM04/SM/SMAU/SMAB forms.
+
+Requires supporting document to be named SCI005_supp_<xxxxxxx>.csv and will contain the following columns and associated content:
+
+1 row for each group of SCI records based on Scheduled Time Point, Lower or Upper Window Limit, and the corresponding SM information required per protocol.
+
+1)	Group - Unique key for each Scheduled Time Point in each SCI or variation Form, where the most recent SM among all SM listed in each group will be compared. Criteria Form 1, Criteria itemquestion 1, Criteria Value 1, Criteria Form 2, Criteria itemquestion 2, Criteria Value 2, Criteria Form 3, Criteria itemquestion 3, Criteria Value 3, SCI Form, Scheduled Time Point, Post_Pre Dose, Lower Window Limit, and Upper Window Limit must be unique in each group.
+
+2)	Criteria Form 1 - Specified as per each protocol and should reflect the appropriate Form used for the stratification of the subjects. Specified as 'NA' if no criteria Form is expected for any subject. Unique combination value in each group.
+
+3)	Criteria itemquestion 1 – Specified per each protocol and should reflect the cohort or arm in which the subject was randomized. Specified as 'NA' if the same cohort or arm with no different value in the day window is checked for all subjects. Unique combination value in each group.
+
+4)	Criteria Value 1 - Specified per each protocol and should reflect the study medication assigned for subjects regarding stratification form and cohort or arm. Specified as 'NA' if the same medication and frequency are checked for all subjects. Unique combination value in each group.
+
+5)	Criteria Form 2- Specified as per each protocol and should reflect the appropriate Form used for the stratification of the subjects. Specified as 'NA' if no criteria Form is expected for any subject or if only one Criteria form applies (Criteria Form 1). Unique combination value in each group.
+
+6)	Criteria itemquestion 2 - Unique value combination with Criteria itemquestion 1 in each group, specified per each protocol and should reflect the cohort or arm in which the subject was randomized. Set as 'NA' if the same cohort or arm with no different value in the day window is checked for all subjects or if only one Criteria form applies (Criteria itemquestion). Unique combination value in each group.
+
+7)	Criteria Value 2 - The unique value combination in each group is specified per each protocol and should reflect the study medication assigned for subjects regarding stratification form and cohort or arm.  Set as 'NA' if the same medication and frequency is checked for all subjects or if only one Criteria form applies (Criteria Value 1). Unique combination value in each group.
+
+8)	Criteria Form 3- Specified as per each protocol and should reflect the appropriate Form used for the stratification of the subjects. Specified as 'NA' if no criteria Form is expected for any subject or if only one Criteria form applies (Criteria Form 1). Unique combination value in each group.
+
+9)	Criteria itemquestion 3 - Unique value combination with Criteria itemquestion 1 in each group, specified per each protocol and should reflect the cohort or arm in which the subject was randomized. Set as 'NA' if the same cohort or arm with no different value in the day window is checked for all subjects or if only one Criteria form applies (Criteria itemquestion). Unique combination value in each group.
+
+10)	Criteria Value 3 - The unique value combination in each group is specified per each protocol and should reflect the study medication assigned for subjects regarding stratification form and cohort or arm.  Set as 'NA' if the same medication and frequency is checked for all subjects or if only one Criteria form applies (Criteria Value 1). Unique combination value in each group.
+
+11)	SCI Form - Name of SCI form. Unique value in each group. Unique combination value in each group.
+
+12)	Scheduled Time Point - Number. Unique combination value in each group.
+
+13)	Post_Pre Dose - 'Post Dose' or 'Pre Dose'. Unique combination value in each group.
+
+14)	Lower Window Limit - Number in minutes. Unique combination value in each group.
+
+15)	Upper Window Limit - Number in minutes. Unique combination value in each group.
+
+16)	SM Form - Optional. Set as 'NA' if all SM records are checked.
+
+17)	Study Period– Optional. Set as 'NA' if all SM records (Study Period) are checked
+
+18)	Scheduled time SM - Optional. Set as 'NA' if all SM records (Scheduled time SM) are checked
+
+19)	Study Medication - Optional. Set as 'NA' if all SM records (Study Medication) are checked
+
+20)	Last Dose - Optional, left Blank if all SM records are checked. Otherwise, put it as 'Last Dose'
+
+e.g.
+
+Group, Criteria Form 1, Criteria Itemquestion 1, Criteria Value 1, Criteria Form 2, Criteria Itemquestion 2, Criteria Value 2, Criteria Form 3, Criteria Itemquestion 3, Criteria Value 3, SCI Form,Scheduled Time Point,Post_Pre Dose,Lower Window Limit,Upper Window Limit,SM Form,Study Period,Study Medication,Last Dose
+
+1, SR, Arm, Arm1, SR, Cohort, Cohort A, SR, Stratification, CAPOX, SCI,0-4 Hour Pre Dose Pembrolizumab (-3475),Pre Dose,-240,0,SMAU,Cycle 1, Day 1,-3475,
+
+1, SR, Arm, Arm1, SR, Cohort, Cohort A, SR, Stratification, CAPOX, SCI,0-4 Hour Pre Dose Pembrolizumab (-3475),Pre Dose,-240,0,SMAB, Cycle 1, Day 1,-3475,
+
+1, SR, Arm, Arm1, SR, Cohort, Cohort A, SR, Stratification, CAPOX, SCI,0-4 Hour Pre Dose Pembrolizumab (-3475),Pre Dose,-240,0,SM, Cycle 1, Day 1,-3475,
+
+2, SR, Arm, Arm2, SR, Cohort, Cohort A, SR, Stratification, CAPOX, SCI,30-Day Safety Follow Up,Post Dose,0,53280,SMAU, Cycle 2, Day 1,-3475,Last Dose
+
+3, NA, NA,NA, NA, NA,NA, SR, Stratification, FOLFOX, SCIG, Crossover 6-8 Hours Post Dose -2118,Post Dose,360,480,NA,NA, NA, NA,-2118,
+
+4,  SR, Arm, Arm1, NA, NA,NA, NA, NA,NA, SCI,0-4 Hour Pre Dose Pembrolizumab (-3475),Pre Dose,-240,0,SM,NA NA, NA,-3475,
+
+e.g.Each SCI will be compared with the most recent SM among all SM listed on supp
+
+Group, Criteria Form, Criteria Itemquestion, Criteria Value, SCI Form,Scheduled Time Point,Post_Pre Dose,Lower Window Limit,Upper Window Limit,SM Form,Study Period,Study Medication,Last Dose
+
+1, SR, Arm, Arm1, SR, Cohort, Cohort A, SR, Stratification, CAPOX, SCI, Pre-Infusion, Pre Dose,0 ,1440, SMAU, Cycle 1, Day 2,-3475
+
+1, SR, Arm, Arm1, SR, Cohort, Cohort A, SR, Stratification, CAPOX, SCI, Pre-Infusion, Pre Dose,0 ,1440, SM, Cycle 1, NA, -3475
+
+2, SR, Arm, Arm2, SR, Cohort, Cohort A, SR, Stratification, FOLFOX, SCI,Pre-Infusion, Pre Dose,0 ,1440, SMAU, Cycle 2,NA, -3475
+
+3, NA, NA, NA, NA, NA, NA, SR, Stratification, FOLFOX, SCI, Pre-Infusion, Pre Dose,0 ,1440, SMAU, Cycle 3, NA, -3475
+
+3, NA, NA, NA, NA, NA, NA, NA, NA, NA, SCI,Pre-Infusion, Pre Dose,0 ,1440, SMAU, Cycle 4, Day 1, -3475
+
+The number of rows in the supporting document will be represented in the Report Header as "# of rows for customization".
+
+The actual information provided by the supporting doc can be outputted by selecting Y in the parameter "Supporting doc Page".
+
+Report Scenarios:
+1) Output = NO
+
+The elapsed time between the sample date/time and the last dosing date/time is within window provided in supporting document compared to the expected scheduled time for the specific time point - see logic for pre and post dose
+
+2) Output = YES
+
+The elapsed time between the sample date/time and the last dosing date/time is outside window provided in supporting document compared to the expected scheduled time for the specific time point- - see logic for pre and post dose
+
+3) Output = NO
+
+Deleted study medication records or records in erroneous visits
+
+Sorting:
+Country, Site, Subject Number, SCI Visit, SCI Form, SCI Seq, Date/Time Specimen(s) Obtained
+
+Form.Item Names:
+1.	SA. Site Country
+
+2.	SA. Site Mnemonic
+
+3.	SA. Subject Number
+
+4.	SCI. Visit Mnemonic
+
+5.	SCI. Form Mnemonic
+
+6.	SCI. Seq
+
+7.	SCI. Scheduled Time
+
+8.	SCI. Date/Time Specimen(s) Obtained
+
+9.	STUDY MEDICATION. Study Medication (STUDY MEDICATION form according to supporting document-SM01/SM02/SM03/SM04/SM/SMAU/SMAB)
+
+10.	STUDY MEDICATION. Start Date/Time (STUDY MEDICATION form according to supporting document-SM01/SM02/SM03/SM04/SM/SMAU/SMAB)
+
+11.	STUDY MEDICATION. Stop Date/Time (STUDY MEDICATION form according to supporting document-SM01/SM02/SM03/SM04/SM/SMAU/SMAB)
+
+12.	STUDY MEDICATION. Study Period
+
+13.	STUDY MEDICATION. Schedule Time
+
+14.	Derived: Date/Time Specimen(s) Obtained - SM dose date, Start or Stop Date/Time depending on post_pre dose)
+
+15.	Derived: Date/Time Specimen(s) Obtained - SM dose date, Start or Stop Date/Time depending on post_pre dose
+
+16.	Derived: Date/Time Specimen(s) Obtained - SM dose date, Start or Stop Date/Time depending on post_pre dose
+
+17.	SCI. Specimen Collection Status

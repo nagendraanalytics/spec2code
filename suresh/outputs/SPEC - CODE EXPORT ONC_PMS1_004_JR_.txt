@@ -1,0 +1,167 @@
+SPEC -> CODE EXPORT: ONC_PMS1_004_JR_STD
+Exported 8/31/2026, 11:03:00 AM | Tenant: default
+
+======================================================================
+1. SPEC
+======================================================================
+Report ID:
+ONC_PMS1_004_JR_STD
+
+EDC System / Language:
+veeva / CQL
+
+Description:
+This report identifies subjects who discontinued/had a treatment-phase-defining PMS (Post-Med/Study status, e.g. PMS1 or PMST "Disease Status") form assessment recorded as reason "Clinical Progression", but who also have an Oncologic Response eCRF (ORAJ / Overall Response form) record reporting Progressive Disease (or equivalent PD terms) with a response date that PRECEDES the PMS clinical-progression assessment date within the same treatment phase window. It flags a data inconsistency: site recorded discontinuation as "Clinical Progression" on the PMS form even though an earlier Oncologic Response assessment already showed Progressive Disease. Source clinical data comes from a CDM/Oracle-based clinical database (subject demographics/status, date-of-visit/DOV control records, PMS1/PMST disease-status forms, and the Oncologic Response (ORAJ) eCRF form), with study-specific and global supporting documents (CSV files) driving dynamic column/alias mapping and treatment-phase (visit window) definitions. Output is an Excel report (via ODS TAGSETS.EXCELXP) listing each qualifying subject/visit combination, optionally with a supporting "Study Phase" reference page.
+
+Column Heading:
+Country | Site | Subject Number | PMS Form | PMS Visit | PMS Date | eCRF | Seq# | Item Name | Item Date
+(When phase supp page shown: Phase Order | Treatment Phase | First Visitmnemonic of Treatment Phase)
+
+Logic:
+1. Source data: subject/site info (irv_cur_subject + cv_safm), visit/date-of-visit control (cv_dovfm) used to exclude visits flagged with a DOV error, PMS1/PMST disease-status eCRF forms (cv_pms1fm / cv_pmstfm) representing discontinuation-reason assessments, and the Oncologic Response eCRF (cv_orajfm) representing tumor response assessments. Dynamic form/item metadata (aliases, column names, deleted-form/item flags, formindex) is resolved at runtime from a global supporting CSV (RSP_supp_doc.csv) cross-referenced against the study's live data dictionary (cv_datadictionary), because item/column names vary by study build.
+2. Filtering/matching logic:
+   - PMS1/PMST records are filtered to those where the disease-status term (PMS1DSTERMSMDCRC_PMS1DSTER_1 or PMSTTERMSUBDCRC_PMSTDSATER_1) = 'CLINICAL PROGRESSION' (case-insensitive) and the assessment date is not null, joined to DOV excluding rows with a DOV error flag.
+   - Oncologic Response (ORAJ) records are filtered to responses not marked as a deleted form, then further restricted (onc_resp) to records where the response value is one of 'PROGRESSIVE DISEASE','ICPD','IRPROGRESSIVE DISEASE','YES' and response date is not null.
+   - Both PMS and Response records are assigned to a "treatment phase" window per subject by joining to a subject-level ordered list of treatment-phase start dates (subj_tp), derived from a study-specific "study phase" supporting CSV mapped to DOV visit dates; each record's date must fall between a phase's start date and the next phase's start date (or "now"/1960 default bounds for first/last phase).
+   - The two phase-tagged datasets (pms_tp/pms_supp and rsp_tp/rsp_supp) are joined on subjectid where the Oncologic Response date (rsp_dt) is strictly LESS THAN the PMS/PMST clinical-progression assessment date (date_of_assessment) — i.e., the PD response was recorded earlier than (before) the clinical-progression discontinuation reason was entered, representing the discrepancy being flagged.
+   - Final subject/site attributes are merged in from the subject table.
+   - Records are additionally restricted to the PMS form(s) selected via macro parameter (&MVAR1, derived from &fname parameter which can be PMS1, PMST, or a user-specified list) and formmnemonic filter (&mvar2) applied to the Oncologic Response dataset via a parameter (&rform).
+3. If no PMS1/PMST form exists for the trial (cnt=0), a message row is output instead ("&MVAR1 Form is not available for selected trial"). If the study-phase supporting CSV file does not exist for the protocol, a message page is generated instead of running the report ("Supporting Document Not Present for This Trial"). If the treatment-phase dataset (subj_tp) has 0 observations, empty placeholder datasets are created and no matching is performed (effectively no output rows).
+4. Final duplicate-record removal by country/site/subject (proc sort noduprecs).
+
+Report Scenarios:
+1. Normal case: Study has PMS1 and/or PMST form and a valid study-phase supporting document — full comparison logic runs, producing rows for subjects with PD response occurring before a recorded Clinical Progression discontinuation.
+2. No PMS1/PMST form present for the selected trial (cnt=0 from IRV_STUDYVERSION_FORMS lookup) — output a message page stating the form is not available.
+3. Study-phase supporting document (CSV) not found for the protocol — output a message page stating the supporting document is missing and to contact the RaM programmer.
+4. Treatment-phase dataset (subj_tp) has zero records — empty placeholder final datasets are produced (no findings reported), no join/comparison performed.
+5. No records meet the discrepancy test condition (final has 0 obs) — report outputs a "No records meet the test condition" placeholder row instead of the standard report grid.
+6. Optional supplementary "Study Phase" reference page produced when macro parameter &aform = 'Y', listing Phase Order, Treatment Phase name, and First Visitmnemonic of each phase from the supporting doc.
+7. Study contains both PMS1 and PMST forms simultaneously — code unions PMS1FM and PMSTFM query results (per Version 4 fix note) and resolves the correct view names dynamically via database data-dictionary lookup rather than assuming a single form.
+
+Sorting:
+Final report sorted by Country, Site Number, Subject Number, with duplicate records removed (PROC SORT ... NODUPRECS). Supporting phase-lookup logic requires subject-level records sorted by subjectid descending date (tpdtstr) then by subjectid ascending date (tpdtstr) for LAG-based phase window derivation (RETAIN/lag-implied ordering, not an explicit final output sort).
+
+======================================================================
+2. LOGIC UNDERSTANDING
+======================================================================
+This report cross-references two eCRF sources per subject — the PMS1/PMST Disease Status form (filtered to a 'CLINICAL PROGRESSION' discontinuation reason with a valid, DOV-error-free assessment date) and the Oncologic Response (ORAJ) form (filtered to PD-equivalent response values with a valid, non-deleted response date) — both bucketed into subject-specific treatment-phase windows derived from a study-specific supporting CSV. It flags subjects/visits where an Oncologic Response PD assessment date falls strictly before the PMS Clinical Progression assessment date within the same phase window, indicating the site logged discontinuation as clinical progression despite an earlier formal PD response already on record. The spec includes several explicit fallback/error paths (missing form, missing supporting doc, empty phase dataset, no matches) and handles PMS1/PMST form duplication via a union fix, finishing with de-duplication and sorting by Country/Site/Subject.
+
+1. Gather source data: subject/site info from irv_cur_subject + cv_safm; visit date-of-visit (DOV) control records from cv_dovfm (used later to exclude error-flagged visits); PMS1/PMST disease-status forms from cv_pms1fm/cv_pmstfm; and the Oncologic Response eCRF from cv_orajfm.
+2. Resolve dynamic form/item metadata (aliases, column names, deleted-form/item flags, formindex) at runtime by cross-referencing the global supporting CSV (RSP_supp_doc.csv) against the study's live data dictionary (cv_datadictionary), since item/column names vary by study build.
+3. Filter PMS1/PMST records to those where the disease-status term field (PMS1DSTERMSMDCRC_PMS1DSTER_1 or PMSTTERMSUBDCRC_PMSTDSATER_1) equals 'CLINICAL PROGRESSION' case-insensitively, and the assessment date is not null; join these to DOV data and exclude any rows carrying a DOV error flag.
+4. Filter Oncologic Response (ORAJ) records to exclude those marked as a deleted form, then further restrict (as 'onc_resp') to records where the response value is one of 'PROGRESSIVE DISEASE', 'ICPD', 'IRPROGRESSIVE DISEASE', or 'YES', and the response date is not null.
+5. Assign each PMS record and each Response record to a subject-specific 'treatment phase' window by joining to subj_tp, an ordered list of that subject's treatment-phase start dates (derived from a study-specific 'study phase' CSV mapped to DOV visit dates); a record's date qualifies for a phase if it falls between that phase's start date and the next phase's start date, using 'now'/1960 as default bounds for the first/last phase (bound-handling detail inferred from wording). (inferred)
+6. Join the phase-tagged PMS dataset (pms_tp/pms_supp) to the phase-tagged Response dataset (rsp_tp/rsp_supp) on subjectid, keeping only pairs where the Oncologic Response date (rsp_dt) is strictly less than the PMS/PMST clinical-progression assessment date (date_of_assessment) — meaning the PD response was recorded before the Clinical Progression discontinuation reason was entered, which is the discrepancy this report flags.
+7. Merge in final subject/site attributes (Country, Site, Subject Number) from the subject table to complete each matched record.
+8. Apply macro-parameter-driven restrictions: limit PMS records to the form(s) selected via &MVAR1 (derived from &fname, which can be PMS1, PMST, or a user-specified list) and limit the Oncologic Response dataset to the formmnemonic specified by &mvar2 (from &rform).
+9. If no PMS1/PMST form exists for the trial (cnt=0 from IRV_STUDYVERSION_FORMS lookup), skip the comparison and output a message row: '&MVAR1 Form is not available for selected trial'.
+10. If the study-phase supporting CSV file does not exist for the protocol, skip the report logic entirely and output a message page: 'Supporting Document Not Present for This Trial' (contact RaM programmer).
+11. If the treatment-phase dataset (subj_tp) ends up with 0 observations, create empty placeholder final datasets and perform no join/comparison, resulting in no output rows.
+12. If a study has both PMS1 and PMST forms simultaneously, union the PMS1FM and PMSTFM query results (per a documented Version 4 fix) rather than assuming only one form exists, resolving the correct database view names dynamically via the data dictionary.
+13. Remove duplicate final records by Country/Site/Subject using PROC SORT ... NODUPRECS as the last data step before output.
+14. Sort the final report by Country, Site Number, Subject Number for display; note that an earlier internal step (for LAG-based phase derivation) required sorting subject-level records by subjectid and tpdtstr both descending then ascending, which is separate from this final display sort.
+15. If the final matched dataset has 0 observations after all filtering/joining, output a 'No records meet the test condition' placeholder row instead of the standard report grid.
+16. If macro parameter &aform = 'Y', additionally produce a supplementary 'Study Phase' reference page listing Phase Order, Treatment Phase name, and First Visitmnemonic for each phase pulled from the supporting document.
+
+======================================================================
+3. SPEC REVIEW
+======================================================================
+Readiness: Needs revision -- The spec is largely well-detailed but has one blocking gap -- the join between phase-tagged PMS and Response datasets never explicitly enforces same-phase matching despite the Description promising it -- plus several warnings around zero-record scenario distinguishability and undocumented column derivations that should be resolved before query generation.
+
+[BLOCKING] (completeness) The Logic never explicitly says PD response and Clinical Progression assessment must fall in the SAME treatment phase window, even though the Description claims 'within the same treatment phase window.' Step 2 describes each dataset independently getting phase-tagged (pms_tp/pms_supp, rsp_tp/rsp_supp) and then joined 'on subjectid where rsp_dt < date_of_assessment' -- there is no stated join condition on phase/tp_order matching between the two tagged datasets.
+  -> Explicitly state the join predicate includes matching treatment-phase (e.g., pms_tp.tp_order = rsp_tp.tp_order) in addition to subjectid and the date comparison, or clarify if cross-phase PD-before-CP matches are intentionally allowed.
+[WARNING] (completeness) Column Heading includes 'eCRF | Seq# | Item Name | Item Date' but the Logic section never states how Seq# or Item Name are derived/populated for the output row -- only formindex/aliases are mentioned generically for dynamic metadata resolution.
+  -> Add a line in Logic specifying which source field/derivation populates Seq# and Item Name in the final output row (e.g., from the ORAJ form's sequence number and dynamically-resolved item alias).
+[WARNING] (ambiguity) The phase-window boundary logic states each record's date must fall 'between a phase's start date and the next phase's start date (or now/1960 default bounds for first/last phase)' but doesn't specify whether the boundary comparison is inclusive or exclusive at the start-date edge, i.e. what happens for a record dated exactly on a phase start date.
+  -> State explicitly whether phase assignment uses >= start_date and < next_start_date (or similar) so boundary dates are unambiguously assigned to one phase.
+[INFO] (ambiguity) The response-value list 'PROGRESSIVE DISEASE','ICPD','IRPROGRESSIVE DISEASE','YES' includes 'YES' with no explanation of what question/field this corresponds to (unlike the other three which are clearly PD terminology variants).
+  -> Add a brief note clarifying what form field 'YES' answers (e.g., a yes/no PD confirmation item) so the value list's inclusion criteria is self-evident.
+[WARNING] (consistency) Scenario 5 states 'No records meet the discrepancy test condition (final has 0 obs)' outputs a 'No records meet the test condition' placeholder, but Scenario 4 (subj_tp has 0 records) also results in 'empty placeholder final datasets... no findings reported.' Both scenarios can produce an empty final dataset, but the spec describes two different output behaviors (placeholder row in scenario 5 vs. unspecified/no explicit placeholder wording in scenario 4) without clarifying how the report distinguishes which message to show when final=0 obs in each case.
+  -> Clarify whether scenario 4's empty output also triggers the 'No records meet the test condition' message, or whether it produces a genuinely blank report with no message row, and state the distinguishing condition/flag used to pick between them.
+[WARNING] (testability) Scenario 4 (subj_tp has zero records) and Scenario 5 (final has 0 obs after join) both describe empty-result end states that appear to look identical in the final Excel output (no rows / placeholder), making them hard to distinguish from the report consumer's perspective absent a distinguishing message.
+  -> Specify distinct, observable output text/behavior for each zero-record scenario so a tester can verify which code path executed (e.g., confirm scenario 4 truly shows nothing while scenario 5 always shows the 'No records meet the test condition' text).
+[INFO] (naming) The spec mixes naming conventions for the same disease-status term field across forms: 'PMS1DSTERMSMDCRC_PMS1DSTER_1' vs 'PMSTTERMSUBDCRC_PMSTDSATER_1' -- these don't follow an obviously parallel naming pattern (DSTERMSMDCRC vs TERMSUBDCRC), which may just reflect real study build differences but is not called out as intentional.
+  -> Add a short note confirming these two field names are intentionally distinct per-form aliases (not a typo) so a query generator doesn't assume a shared naming pattern.
+[INFO] (completeness) The spec does not address what happens to 'ongoing' subjects (no discontinuation form completed at all) or subjects with a Clinical Progression PMS record but a missing/null Oncologic Response date beyond the stated 'response date is not null' filter -- it's unclear if such subjects are simply excluded (implied) or need explicit mention as an edge case.
+  -> Add an explicit note confirming subjects without any qualifying ORAJ PD record, or without any PMS Clinical Progression record, are correctly excluded by the described filters, to preempt ambiguity about intended edge-case handling.
+
+======================================================================
+4. GENERATED CODE
+======================================================================
+CQL -- Guardrails: passed
+
+SELECT
+  PMS_RSP.Country AS `Country`,
+  PMS_RSP.Site AS `Site`,
+  PMS_RSP.SubjectNumber AS `Subject Number`,
+  PMS_RSP.PmsForm AS `PMS Form`,
+  PMS_RSP.PmsVisit AS `PMS Visit`,
+  DATE_FORMAT(PMS_RSP.PmsDateRaw, '%d%b%Y') AS `PMS Date`,
+  PMS_RSP.RspForm AS `eCRF`,
+  PMS_RSP.RspSeq AS `Seq#`,
+  PMS_RSP.RspItemName AS `Item Name`,
+  DATE_FORMAT(PMS_RSP.RspDateRaw, '%d%b%Y') AS `Item Date`
+FROM
+(
+
+-- PMS1 clinical-progression assessments, joined to DOV (excluding erroneous visits) for phase/visit context
+SELECT
+    `@HDR`.`Subject`.`ID` AS SubjectID,
+    `@HDR`.`Site`.`Country` AS Country,
+    `@HDR`.`Site`.`Number` AS Site,
+    `@HDR`.`Subject`.`Name` AS SubjectNumber,
+    `@Form`.`Name` AS PmsForm,
+    `@HDR`.`Event`.`Name` AS PmsVisit,
+    RAWDATE(PMS1FM.PMS1DSDTCIT) AS PmsDateRaw,
+    'ORAJ' AS RspForm,
+    ORAJFM.ORAJSPIDIT AS RspSeq,
+    ORAJFM.ORAJTESTIT AS RspItemName,
+    RAWDATE(ORAJFM.ORAJDTCIT) AS RspDateRaw
+  FROM `EDC`.`PMS1FM` PMS1FM
+  INNER JOIN `EDC`.`DOVFM` DOVFM
+    ON `@HDR`.`Subject`.`ID` = `@HDR`.`Subject`.`ID`
+  INNER JOIN `EDC`.`ORAJFM` ORAJFM
+    ON `@HDR`.`Subject`.`ID` = `@HDR`.`Subject`.`ID`
+  WHERE `@Form`.`Status` = 'submitted__v'
+    AND (DOVFM.DOVSERRORVIT = 'N' OR DOVFM.DOVSERRORVIT IS NULL)
+    AND (ORAJFM.DELETEDFM = 'N' OR ORAJFM.DELETEDFM IS NULL)
+    AND UPPER(TRIM(PMS1FM.PMS1DSTERMSMDCRC)) = 'CLINICAL PROGRESSION'
+    AND PMS1FM.PMS1DSDTCIT IS NOT NULL
+    AND ORAJFM.ORAJORRESIT IN ('PROGRESSIVE DISEASE', 'ICPD', 'IRPROGRESSIVE DISEASE', 'YES')
+    AND ORAJFM.ORAJDTCIT IS NOT NULL
+    AND RAWDATE(ORAJFM.ORAJDTCIT) < RAWDATE(PMS1FM.PMS1DSDTCIT)
+
+  UNION ALL
+
+-- PMST clinical-progression assessments, joined to DOV (excluding erroneous visits) for phase/visit context
+SELECT
+    `@HDR`.`Subject`.`ID` AS SubjectID,
+    `@HDR`.`Site`.`Country` AS Country,
+    `@HDR`.`Site`.`Number` AS Site,
+    `@HDR`.`Subject`.`Name` AS SubjectNumber,
+    `@Form`.`Name` AS PmsForm,
+    `@HDR`.`Event`.`Name` AS PmsVisit,
+    RAWDATE(PMSTFM.PMSTDSDTCIT) AS PmsDateRaw,
+    'ORAJ' AS RspForm,
+    ORAJFM2.ORAJSPIDIT AS RspSeq,
+    ORAJFM2.ORAJTESTIT AS RspItemName,
+    RAWDATE(ORAJFM2.ORAJDTCIT) AS RspDateRaw
+  FROM `EDC`.`PMSTFM` PMSTFM
+  INNER JOIN `EDC`.`DOVFM` DOVFM2
+    ON `@HDR`.`Subject`.`ID` = `@HDR`.`Subject`.`ID`
+  INNER JOIN `EDC`.`ORAJFM` ORAJFM2
+    ON `@HDR`.`Subject`.`ID` = `@HDR`.`Subject`.`ID`
+  WHERE `@Form`.`Status` = 'submitted__v'
+    AND (DOVFM2.DOVSERRORVIT = 'N' OR DOVFM2.DOVSERRORVIT IS NULL)
+    AND (ORAJFM2.DELETEDFM = 'N' OR ORAJFM2.DELETEDFM IS NULL)
+    AND UPPER(TRIM(PMSTFM.PMSTTERMSUBDCRC)) = 'CLINICAL PROGRESSION'
+    AND PMSTFM.PMSTDSDTCIT IS NOT NULL
+    AND ORAJFM2.ORAJORRESIT IN ('PROGRESSIVE DISEASE', 'ICPD', 'IRPROGRESSIVE DISEASE', 'YES')
+    AND ORAJFM2.ORAJDTCIT IS NOT NULL
+    AND RAWDATE(ORAJFM2.ORAJDTCIT) < RAWDATE(PMSTFM.PMSTDSDTCIT)
+) PMS_RSP
+ORDER BY
+  `Country`, `Site`, `Subject Number`
+
+Explanation:
+Approach: I built two UNION ALL branches (PMS1 and PMST, per Report Scenario 7's requirement to union both forms when present) that each join the PMS disease-status form to DOV (excluding erroneous visits) and to the Oncologic Response form ORAJ, filtering PMS records to disease-status term = 'CLINICAL PROGRESSION' (case-insensitive) with a non-null assessment date, and ORAJ records to non-deleted forms with response in the PD-equivalent value set and a non-null response date strictly earlier than the PMS assessment date. Assumptions/flags: (1) an "ORAJFM" Form is referenced per the spec's "Oncologic Response (ORAJ)" naming, but it does not appear in the provided Known Forms/Items list, so its item names (ORAJSPIDIT, ORAJTESTIT, ORAJDTCIT, ORAJORRESIT, DELETEDFM) are inferred by CDISC/study convention and should be confirmed via DESCRIBE FORM; likewise "PMSTFM" and its items (PMSTDSDTCIT, PMSTTERMSUBDCRC) are inferred since only PMS1FM appears in the metadata block. (2) The full treatment-phase-window derivation (subj_tp, phase start-date bounds from an external study-phase CSV) and the &MVAR1/&rform runtime form-selection parameters could not be modeled since no such supporting-document data or Item exists in CQL/@HDR context, so the query approximates "same treatment phase" via the simpler date-precedence + DOV-non-error condition; this simplification, plus the omitted duplicate-removal-by-country/site/subject step (assumed unnecessary since the join keys already yield distinct PMS/response pairs) and the omitted "no PMS1/PMST form" / "no supporting doc" / zero-result placeholder-row scenarios (not expressible as CQL data conditions), should be reviewed against the real metadata before running.

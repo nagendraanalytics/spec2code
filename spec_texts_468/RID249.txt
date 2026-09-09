@@ -1,0 +1,219 @@
+Report ID: RID249
+
+Report Title:
+Brain Metastasis History/Assessment Reconciliation
+
+Description:
+The report displays missing or incorrect BMH/BMA records.
+
+Column Heading:
+1. Country
+
+2. Site
+
+3. Subject Number
+
+4. BMA/BMH Imaging Date/BMH Date of Assessment
+
+5. BMA/BMH Brain Metastases?
+
+6. BMH Brain Previous Metastases?
+
+7. BMH Brain Current Metastases?
+
+8. OSCN Sequence
+
+9. OSCN Date of Scan
+
+10. OSCN Location
+
+11. Lesion Evaluation form
+
+12. Lesion Evaluation form sequence
+
+13. Lesion Evaluation form date
+
+14. Lesion Evaluation form location
+
+15. Scenario
+
+Logic:
+Report Logic:
+
+Scenario 1
+
+(BMH.Imaging Date <> Null AND BMH.Brain Metastasis = “YES”
+
+OR
+
+BMA.Brain Imaging Date <> Null AND BMA.Brain Metastases = “YES”)
+
+AND
+
+There is not at least 1 record in OSCN with Location or Anatomical Location entered as = Brain/Neck/Head and OSCN. Scheduled Time = "Scheduled"
+
+Scenario 2:
+
+There is at least 1 record in OSCN with Location or Anatomical Location entered as = Brain/Neck/Head and OSCN. Scheduled Time = "Scheduled" and with OSCN.Scan Date within "Timeframe" window.
+
+AND
+
+BMH.Imaging Date OR BMA.Brain Imaging Date <> OSCN.Date.
+
+Scenario 3:
+
+(BMH.Imaging Date <> Null AND BMH.Brain Metastasis = "No"
+
+OR
+
+BMA.Imaging Date <> Null AND BMA.Brain Metastases = "No")
+
+AND
+
+There is a record in Lesion Evaluation form with LSN. Date of Current Lesion Evaluation (Scan/Image/Physical Exam) within "Timeframe" window and Location = "Brain"
+
+Note 1: "X" value = Baseline window of days
+
+Note 2: Timeframe = from BMH.Imaging Date - X to SR.Date of assessment
+
+Note 3: Baseline window of days is inclusive, for example if user enters 7 days, then report would check for records with a date difference 7 days or less
+
+Note 4: Items Evaluation form - Date - Location for scenario 3 will be retrieved from LSN global supp doc
+
+Note 5: please exclude deleted records
+
+Note 6: BMH.Brain Metastasis and BMA.Brain Metastases means following item questions, depends on which one is presented on the trial:
+
+BMH.Does The Subject Have A Previous History Of Brain Metastasis(es)?
+
+BMH.Does The Subject Have A Current Diagnosis Of Brain Metastasis(es)?
+
+BMH.Does The Subject Now Have A Brain Metastasis(es) Or Have A History Of A Brain Metastasis(es)?
+
+BMA.Does the Subject have a history of Brain Metastases or Now have a Brain Metastases
+
+Note 7: Use BMH.Date of Assessment instead if BMH.Imaging Date does not present for the trial
+
+Report Scenarios:
+1.1 Output = Yes:
+
+There is no record in OSCN  with location 'Brain' or 'Head' or 'Neck', however the BMH form is completed with Does the Subject Have a Previous History of Brain Metastasis(es)? As yes
+
+or
+
+There is no record in OSCN  with Location or Anatomical Location 'Brain' or 'Head' or 'Neck', however the BMA form is completed with Does the Subject Have a History of Brain Metastases or Now Have a Brain Metastases? As yes
+
+1.2 Output = No
+
+There is no record in OSCN  with location 'Brain' or 'Head' or 'Neck', however the BMH form is completed with Does the Subject Have a Previous History of Brain Metastasis(es)? As no
+
+or
+
+There is no record in OSCN  with Location or Anatomical Location 'Brain' or 'Head' or 'Neck', however the BMA form is completed with Does the Subject Have a History of Brain Metastases or Now Have a Brain Metastases? As no
+
+2.1  Output = Yes
+
+'Imaging Date' or 'Date of Assessment' in the BMH form is different than 'Scan Date' for a  OSCN record with Location 'Brain' or 'Head' or 'Neck' scheduled within timeframe of baseline.
+
+or
+
+'Imaging Date in' in the BMA form is different than 'Scan Date' for a OSCN record with Anatomical Location 'Brain' or 'Head' or 'Neck' scheduled within timeframe of baseline.
+
+2.2 Output = No
+
+'Imaging Date' or 'Date of Assessment' in the BMH form is different than 'Scan Date' for a  OSCN record with Location 'Brain' or 'Head' or 'Neck' unscheduled or not within timeframe of baseline.
+
+or
+
+‘Brain Imaging Date in' in the BMA form is different than 'Scan Date' for a  OSCN record with Anatomical Location 'Brain' or 'Head' or 'Neck' unscheduled or not within timeframe of baseline.
+
+3.1 Output = Yes.
+
+'Does the Subject Now have a Brain Metastasis(es) or Have a History of a Brain Metastasis(es)?' in the BMH form is answered as 'No', but there is a record in Response form with Location 'Brain' is present and within Timeframe date.
+
+or
+
+‘Does the Subject Have a History of Brain Metastases or Now Have a Brain Metastases?’ in the BMA form is answered as 'No', but there is a record in evaluation form LSNIR with Location 'Brain' is present and within Timeframe date.
+
+3.2 Output = No
+
+'Does the Subject Now have a Brain Metastasis(es) or Have a History of a Brain Metastasis(es)?' in the BMH form is answered as 'Yes', or there is a record in Response form
+
+or
+
+‘Does the Subject Have a History of Brain Metastases or Now Have a Brain Metastases?’ in the BMA form is answered as 'Yes', or there is a record in evaluation form LSNIR with Location different from 'Brain' is present and within Timeframe date.
+
+Sorting:
+Country,
+
+Site Number,
+
+Subject Number,
+
+BMH Imaging Date/BMA Brain Imaging Date/BMH.Date of Assessment,
+
+Does the Subject Have a History of Brain Metastases or Now Have a Brain Metastases?/ BMH. Does the Subject Have a Previous History of Brain Metastasis(es)?/BMH. Does the Subject Have a Current Diagnosis of Brain Metastasis(es)?,
+
+OSCN sequence,
+
+OSCN Scan Date,
+
+OSCN Anatomical Location,
+
+OSCN Location,
+
+Lesion Evaluation form,
+
+Lesion Evaluation form sequence,
+
+Lesion Evaluation form date,
+
+Scenario
+
+Parameter Selection:
+Country,
+
+First Site,
+
+Last Site,
+
+First Subject,
+
+Last Subject,
+
+List of Subjects,
+
+Randomized Only (N/Y, default as N),
+
+Baseline window of days (Free textbox, Only numeric values allowed, default to 28)
+
+Form.Item Names:
+1. SA. Country
+
+2. SA. Site
+
+3. SA. Subject Number
+
+4. BMA/BMH.Imaging Date or BMH.Date of Assessment
+
+5. BMA/BMH. Does the Subject Now have a Brain Metastasis(es) or Have a History of Brain Metastasis(es)?
+
+6. BMH. Does the Subject Have a Previous History of Brain Metastasis(es)?
+
+7. BMH. Does the Subject Have a Current Diagnosis of Brain Metastasis(es)?
+
+8. OSCN. Sponsor ID Number
+
+9. OSCN. Scan Date
+
+10. OSCN. Anatomical Location or OSCN. Location (Separate multiple locations with "","")
+
+11. Evaluation form Identification (Display Evaluation form value)
+
+12. Evaluation form. Sponsor ID Number
+
+13. Evaluation form. Date of Current Lesion Evaluation (Scan/Image/Physical Exam)
+
+14. Evaluation form. Location
+
+15. Display Scenario 1, Scenario 2 or Scenario 3

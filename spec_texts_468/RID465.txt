@@ -1,0 +1,73 @@
+Report ID: RID465
+
+Report Title:
+Mismatches between DOV and first entry of VST
+
+Description:
+This report will output mismatches between DOV and VST dates for Vital Status
+
+Column Heading:
+1. Country
+
+2. Site
+
+3. Subject Number
+
+4. VST seq
+
+5. VST Date of Contact
+
+6. Vital Status DOV
+
+Logic:
+Logic:
+
+Vital Status DOV. Date of Visit is different from the earliest VST. Date of Contact
+
+Note
+
+Note 1: Do not output for erroneous visits or deleted records
+
+Note 2: Please order dates from earliest to latest date.
+
+Report Scenarios:
+Scenario 1 – Yes
+
+Vital Status DOV. Date of Visit <> NULL AND the earliest VST. Date of Contact  <> Vital Status DOV. Date of Visit
+
+Vital Status DOV. Date of Visit =1-Sep-2018
+
+VST seq#1 date of Contact = 7-Oct-2018
+
+Scenario 2 – No
+
+Vital Status DOV. Date of Visit <> NULL AND the earliest VST. Date of Contact  = Vital Status DOV. Date of Visit
+
+Vital Status DOV. Date of Visit =1-Sep-2018
+
+VST seq#1 date of Contact = 7-Oct-2018
+
+VST seq#2 date fo contact = 1-Sep-2018
+
+Scenario 3 – No
+
+Deleted records or erroneous visits
+
+Sorting:
+Country, Site Number, Subject Number, VST seq
+
+Parameter Selection:
+Country, Site, Subject Number
+
+Form.Item Names:
+1. SA.Country
+
+2. SA.Site
+
+3. SA.Subject number
+
+4. VST.Sponsor ID Number
+
+5. VST.Date of Contact
+
+6. Vital Status DOV. Date of Visit

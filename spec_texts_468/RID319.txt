@@ -1,0 +1,131 @@
+Report ID: RID319
+
+Report Title:
+Missing SAE related to Second Primary Neoplasm reported
+
+Description:
+This report displays subjects with a Second Primary Neoplasm reported in LSNAJ but missing a SAE reported with Serious Criteria as Cancer
+
+Column Heading:
+1. Country
+
+2. Site
+
+3. Subject Number
+
+4. LSNAJ seq
+
+5. LSNAJ date
+
+Logic:
+Logic:
+
+(Logic 1.1: LSNAJ.IS A SECOND PRIMARY NEOPLASM PRESENT? = ‘Yes’
+
+OR
+
+Logic 1.2: LSNAJ.RECURRENCE LOCATION RELATIVE TO PRIMARY TUMOR = ‘Second Primary Neoplasm’)
+
+AND
+
+Logic 1.3: LSNAJ.DATE OF INITIAL IDENTIFICATION <= Maximum SM.Stop Date + “SAE reporting period” from parameter
+
+AND
+
+Logic 1.4: There is not at least one AE with the following criteria:
+
+(Logic 1.5: AE.Onset Date <= LSNAJ.DATE OF INITIAL IDENTIFICATION
+
+AND
+
+Logic 1.6: AE.Serious Criteria (check all that apply) = ‘Cancer’)
+
+Notes:
+
+1-            Deleted records and erroneous visits are excluded from programming
+
+2-            The report will use master supporting documents LSN_supp_doc and SM_supp_doc, the distribution of items are as follows:
+
+-              “Is a Second Primary Neoplasm Present?",“ Recurrence Location Relative to Primary Tumor”, “Date of Initial Identification” belong to LSN_supp_doc
+
+-              “Stop Date” belongs to SM_supp_doc
+
+3-            “SAE Reporting Period” is a prompt from parameter section and the value entered should be in DAYS, for example, if user enters “90” then the report will assume it is “90 days”
+
+4-            Onset Date = Onset Date and Time (Lab collection date if lab AE)/ Onset Date and Time/ Onset Date and Time <br>(Lab collection date if lab AE)
+
+5-            Only the dates will be compared, exclude the time
+
+6-            Column 5 will be populated in format “DDMMMYYYY”
+
+7-            The report logic should be checked within the same treatment phase defined in the supporting document.
+
+For example, if user provides two Treatment Phases in supporting document like below:
+
+Phase Order, Treatment phase, First Visitmnemonic of Treatment Phase
+
+1,Initial Treatment Phase,Cycle 1
+
+2,Second Course Phase,Second Course Cycle 1
+
+The treatment phase will be identified as following:
+
+Initial Treatment Phase: Cycle 1 <= Form.Date < Second Course Cycle 1
+
+Second Course Phase: Second Course Cycle 1 <= Form.Date
+
+Form.Date include: SM_Form.Stop Date, AE.Onset Date, LSNAJ. Date of Initial Identification
+
+8-            This is a required supporting document for all studies with one or more phases.
+
+This supporting document is required to be created once per trial. If it was already created and uploaded, there is no need to duplicate it.
+
+Required supporting document should be named as study_phase_supp_<xxxxxxx>.csv and will contain the following columns and associated content:
+
+One row for each Treatment Phase
+
+1. Phase Order: the order on which phases will appear on protocol
+
+2. Treatment Phase: this information is the phase name given in the protocol (Initial Treatment Phase/Second Course Phase/Crossover/Neoadjuvant)
+
+3. First Visitmnemonic of Treatment Phase: the first visit on which treatment is expected to be administered on each phase.
+
+e.g.
+
+1, Initial Treatment Phase, Cycle 1
+
+2, Second Course Phase, Cycle 1 Course 2
+
+3, Crossover Phase, Crossover Cycle 1
+
+The actual information provided by the supporting doc can be outputted by selecting Y in the parameter "Study Phase Page".
+
+Report Scenarios:
+A = Yes
+
+There is Second Primary Neoplasm Present but there is not a SAE with Serious Criteria as Cancer.
+
+B = No
+
+There is Second Primary Neoplasm Present and there is a SAE with Serious Criteria as Cancer.
+
+C = No
+
+There is no a Second Primary Neoplasm Present.
+
+Sorting:
+Country, Site Number and Subject Number if not specified
+
+Parameter Selection:
+Country, First Site, Last Site, First Subject, Last Subject, List of Subjects, Randomized Only (Y/N, default as N), SAE reporting period (textbox, defaulted to 90, allow change),Study Phase Page (N/Y, Default as N)
+
+Form.Item Names:
+1. Subject Assignment. Site Country.
+
+2. Subject Assignment. Site Mnemonic.
+
+3. Subject Assignment. Subject Number.
+
+4. LSNAJ.Formidx
+
+5. LSNAJ.DATE OF INITIAL IDENTIFICATION

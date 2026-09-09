@@ -1,0 +1,163 @@
+Report ID: RID021
+
+Report Title:
+Reconciliation between AE relationship to Study Medication and Study Medication
+
+Description:
+Relationship to Study Medication vs Study medication record.
+
+Column Heading:
+1 Country
+
+2. Site Number
+
+3. Subject Number
+
+4. AE Seq
+
+5. AE Term
+
+6. AE Onset Date
+
+7. AE relationship
+
+8. SM form
+
+9. Visit Mnemonic
+
+10.SM Start Date
+
+11.SM Seq
+
+12. Study Medication
+
+13. Error Message
+
+Logic:
+Logic:
+
+Output the subjects who meet the following criteria.
+
+Logic 1: AE relationship = related and Number of units taken on SM/SMAU/SMAB form with first dose checked = blank or zero; or AE relationship = related and Dose Amount on STR form form with first dose checked = blank or zero; or AE relationship = related and Chemotherapy Dose of the minimum Date of TACE = blank or zero
+
+OR
+
+Logic 2: AE relationship = related and AE Onset date is before Start date on SM/SMAU/SMAB/STR form with first dose checked;
+
+or AE relationship = related and AE Onset date is before Date of TACE of the minimum Date of TACE
+
+Note 1: Erroneous visit or deleted record is not considered in program or output.
+
+Note 2: If SM/SMAU/SMAB was not initiated at all, it should be output. Please consider null when TMS_SMEXENDTCIT items are not available.
+
+Note 3: AE overall relationship will be used when study is with a single study medication. AE relationship with study medication will be used when study is with multiple study medications.
+
+Note 4a: IF SM Label Description and SMAU/SMAB Dose Number are exactly matched within forms For SM/SMAU/SMAB Study Medication, use SM.Label Description/SMAU.Dose Number/SMAB.Dose Number directly.
+
+Note 4b:If SM Label Description and SMAU/SMAB Dose Number are not exactly matched with Study Medication, using the optional supporting doc study_med_match_supp_.csv to define the mapping.
+
+The optional supporting document is only required in the following cases:
+
+- SM Label Description and SMAU/SMAB Dose Number are not exactly matched with Study Medication.
+
+This supporting document is only required to be created once per trial. If it was already created and uploaded, there is no need to duplicate it.
+
+Optional supporting document should be named as study_med_match_supp_<xxxxxxx>.csv and will contain the following columns and associated content:
+
+1 row for each Label Description or Dose Number present in SM/SMAU/SMAB eCRFs. 
+
+ 
+
+1. eCRF – SM/SMAU/SMAB
+
+2. Study Medication – Value of Study Medication
+
+3. Matching Item – SM Label Description or SMAU/SMAB Dose Number
+
+4. Matching Value – Value of SM Label Description or SMAU/SMAB Dose Number
+
+eCRF,Study Medication,Matching Item,Matching Value
+
+SM,-1439,Label Description,-1439 100 mg
+
+SM,Methadone,Label Description,Methadone Tablet 5 mg
+
+SM,Methadone,Label Description,Methadone Tablet 10 mg
+
+SMAB,3475/Placebo,Dose Number,3475/Placebo
+
+SMAU,Carboplatin,Dose Number,Carboplatin
+
+SMAU,Carboplatin,Dose Number,Carboplatin - Dose 1
+
+SMAU,Carboplatin,Dose Number,Carboplatin - Dose 2
+
+SMAU,Carboplatin,Dose Number,Carboplatin - Dose 3
+
+The actual information provided by the optional supporting doc can be outputted by selecting Y in the parameter "Study Med Match Page".
+
+Report Scenarios:
+Scenario A- Yes
+
+AE relationship = related and Number of units taken on SM/SMAU/SMAB form with first dose checked = blank or zero
+
+or
+
+AE relationship = related and Dose Amount on STR form with first dose checked = blank or zero
+
+or
+
+AE relationship = related and Chemotherapy Dose of the minimum Date of TACE = blank or zero
+
+Scenario B- Yes
+
+AE relationship = related and AE Onset date is before Start date on SM/SMAU/SMAB/STR form with first dose checked
+
+or
+
+AE relationship = related and AE Onset date is before Date of TACE of the minimum Date of TACE
+
+Scenario C- No
+
+AE relationship = related and Number of units taken on SM/SMAU/SMAB form with first dose checked <> blank or zero and AE Onset date is equal to or greater than start date on SM/SMAU/SMAB form with first dose checked
+
+or
+
+AE relationship = related and Dose Amount on STR form with first dose checked <> blank or zero and AE Onset date is equal to or greater than start date on STR form with first dose checked
+
+or
+
+AE relationship = related and and Chemotherapy Dose on TACE form of the minimum Date of TACE <> blank or zero and AE Onset date is equal to or greater than Date of TACE of the minimum Date of TACE
+
+Sorting:
+Country, Site Number and Subject Number
+
+Parameter Selection:
+Country, Site Number, Subject Number, Randomized Only, List of Subject
+
+Form.Item Names:
+1. Subject Assignment. Country
+
+2. Subject Assignment. Site Number
+
+3. Subject Assignment. Subject Number
+
+4. AE. Formdix
+
+5. AE. AE term
+
+6. AE. Onset date
+
+7. AE. Overall relationship to study medication/relationship with study medication
+
+8. SM/SMAU/SMAB/STR/TACE form name
+
+9. SMAU/SMAB. Visit Mnemonic ( if column 8 is SM/STR/TACE form, then show column 9 as CCDF)
+
+10.SM/SMAU/SMAB.Start Date and Time or STR. Start Date or TACE.Date of TACE
+
+11. SM/SMAU/SMAB/STR/TACE. Formdix
+
+12. AE.Study Medication(x)
+
+13. Error Message:if meet logic 1 then display as "SM not given"; if meet logic 2 then display as "AE Onset date prior to SM".

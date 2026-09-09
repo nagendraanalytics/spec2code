@@ -1,0 +1,91 @@
+Report ID: RID347
+
+Report Title:
+Prior treatments best response and duration of response are inconsistent.
+
+Description:
+Duration of Response for prior oncologic treatments cannot be reported for failed treatments, it is only required for positive responses: Complete Remission and Partial Response.
+
+This report will also list patients for which Complete Remission or Partial Response were reported, however the Duration of Response is missing.
+
+Column Heading:
+1. Country
+
+2. Site
+
+3. Subject number
+
+4. ODB Visit
+
+5. ODB Sequence Number
+
+6. ODB Best Response
+
+7. ODB Duration of Response
+
+8. Error Message
+
+Logic:
+LOGIC 1.
+
+ODB Best Response =  Progressive Disease (PD)
+
+AND
+
+Duration of Response = non-zero.
+
+LOGIC 2
+
+ODB Best Response = Stable Disease (SD)
+
+AND
+
+Duration of Response = non-zero.
+
+LOGIC 3
+
+ODB Best Response = Complete Remission OR Partial Response
+
+AND
+
+Duration of Response is missing.
+
+Note 1: Please exclude deleted records from programming
+
+Note 2: For Duration of Response = missing, please show "blank" message in Column 6 in the report.
+
+Report Scenarios:
+A. Yes
+
+ODB "Best Response" is equal to Progressive Disease (PD) AND "Duration of Response" is non-zero.
+
+B. Yes
+
+ODB "Best Response" is equal to Stable Disease (SD) AND "Duration of Response" is non-zero.
+
+C. Yes
+
+ODB "Best Response" is equal to Complete Remission OR Partial Response AND Duration of Response is missing.
+
+Sorting:
+Country, Site, Subject Number
+
+Parameter Selection:
+Country, Site, Subject Number
+
+Form.Item Names:
+1. SA form. Country
+
+2. SA form. Site Mnemonic
+
+3. SA form. Subject number
+
+4. ODB form. Visit
+
+5. ODB form. Sponsor ID Number
+
+6. ODB form. Best Response
+
+7. ODB form. Duration of  Response
+
+8. Scenario A or B or C

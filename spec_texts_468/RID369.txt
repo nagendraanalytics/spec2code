@@ -1,0 +1,213 @@
+Report ID: RID369
+
+Report Title:
+New Target Worsening reconciliation
+
+Description:
+This report will output if worsening of New Target lesions is entered incorrectly
+
+Column Heading:
+1.Country
+
+2. Site
+
+3. Subject Number
+
+4. LSNIR Seq#
+
+5. Date of Lesion Evaluation
+
+6. Was lesion evaluable?
+
+7. ORIR Seq#
+
+8. ORIR Date of Procedure
+
+9. New Lesion Since Baseline
+
+10. New Target Lesions Worsening From the Nadir
+
+11. New Lesion Sum of Diameters
+
+12. Change from Nadir
+
+13. Scenario
+
+Logic:
+Scenario 1:
+
+Logic 1.1: ORIR.New Lesion (Target) Worsening from Nadir <>NULL
+
+AND
+
+Logic 1.2: There is no LSNIR record with (LSNIR.Tumor Identification = New Target Nodal OR New Target Extra Nodal OR New Target in any prior entry done considering Date of Current Lesion Evaluation (Scan/Image/Physical Exam)).
+
+AND
+
+Logic 1.3. LSNIR.Study Period = ORIR.Study Period = to “Treatment Phase” from the supporting document.
+
+Scenario 2:
+
+(Logic 2.1: LSNIR.Date of Current Lesion Evaluation (Scan/Image/Physical Exam) = ORIR. Date of Procedure for Overall Response (Scan/Image/Physical Exam))
+
+AND
+
+(Logic 2.2: LSNIR.Tumor Identification = New Target Nodal OR New Target Extra Nodal OR New Target)
+
+AND
+
+Logic 2.3: ORIR.New Lesion (Target) Sum of Diameters – Current < 5 mm from NADIR
+
+AND
+
+Logic 2.4:
+
+ORIR.New Lesion (Target) Worsening from Nadir = Yes
+
+AND
+
+Logic 2.5. LSNIR.Study Period = ORIR.Study Period = to “Treatment Phase” from the supporting document.
+
+Scenario 3:
+
+Logic 3.1: LSNIR.Date of Current Lesion Evaluation (Scan/Image/Physical Exam) = ORIR. Date of Procedure for Overall Response (Scan/Image/Physical Exam)
+
+AND
+
+Logic 3.2: LSNIR.Tumor Identification = New Target Nodal OR New Target Extra Nodal OR New Target
+
+AND
+
+Logic 3.3: ORIR.New Lesion (Target) Sum of Diameters – Current => 5 mm from NADIR
+
+AND
+
+Logic 3.4: ORIR.New Lesion (Target) Worsening from Nadir = No
+
+AND
+
+Logic 3.5. LSNIR.Study Period = ORIR.Study Period = to “Treatment Phase” from the supporting document
+
+Scenario 4:
+
+Logic 4.1: ORIR.New Lesion (Target) Worsening from Nadir = NULL
+
+AND
+
+Logic 4.2: There is a LSNIR record with (LSNIR.Tumor Identification = New Target Nodal OR New Target Extra Nodal OR New Target in any previous LSNIR record considering Date of Current Lesion Evaluation (Scan/Image/Physical Exam)).
+
+AND
+
+Logic 4.3. LSNIR.Study Period = ORIR.Study Period = to “Treatment Phase” from the supporting document
+
+Note 1: For multiple treatment phase trials, the report logic should be checked within the same treatment phase. Treatment phase is identified with item "Study Period".
+
+Note 2: For subject that only one treatment phase, check the logic directly without separate treatment phase.
+
+Note 3: for Scenario 1, if New Lesion (Target) Worsening from Nadir is completed but there is no previous LSNIR record for New Target Lesion, then output.
+
+Note 4: If “New Lesion (Target) Sum of Diameters” is present in the study then report should work for all scenarios. If study doesn´t have “New Lesion (Target) Sum of Diameters” report should output only scenario 1 and 4.
+
+Note 5:
+
+The supporting document is required for all trials if treatment phase is applied to logic, even if only one treatment phase is present.
+
+This supporting document is only required to be created once per trial. If it was already created and uploaded, there is no need to duplicate it.
+
+The supporting document should be named as study_phase_supp_<xxxxxxx>.csv and will contain the following columns and associated content:
+
+One row for each Treatment Phase
+
+1. Phase Order: required, the order on which phases will appear on protocol
+
+2. Treatment Phase: name of each study phase (Intial Treatment Phase, Neodjuvant Phase, Second Course Phase)
+
+3. First Visitmnemonic of Treatment Phase: required, the first visit on which treatment is expected to be administered on each phase.
+
+e.g.
+
+1, Initial Treatment Phase, Cycle 1
+
+2, Second Course Phase, Cycle 1 Course 2
+
+3, Crossover Phase, Crossover Cycle 1
+
+The actual information provided by the optional supporting doc can be outputted by selecting Y in the parameter "Study Phase Page".
+
+Report Scenarios:
+Scenario 1 Output Yes:
+
+New Lesion (Target) Worsening from Nadir is Completed
+
+but there is not at least one LSNIR record with tumor identification as New Target Extra Nodal or New Target Nodal or New Target in the LSNIR evaluation which is before ORIR.Date of Procedure for Overall Response
+
+Scenario 1 Output No:
+
+New Lesion (Target) Worsening from Nadir is not completed,
+
+and Tumor Identification is New Target Extra Nodal or New Target Nodal or New Target compared to any prior entry.
+
+Scenario 2 Output Yes:
+
+New Lesion (Target) Worsening from Nadir is Yes
+
+and Tumor Identification is New Target Extra Nodal or New Target Nodal or New Target
+
+but New Lesion (Target) Sum of Diameters – Current is less than 5 mm from the Nadir
+
+Scenario 2 Output No:
+
+New Lesion (Target) Worsening from Nadir is Yes
+
+and Tumor Identification is New Target Extra Nodal or New Target Nodal or New Target but New Lesion (Target) Sum of Diameters – Current is greater than or equal to 5 mm from the Nadir
+
+Scenario 3 Output Yes:
+
+New Lesion (Target) Worsening from Nadir is No
+
+and Tumor Identification is New Target Extra Nodal or New Target Nodal or New Target but New Lesion (Target) Sum of Diameters – Current is greater than or equal 5 mm from the Nadir
+
+Scenario 3 Output No:
+
+New Lesion (Target) Worsening from Nadir is No
+
+and Tumor Identification is New Target Extra Nodal or New Target Nodal or New Target but New Lesion (Target) Sum of Diameters – Current is less than or equal to 5 mm from the Nadir
+
+Scenario 4 Output Yes:
+
+Worsening from Nadir is not completed
+
+but there is at least one previous LSNIR record with Tumor Identification as New Target Extra Nodal or New Target Nodal or New Target
+
+Sorting:
+Country, Site, Subject Number, Date of Procedure for Overall Response (Scan/Image/Physical Exam) (ORIR) OR 'Date of Current Lesion Evaluation (Scan/Image/Physical Exam) (LSNIR). If some rows of output have both ORIR date and LSNIR date, consider sort by LSNIR date first then ORIR date
+
+Parameter Selection:
+Country(ies), Site(s) and Subject(s), Randomized Only (N/Y, Default as N), List of Subjects, Study Phase Page (N/Y, Default as N)
+
+Form.Item Names:
+1. Country
+
+2. Site
+
+3. Subject Number
+
+4. LSNIR. Associated Lesion number (if there are more than one Lesion number for each Tumor Identification, display them all and joined by commas.)
+
+5. LSNIR. Date of Current Lesion Evaluation (Scan/Image/Physical Exam).
+
+6. LSNIR. Was the Lesion Evaluable? (display in one row for all lesions with the same Identification and Date, separated by commas. Display as “Y=<total number as Yes>” and “N=<total number as No>”. if there are no lesions as “No” do not display “N=0”
+
+7. ORIR. Sponsor ID Number
+
+8. ORIR. Date of Procedure for Overall Response
+
+9. Display the value of “ORIR. New Lesions Since Baseline” If item is blank, display the column blank
+
+10. Display the value of “ORIR. New Target Lesions Worsening From the Nadir”. If item is blank, display the column blank.
+
+11. Display the value of “ORIR. New Lesion (Target) Sum of Diameters - Current” and “New Lesion (Target) Sum of Diameters Unit”. If item is blank, display the column blank
+
+12. Display the value “Change from Nadir” that is Calculated as (SOD from current Timepoint - SOD from Nadir) Nadir SOD corresponds to the smallest SOD of all prior lesion evaluations of current Timepoint, Exclude evaluations that have at least one NE in the SOD.
+
+13. Display the value “Scenario 1” if Logic the logic for Scenario 1 applies, display the value “Scenario 2” if Logic the logic for Scenario 2 applies, display the value “Scenario 3” if Logic the logic for Scenario 3 applies and display the value “Scenario 4” if Logic the logic for Scenario 4 applies

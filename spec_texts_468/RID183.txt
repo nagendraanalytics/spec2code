@@ -1,0 +1,493 @@
+Report ID: RID183
+
+Report Title:
+Study Medication administration mismatch based on weight
+
+Description:
+This report lists subjects with mismatches between administered dose and assigned dose  based on weight.
+
+Column Heading:
+1. Country
+
+2. Site
+
+3. Subject Number
+
+4. SM eCRF
+
+5. SM Seq
+
+6. SM Study Period
+
+7. VS eCRF
+
+8. SM Administered Amount
+
+9. Weight per Cycle
+
+10. SM Expected Amount
+
+11. % Difference
+
+12. SM Reason for Dose Variation
+
+13. Adverse Event
+
+14. AE Seq
+
+15. Error message
+
+Logic:
+This report will list subjects with mismatches between administered amount (mg) and expected amount (mg) based on weight within the same study period.
+
+Logic 1
+
+Logic 1.1 If (% Difference)* [1] > (Allowed % Difference)
+
+AND
+
+(SM form).Reason for Dose Variation is different than “Adverse Event” or “Toxicity” or is NULL
+
+Error Message: Overdose and Missing SM Reason for Dose variation
+
+Logic 1.2 If (% Difference)* [1] < (-1)*(Allowed % Difference)
+
+AND
+
+(SM form).Reason for Dose Variation is NULL
+
+Error Message: Dose Reduction and Missing SM Reason for Dose variation
+
+This report will list output when there is no AE with AE term of "Overdose" or Serious Criteria equal to "Overdose" or there is no Reason for Dose Variation equal to “Adverse Event” or “Toxicity” within the same Study Period.
+
+Logic 2
+
+If Logic 1.1
+
+AND
+
+(
+
+Logic 2.1 There is no AE.Onset Date and Time (Lab collection date if lab AE) = (SM Form). Start Date/Time
+
+OR
+
+Logic 2.2 There is AE.Onset Date and Time (Lab collection date if lab AE) = (SM Form). Start Date/Time but AE. AE Term does not contain “Overdose” or "Overdose" is not selected in AE.Serious Criteria
+
+)
+
+Error Message: Missing AE or SAE overdose and Missing SM Reason for Dose variation.
+
+-----------------------------------------------------------------------
+
+Notes
+
+1)	The "% Difference" is calculated considering the following formula:
+
+((SM administered amount (in mg)- SM expected amount (in mg))*100 / SM expected amount (in mg))
+
+2)	The SM administered amount (in mg) is calculated based on:
+
+(SMAU/SM01/SM02/SM04 Number of Units Taken (in mL)) * (SMPU/SMP Calculated Dose(in mg/mL))
+
+OR
+
+Based on SM/SM01/SM02/SM04 Dose Amount (in mg).
+
+3)	The SM expected amount (in mg) is calculated based on:
+
+ Protocol Dose Level (in mg/kg) *Visit Weight (in kg).
+
+4)	Visit Weight refers to the value in VS01/VS02.Weight for each subject within a visit.
+
+To find the Visit Weight, please use the SM.Study Period value to know which visit the Visit Weight refers to.
+
+If there are multiple VS records within a visit:
+
+Step #1: Order the records by Scheduled Time (SCHEDULED value goes first). If there is only one record with Scheduled Time = SCHEDULED use that value.
+
+Step #2: If multiple records have Scheduled Time = SCHEDULED, use the record with the earliest Date/Time of Asessment.
+
+Step #3: If after ordering by Scheduled Time and Date/Time of Assessment, the record with SCHEDULED and minimum Date doesn't have Weight Value OR there are multiple records SCHEDULED with same Date, please use the record with minimum seq# that has a Weight Value.
+
+Step#4 If Scheduled time = SCHEDULED is not present use latest VS record prior to each dosing with Scheduled time <> SCHEDULED, for example Day 1, Day 8, Day 15, Day 22 etc.
+
+If the Visit Weight is not provided at a visit, please use the Visit Weight closest in date provided at VS02 form at the visit prior to the current visit.
+
+If there is no other visit with Visit Weight, please use the one in Screening in VS02. If VS02 is not present at Screening use the Visit Weight provided in VS01.
+
+Example #1:
+
+SM.Study Period = Cycle 1
+
+SM.Protocol Dose Level = 1.75 mg/kg
+
+Cycle 1.VS02 records:
+
+VS02 seq#1
+
+Date of Assessment = 12-Feb-2022
+
+Scheduled Time= SCHEDULED
+
+Weight = 58.1
+
+Weight Unit= kg
+
+VS02 seq#2
+
+Date of Assessment = 10-Feb-2022
+
+Scheduled Time= SCHEDULED
+
+Weight = 57.8
+
+Weight Unit= kg
+
+VS02 seq#3
+
+Date of Assessment = 21-Feb-2022
+
+Scheduled Time= UNSCHEDULED
+
+Weight = 57.5
+
+Weight Unit= kg
+
+Visit Weight = VS02 seq#2 = 57.8
+
+SM expected amount = 1.75 * 57.8 = 101.15
+
+Example #2:
+
+SM.Study Period = Cycle 1
+
+SM.Protocol Dose Level = 1.75 mg/kg
+
+Cycle 1.VS02 records:
+
+VS02 seq#1
+
+Date of Assessment = 21-Feb-2022
+
+Scheduled Time= UNSCHEDULED
+
+Weight = 58.1
+
+Weight Unit= kg
+
+VS02 seq#2
+
+Date of Assessment = 12-Feb-2022
+
+Scheduled Time= SCHEDULED
+
+Weight = 57.8
+
+Weight Unit= kg
+
+VS02 seq#3
+
+Date of Assessment = 12-Feb-2022
+
+Scheduled Time= SCHEDULED
+
+Weight = 57.5
+
+Weight Unit= kg
+
+Visit Weight = VS02 seq#2 = 57.8
+
+SM expected amount = 1.75 * 57.8 = 101.15
+
+Example #3:
+
+SM.Study Period = Cycle 1
+
+SM.Protocol Dose Level = 1.75 mg/kg
+
+Cycle 1.VS02 records:
+
+VS02 seq#1
+
+Date of Assessment = 12-Feb-2022
+
+Scheduled Time= SCHEDULED
+
+Weight = NULL
+
+Weight Unit= NULL
+
+VS02 seq#2
+
+Date of Assessment = 10-Feb-2022
+
+Scheduled Time= UNSCHEDULED
+
+Weight = 57.8
+
+Weight Unit= kg
+
+VS02 seq#3
+
+Date of Assessment = 11-Feb-2022
+
+Scheduled Time= SCHEDULED
+
+Weight = 57.5
+
+Weight Unit= kg
+
+Visit Weight = VS02 seq#3 = 57.5
+
+SM expected amount = 1.75 * 57.5 = 100.625
+
+Example #4:
+
+SM.Study Period = Cycle 3
+
+SM.Start/Date Time = 30-Jan-2022
+
+SM.Protocol Dose Level = 1.75 mg/kg
+
+Cycle 3.VS02.Weight = NULL
+
+Cycle 2.VS02 records:
+
+VS02 Seq#1.
+
+Date Of Assessment = 6-Jan-2022
+
+Scheduled Time= UNSCHEDULED
+
+Weight = 57.9
+
+Weight Units = kg
+
+VS02 Seq#2.
+
+Date Of Assessment = 7-Jan-2022
+
+Scheduled Time= UNSCHEDULED
+
+Weight = 57.5
+
+Weight Units = kg
+
+VS02 Seq#3.
+
+Date Of Assessment = 20-Jan-2022
+
+Scheduled Time= SCHEDULED
+
+Weight = 56.9
+
+Weight Units = kg
+
+Visit Weight= VS02 Seq#3 = 56.9
+
+SM expected amount = 1.75 * 56.9 = 99.575
+
+Example #5:
+
+SM.Study Period = Cycle 2
+
+SM.Start/Date Time = 28-Feb-2022
+
+SM.Protocol Dose Level = 1.75 mg/kg
+
+Cycle 2.VS02.Weight = NULL
+
+Cycle 1.VS02.Weight = NULL
+
+Screening.VS02.Weight = NULL
+
+Screening.VS01.Weight = 57.9
+
+Screening.VS01.Weight Units = kg
+
+Visit Weight= 57.9
+
+SM expected amount = 1.75 * 57.9 = 101.325
+
+Example #6:
+
+SM.Study Period = Cycle 3
+
+SM.Start/Date Time = 30-Jan-2022
+
+SM.Protocol Dose Level = 10 mg/kg
+
+VS02 Seq#1.
+
+Date Of Assessment = 16-Jan-2022
+
+Scheduled Time= Day 1
+
+Weight = 57.9
+
+Weight Units = kg
+
+VS02 Seq#2.
+
+Date Of Assessment = 30-Jan-2022
+
+Scheduled Time= Day 15
+
+Weight = 57.5
+
+Weight Units = kg
+
+Visit Weight= VS02 Seq#2 = 57.5
+
+SM expected amount = 10 * 57.5 = 575
+
+5)	Weight units are considered as kg, please convert units to Kg if weight units are provided in other units.
+
+6)	SM Administered Amount and SM Expected Amount units are standardized to mg, please convert units to mg if provided in other units.
+
+7)	For the calculation of “% Difference” use the Visit Weight, the SM administered amount and SM expected amount within the same Study period.
+
+8)	For Dates do not compare the time component only use the date.
+
+9)	Allowed % Difference is a parameter provided in supporting document according to  protocol specifications regarding the difference between SM administered amount and SM expected amount allowed per protocol.
+
+10)	If output is produced by Scenario 1 and Scenario 2, display only one output by Scenario 2.
+
+11)	Deleted Vitals or Study Medication records should not be considered.
+
+12)	Erroneous visits should not be considered for Vitals or Study Medication.
+
+-----------------------------------------------------------------------
+
+Requires supporting document to be named SM015_supp_<xxxxxxx>.csv and will contain the following columns and associated content:
+
+1) Criteria Form - Unique value in each group, SR/SRIVRS/TRIG or specified as 'NA' if it is checked for all subjects.
+
+2) Criteria Itemquestion – Item question of ARM/CHORT/STATIFICATION/ASSIGNED COLLECTION SCHEDULE specified as 'NA' if it is checked for all subjects
+
+3) Criteria Value - Value of ARM/CHORT/STATIFICATION/ASSIGNED COLLECTION SCHEDULE specified as 'NA' if it is checked for all subjects
+
+4) SM Form - SM/SMAU/SM01/SM02/SM04
+
+5) Study Medication - Value for Study Medication/Label Description
+
+6) Protocol Dose Level – Value of dose level (in mg/kg) specified in the protocol
+
+7) SMP Form - SMPU/SMP/NA, specified as 'NA' if not applicable.
+
+8) Allowed % Difference – Specified the percentage of difference between SM administered amount and SM expected amount allowed per protocol
+
+e.g.
+
+Criteria Form,Criteria Itemquestion,Criteria Value,SM Form,Study Medication,Protocol Dose Level,SMP Form,Allowed % Difference
+
+SR,Arm,Arm 1,SMAU,-3475,10,SMPU,5%
+
+SR,Arm,Arm 2,SMAU, -3475,20,SMPU,5%
+
+NA,NA,NA,SM,-2140,2.5,NA,5%
+
+Report Scenarios:
+Scenario 1:
+
+1) Output = YES
+
+Example with SMAU/SMPU or SM01/SM02/SM04/SMP:
+
+Allowed % Difference=5%
+
+Study Medication=Study Med 1
+
+SMPU/SMP Dose prepared=120 mg
+
+SMPU/SMP volume prepared=100 ml
+
+So Calculated dose = 120mg/100ml = 1.2 mg/ml.
+
+SMAU/SM01/SM02/SM04 number of ml taken=60 ml
+
+So SM Administered Amount = 60 ml * 1.2 mg/ml = 72 mg.
+
+As per supporting document, subject should take 1 mg/kg
+
+VS Weight=60 kg
+
+so SM Expected Amount=60 mg.
+
+Considering that SM Administered Amount=72 mg, which is 20% greater than the SM Expected Amount=60 mg, then this record will be in the output.
+
+Example with SM or SM01/SM02/SM04:
+
+Allowed % Difference=5%
+
+Study Medication=Study Med 1
+
+SM/SM01/SM02/SM04 Dose Amount=120 mg
+
+As per supporting document, subject should take 2 mg/kg
+
+VS weight=80 kg
+
+so SM Expected Amount=160 mg.
+
+Considering that SM Administered Amount=SM/SM01/SM02/SM04 Dose Amount=120 mg, which is 25% lower than the SM Expected Amount=160 mg, then this record will be in the output.
+
+2) Output = NO
+
+Deleted records
+
+3) Output = NO
+
+SMAU/SMPU or SM01/SM02/SM04/SMP or VS01/VS02 in erroneous visits
+
+Scenario 2:
+
+1) Output = Yes
+
+If the % Difference is greater than (allowed % Difference) and there is no AE with AE Start Date equal to SM Start Date, and AE verbatim term or Serious Criteria does not equal “Overdose”, and there is no SM/SMAU/ SM01/SM02/SM04/ with Reason for Dose Variation equal to Adverse Event or Toxicity for the same dates.
+
+2) Output = NO
+
+Deleted records
+
+3) Output = NO
+
+SMAU/SMPU or SM01/SM02/SM04/SMP or VS01/VS02 in erroneous visits
+
+Sorting:
+Country, Site, Subject Number, SM eCRF, SM Seq, SM Study Period, AE Seq
+
+Parameter Selection:
+Country, Site, Subject, Randomized Only, List of Subjects, , Supporting Doc Page (N/Y, Default as N)
+
+Form.Item Names:
+1. Subject Assignment.Site Country
+
+2. Subject Assignment.Site Mnemonic
+
+3. Subjects.Subject Number
+
+4. SM Form.Formmnemonic
+
+5. SM Form.Formidx
+
+6. SM Form.Study Period
+
+7. VS Form.Formmnemonic
+
+8. SM Form.Dose Amount, or Calculate SMAU.Number of Units Taken * SMPU.Calculated Dose
+
+9. VS.Weight
+
+10. SM.Protocol Dose Level*VS Form.Weight
+
+11. Calculated = ((SM administered amount - SM expected amount )*100 / SM expected amount)
+
+12. SM Form.Reason for Dose Variation
+
+13. AE.AE Term
+
+14. AE.Sequence Number
+
+15. (Logic 1 OR Logic 2).Error Message

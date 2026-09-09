@@ -1,0 +1,95 @@
+Report ID: RID092
+
+Report Title:
+External Vendor Data Listing
+
+Description:
+This report displays the external vendor data loaded into the <LABS, GEFCF, CIMG, SME> views of the InForm reporting schema.  If Blinded Flag is set on a record, the fields with blinded data will display 'xxxx'.
+
+Column Heading:
+1. Country
+
+2. Site
+
+3. Screening Number
+
+4. Subject Number
+
+5. eCRF
+
+6. Seq - Specific fields of each eCRF, listed as below:
+
+-Specific fields of LABS eCRF
+
+-Specific fields of GEFCF eCRF
+
+-Specific field of CIMG Ecrf
+
+-Specific field of SME eCRF
+
+Logic:
+This report requires two tabs:
+
+1) Count of records by country
+
+2) This report should retrieve all external vendor <LABS, GEFCF, CIMG, SME>  data.
+
+If Blinded Flag is set on a record, the fields with blinded data will display 'xxxx'.
+
+This report applies to eCRFs up to version listed as below:
+
+LABS 20200128
+
+GEFCF 20190822
+
+CIMG 20200505
+
+SME 20200714
+
+- Result or Finding in Original Units
+
+- Original Units
+
+- Character Result/Finding in Std Format
+
+- Numeric Result/Finding in Standard Units
+
+- Standard Units
+
+- Completion Status
+
+- Reason Lesion Status Not Done
+
+Report should not display deleted records.
+
+If any of the field names on the eCRF coincide with the standard report fields, then the formmnemonic precedes the eCRF field name.
+
+Report Scenarios:
+List of  external vendor data loaded into the <LABS, GEFCF, CIMG, SME> views of the InForm reporting schema.
+
+Sorting:
+Country, Site, Subject Number, eCRF
+
+Parameter Selection:
+Country, Site, Subject Number, List of Subjects, Randomized Only, Form (Mandatory and not allowed multiple selection), EDT Data (Mandatory and not allowed multiple selection), Vendor ,Category
+
+Form.Item Names:
+1. Subject Assignment.Site Country
+
+2.Subject Assignment form.Site Mnemonic
+
+3. Subject Assignment form.Screening Number
+
+4. Subject Assignment form.Randomization Number
+
+5. Form Mnemonic
+
+6. Formidx. Specific fields from each eCRF, listed as below:
+
+-Formidx. Specific fields from LABORATORY TESTS Form
+
+-Formidx. Specific fields from GENERIC EXTERNAL FINDINGS Form
+
+-Formidx Specific fields from CENTRAL IMAGING AND CLINICAL DATA ASSESSMENTS Form
+
+-Formidx. Specific fields from STUDY MEDICATION - EXTERNAL DATA LOAD Form

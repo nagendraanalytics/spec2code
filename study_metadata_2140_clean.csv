@@ -1,0 +1,1969 @@
+form,item,label,data_type
+DOVFM,DOV,Date of Visit,Date
+DOVFM,DOVPERIODIT,Period,Text
+DOVFM,DOVPHASEIT,Phase,Text
+DOVFM,DOVSERRORVIT,Erroneous Visit,Boolean
+DOVFM,DOVSVCNTMODEIT,Choose the Options That Best Describes How the Visit Was Performed?,Codelist
+DOVFM,DOVSVCNTLOCRC,In Person,Codelist
+DOVFM,DOVSVCNTEVLRC,Home,Codelist
+DOVFM,DOVSDRCIT,Data Review Completed,Boolean
+DMFM,DMBRTHDTCIT,Date of Birth,Text
+DMFM,DMBRTHDTCIT_DRV,Date of Birth,Date
+DMFM,DMCALCAGIT,Calculated Age,Number
+DMFM,DMCALCAGUIT,Unit for Calculated Age,Codelist
+DMFM,DMSEXIT,Sex,Codelist
+DMFM,DMRACEIT,Race,Codelist
+DMFM,DMRACEASNPD,Asian,Codelist
+DMFM,DMRACEGC,Multi-Racial (Check at Least Two):,Label
+DMFM,DMRACEAIANMRCB,American Indian or Alaska Native,Boolean
+DMFM,DMRACEBKAAMRCB,Black or African American,Boolean
+DMFM,DMRACENHPIMRCB,Native Hawaiian or Other Pacific Island,Boolean
+DMFM,DMRACEWHTEMRCB,White,Boolean
+DMFM,DMRACEASNMRCB,Asian,Boolean
+DMFM,DMETHNICIT,Ethnicity,Codelist
+DMFM,DMRFICDTCIT,Date of First Study Informed Consent Obtained,Date
+DMFM,DMDSTERMIT,Term,Codelist
+DMFM,DMDSCATIT,Category,Codelist
+DMFM,DM_O_SAF,Sponsor use Only,Label
+DMFM,DM_O_SAFSEX_DRV,Derived Sex,Codelist
+DMFM,DM_O_SAFETHNIC_DRV,Derived Ethnicity,Codelist
+DMFM,DM_O_SAFSITE_DRV,Derived Site ID,Text
+DMFM,DM_RACE01,Derived American Indian or Alaska Native,Boolean
+DMFM,DM_RACE02,Derived Asian,Boolean
+DMFM,DM_RACE03,Derived Black or African American,Boolean
+DMFM,DM_RACE04,Derived Native Hawaiian or Other Pacific Islander,Boolean
+DMFM,DM_RACE05,Derived White,Boolean
+SAFM,SASCORRESSNUMIT,Screening Number,Text
+SAFM,SAELIGCRITIT,Did subject meet all eligibility criteria?,Codelist
+SAFM,SA_LBL,"If No, the DS forms in the final visit will be completed.",Label
+SAFM,SADMSUBJIDIT,Treatment/Randomization Number,Text
+SAFM,ENRMSUBJNUMIT,Merck Subject Number,Text
+IEFM,IEDTC01SDIT,Date/Time of Assessment,Codelist
+IEFM,IEDTC01SDIFFDT,Different than Visit Date,Date
+IEFM,IEDTC01IT,Date/Time of Assessment,Date
+IEFM,IEPROTVIT,Protocol Version,Codelist
+IEFM,IETESTCDINIT,Inclusion Criteria,Label
+IEFM,IETESTCDIN01CB,Inclusion 1,Boolean
+IEFM,IETESTCDIN02CB,Inclusion 2,Boolean
+IEFM,IETESTCDIN03CB,Inclusion 3,Boolean
+IEFM,IETESTCDIN04CB,Inclusion 4,Boolean
+IEFM,IETESTCDIN05CB,Inclusion 5,Boolean
+IEFM,IETESTCDIN06CB,Inclusion 6,Boolean
+IEFM,IETESTCDIN07CB,Inclusion 7,Boolean
+IEFM,IETESTCDIN08CB,Inclusion 8,Boolean
+IEFM,IETESTCDIN09CB,Inclusion 9,Boolean
+IEFM,IETESTCDEXIT,Exclusion Criteria,Label
+IEFM,IETESTCDEX01CB,Exclusion 1,Boolean
+IEFM,IETESTCDEX02CB,Exclusion 2,Boolean
+IEFM,IETESTCDEX03CB,Exclusion 3,Boolean
+IEFM,IETESTCDEX04CB,Exclusion 4,Boolean
+IEFM,IETESTCDEX05CB,Exclusion 5,Boolean
+IEFM,IETESTCDEX06CB,Exclusion 6,Boolean
+IEFM,IETESTCDEX07CB,Exclusion 7,Boolean
+IEFM,IETESTCDEX08CB,Exclusion 8,Boolean
+IEFM,IETESTCDEX09CB,Exclusion 9,Boolean
+IEFM,IETESTCDEX10CB,Exclusion 10,Boolean
+IEFM,IETESTCDEX11CB,Exclusion 11,Boolean
+IEFM,IETESTCDEX12CB,Exclusion 12,Boolean
+IEFM,IETESTCDEX13CB,Exclusion 13,Boolean
+IEFM,IETESTCDEX14CB,Exclusion 14,Boolean
+IEFM,IETESTCDEX15CB,Exclusion 15,Boolean
+IEFM,IETESTCDEX16CB,Exclusion 16,Boolean
+IEFM,IETESTCDEX17CB,Exclusion 17,Boolean
+IEFM,IETESTCDEX18CB,Exclusion 18,Boolean
+IEFM,IETESTCDEX19CB,Exclusion 19,Boolean
+IEFM,IETESTCDEX20CB,Exclusion 20,Boolean
+IEFM,IETESTCDEX21CB,Exclusion 21,Boolean
+FBRCFM,FBRCZEOCCURTOIT,Was FBRC Consent Offered to the Subject?,Codelist
+FBRCFM,FBRCZEOCCUROBTIT,Was FBRC Consent Obtained?,Codelist
+FBRCFM,FBRCZEDTCDT,Date,Date
+FBRCFM,FBRCZEREASNDIT,Reason For Specimen Destruction,Codelist
+FBRCFM,FBRCZEREASNDLPD,List,Codelist
+FBRCFM,FBRCZEREASNDOTB,"Other, Specify",Text
+FBRCFM,FBRCZEENDTCIT,Date FBRC Consent Withdrawn,Date
+FBRCFM,FBRCZESPIDIT,Sponsor ID Number,Number
+FBRCFM,DELETEDFM,Deleted Form - Sponsor use Only,Codelist
+MHFM,MH_LBL,Please enter cancer other than disease under study even if diagnosed more than 10 years ago,Label
+MHFM,MHDTC01IT,Date of Assessment,Date
+MHFM,MHTERMIT,Medical History Term,Text
+MHFM,MHENRFONGOINGIT,Is the medical history disease/condition or event still ongoing? (not applicable for surgeries or procedures),Codelist
+MHFM,MHDTCIT,Year Diagnosed,Date
+MHFM,MHSPIDSEQIT,Sequence Number,Number
+MHFM,DELETEDFM,Deleted Form - Sponsor use Only,Codelist
+VS01FM,VSTPT01LSDEIT,Scheduled Time,Codelist
+VS01FM,VSTPT01HIT,Scheduled Time,Text
+VS01FM,VSTPTNUM01HTB,Scheduled Time,Number
+VS01FM,VSSTDTC01SAMIT,Date/Time of Assessment,Codelist
+VS01FM,VSSTDTC01DIFFDT,Different than Visit Date,Date
+VS01FM,VSSTDTC01IT,Date/Time of Assessment,Date
+VS01FM,VSPOS01BPPRIT,Vital Signs Position,Codelist
+VS01FM,VSORRES01SBPIT,Systolic Blood Pressure,Number
+VS01FM,VSORRES01DBPTB,Diastolic Blood Pressure,Number
+VS01FM,VSORRESU01SBPIT,Blood Pressure (Systolic/Diastolic) Unit,Codelist
+VS01FM,VSORRES01HRIT,Heart Rate,Number
+VS01FM,VSORRESU01HRIT,Heart Rate Units,Codelist
+VS01FM,VSORRES01RESPIT,Respiratory Rate,Number
+VS01FM,VSORRESU01RESPIT,Respiratory Rate Units,Codelist
+VS01FM,VSORRES01TEMPIT,Temperature,Number
+VS01FM,VSORRESU01TEMPIT,Temperature Units,Codelist
+VS01FM,VSLOC01TMDIT,Temperature Method,Codelist
+VS01FM,VSORRES01WTIT,Weight,Unit
+VS01FM,VSORRES01HTIT,Height,Unit
+VS01FM,VSORRES01BSAIT,Body  Surface Area,Number
+VS01FM,VSORRESU01BSAIT,Body Surface Area Units,Codelist
+VS02FM,VSTPT02HIT,Scheduled Time,Codelist
+VS02FM,VSSTDTC02DT,Date/Time of Assessment,Date/Time
+VS02FM,VSPOS02BPPRIT,Vital Signs Position,Codelist
+VS02FM,VSORRES02SBPTB,Systolic Blood Pressure,Number
+VS02FM,VSORRES02DBPTB,Diastolic Blood Pressure,Number
+VS02FM,VSORRESU02SBPIT,Blood Pressure (Systolic/Diastolic) Units,Codelist
+VS02FM,VSSBRBPIND02CB,Please Indicate if this is a Subject Reported Blood Pressure,Boolean
+VS02FM,VSORRES02HRIT,Heart Rate,Number
+VS02FM,VSORRESU02HRIT,Heart Rate Units,Codelist
+VS02FM,VSORRES02RESPIT,Respiratory Rate,Number
+VS02FM,VSORRESU02RESPIT,Respiratory Rate Units,Codelist
+VS02FM,VSORRES02TEMPIT,Temperature,Number
+VS02FM,VSORRESU02TEMPIT,Temperature Unit,Codelist
+VS02FM,VSLOC02TMDIT,Temperature Method,Codelist
+VS02FM,VSORRES02WTIT,Weight,Unit
+VS02FM,VSORRES02BSAIT,Body  Surface Area,Number
+VS02FM,VSORRESU02BSAIT,Body Surface Area Units,Codelist
+VS02FM,VSDRVFLBSA02IT,Derived Flag BSA,Codelist
+VS02FM,VSCFSPID02IT,Sponsor ID Number,Number
+VS02FM,DELETEDFM,Deleted Form - Sponsor use Only,Codelist
+TRIGAFM,TRIGA_LBL,Trigger Question 1 - Optional consent for Newly Tissue Collection provided,Label
+TRIGAFM,TRIGAQUEST1IT,"Based on the criteria specified above, select the appropriate response for this subject",Codelist
+CDDHFM,CDDHMHDTCIT,Date of Assessment,Date
+CDDHFM,CDDHMHCATIT,Form Category,Codelist
+CDDHFM,CDDHMHPDGRPIT,Primary Diagnosis,Codelist
+CDDHFM,CDDHMHTERM3RC,Mature B-Cell Neoplasms,Codelist
+CDDHFM,CDDHMHPDSGRP10RC,"Diffuse Large B-Cell Lymphoma (DLBCL), NOS",Codelist
+CDDHFM,CDDHMHPRESPIT,Medical History Event Pre-Specified,Codelist
+CDDHFM,CDDHMHOCCURIT,Medical History Occurrence,Codelist
+CDDHFM,CDDHMHEVDTYPIT,Medical History Event Date Type,Codelist
+CDDHFM,CDDHMHTERMSCBLIT,Primary Diagnosis Subcategory,Codelist
+CDDHFM,CDDHMHPDXSDTLPD,LIST,Codelist
+CDDHFM,CDDHIPDXDETOTHTB,Other,Text
+CDDHFM,CDDHMHSTDTCIT,Date of Primary Diagnosis,Date
+CDDHFM,CDDHMHSCATIT,Status of Disease at Screening,Codelist
+CDDHFM,CDDHMHLMPHTINDIT,Does the Subject Have  Lymphadenopathy?,Codelist
+CDDHFM,CDDHFAORRESEDPIT,Is There Any Extranodal Disease Present?,Codelist
+CDDHFM,CDDHFACATENDIT,Extranodal Disease Category,Codelist
+CDDHFM,CDDHPHORRESBMIIT,Bone Marrow Involvement,Codelist
+CDDHFM,CDDH_LBL,Disease Manifestation at Screening,Label
+CDDHFM,CDDHMHDSMNFS1CB,Ascites,Boolean
+CDDHFM,CDDHMHDSMNFS2CB,Amyloidosis,Boolean
+CDDHFM,CDDHMHDSMNFS3CB,Anemia,Boolean
+CDDHFM,CDDHMHDSMNFS4CB,B Symptoms,Boolean
+CDDHFM,CDDHMHDSMNFS5CB,Blasts,Boolean
+CDDHFM,CDDHMHDSMNFS6CB,Bone Disease,Boolean
+CDDHFM,CDDHMHDSMNFS7CB,Bone Lesion,Boolean
+CDDHFM,CDDHMHDSMNFS8CB,Bone Marrow Involvement,Boolean
+CDDHFM,CDDHMHDSMNFS9CB,CNS Involvement,Boolean
+CDDHFM,CDDHMHDSMNFS10CB,Cold Agglutinemia,Boolean
+CDDHFM,CDDHMHDSMNFS11CB,Cryoglobulinemia,Boolean
+CDDHFM,CDDHMHDSMNFS12CB,Extra Nodal,Boolean
+CDDHFM,CDDHMHDSMNFS13CB,Extramedullary Plasmacytoma,Boolean
+CDDHFM,CDDHMHDSMNFS14CB,Hepatomegaly,Boolean
+CDDHFM,CDDHMHDSMNFS15CB,Hypercalcemia,Boolean
+CDDHFM,CDDHMHDSMNFS16CB,Hyperviscosity,Boolean
+CDDHFM,CDDHMHDSMNFS17CB,Immunoglobulinemia,Boolean
+CDDHFM,CDDHMHDSMNFS18CB,Leukopenia,Boolean
+CDDHFM,CDDHMHDSMNFS19CB,Lung Involvement,Boolean
+CDDHFM,CDDHMHDSMNFS20CB,Lymphadenopathy,Boolean
+CDDHFM,CDDHMHDSMNFS21CB,Lymphocytosis,Boolean
+CDDHFM,CDDHMHDSMNFS22CB,Neuropathy,Boolean
+CDDHFM,CDDHMHDSMNFS23CB,Ocular,Boolean
+CDDHFM,CDDHMHDSMNFS24CB,Pericardial Effusion,Boolean
+CDDHFM,CDDHMHDSMNFS25CB,Plasmacytomas,Boolean
+CDDHFM,CDDHMHDSMNFS26CB,Pleural Effusion,Boolean
+CDDHFM,CDDHMHDSMNFS27CB,Renal Impairment,Boolean
+CDDHFM,CDDHMHDSMNFS28CB,Skin,Boolean
+CDDHFM,CDDHMHDSMNFS29CB,Splenomegaly,Boolean
+CDDHFM,CDDHMHDSMNFS30CB,Testicular Involvement,Boolean
+CDDHFM,CDDHMHDSMNFS31CB,Thrombocytopenia,Boolean
+CDDHFM,CDDHMHDMOCB,OTHER,Boolean
+CDDHFM,CDDHMHMANFSTOTB,"Other, Specify",Text
+CDDHFM,CDDHMHBLKYDISIT,Bulky Disease,Codelist
+CDDHFM,CDDHPHORRESAASIT,Ann Arbor Staging,Codelist
+CDDHFM,CDDH_LBL2,Ann Arbor Staging Modifiers,Label
+CDDHFM,CDDHPHORRESAMACB,A,Boolean
+CDDHFM,CDDHPHORRESAMBCB,B,Boolean
+CDDHFM,CDDHPHORRESAMECB,E,Boolean
+CDDHFM,CDDHPHORRESAMSCB,S,Boolean
+CDDHFM,CDDHPHORRESAMXCB,X,Boolean
+CDDHFM,CDDHPHCATAASCIT,Ann Arbor Staging Category,Codelist
+CDDHFM,CDDHPHORRESLSIT,Lugano Staging,Codelist
+CDDHFM,CDDHPHCATLUGIT,Lugano Category,Codelist
+CDDHFM,CDDHPHORRESHCDIT,Histology of Primary Diagnosis,Codelist
+CDDHFM,CDDHPHRESCATMBRC,Mature B-Cell Neoplasms,Codelist
+CDDHFM,CDDHPHRESCTDTLRC,Diffuse Large B-Cell Lymphoma,Codelist
+CDDHFM,CDDHPHSCATIT,Histology of Primary Diagnosis Category,Codelist
+CDDHFM,CDDHCFORRESORIT,Did the Subject Receive Oncologic Radiation?,Codelist
+CDDHFM,CDDHCFCATRCIT,Oncologic Radiation Category,Codelist
+CDDHFM,CDDHCFORRESOSIT,Did the Subject Have Oncologic Surgery?,Codelist
+CDDHFM,CDDHCFCATOSIT,Oncologic Surgery Category,Codelist
+CDDHFM,CDDHCPHEVALIT,Evaluator,Codelist
+WFCHFM,WFCHPHDTCIT,Date of Assessment,Date
+WFCHFM,WFCHPHEVLINXIT,Evaluation Interval,Codelist
+WFCHFM,WFCHPHSPIDIT,Sponsor ID Number,Number
+WFCHFM,WFCHPHCATWCLNIT,WHO Classification of Lymphoid Neoplasms Group,Codelist
+WFCHFM,WFCHPHORRESLNIT,WHO Classification of Lymphoid Neoplasms,Codelist
+WFCHFM,WFCHPHCATWCLNOTB,"Other, Specify",Text
+WFCHFM,WFCHPHORRESLNMBIT,WHO Classification Lymphoid Neoplasms - Mature B-cell Neoplasms Subgroup,Codelist
+WFCHFM,WFCHSCLASSHGBCRC,High-Grade B-Cell Lymphoma,Codelist
+WFCHFM,WFCHSCLASSHGBCOTB,"Other, Specify",Text
+WFCHFM,DELETEDFM,Deleted Form - Sponsor use Only,Codelist
+RSKFM,RSKMHDTCIT,Date of Assessment,Date
+RSKFM,RSKMHOCCURKRFIT,Does the subject have any Known Risk Factors?,Codelist
+RSKFM,RSKMHOCCURCHIT,Chemotherapy,Codelist
+RSKFM,RSKMHOCCURCAIT,Chromosomal Abnormalities,Codelist
+RSKFM,RSKMHOCCUREEIT,Environmental Exposure,Codelist
+RSKFM,RSKMHOCCURIMIT,Immunosuppressants,Codelist
+RSKFM,RSKMHOCCURIIT,Infection,Codelist
+RSKFM,RSKMHOCCURRADIT,Oncologic Radiation,Codelist
+RSKFM,RSKMHOCCURORFIT,Other Risk Factors,Codelist
+RSKFM,RSKMHCATRFIT,Risk Factors Category,Codelist
+RSKFM,RSKMHPRESPRFIT,Risk Factor Pre-Specified,Codelist
+RSKFM,RSKMHOCCURKPFIT,Does the subject have any Prognostic Factors?,Codelist
+RSKFM,RSKMHOCCURIPIIT,International Prognostic Index (IPI),Codelist
+RSKFM,RSKMHPGNTFDTLIPRC,Yes,Codelist
+RSKFM,RSKMHOCCURIPOPFIT,Other Prognostic Index,Codelist
+RSKFM,RSKMHOCCURNCCNIT,NCCN International Prognostic Index (NCCN-IPI),Codelist
+RSKFM,RSKMHPGNTFDTLNCCNRC,Yes,Codelist
+RSKFM,RSKMHCATPFIT,Risk Factors Category,Codelist
+RSKFM,RSKMHPRESPPFIT,Risk Factor Pre-Specified,Codelist
+GNFHFM,GNFHPFDTCIT,Date of Specimen Collection,Date
+GNFHFM,GNFHPFTESTDTCIT,Testing Date,Date
+GNFHFM,GNFHPFCATIT,Form Category,Codelist
+GNFHFM,GNFHPFORRESBCL2IT,BCL-2 Status,Codelist
+GNFHFM,GNFHPFGENRIBCL2IT,BCL-2 Genetic Region,Codelist
+GNFHFM,GNFHPFGENTYPBCL2IT,BCL-2 Type of Genetic Region,Codelist
+GNFHFM,GNFHPFTSTDTLBCL2IT,BCL-2 Details,Codelist
+GNFHFM,GNFHPFORRESBCL2OIT,BCL-2 Overexpression Status,Codelist
+GNFHFM,GNFHPFGENRIB2OIT,BCL-2 Overexpression Genetic Region,Codelist
+GNFHFM,GNFHPFGENTYPBC2OIT,BCL-2 Overexpression Type of Genetic Region,Codelist
+GNFHFM,GNFHPFTSTDTLBC2OIT,BCL-2 Overexpression Details,Codelist
+GNFHFM,GNFHPFORRESBCL6IT,BCL-6 Status,Codelist
+GNFHFM,GNFHPFGENRIBCL6IT,BCL-6 Genetic Region,Codelist
+GNFHFM,GNFHPFGENTYPBC6IT,BCL-6 Type of Genetic Region,Codelist
+GNFHFM,GNFHPFTSTDTLBCL6IT,BCL-6 Details,Codelist
+GNFHFM,GNFHPFORRESEBVEIT,EBV EBER Status - ISH,Codelist
+GNFHFM,GNFHPFORRESEBVMIT,EBV EBER Method,Codelist
+GNFHFM,GNFHPHORRESKI67IT,Ki-67,Number
+GNFHFM,GNFHPHORRESU67UIT,Ki-67 Units,Codelist
+GNFHFM,GNFHPHTSTDTLT67IT,Ki-67 Details,Codelist
+GNFHFM,GNFHPFORRESMYCIT,MYC Translation/Rearrangement Status,Codelist
+GNFHFM,GNFHPFGENRIMYCIT,MYC Genetic Region,Codelist
+GNFHFM,GNFHPFGENTYPMYCIT,MYC Type of Genetic Region,Codelist
+GNFHFM,GNFHPFTSTDTLMYCIT,MYC Details,Codelist
+GNFHFM,GNFHPFMETHODMYCIT,MYC Method,Codelist
+GNFHFM,GNFHPFORRESMYCOIT,MYC Overexpression Status,Codelist
+GNFHFM,GNFHPFGENRIMYOIT,MYC Overexpression Genetic Region,Codelist
+GNFHFM,GNFHPFGENTYPMYCOIT,MYC Overexpression Type of Genetic Region,Codelist
+GNFHFM,GNFHPFTSTDTLMYCOIT,MYC Overexpression Details,Codelist
+GNFHFM,GNFHPFORRESNP53IT,P53  Status - FISH,Codelist
+GNFHFM,GNFHPFGENRIP53IT,P53 Genetic Region,Codelist
+GNFHFM,GNFHPFGENTYPP53IT,P53 Type of Genetic Region,Codelist
+GNFHFM,GNFHPFMETHODP53IT,P53 Method,Codelist
+GNFHFM,GNFHPFSPECP53IT,P53 Specimen Type,Codelist
+GNFHFM,GNFHPHORRESP53IT,P53 Expression by IHC,Codelist
+GNFHFM,GNFHPHMETHODP53IT,P53 Expression Method,Codelist
+GNFHFM,GNFHPHSPECPP53IT,P53 Expression Specimen Type,Codelist
+GNFHFM,GNFHPFSPIDIT,Sponsor ID Number,Number
+GNFHFM,DELETEDFM,Deleted Form - Sponsor use Only,Codelist
+ORADFM,ORADPRDTCIT,Date of Assessment,Date
+ORADFM,ORADPRINDCIT,Reason for Radiation,Codelist
+ORADFM,ORADTRTRCIT,Type of Therapy,Codelist
+ORADFM,ORADPRTRTPD,List,Codelist
+ORADFM,ORADPRTRTOTHTB,Other,Text
+ORADFM,ORADPRPRESPIT,Pre-Specify,Codelist
+ORADFM,ORADPROCCURIT,Pre-Specify Occurrence,Codelist
+ORADFM,ORADPRSTDTCIT,Start Date,Date
+ORADFM,ORADPRENDTCIT,Stop Date,Date
+ORADFM,ORADPRDOSTOTIT,Total Dose,Number
+ORADFM,ORADPRDOSUIT,Total Dose Units,Codelist
+ORADFM,ORADPRDOSPFIT,Dose per Fraction,Number
+ORADFM,ORADPRDOSPFUIT,Dose per Fraction Units,Codelist
+ORADFM,ORADPRPERTXIT,Are There Any Persistent Toxicities Ongoing at Baseline From Prior Radiotherapy?,Codelist
+ORADFM,ORADPRAMHSEQIT,Associated MH Sequence Number(s) (from MH form),Label
+ORADFM,ORADASMHSID1TB,Associated ID 1,Number
+ORADFM,ORADASMHSID2TB,Associated ID 2,Number
+ORADFM,ORADASMHSID3TB,Associated ID 3,Number
+ORADFM,ORADASMHSID4TB,Associated ID 4,Number
+ORADFM,ORADASMHSID5TB,Associated ID 5,Number
+ORADFM,ORADRSORRESBPIT,Best Response,Codelist
+ORADFM,ORADRSCATIT,Response Criteria Used,Codelist
+ORADFM,ORADRSDTCIT,Date of Best Response,Date
+ORADFM,ORADPRSPIDIT,Sponsor ID Number,Number
+ORADFM,DELETEDFM,Deleted Form - Sponsor use Only,Codelist
+ORADFM,ORALPRPRLSEQNIT,Sequence Number,Number
+ORADFM,ORADPRLOCATNIT,Location,Codelist
+ORADFM,ORADPRLOCOTHIT,Other Location,Text
+ORADFM,ORADPRLOCDTLIT,Location Site Details,Text
+ORADFM,ORADPRSPID1IT,Associated Sponsor ID Number,Number
+ORADFM,DELETEDSN,Deleted Section - Sponsor use Only,Codelist
+OSFM,OSPRSTDTCIT,Date of Surgery,Date
+OSFM,OSPRTRTIT,Oncologic Surgery,Text
+OSFM,OSPRCATIT,Category,Codelist
+OSFM,OSLOCIT,Location,Codelist
+OSFM,OSPRLOCPD,List,Codelist
+OSFM,OSPRLOCOTHTB,Other,Text
+OSFM,OSPRLESNSDETIT,Lesion Site Details,Text
+OSFM,OSPHORRESASMIT,Adequate Surgical Margins,Codelist
+OSFM,OSPATHRDIT,Pathology Findings,Codelist
+OSFM,OSPHORRESPATHPD,List,Codelist
+OSFM,OSPHORRESPATHOTB,Other,Text
+OSFM,OSPRSPIDIT,Sponsor ID Number,Number
+OSFM,DELETEDFM,Deleted Form - Sponsor use Only,Codelist
+LECGFM,LECGEGTPTLIT,Scheduled Time,Codelist
+LECGFM,LECGEGTPTPD,List,Codelist
+LECGFM,LECGEGTPTOTB,"Other, specify",Text
+LECGFM,LECGEGTPTTXTTB,Scheduled Time,Text
+LECGFM,LECGEGTPTNUMTB,Scheduled Time,Number
+LECGFM,LECGEGDTCIT,Date/Time of Assessment,Date
+LECGFM,LECGEGORRESVRIT,Ventricular Rate,Number
+LECGFM,LECGEGORRESUVRIT,Ventricular Rate Units,Codelist
+LECGFM,LECGEFORRESPRIIT,PR Interval,Number
+LECGFM,LECGEGORRESUPRIT,PR Interval Units,Codelist
+LECGFM,LECGEGORRESQIIT,QRS Interval,Number
+LECGFM,LECGEGORRESUQIIT,QRS Interval Units,Codelist
+LECGFM,LECGEGORRESQTIIT,QT Interval,Number
+LECGFM,LECGEGORRESUQTIT,QT Interval Units,Codelist
+LECGFM,LECGEGORRESQANRC,QRS Axis,Codelist
+LECGFM,LECGEGORRESQATB,Degrees,Number
+LECGFM,LECGEGORRESUQAIT,QRS Axis Units,Codelist
+LECGFM,LECGEGORRESQACIT,QRS Axis (calculated),Text
+LECGFM,LECGEGORRESQCTB,QTc Interval,Number
+LECGFM,LECGEGORRESQCIRC,QTc Interval,Codelist
+LECGFM,LECGEGORRESUQCIT,QTc Interval Units,Codelist
+LECGFM,LECGEGORRESQFIT,QTCF,Number
+LECGFM,LECGEGORRESUQFIT,QTCF Interval Units,Codelist
+LECGFM,LECGEGSPIDIT,Sponsor ID Number,Number
+LECGFM,LECGEGORRESAGC,Arrhythmia,Label
+LECGFM,LECGEGORRESACB,Accelerated idioventricular rhythm,Boolean
+LECGFM,LECGEGORRESAAFCB,Atrial fibrillation,Boolean
+LECGFM,LECGEGORRESAFLCB,Atrial flutter,Boolean
+LECGFM,LECGEGORRESAHPCB,Heartbeats premature,Boolean
+LECGFM,LECGEGORRESAJBCB,Junctional bradycardia,Boolean
+LECGFM,LECGEGORRESAJTCB,Junctional tachycardia,Boolean
+LECGFM,LECGEGORRESAMTCB,Multifocal atrial tachycardia,Boolean
+LECGFM,LECGEGORRESAPACB,Pacemaker generated arrhythmia,Boolean
+LECGFM,LECGEGORRESAPCCB,Premature atrial contraction,Boolean
+LECGFM,LECGEGORRESAPVCB,Premature ventricular contractions,Boolean
+LECGFM,LECGEGORRESASBCB,Sinus bradycardia,Boolean
+LECGFM,LECGEGORRESASTCB,Sinus tachycardia,Boolean
+LECGFM,LECGEGORRESAVFCB,Ventricular fibrillation,Boolean
+LECGFM,LECGEGORRESAVTCB,Ventricular tachycardia,Boolean
+LECGFM,LECGEGORRESASACB,Sinus Arrhythmia,Boolean
+LECGFM,LECGEGORRESCGC,Conduction Disorder,Label
+LECGFM,LECGEGORRESCABCB,Atrioventricular block complete,Boolean
+LECGFM,LECGEGORRESCB1CB,Atrioventricular block first degree,Boolean
+LECGFM,LECGEGORRESCEPCB,Electrocardiogram QT prolonged,Boolean
+LECGFM,LECGEGORRESCPECB,Pre-excitation syndrome,Boolean
+LECGFM,LECGEGORRESC12CB,Type I second degree atrioventricular block,Boolean
+LECGFM,LECGEGORRESC22CB,Type II second degree atrioventricular block,Boolean
+LECGFM,LECGEGORRESPGC,Electrocardiogram P wave abnormal,Label
+LECGFM,LECGEGORRESPDACB,Dilatation atrial,Boolean
+LECGFM,LECGEGORRESPLECB,Left atrial enlargement,Boolean
+LECGFM,LECGEGORRECAGC,Electrocardiogram QRS complex abnormal,Label
+LECGFM,LECGEGORRECABLCB,Bundle branch block left,Boolean
+LECGFM,LECGEGORRECABRCB,Bundle branch block right,Boolean
+LECGFM,LECGEGORRECADCCB,Defect conduction intraventricular,Boolean
+LECGFM,LECGEGORRECARWCB,Electrocardiogram poor R-wave progression,Boolean
+LECGFM,LECGEGORRECALACB,Left anterior hemiblock,Boolean
+LECGFM,LECGEGORRECALPCB,Left posterior hemiblock,Boolean
+LECGFM,LECGEGORRECALVCB,Left ventricular hypertrophy,Boolean
+LECGFM,LECGEGORRECALXCB,"Q axis, left axis deviation",Boolean
+LECGFM,LECGEGORRECARXCB,"Q axis, right axis deviation",Boolean
+LECGFM,LECGEGORRECARVCB,Right ventricular hypertrophy,Boolean
+LECGFM,LECGEGORRESTGC,Electrocardiogram ST-T segment abnormal,Label
+LECGFM,LECGEGORRESTCCB,Electrocardiogram ST-T change,Boolean
+LECGFM,LECGEGORRESTSECB,Electrocardiogram ST-T segment elevation,Boolean
+LECGFM,LECGEGORRESTSDCB,Electrocardiogram ST-T segment depression,Boolean
+LECGFM,LECGEGORRESTWAIT,Electrocardiogram T wave abnormal,Label
+LECGFM,LECGEGORRESTWICB,Electrocardiogram T wave inversion,Boolean
+LECGFM,LECGEGORRESIGC,Myocardial infarction,Label
+LECGFM,LECGEGORRESIOWCB,"Acute myocardial infarction, of other anterior wall",Boolean
+LECGFM,LECGEGORRESIIWCB,"Acute myocardial infarction, of other inferior wall",Boolean
+LECGFM,LECGEGORRESILWCB,"Acute myocardial infarction, of other lateral wall",Boolean
+LECGFM,LECGEGORRESIPWCB,"Acute myocardial infarction, true posterior wall infarction",Boolean
+LECGFM,LECGEGORRESIAACB,Age indeterminate anterior myocardial infarction,Boolean
+LECGFM,LECGEGORRESIAICB,Age indeterminate inferior myocardial infarction,Boolean
+LECGFM,LECGEGORRESIALCB,Age indeterminate lateral myocardial infarction,Boolean
+LECGFM,LECGEGORRESILPCB,Age indeterminate posterior myocardial infarction,Boolean
+LECGFM,LECGEGORRESOTHIT,"Other, (specify):",Text
+LECGFM,DELETEDFM,Deleted Form - Sponsor use Only,Codelist
+CIMFM,CIMHDDTCIT,Date/Time of Assessment,Date
+CIMFM,CIMHDTPTLIT,Scheduled Time,Codelist
+CIMFM,CIMHDTPTPD,List,Codelist
+CIMFM,CIMHDMETHODIT,Method,Codelist
+CIMFM,CIMHDORRESESVIT,Left Ventricular End-Systolic Volume (mL),Number
+CIMFM,CIMHDORRESUESVIT,Left Ventricular End-Systolic Volume Unit,Codelist
+CIMFM,CIMHDORRESEDVIT,Left Ventricular End-Diastolic Volume (mL),Number
+CIMFM,CIMHDORRESUEDVIT,Left Ventricular End-Diastolic Volume Unit,Codelist
+CIMFM,CIMHDORRESSVIT,Stroke Volume (mL),Number
+CIMFM,CIMHDORRESSVDIT,Derived Stroke Volume (mL),Number
+CIMFM,CIMHDORRESUSVIT,Stroke Volume Unit,Codelist
+CIMFM,CIMHDORRESLVEIT,Left Ventricular Ejection Fraction (%),Number
+CIMFM,CIMHDORRESLVEDIT,Derived Left Ventricular Ejection Fraction (%),Number
+CIMFM,CIMHDORRESULVEIT,Left Ventricular Ejection Fraction Unit,Codelist
+CIMFM,CIMHDORRESLVFIT,Left Ventricular Fractional Shortening (%),Number
+CIMFM,CIMHDORRESULVFIT,Left Ventricular Fractional Shortening Unit,Codelist
+CIMFM,CIMHDTPTTXTIT,Scheduled Time,Text
+CIMFM,CIMHDTPTNUMTB,Scheduled Time,Number
+CIMFM,CIMHDCATIT,Form Category,Codelist
+CIMFM,CIMHDHDDRVFLIT,Derived Flag,Codelist
+CIMFM,CIMHDSPIDIT,Sponsor ID Number,Number
+CIMFM,DELETEDFM,Deleted Form - Sponsor use Only,Codelist
+ECOGFM,ECOG_LBL,The electronic copy of the Instrument provided here is not intended for use with or administration to Study subjects. Copies of the instrument will be separately provided to the Study site for that purpose.,Label
+ECOGFM,ECOGCFORRESVSIT,Version,Text
+ECOGFM,ECOGCFCATIT,Form Category,Codelist
+ECOGFM,ECOGCFDTCIT,Date of Assessment,Date
+ECOGFM,ECOGQSTPTIT,Scheduled Time,Codelist
+ECOGFM,ECOGQSORRESFASIT,ECOG Performance Scale,Codelist
+ECOGFM,ECOGQSEVAL1IT,Evaluator,Codelist
+ECOGFM,ECOGCFSPIDIT,Sponsor ID Number,Number
+ECOGFM,DELETEDFM,Deleted Form - Sponsor use Only,Codelist
+frmCLAB,itmCLABSeqNum,Associated CLAB Normal Sequence Number,Number
+frmCLAB,itmCLABName,Laboratory Name,Text
+frmCLAB,itmCLABTptEsdE,Scheduled Time,Codelist
+frmCLAB,itmCLABDt,Date Specimen Collected,Date
+frmCLAB,itmCLABType,Specimen Type,Codelist
+frmCLAB,itmCLABLabCat,Lab Category,Codelist
+frmCLAB,itmCLABFast,Was the subject fasting prior to specimen collection?,Codelist
+frmCLAB,MTXTRESULT_ITMCLABALBUMIN,Albumin Result,Number
+frmCLAB,pdcCLAbAlbuminUnit,Albumin Unit:,Codelist
+frmCLAB,cbcCLABAlbSig,Is Albumin Result Clinically Significant?,Boolean
+frmCLAB,MTXTRESULT_ITMCLABALKALINE,Alkaline Phosphatase Result,Number
+frmCLAB,pdcCLABAlkalineUnit,Alkaline Phosphatase Unit:,Codelist
+frmCLAB,cbcCLABALPSig,Is Alkaline Phosphatase Result Clinically Significant?,Boolean
+frmCLAB,MTXTRESULT_ITMCLABALANINE,ALT(Alanine Aminotransferase) Result,Number
+frmCLAB,pdcCLABAlanineUnit,ALT(Alanine Aminotransferase) Unit:,Codelist
+frmCLAB,cbcCLABAlamineSig,Is ALT Result Clinically Significant?,Boolean
+frmCLAB,TXTCLABAMY,Amylase Result,Number
+frmCLAB,pdcCLABAmy,Amylase Unit:,Codelist
+frmCLAB,mrdcCLABToxicityG1,Amylase Toxicity Grade:,Codelist
+frmCLAB,cbcCLABAmySig,Is Amylase Result Clinically Significant?,Boolean
+frmCLAB,itmCLABToxicity1,Amylase Toxicity,Text
+frmCLAB,MTXTRESULT_ITMCLABASPARTATE,AST (Aspartate Aminotransferase) Result,Number
+frmCLAB,pdcCLABAspartateUnit,AST (Aspartate Aminotransferase) Unit:,Codelist
+frmCLAB,cbcCLABASTSig,Is AST Result Clinically Significant?,Boolean
+frmCLAB,MTXTRESULT_ITMCLABBICARBONATE,Bicarbonate Result,Number
+frmCLAB,pdcCLABBicarbonateUnit,Bicarbonate Unit:,Codelist
+frmCLAB,cbcCLABBICSig,Is Bicarbonate Result Clinically Significant?,Boolean
+frmCLAB,MTXTRESULT_ITMCLABBUN,Blood Urea Nitrogen Result,Number
+frmCLAB,pdcCLABBUNUnit,Blood Urea Nitrogen Unit:,Codelist
+frmCLAB,cbcCLABBUNSig,Is Blood Urea Nitrogen Result Clinically Significant?,Boolean
+frmCLAB,MTXTRESULT_ITMCLABCALCIUM,Calcium Result,Number
+frmCLAB,pdcCLABCalciumUnit,Calcium Unit:,Codelist
+frmCLAB,cbcCLABCASig,Is Calcium Result Clinically Significant?,Boolean
+frmCLAB,MTXTRESULT_ITMCLABCHLORIDE,Chloride Result,Number
+frmCLAB,pdcCLABChlorideUnit,Chloride Unit:,Codelist
+frmCLAB,cbcCLABCLSig,Is Chloride Result Clinically Significant?,Boolean
+frmCLAB,MTXTRESULT_ITMCLABCREATININE,Creatinine Result,Number
+frmCLAB,pdcCLABCreatinineUnit,Creatinine Unit:,Codelist
+frmCLAB,cbcCLABCREATSig,Is Creatinine Result Clinically Significant?,Boolean
+frmCLAB,MTXTRESULT_ITMCLABDIRECTBIL,Direct Bilirubin Result,Number
+frmCLAB,pdcCLABDirectBilUnit,Direct Bilirubin Unit:,Codelist
+frmCLAB,cbcCLABBDIRSig,Is Direct Bilirubin Result Clinically Significant?,Boolean
+frmCLAB,MTXTRESULT_ITMCLABGLUCOSE,Glucose Result,Number
+frmCLAB,pdcCLABGlucoseUnit,Glucose Unit:,Codelist
+frmCLAB,mrdcCLABToxicityG2,Toxicity Grade:,Codelist
+frmCLAB,cbcCLABGlucSig,Is Glucose Result Clinically Significant?,Boolean
+frmCLAB,itmCLABToxicity2,Glucose Toxicity,Text
+frmCLAB,MTXTRESULT_ITMCLABLDH,LDH(Lactate Dehydrogenase) Result,Number
+frmCLAB,pdcCLABLDHUnit,LDH(Lactate Dehydrogenase) Unit:,Codelist
+frmCLAB,cbcCLABLDHSig,Is LDH Result Clinically Significant?,Boolean
+frmCLAB,TXTCLABLIP,Lipase Result,Number
+frmCLAB,pdcCLABLip,Lipase Unit:,Codelist
+frmCLAB,mrdcCLABToxicityG3,Lipase Toxicity Grade:,Codelist
+frmCLAB,cbcCLABLIPSig,Is Lipase Result Clinically Significant?,Boolean
+frmCLAB,itmCLABToxicity3,Lipase Toxicity,Text
+frmCLAB,TXTCLABMAG,Magnesium Result,Number
+frmCLAB,pdcCLABMag,Magnesium Unit:,Codelist
+frmCLAB,cbcCLABMAGSig,Is Magnesium Result Clinically Significant?,Boolean
+frmCLAB,MTXTRESULT_ITMCLABPHOSPHORUS,Phosphorus Result,Number
+frmCLAB,pdcCLABPhosphorus,Phosphorus Unit:,Codelist
+frmCLAB,mrdcCLABToxicityG4,Phosphorus Toxicity Grade:,Codelist
+frmCLAB,cbcCLABSig,Is Phosphorus Result Clinically Significant?,Boolean
+frmCLAB,itmCLABToxicity4,Phosphorus Toxicity,Text
+frmCLAB,MTXTRESULT_ITMCLABPOTASSIUM,Potassium Result,Number
+frmCLAB,pdcCLABPotassiumUnit,Potassium Unit:,Codelist
+frmCLAB,mrdcCLABToxicityG5,Potassium Toxicity Grade:,Codelist
+frmCLAB,cbcCLABKSig,Is Potassium Result Clinically Significant?,Boolean
+frmCLAB,itmCLABToxicity5,Potassium Toxicity,Text
+frmCLAB,MTXTRESULT_ITMCLABSODIUM,Sodium Result,Number
+frmCLAB,pdcCLABSodiumUnit,Sodium Unit:,Codelist
+frmCLAB,mrdcCLABToxicityG6,Sodium Toxicity Grade:,Codelist
+frmCLAB,cbcCLABNASig,Is Sodium Result Clinically Significant?,Boolean
+frmCLAB,itmCLABToxicity6,Sodium Toxicity,Text
+frmCLAB,MTXTRESULT_ITMCLABTOTALBIL,Total BilirubinResult,Number
+frmCLAB,pdcCLABTotalBilUnit,Total Bilirubin Unit:,Codelist
+frmCLAB,cbcCLABTBILSig,Is Total Bilirubin Result Clinically Significant?,Boolean
+frmCLAB,MTXTRESULT_ITMCLABTOTALPROT,Total Protein Result,Number
+frmCLAB,pdcCLABTotalProtUnit,Total Protein Unit:,Codelist
+frmCLAB,cbcCLABTPROTSig,Is Total Protein Result Clinically Significant?,Boolean
+frmCLAB,MTXTRESULT_ITMCLABURICACID,Uric Acid Result,Number
+frmCLAB,pdcCLABUricAcidUnit,Uric Acid Unit:,Codelist
+frmCLAB,mrdcCLABToxicity,Uric Acid Toxicity Grade:,Codelist
+frmCLAB,cbcCLABUASig,Is Uric Acid Result Clinically Significant?,Boolean
+frmCLAB,itmCLABToxicity7,Uric Acid Toxicity,Text
+frmCLAB,mtxResult,Urea Result,Number
+frmCLAB,pdcitmCLABUREA,Urea Unit:,Codelist
+frmCLAB,cbcCLABUREASig,Is Urea Result Clinically Significant?,Boolean
+frmCLAB,DELETEDFM,Deleted Form - Sponsor use Only,Codelist
+frmHLAB,itmHLABSeqNum,Associated HLAB Normal Sequence Number,Number
+frmHLAB,itmHLABName,Laboratory Name,Text
+frmHLAB,itmHLABTpt,Scheduled Time,Codelist
+frmHLAB,itmHLABDt,Date Specimen Collected,Date
+frmHLAB,itmHLABSpType,Specimen Type,Codelist
+frmHLAB,itmHLABLab,Lab Category,Codelist
+frmHLAB,MTXTRESULT_ITMHLABWBC,White Blood Cell Count Result,Number
+frmHLAB,pdcHLABWBCUnit,White Blood Cell Count Unit:,Codelist
+frmHLAB,cbcHLABSig,Is White Blood Cell Count Result Clinically Significant?,Boolean
+frmHLAB,MTXTRESULT_ITMHLABRBC,Red Blood Cell Count Result,Number
+frmHLAB,pdcHLABRBCUnit,Red Blood Cell Count Unit:,Codelist
+frmHLAB,cbcHLABRBCSig,Is Red Blood Cell Count Result Clinically Significant?,Boolean
+frmHLAB,MTXTRESULT_ITMHLABHEMOGLOBIN,Hemoglobin Result,Number
+frmHLAB,pdcHLABHemoglobinUnit,Hemoglobin Unit:,Codelist
+frmHLAB,cbcHLABHGBSig,Is Hemoglobin Result Clinically Significant?,Boolean
+frmHLAB,MTXTRESULT_ITMHLABHEMATOCRIT,Hematocrit Result,Number
+frmHLAB,pdcHLABHematocritUnit,Hematocrit Unit:,Codelist
+frmHLAB,cbcHLABHCTSig,Is Hematocrit Result Clinically Significant?,Boolean
+frmHLAB,MTXTRESULT_ITMHLABMCV,MCV Result,Number
+frmHLAB,pdcHLABMCVUnit,MCV Unit,Codelist
+frmHLAB,cbcHLABMCVSig,Is MCV Result Clinically Significant?,Boolean
+frmHLAB,MTXTRESULT_ITMHLABMCH,MCH Result,Number
+frmHLAB,pdcHLABMCHUnit,MCH Unit:,Codelist
+frmHLAB,cbcHLABMCHSig,Is MCH Result Clinically Significant?,Boolean
+frmHLAB,MTXTRESULT_ITMHLABMCHC,MCHC Result,Number
+frmHLAB,pdcHLABMCHCUnit,MCHC Unit:,Codelist
+frmHLAB,cbcHLABMCHCSig,Is MCHC Result Clinically Significant?,Boolean
+frmHLAB,MTXTRESULT_ITMHLABRDW,RDW Result,Number
+frmHLAB,pdcHLABRDWUnit,RDW Unit:,Codelist
+frmHLAB,cbcHLABRDWSig,Is RDW Result Clinically Significant?,Boolean
+frmHLAB,MTXTRESULT_ITMHLABRDWSD,RDW Standard Deviation Result,Number
+frmHLAB,pdcHLABRDWSDUnit,RDW Standard Deviation Unit:,Codelist
+frmHLAB,cbcHLABRDWSDSig,Is RDW Standard Deviation Result Clinically Significant?,Boolean
+frmHLAB,MTXTRESULT_ITMHLABPLATELET,Platelet Count Result,Number
+frmHLAB,pdcHLABPlateletUnit,Platelet Count Unit:,Codelist
+frmHLAB,cbcHLABPLATSig,Is Platelet Count Result Clinically Significant?,Boolean
+frmHLAB,MTXTRESULT_ITMHLABNEUTROPHIL,Absolute Neutrophil Result,Number
+frmHLAB,pdcHLABAbsNeutrophilUnit,Absolute Neutrophil Unit:,Codelist
+frmHLAB,cbcHLABNEUTSig,Is Absolute Neutrophil Result Clinically Significant?,Boolean
+frmHLAB,MTXTRESULT_ITMHLABBNEUTROPHIL,Absolute Band Neutrophil Result,Number
+frmHLAB,pdcHLABAbsBNeutrophilUnit,Absolute Band Neutrophil Unit:,Codelist
+frmHLAB,cbcHLABNEUTBSig,Is Absolute Band Neutrophil Result Clinically Significant?,Boolean
+frmHLAB,MTXTRESULT_ITMHLABLYMPHOCYTE,Absolute Lymphocyte Result,Number
+frmHLAB,pdcHLABAbsBLymphocyteUnit,Absolute Lymphocyte Unit:,Codelist
+frmHLAB,cbcHLABLYMSig,Is Absolute Lymphocyte Result Clinically Significant?,Boolean
+frmHLAB,MTXTRESULT_ITMHLABMONOCYTE,Absolute Monocyte Result,Number
+frmHLAB,pdcHLABAbsMonocyteUnit,Absolute Monocyte Unit:,Codelist
+frmHLAB,cbcHLAMONOBSig,Is Absolute Monocyte Result Clinically Significant?,Boolean
+frmHLAB,MTXTRESULT_ITMHLABEOSINOPHIL,Absolute Eosinophil Result,Number
+frmHLAB,pdcHLABAbsEosinophilUnit,Absolute Eosinophil Unit:,Codelist
+frmHLAB,cbcHLABEOSSig,Is Absolute Eosinophil Result Clinically Significant?,Boolean
+frmHLAB,MTXTRESULT_ITMHLABBASOPHIL,Absolute Basophil Result,Number
+frmHLAB,pdcHLABAbsBasophilUnit,Absolute Basophil Unit:,Codelist
+frmHLAB,cbcHLABBASOSig,Is Absolute Basophil Result Clinically Significant?,Boolean
+frmHLAB,MTXTRESULT_ITMHLABATYPLYMPH,Absolute Atypical Lymphocyte Result,Number
+frmHLAB,pdcHLABAbsAtpLymphUnit,Absolute Atypical Lymphocyte Unit:,Codelist
+frmHLAB,cbcHLABLYMATSig,Is Absolute Atypical Lymphocyte Result Clinically Significant?,Boolean
+frmHLAB,MTXTRESULT_ITMHLABBLASTS,Absolute Blasts Result,Number
+frmHLAB,pdcHLABBlastsUnit,Absolute Blasts Unit:,Codelist
+frmHLAB,cbcHLABBLSTCSig,Is Absolute Blasts Result Clinically Significant?,Boolean
+frmHLAB,itmHLABNeutro,Neutrophil (%),Number
+frmHLAB,TXTHLABNEUTRORESULT_U,Neutrophil (%) Unit,Codelist
+frmHLAB,cbcHLABNEUTLESig,Is Neutrophil (%) Result Clinically Significant?,Boolean
+frmHLAB,itmHLABBNeutro,Band Neutrophil (%),Number
+frmHLAB,TXTHLABBNEUTRORESULT_U,Band Neutrophil (%) Unit,Codelist
+frmHLAB,cbcHLABNEUTBLESig,Is Band Neutrophil (%) Result Clinically Significant?,Boolean
+frmHLAB,itmHLABLymph,Lymphocyte (%),Number
+frmHLAB,TXTHLABLYMPRESULT_U,Lymphocyte (%) Unit,Codelist
+frmHLAB,cbcHLABLYMLESig,Is Lymphocyte (%) Result Clinically Significant?,Boolean
+frmHLAB,itmHLABMono,Monocyte (%),Number
+frmHLAB,TXTHLABMONORESULT_U,Monocyte (%) Unit,Codelist
+frmHLAB,cbcHLABMONOLESig,Is Monocyte (%) Result Clinically Significant?,Boolean
+frmHLAB,itmHLABEosino,Eosinophil (%),Number
+frmHLAB,TXTHLABEOSINORESULT_U,Eosinophil (%) Unit,Codelist
+frmHLAB,cbcHLABEOSLESig,Is Eosinophil (%) Result Clinically Significant?,Boolean
+frmHLAB,itmHLABBaso,Basophil (%),Number
+frmHLAB,TXTHLABBASORESULT_U,Basophil (%) Unit,Codelist
+frmHLAB,cbcHLABBASOLESig,Is Basophil (%) Result Clinically Significant?,Boolean
+frmHLAB,itmHLABAtyp,Atypical Lymphocyte (%),Number
+frmHLAB,TXTHLABATYPRESULT_U,Atypical Lymphocyte (%) Unit,Codelist
+frmHLAB,cbcHLABATYPSig,Is Atypical Lymphocyte (%) Result Clinically Significant?,Boolean
+frmHLAB,itmHLABBlastsP,Blasts (%),Number
+frmHLAB,TXTHLABBLASTSPRESULT_U,Blasts (%) Unit,Codelist
+frmHLAB,cbcHLABBLASTLESig,Is Blasts (%) Result Clinically Significant?,Boolean
+frmHLAB,MTXTRESULT_ITMHLABPROTHROBIN,Prothrombin Time Result,Number
+frmHLAB,pdcHLABProthrobinUnit,Prothrombin Time Unit:,Codelist
+frmHLAB,cbcHLABPTSig,Is Prothrombin Time Result Clinically Significant?,Boolean
+frmHLAB,itmHLABPTT,Activated Partial Thromboplastin Time (sec),Number
+frmHLAB,itmHLABPTTUnit,Activated Partial Thromboplastin Time Unit,Codelist
+frmHLAB,cbcHLABAPTTSig,Is Activated Partial Thromboplastin Time (sec) Result Clinically Significant?,Boolean
+frmHLAB,itmHLABToxicityG2,CTCAE Activated Partial Thromboplastin Time-(sec) Toxicity Grade,Codelist
+frmHLAB,itmHLABToxicity2,CTCAE Activated Partial Thromboplastin Time (sec) Toxicity,Text
+frmHLAB,itmHLABPARTTT,Partial Thromboplastin Time (sec),Number
+frmHLAB,itmHLABPARTTTUnit,Partial Thromboplastin Time Unit,Codelist
+frmHLAB,itmHLABINTPTTScat,PTT Subcategory,Codelist
+frmHLAB,cbcHLABPTTSig,Is Partial Thromboplastin Time Result Clinically Significant?,Boolean
+frmHLAB,MTXTRESULT_ITMHLABINR,INR Result,Number
+frmHLAB,mrdcHLABToxicityG1,INR CTCAE Toxicity Grade,Codelist
+frmHLAB,itmHLABToxicity1,CTCAE INR Toxicity,Text
+frmHLAB,cbcHLABINRSig,Is INR Result Clinically Significant?,Boolean
+frmHLAB,itmHLABINTCat,Hemostatic Tests Category,Codelist
+frmHLAB,itmHLABSpType2,Specimen Type - Hemostatic Tests,Codelist
+frmHLAB,DELETEDFM,Deleted Form - Sponsor use Only,Codelist
+OLABFM,itmOLABSeqNum,Associated OLAB Normal Sequence Number,Number
+OLABFM,itmOLABName,Laboratory Name,Text
+OLABFM,itmOLABTptEsdE,Scheduled Time,Codelist
+OLABFM,itmOLABStDt,Start Date Specimen Collected,Date
+OLABFM,DELETEDFM,Deleted Form - Sponsor use Only,Codelist
+OLABFM,itmOLABTest,Test Name,Codelist
+OLABFM,itmOLABTRsltNum,Numeric Test Result,Number
+OLABFM,itmOLABNRsltINDC,Numeric Result Indicator,Codelist
+OLABFM,itmOLABTRsltrTXT,Character Test Result,Codelist
+OLABFM,mpdOLABTRsltl,List,Codelist
+OLABFM,txtOLABTRsltoTXT,"Other, specify",Text
+OLABFM,itmOLABCHsltINDC,Character Result Indicator,Codelist
+OLABFM,itmOLABRsltINDC,Result Indicator:,Codelist
+OLABFM,itmOLABTestUnit,Test Unit:,Codelist
+OLABFM,cbcOLABSig,Is Test Result Clinically Significant?,Boolean
+OLABFM,itmOLABSpecType,Specimen Type,Codelist
+OLABFM,itmOLABTestCat,Test Category,Codelist
+OLABFM,itmOLABToxGr,Toxicity Grade,Codelist
+OLABFM,itmOLABLBTOX,Toxicity,Text
+OLABFM,DELETEDSN,Deleted Section - Sponsor use Only,Codelist
+frmULAB,itmULABTptLsdE,Scheduled Time,Codelist
+frmULAB,mtxtULABTptH,Scheduled Time,Text
+frmULAB,mtxtULABTptNumH,Scheduled Time Value,Number
+frmULAB,itmULABDt,Enter date specimen collected,Date
+frmULAB,itmULABSpType,Specimen Type,Codelist
+frmULAB,itmULABLabCat,Lab Category,Codelist
+frmULAB,DELETEDFM,Deleted Form - Sponsor use Only,Codelist
+frmULAB,itmUrineTest,Lab Test,Codelist
+frmULAB,itmUrineResult,Lab Test Result,Text
+frmULAB,itmUrineNormal,Normal Range/Indicator,Codelist
+frmULAB,txtUrineNormalLower,Lower Limit of Normal:,Number
+frmULAB,txtUrineNormalUpper,Upper Limit of Normal:,Number
+frmULAB,rdcUrineNormalUnit,Unit,Codelist
+frmULAB,txtUrineUnitOtr,"Other, specify",Text
+frmULAB,DELETEDSN,Deleted Section - Sponsor use Only,Codelist
+TSIFFM,TSIFBSDTCIT,Date of Assessment,Date
+TSIFFM,TSIFBSSPIDIT,Sponsor ID Number,Number
+TSIFFM,TSIFBSTPTIT,Scheduled Time,Codelist
+TSIFFM,TSIFCETEMSCSIT,Specimen Collection Status,Codelist
+TSIFFM,TSIFCEOCCURIT,Occurrence,Codelist
+TSIFFM,TSIFCECATSCIT,Specimen Category,Codelist
+TSIFFM,TSIFCEPRESPIT,Specimen Pre-Specified,Codelist
+TSIFFM,TSIFCERSNNCLNSIT,Reason Specimen Not Collected and/or Not Sent,Codelist
+TSIFFM,TSIFCERSNNCLNSOTB,"Other, Specify:",Text
+TSIFFM,TSIFCESTDTCIT,Date Sample Taken,Date
+TSIFFM,TSIFCEOCCUR1IT,Occurrence,Codelist
+TSIFFM,TSIFBSREQNIDIT,Requisition ID,Text
+TSIFFM,TSIFCEPSTCACNFIT,A Diagnosis of The Protocol Specific Tumor Type of Cancer Has Been Confirmed,Codelist
+TSIFFM,TSIFCETYPBPSYIT,Type of Biopsy Sample Taken,Codelist
+TSIFFM,TSIFCECOLMETHIT,Tissue Collection Method,Codelist
+TSIFFM,TSIFLOCRCIT,Anatomic Location of Tumor Tissue Collection,Codelist
+TSIFFM,TSIFLOCPD,List,Codelist
+TSIFFM,TSIFCELOCOTHTB,"Other, Specify",Text
+TSIFFM,TSIFBSORRESFTIT,Fixative Type,Codelist
+TSIFFM,TSIFBSFTBUFRC,4% Formaldehyde,Codelist
+TSIFFM,TSIFPPCTFRMLNTB,"OTHER % formalin, specify",Number
+TSIFFM,TSIFBSFIXTTYPOPD,"Other, Specify",Codelist
+TSIFFM,TSIFBSFIXTTYPSTB,"Other, Fixative Specify",Text
+TSIFFM,TSIFBSORRESTTEIT,Time from Tissue Excision to Immersion in Fixative,Codelist
+TSIFFM,TSIFBSORRESSSFIT,Sample Submission Format,Codelist
+TSIFFM,TSIFBSSPCPRPDTRC,FFPE block,Codelist
+TSIFFM,TSIFDATESPFIT,Date Specimen Placed in Fixative,Codelist
+TSIFFM,TSIFFIXADTDT,Date,Date
+TSIFFM,TSIFBSTIMESPFIT,Time Specimen Placed in Fixative,Codelist
+TSIFFM,TSIFTMCSPFDT,Time,Time
+TSIFFM,TSIFBSORRESDTIT,Date/Time Specimen Placed in Fixative,Codelist
+TSIFFM,TSIFCEBESTDTCPFDT,Date,Date/Time
+TSIFFM,TSIFCEOCCURSPFIT,Occurrence,Codelist
+TSIFFM,TSIFCECATSPFIT,Specimen  Category,Codelist
+TSIFFM,TSIFCEPRESPSPFIT,Specimen Pre-Specified,Codelist
+TSIFFM,TSIFBSORRESBLKIT,Institutional Block ID Number,Text
+TSIFFM,TSIFBSORRESSFTIT,Sample Fixation Time,Codelist
+TSIFFM,TSIFCESTDTCSSSDIT,Site Slide Sectioning Date,Date
+TSIFFM,TSIFCEOCCUR2IT,Occurrence,Codelist
+TSIFFM,TSIFCECATSCDPFIT,Specimen Category,Codelist
+TSIFFM,TSIFCEPRESPDPFIT,Specimen Pre-Specified,Codelist
+TSIFFM,TSIFBSORRESSTIT,Section Thickness (um),Codelist
+TSIFFM,TSIFBSORRESSTOTB,"Other, Specify",Text
+TSIFFM,TSIFBSORRESSTUIT,Section Thickness Unit,Codelist
+TSIFFM,TSIFBSORRESNSSIT,Number of Slides Submitted,Number
+TSIFFM,DELETEDFM,Deleted Form - Sponsor use Only,Codelist
+BMRFM,BMRPRDTCIT,Date of Assessment,Date
+BMRFM,BMRPRORRESSCSIT,Specimen Collection Status,Codelist
+BMRFM,BMRPRSTDTCIT,Date of Bone Marrow Procedure,Date
+BMRFM,BMRPRTRTIT,Procedure,Codelist
+BMRFM,BMRPRPRESPIT,Procedure Event Pre-Specified,Codelist
+BMRFM,BMRPROCCURIT,Procedure Occurrence,Codelist
+BMRFM,BMRPHSPECIT,Specimen Type,Codelist
+BMRFM,BMRPHORRESBMCIT,Bone Marrow Cellularity (%),Codelist
+BMRFM,BMRPHSTATBMCIT,Bone Marrow Cellularity (%) Status,Codelist
+BMRFM,BMRPHORRESCELLIT,Cellularity (%),Number
+BMRFM,BMRPHORRESUCELIT,Cellularity Units,Codelist
+BMRFM,BMRPRPRLYMINVIT,Is Lymphoma Involving Bone Marrow?,Codelist
+BMRFM,BMRPHORRESPLIIT,Lymphoma Bone Marrow Involvement  (%),Number
+BMRFM,BMRPHORRESPULIIT,Bone Marrow Involvement Units,Codelist
+BMRFM,BMRPHCATBMIIT,Bone Marrow Involvement Category,Codelist
+BMRFM,BMRPHORRESLYMIT,Lymphocytes (%),Number
+BMRFM,BMRPHORRESULYMIT,Lymphocytes Units,Codelist
+BMRFM,BMRPHORRESULYPIT,Lymphoid Aggregates Present,Codelist
+BMRFM,BMRPHORRESINFPIT,Pattern of Infiltration,Codelist
+BMRFM,BMR_LBL,Additional Findings (check all that apply),Label
+BMRFM,BMRPHORRESDYCB,Dysplastic,Boolean
+BMRFM,BMRPHORRESFBCB,Fibrotic,Boolean
+BMRFM,BMRPHORRESHPCB,Hyperplastic,Boolean
+BMRFM,BMRPHORRESHPOPCB,Hypoplastic,Boolean
+BMRFM,BMRPHORRESOCB,OTHER,Boolean
+BMRFM,BMRPHORRESOSTB,"Other, specify",Text
+BMRFM,BMRPRSPIDIT,Sponsor ID Number,Number
+BMRFM,DELETEDFM,Deleted Form - Sponsor use Only,Codelist
+LNBFM,LNBPRSTDTCIT,Date of Biopsy,Date
+LNBFM,LNBPRTYPBPSYIT,Type of Biopsy Sample Taken,Codelist
+LNBFM,LNBPRTYPBPSYOTB,"Other, Specify",Text
+LNBFM,LNBPRLOCLNIT,Lymph Node Region,Codelist
+LNBFM,LNBPRLOCOTHTB,"Other, Specify",Text
+LNBFM,LNBPRLOCDTLIT,Lymph Node Region Details,Text
+LNBFM,LNBPRSPCLSTATIT,Specimen Collection Status,Codelist
+LNBFM,LNBPRTRTIT,Procedure,Codelist
+LNBFM,LNBPRPRESPIT,Procedure Event Pre-Specified,Codelist
+LNBFM,LNBPROCCURIT,Procedure Occurrence,Codelist
+LNBFM,LNBPHORRESLIIT,Is Lymphoma Involving Lymph Nodes?,Codelist
+LNBFM,LNBPHSCATLNIIT,Lymph Node Involvement Subcategory,Codelist
+LNBFM,LNBPHSPECIT,Specimen Type,Codelist
+LNBFM,LNBPHEVALIT,Evaluator,Codelist
+LNBFM,LNBPHCATIT,Form Category,Codelist
+LNBFM,LNBPRSPIDIT,Sponsor ID Number,Number
+LNBFM,DELETEDFM,Deleted Form - Sponsor use Only,Codelist
+TRIGFM,TRIGQUEST3IT,Were there any other assessments performed at this Visit/Cycle or between this visit/cycle and the next scheduled visit/cycle?,Codelist
+TRIGFM,TRIGQUEST3BMRCB,Bone Marrow Results,Boolean
+TRIGFM,TRIGQUEST3CIMCB,Cardiac Imaging Measurements,Boolean
+TRIGFM,TRIGQUEST3CLABCB,Chemistry Lab,Boolean
+TRIGFM,TRIGQUEST3ECOGCB,ECOG Performance Status,Boolean
+TRIGFM,TRIGQUEST3LECGCB,Electrocardiogram,Boolean
+TRIGFM,TRIGQUEST3HLABCB,Hematology Lab,Boolean
+TRIGFM,TRIGQUEST3LNBCB,Lymph Node Biopsy,Boolean
+TRIGFM,TRIGQUEST3OEDRACB,Oncology-End of Disease Response Assessments,Boolean
+TRIGFM,TRIGQUEST3OEFUCB,Oncology End of Follow-Up,Boolean
+TRIGFM,TRIGQUEST3OLABCB,Other Laboratory Results,Boolean
+TRIGFM,TRIGQUEST3PK04CB,PK Invoice,Boolean
+TRIGFM,TRIGQUEST3RNTCB,Randomized but Not Treated,Boolean
+TRIGFM,TRIGQUEST3SCICB,Specimen Collection Invoice,Boolean
+TRIGFM,TRIGQUEST3SCIACB,Specimen Collection Invoice-Blood for Genetic Analysis,Boolean
+TRIGFM,TRIGQUEST3TSIFCB,Tissue Sample Information Form,Boolean
+TRIGFM,TRIGQUEST3ULABCB,Urinalysis,Boolean
+TRIGFM,TRIGQUEST3VS02CB,Vital Signs,Boolean
+TRIGFM,TRIGQUEST3WFCHCB,WHO/FAB Classification - Hematological Cancers,Boolean
+SRIVRSFM,SRDSDTCAASMTROIT,Date of Assessment,Date
+SRIVRSFM,SRDSCATRIT,Randomized Category,Codelist
+SRIVRSFM,SRSCORRESCOHIT,Cohort,Codelist
+SRIVRSFM,SRSCORRESPAMNDIT,Protocol Amendment Number,Number
+SRIVRSFM,SRSCORRESDOSIT,Assigned Dose,Text
+SRIVRSFM,SRSCORRESUDOSIT,Assigned Dose Unit,Text
+RNTFM,RNTDSSTDTIT,Date of Assessment,Date
+RNTFM,RNTDMRSNSMNTIT,Reason Randomized Subject Did Not Take Any Study Medication?,Codelist
+RNTFM,RNTDMRSNSMNTDIT,Reason Randomized Subject did not take any Study Medication Details (see note immediately above),Text
+RNTFM,RNTDMARMNRSIT,Reason Arm is Null,Codelist
+RNTFM,RNTDSTERMIT,Select the Status of the Subject for the Next Trial Segment,Codelist
+RNTFM,RNTDSCATIT,Category,Codelist
+PK04FM,PK04BSTPTIT,Scheduled Time,Codelist
+PK04FM,PK04BSTPTHTB,Scheduled Time,Text
+PK04FM,PK04BSTPTNUMHTB,Scheduled Time,Number
+PK04FM,PK04BSSTATWSCIT,Check if Sample Was Not Collected,Label
+PK04FM,PK04BSSTATWSCCB,Not Collected,Boolean
+PK04FM,PK04BSREASNDNCIT,Reason Sample Not Collected,Codelist
+PK04FM,PK04BSREASNDCOTB,"Other, Specify:",Text
+PK04FM,PK04BSSTDTCIT,Date and Time of Sample Collection,Date/Time
+PK04FM,PK04BSORRESAIT,Analyte,Label
+PK04FM,PK04BSORRESA1CB,MK-2140,Boolean
+PK04FM,PK04BSREFIDSIDIT,Specimen ID,Text
+PK04FM,PK04BSSPECTYPIT,Specimen Type,Codelist
+PK04FM,PK04BSORRESNSIT,"If Sample Was Collected But Not Sent, Indicate Reason",Codelist
+PK04FM,PK04BSREASNDNSTB,"Other, Specify:",Text
+PK04FM,PK04SAMPDETIT,"If sample collection and processing details vary from the protocol, please specify",Codelist
+PK04FM,PK04SAMPDETTXTTB,"Other, Specify",Text
+PK04FM,PK04BSSPIDIT,Sponsor ID Number,Number
+PK04FM,DELETEDFM,Deleted Form - Sponsor use Only,Codelist
+SCIFM,SCICEASMTDTCIT,Date of Assessment,Date
+SCIFM,SCICESPCLSTATIT,Specimen Collection Status,Codelist
+SCIFM,SCICERSNNCLNSIT,Reason Specimen Not Collected and/or Not Sent,Codelist
+SCIFM,SCICERSNNCLNSOTB,"Other, specify:",Text
+SCIFM,SCICECATSOIT,Category,Codelist
+SCIFM,SCICESTDTCSOIT,Date Specimen(s) Obtained,Date
+SCIFM,SCICESTDTCSOTMIT,Time Specimen Obtained,Time
+SCIFM,SCICEPRESPSOIT,Pre-specified,Codelist
+SCIFM,SCICEOCCURSOIT,Occur,Codelist
+SCIFM,SCICESPECLBLIT,Specimen Label,Codelist
+SCIFM,SCICEREFIDIT,Specimen ID,Text
+SCIFM,SCICETPTIT,Scheduled Time,Codelist
+SCIFM,SCICEBESPIDIT,Sponsor ID,Number
+SCIFM,DELETEDFM,Deleted Form - Sponsor use Only,Codelist
+SCIAFM,SCIACEASMTDTCIT,Date of Assessment,Date
+SCIAFM,SCIACESPCLSTATIT,Specimen Collection Status,Codelist
+SCIAFM,SCIACERSNNCLNSIT,Reason Specimen Not Collected and/or Not Sent,Codelist
+SCIAFM,SCIACERSNNCLNSOTB,"Other, specify",Text
+SCIAFM,SCIACECATSOIT,Category,Codelist
+SCIAFM,SCIACESTDTCSODT,Date Specimen(s) Obtained,Date
+SCIAFM,SCIACESTDTCSOTMDT,Time Specimen Obtained,Time
+SCIAFM,SCIACEPRESPSOIT,Pre-specified,Codelist
+SCIAFM,SCIACEOCCURSOIT,Occur,Codelist
+SCIAFM,SCIACESPECLBLIT,Specimen Label,Codelist
+SCIAFM,SCIACETPTPD,Scheduled Time,Codelist
+SCIAFM,SCIACEBESPIDIT,Sponsor ID,Number
+SCIAFM,DELETEDFM,Deleted Form - Sponsor use Only,Codelist
+PMS1FM,PMS1_LBL,Complete this form at the end of Treatment,Label
+PMS1FM,PMS1DSDTCIT,Date of Assessment,Date
+PMS1FM,PMS1DSREFIDIT,Trial Segment Reference,Codelist
+PMS1FM,PMS1DSTERMSMCIT,Status of Study Medication at the End of This Trial Segment,Codelist
+PMS1FM,PMS1DSTERMSMDCRC,Discontinued (select reason below):,Codelist
+PMS1FM,PMS1DSCATSMIT,Form Category,Codelist
+PMS1FM,PMS1DSSCATSMIT,Subcategory,Codelist
+PMS1FM,PMS1ADDDSDTLIT,Reason for Study Medication Discontinuation Details (see note immediately above),Text
+PMS1FM,PMS1DSEPRELNSMIT,Was Study Medication Discontinued due to COVID-19?,Codelist
+PMS1FM,PMS1DSTERMSTATIT,Select the Status of the Subject for the Next Trial Segment,Codelist
+PMS1FM,PMS1DSCATNTSIT,Category,Codelist
+OEDRAFM,OEDRA_LBL,Complete this form at the end of efficacy assessments,Label
+OEDRAFM,OEDRADSDTCIT,Date of Assessment,Date
+OEDRAFM,OEDRADSREFIDIT,Trial Segment Reference,Codelist
+OEDRAFM,OEDRADSATERMTSIT,Status of Subject at End of This Trial Segment,Codelist
+OEDRAFM,OEDRATERMSUBDCRC,Discontinued (select reason below):,Codelist
+OEDRAFM,OEDRACOVALIT,Reason for Discontinuation from This Trial Segment Details (see note immediately above),Text
+OEDRAFM,OEDRACOVALIT1,Reason for Discontinuation from This Trial Segment Details (see note immediately above) Cont.,Text
+OEDRAFM,OEDRADSEPRELNIT,Was Subject Discontinued due to COVID-19?,Codelist
+OEDRAFM,OEDRADSCATTSIT,Form Category,Codelist
+OEDRAFM,OEDRADSSCATTSIT,Form Subcategory,Codelist
+OEFUFM,OEFU_LBL,Complete this form at the end of Follow-Up Phase,Label
+OEFUFM,OEFUDSDTCIT,Date of Assessment,Date
+OEFUFM,OEFUDSREFIDIT,Trial Segment Reference,Codelist
+OEFUFM,OEFUDSTERMNTSIT,Select the Status of the Subject for the Next Trial Segment,Codelist
+OEFUFM,OEFUDSCATNTSIT,Category,Codelist
+SFUFM,SFUCFDTCIT,Date of Contact or Last Attempt of Contact,Date
+SFUFM,SFUCFCATIT,Status category,Codelist
+SFUFM,SFUCFORRESSUBJIT,Survival Status,Codelist
+SFUFM,SFUCFSVLSRSNRC,Unknown,Codelist
+SFUFM,SFUCFORRESDDSAIT,Date of Disease Status Assessment (Scan/Image/Physical Exam),Date
+SFUFM,SFUCFORRESCDSPDIT,Current Status of the Disease Under Study,Codelist
+SFUFM,SFUCFCSPDSDTLRC,Entered SFU with Disease and Now Progression (PD),Codelist
+SFUFM,SFUCFORRESACTIT,"Has Subject Received A New Anti-Cancer Therapy, Such as Surgery, Radiation, Drugs and/or Biologics, Since the Last Visit/Phone Contact?",Codelist
+SFUFM,SFUCFORRESSCTIT,Has the Subject Received a Stem Cell Transplant Since the Last Visit/Phone Contact?,Codelist
+SFUFM,SFUCFEVLINXIT,Evaluation Interval,Codelist
+SFUFM,SFUCFSPIDIT,Sponsor ID Number,Number
+SFUFM,DELETEDFM,Deleted Form - Sponsor use Only,Codelist
+VSTFM,VSTCFDTCIT,Date of Contact,Date
+VSTFM,VSTCFORRESSVSTIT,Indicate the Vital Status of the Subject,Codelist
+VSTFM,VSTCFORRESACTIT,"Has Subject Received a New Anti-Cancer Therapy, Such As Surgery, Radiation, Drugs and/or Biologics, Since the Last Visit/Phone Contact?",Codelist
+VSTFM,VSTCFCATIT,Form Category,Codelist
+VSTFM,VSTCFEVLINXIT,Evaluation Interval,Codelist
+VSTFM,VSTCFSPIDIT,Sponsor ID Number,Number
+VSTFM,DELETEDFM,Deleted Form - Sponsor use Only,Codelist
+OTPRLFM,OTPRLRSDTCIT,Date of Procedure for Overall Response (Scan/Image/Physical Exam),Date
+OTPRLFM,OTPRLRSPRDFLAGIT,Study Period,Codelist
+OTPRLFM,OTPRLRSTPTIT,Scheduled Time,Codelist
+OTPRLFM,OTPRLRSCATIT,Category for Response Assessment,Codelist
+OTPRLFM,OTPRLRSORRESTLIT,Target Lesion Response,Codelist
+OTPRLFM,OTPRLRSSTATTLSRIT,Target Lesion Response Status,Codelist
+OTPRLFM,OTPRLRSORRESNTRIT,Non-Target Lesion Response,Codelist
+OTPRLFM,OTPRLRSSTATNTLRIT,Non-Target Lesion Response Status,Codelist
+OTPRLFM,OTPRLRSORRESNLRIT,New Lesions Since Baseline Indicator,Codelist
+OTPRLFM,OTPRLRSSTATNLIT,New Lesions Since Baseline Status,Codelist
+OTPRLFM,OTPRLRSORRESSPIT,Spleen Response,Codelist
+OTPRLFM,OTPRLRSSTATSRIT,Spleen Response Status,Codelist
+OTPRLFM,OTPRLRSORRESARIT,Anatomic Response,Codelist
+OTPRLFM,OTPRLRSORRESPRIT,Metabolic Response,Codelist
+OTPRLFM,OTPRLRSSTATMRIT,Metabolic Response Status,Codelist
+OTPRLFM,OTPRLRSORRESBMIT,Bone Marrow Involvement Indicator,Codelist
+OTPRLFM,OTPRLRSORRESORIT,Overall Response,Codelist
+OTPRLFM,OTPRLRSSEVALIT,Evaluator,Codelist
+OTPRLFM,OTPRLRSSPIDIT,Sponsor ID Number,Number
+OTPRLFM,DELETEDFM,Deleted Form - Sponsor use Only,Codelist
+SMFM,SMEXTRTIT,Study Medication,Codelist
+SMFM,SMEXSPIDIT,Label Description,Codelist
+SMFM,SMEXLOT1IT,Lot ID 1,Text
+SMFM,SMEXLOT2IT,Lot ID 2,Text
+SMFM,SMEXLOT3IT,Lot ID 3,Text
+SMFM,SMEXLOT4IT,Lot ID 4,Text
+SMFM,SMEXLOT5IT,Lot ID 5,Text
+SMFM,SMEXLOT6IT,Lot ID 6,Text
+SMFM,SMEXPRDFLAGIT,Study Period,Codelist
+SMFM,SMCFORRESPDLIT,Protocol Dose Level,Number
+SMFM,SMCFORRESUPDLIT,Protocol Dose Level Unit,Codelist
+SMFM,SMEXINTDSIT,Intended Dose,Number
+SMFM,SMEXINTDSUIT,Intended Dose Unit,Codelist
+SMFM,SMEXSTDTCIT,Start Date/Time,Date/Time
+SMFM,SM_LBL1,Please Indicate if this is the First Dose for this Study Medication,Label
+SMFM,SMEXFDINDCCB,First Dose,Boolean
+SMFM,SMEXENDTCIT,Stop Date/Time,Date/Time
+SMFM,SM_LBL2,Please Indicate if this is the Last Dose for this Study Medication,Label
+SMFM,SMEXLDINDCCB,Last Dose,Boolean
+SMFM,SMEXNUMDOSIT,Number of Units Taken,Number
+SMFM,SMEXDOSEIT,Dose Amount,Number
+SMFM,SMEXDOSUIT,Dose Unit,Codelist
+SMFM,SMEXADJIT,Reason for Dose Variation,Codelist
+SMFM,SMEXCATIT,Form Category,Codelist
+SMFM,SMEXDOSFRMIT,Formulation,Codelist
+SMFM,SMEXROUTEIT,Route of Administration,Codelist
+SMFM,SMEXDOSFRQIT,Dose Frequency,Codelist
+SMFM,SMEXBLINDEDIT,Blinded?,Codelist
+SMFM,SM_SAFETY_LBL,Sponsor use only,Label
+SMFM,DELETEDFM,Deleted Form - Sponsor use Only,Codelist
+OSSFM,OSSCESTDTCIT,Date of Symptom Assessment,Date
+OSSFM,OSSCFORRESFVIT,Fever,Codelist
+OSSFM,OSSCETERMFVIT,Symptom Term,Codelist
+OSSFM,OSSCFORRESNSIT,Night Sweats,Codelist
+OSSFM,OSSCETERMNSIT,Symptom Term,Codelist
+OSSFM,OSSCFORRESWLIT,Weight Loss,Codelist
+OSSFM,OSSCETERMWLIT,Symptom Term,Codelist
+OSSFM,OSSCEOCCURFGIT,Fatigue,Codelist
+OSSFM,OSSCETERMFGIT,Symptom Term,Codelist
+OSSFM,OSSCEPRESPFGIT,Term Pre-Specified,Codelist
+OSSFM,OSSCESPIDIT,Sponsor ID Number,Number
+OSSFM,DELETEDFM,Deleted Form - Sponsor use Only,Codelist
+OSCNFM,OSCNPRTPTIT,Scheduled Time,Codelist
+OSCNFM,OSCNPROCCURSCSIT,Scan Collection Status,Codelist
+OSCNFM,OSCNPRSTDTCSCSDT,Not Performed (Enter Planned Scan Date),Date
+OSCNFM,OSCNPRREASOCIT,Reason Scan Not Performed,Codelist
+OSCNFM,OSCNPRREASOCOTB,"Other, Specify:",Text
+OSCNFM,OSCNPRTRTPIT,Procedure,Codelist
+OSCNFM,OSCNPRSTDTCIT,Scan Date,Date
+OSCNFM,OSCNPRTRTTPIT,Type of Image,Codelist
+OSCNFM,OSCNPRIMGTYDTLIT,PET Scan Details,Codelist
+OSCNFM,OSCN_LBL,Anatomical Location,Label
+OSCNFM,OSCNPRLOCATN1CB,Abdomen,Boolean
+OSCNFM,OSCNPRLOCATN2CB,Whole Body,Boolean
+OSCNFM,OSCNPRLOCATN3CB,Brain,Boolean
+OSCNFM,OSCNPRLOCATN9CB,Breast,Boolean
+OSCNFM,OSCNPRLOCATN4CB,Chest,Boolean
+OSCNFM,OSCNPRLOCATN5CB,Extremities,Boolean
+OSCNFM,OSCNPRLOCATN6CB,Head,Boolean
+OSCNFM,OSCNPRLOCATN7CB,Neck,Boolean
+OSCNFM,OSCNPRLOCATN8CB,Pelvis,Boolean
+OSCNFM,OSCNPRLOCATN10CB,Spine,Boolean
+OSCNFM,OSCNPRLOCIT,Location,Codelist
+OSCNFM,OSCNPRPRESPIT,Prespecify,Codelist
+OSCNFM,OSCNPRSPIDIT,Sponsor ID Number,Number
+OSCNFM,DELETEDFM,Deleted Form - Sponsor use Only,Codelist
+SLABFM,SLABDTCIT,Enter date/time specimen collected,Date/Time
+SLABFM,SLABLBTESTVIT,Laboratory Test,Text
+SLABFM,SLABLBCATIT,Lab Category,Codelist
+SLABFM,SLABLBSPECTYPIT,Specimen Type,Codelist
+SLABFM,SLABLBFASTPSCIT,Was the subject fasting prior to specimen collection?,Codelist
+SLABFM,SLABSPIDIT,Sponsor ID Number,Number
+SLABFM,SLABLBINDTYPNIT,Numeric Result Type,Codelist
+SLABFM,SLABORRESNUMRTB,Numeric Test Result,Number
+SLABFM,ZASLR_ZAVRESU,Unit,Codelist
+SLABFM,SLAB_ZAVRESUO,"Other Unit, Specify",Text
+SLABFM,SLABORNRLOMBAIT,Lower Limit of Normal,Number
+SLABFM,SLABORNRHIMBAIT,Upper Limit of Normal,Number
+SLABFM,SLABLBINDTYPCIT,Character Result Type,Codelist
+SLABFM,SLABORRESBILITB,Character Test Result,Text
+SLABFM,SLABLBINDRRC,Character Result Indicator:,Codelist
+SLABFM,SLABTOXGRIT,Toxicity Grade:,Codelist
+SLABFM,SLABLBTOXIT,Toxicity,Text
+SLABFM,SLABLBCATTOXIT,Toxicity Category,Codelist
+SLABFM,SLAB_LBL,Sponsor use only.,Label
+SLABFM,DELETEDFM,Deleted Form - Sponsor use Only,Codelist
+SLABFM,SLAB_O_SAFZAVRES_DRV,Comments,Text
+CMFM,CM_LBL,"List all medications taken in past 28 days prior to Screening visit, and through the Safety Follow-Up Visit.",Label
+CMFM,CMTRTIT,Medication Name,Text
+CMFM,CMSCATIT,Medication Category,Codelist
+CMFM,CMSTDTCIT,Start Date and Time,Date
+CMFM,CMSTDTIIT,Imputed Start Date and Time,Date
+CMFM,CMENRTPTSTRFDIT,Did Medication Start  Prior to the First Dose of Study Medication?(Only complete if any portion of the Start Date is unknown (UNK) or if this medication started on the first day of study medication),Codelist
+CMFM,CMSTTPTIT,Start Reference Time Point,Codelist
+CMFM,CMENDTCIT,Stop Date and Time,Codelist
+CMFM,CMENDTCDT,Stop Date,Date
+CMFM,CMENDTIIT,Imputed Stop Date and Time,Date
+CMFM,CMENRTPTSTPFDIT,Did Medication Stop Prior to the First Dose of Study Medication?(Only complete if any portion of the Stop Date is unknown (UNK) or if this medication stopped on the first day of study medication),Codelist
+CMFM,CMENTPTLDSMIT,End Reference Time Point,Codelist
+CMFM,CMSPIDIT,Sequence Number,Number
+CMFM,CM_LBL1,"Complete entire section below if medication taken within 14 days of onset of SAE/ECI. If medication is disease related symptoms, oncologic, premedication, steroid taper or prophylaxis, complete the Reason for Therapy",Label
+CMFM,CMCMINDIT,Reason for Therapy,Text
+CMFM,CMDOSTOTTB,Total Daily Dose,Number
+CMFM,CMDOSTOTUPD,Total Daily Dose Unit,Codelist
+CMFM,CMDOSFRMIT,Dose Form,Codelist
+CMFM,CMROUTEIT,Route of Administration,Codelist
+CMFM,CMPSTRGIT,Dosage Strength,Number
+CMFM,CMDOSFRQADMIT,Frequency of Administration,Codelist
+CMFM,CMCATIT,Form Category,Codelist
+CMFM,CM_CMLBL1,Sponsor use only.,Label
+CMFM,CM_O_SAFDOSTXT_DRV,Derived Dosage Text,Text
+CMFM,CM_O_SAFFREQ_DRV,Derived Frequency,Number
+CMFM,CM_O_SAFFREQU_DRV,Derived Frequency Unit,Codelist
+CMFM,DELETEDFM,Deleted Form - Sponsor use Only,Codelist
+AEFM,AEAETERMIT,AE Term (For lab AE use the term increased or decreased),Text
+AEFM,AEAESTDTCIT,Onset Date and Time (Lab collection date if lab AE),Date
+AEFM,AEAEWRSDTCIT,Date the AE Worsened,Date
+AEFM,AEAEENDTCIT,End Date and Time,Codelist
+AEFM,AEAEENDTCDT,End Date,Date/Time
+AEFM,AE_LBL1,Duration if less than 24 hrs,Label
+AEFM,AEAEOUTDHRSTB,Number of Hours,Number
+AEFM,AEAEOUTDMINSTB,Number of Minutes,Number
+AEFM,AEAEOUTDSECSTB,Number of Seconds,Number
+AEFM,AEAEOUTIT,Outcome of AE,Codelist
+AEFM,AEAETOXGRIT,Overall Toxicity,Codelist
+AEFM,AEAETOXIT,Toxicity Description,Text
+AEFM,AEAEACNIT,Overall Action taken with Study Medication,Codelist
+AEFM,AEAERELIT,Overall Relationship to Study Medication,Codelist
+AEFM,AEDOSTOXLIMIT,Is the AE a dose limiting toxicity?,Codelist
+AEFM,AE_O_SAFLB,"If ANY of serious criteria or reportable AEs (ECI, Cancer or Overdose) is ""Yes"", please enter ""Yes"" for ""Is this event serious, cancer, result of an overdose, or an adverse event of clinical interest (ECI)?""",Label
+AEFM,AE_O_SCODAESI,"Is this event serious, cancer, result of an overdose, or an adverse event of clinical interest (ECI)?",Codelist
+AEFM,AEAESERCIT,Serious Criteria (check all that apply),Label
+AEFM,AEAESERCNCB,None,Boolean
+AEFM,AEAESERHOSPCB,Inpatient hospitalization or prolongation of hospitalization,Boolean
+AEFM,AE_O_ADMINDT_DRV,Derived Admission Date,Date
+AEFM,AE_O_DISCDT_DRV,Derived Discharge Date,Date
+AEFM,AEAESERCANCB,Cancer,Boolean
+AEFM,AEAESERLIFECB,Immediately life threatening,Boolean
+AEFM,AEAESERDISABCB,Persistent or significant disability/incapacity,Boolean
+AEFM,AEAESERCONGCB,Congenital anomaly/birth defect,Boolean
+AEFM,AEAESERODCB,Overdose,Boolean
+AEFM,AEAESERSIMECB,Other important medical event,Boolean
+AEFM,AEAESERDTHCB,Death,Boolean
+AEFM,AEAEEVNTAUTRC,Death Event reported in autopsy as cause of death?,Codelist
+AEFM,AEAECLINTIT,Is the AE an Event of Clinical Interest?,Codelist
+AEFM,AEAESPIDIT,Sequence Number,Number
+AEFM,DELETEDFM,Deleted Form - Sponsor use Only,Codelist
+AEFM,AE_LBL,"Note: Complete section below only if AE meets serious AE criteria or is an event of clinical interest (list protocol specific options here). Record all findings on the appropriate forms, such as relevant procedures, diagnostics, physical exam findings, and laboratory analysis including results.",Label
+AEFM,AEAECTRYEVIT,Country Where Event Occurred?,Codelist
+AEFM,AEAERELPRIT,Relationship to Study Procedure,Codelist
+AEFM,AEAEPQCAIT,Is There a Product Quality Complaint Attached?,Codelist
+AEFM,AEAERELNSTIT,Relationship of event to any Other Suspect Therapy?,Codelist
+AEFM,AE_FAOBJ_CM,Drug Role,Form Link
+AEFM,AE_FACAT,Characterization of Drug Role,Codelist
+AEFM,AEOSTATIT,Action taken with other suspect therapy,Codelist
+AEFM,AEOSTSDCHIT,Did the adverse event improve or disappear after stopping other suspect therapy? (Dechallenge),Codelist
+AEFM,AEOSTSRCHIT,Did the adverse event reappear or worsen after restarting other suspect therapy? (Rechallenge),Codelist
+AEFM,AE_O_NARR,Narratives,Codelist
+AEFM,AE_COVAL,Narratives,Text
+AEFM,AEAESMIT,Study Medication,Codelist
+AEFM,AEAEACNSMIT,Action Taken with Study Treatment,Codelist
+AEFM,AEAERELSMIT,Relationship to Study Treatment,Codelist
+AEFM,AEAESDCHIT,Dechallenge,Codelist
+AEFM,AEAESRCHIT,Rechallenge,Codelist
+AEFM,AESTDTCIT,Toxicity Grade Onset Date,Date
+AEFM,AEENDTCIT,Toxicity Grade Stop Date,Date
+AEFM,AEORRESTOXGIT,Toxicity Grade,Codelist
+AEFM,AETOXCIT,Toxicity Description,Text
+AEFM,AESPIDIT,Associated AE Sequence Number (from top of AE form),Number
+AEFM,DELETEDSN,Deleted Section - Sponsor use Only,Codelist
+AEFM,AE_O_DISDIAG_SEC,Section,Codelist
+AEFM,AE_O_DISDIAG_DRV,Derived List Discharge diagnosis(es),Text
+AEFM,AE_AELBL8,Sponsor use only.,Label
+AEFM,AEAECTRYEVIT_SAF,Country Where Event Occurred?,Codelist
+AEFM,AE_O_SAFDM_DRV,"Derived Sex, Race and Ethnicity",Text
+AEFM,AE_O_SAFDEATH_DRV,Derived Death Source for Notification,Text
+AEFM,AE_O_SAFRAND_DRV,Derived Randomization Date,Text
+AEFM,AE_AELBL8,Sponsor use only.,Label
+AEFM,AE_O_SAFCOMSEC,Section,Codelist
+AEFM,AE_O_SAFCOM_DRV,Reporter's Comments,Text
+HOSPFM,HOSP_LBL,List all hospitalizations related to an SAE,Label
+HOSPFM,HOSPHODTCIT,Date of Assessment,Date
+HOSPFM,HOSPHOCCURSAEIT,Is this Hospitalization a Result  of an SAE?,Codelist
+HOSPFM,HOSPIDSEQNUMIT,Associated AE Sequence Number (from AE form) - For SAEs Only,Label
+HOSPFM,HOSPIDSEQNUM1TB,Associated ID 1,Number
+HOSPFM,HOSPIDSEQNUM2TB,Associated ID 2,Number
+HOSPFM,HOSPIDSEQNUM3TB,Associated ID 3,Number
+HOSPFM,HOSPIDSEQNUM4TB,Associated ID 4,Number
+HOSPFM,HOSPIDSEQNUM5TB,Associated ID 5,Number
+HOSPFM,HOSPIDSEQNUM6TB,Associated ID 6,Number
+HOSPFM,HOSPIDSEQNUM7TB,Associated ID 7,Number
+HOSPFM,HOSPIDSEQNUM8TB,Associated ID 8,Number
+HOSPFM,HOSPIDSEQNUM9TB,Associated ID 9,Number
+HOSPFM,HOSPIDSEQNUM10TB,Associated ID 10,Number
+HOSPFM,HOSPDTCADMISSIT,Admission Date/Time,Date
+HOSPFM,HOSPENDTCDISCHIT,Discharge Date/Time,Date
+HOSPFM,HOSPCOVALDDIAGIT,List Discharge diagnosis(es),Text
+HOSPFM,HOSPCOVALDDIAGIT1,List Discharge diagnosis(es) Cont.,Text
+HOSPFM,HOSPHORSNDXIT,Was Admission to the  Hospital Related to the Condition Under Study?,Codelist
+HOSPFM,HOSPHODCREDYIT,Date and Time of Hospital Discharge Ready,Date
+HOSPFM,HOSPHOSPIDIT,Sponsor ID Number,Number
+HOSPFM,DELETEDFM,Deleted Form - Sponsor use Only,Codelist
+PROCFM,PROC_LBL,List all procedures and diagnostics related to an AE,Label
+PROCFM,PROCASMTDTCIT,Date of Assessment,Date
+PROCFM,PROCPRPROCSAEIT,Is this Procedure Related to an SAE or ECI?,Codelist
+PROCFM,PROCPRAESEQIT,Associated AE Sequence Number(s),Label
+PROCFM,PROCPRAESEQ1TB,Associated ID 1,Number
+PROCFM,PROCPRAESEQ2TB,Associated ID 2,Number
+PROCFM,PROCPRAESEQ3TB,Associated ID 3,Number
+PROCFM,PROCPRAESEQ4TB,Associated ID 4,Number
+PROCFM,PROCPRAESEQ5TB,Associated ID 5,Number
+PROCFM,PROCPRAESEQ6TB,Associated ID 6,Number
+PROCFM,PROCPRAESEQ7TB,Associated ID 7,Number
+PROCFM,PROCPRAESEQ8TB,Associated ID 8,Number
+PROCFM,PROCPRPROTRMIT,Procedure Term,Text
+PROCFM,PROCPRLOCIT,Anatomical Location,Text
+PROCFM,PROCPRPRSTDTCIT,Procedure Start Date and Time,Date
+PROCFM,PROCPRPRENDTCIT,Procedure Stop Date and Time,Date
+PROCFM,PROCPRINDCREASIT,Procedure Reason (Only if not associated with an SAE or ECI),Text
+PROCFM,PROCPRPRINTPIT,Overall Procedure Interpretation,Codelist
+PROCFM,PROCCOFINDINGSIT,Procedure Findings Comments,Text
+PROCFM,PROCCOFINDINGSIT1,Procedure Findings Comments Cont.,Text
+PROCFM,PROCPRSPIDIT,Procedure Sequence Number,Number
+PROCFM,DELETEDFM,Deleted Form - Sponsor use Only,Codelist
+PROCFM,PROC_O_SAFINT_DRV,Overall Interpretation / Findings Cont.,Text
+PRG01FM,PRG01_LBL,"Maternal History - Record any maternal medical conditions from previous pregnancies on the Medical History form (e.g., gestational diabetes, hypertension, ectopic pregnancy). Pregnancy History - Indicate 0 if not applicable.",Label
+PRG01FM,PRG01PYDTCIT,Date of Assessment,Date
+PRG01FM,PRG01PYORRESPPIT,Number of Previous Pregnancies,Number
+PRG01FM,PRG01PYORRESFTBIT,Number of Full Term Births,Number
+PRG01FM,PRG01PYORRESPBIT,Number of Premature Births (Less Than 37 weeks),Number
+PRG01FM,PRG01PYORRESEPIT,Number of Ectopic Pregnancies,Number
+PRG01FM,PRG01PYORRESSAIT,Number of Spontaneous Abortions (Less Than 20 weeks),Number
+PRG01FM,PRG01PYORRESFDIT,Number of Late Fetal Deaths (Greater or Equal to 20 weeks),Number
+PRG01FM,PRG01PYORRESEAIT,Number of Elective Abortions,Number
+PRG01FM,PRG01PYORRESCAIT,Did Congenital Anomalies/Birth Defects Occur in Any Previous Pregnancy?,Codelist
+PRG01FM,PRG01PYCABNDTLTB,"Yes, describe",Text
+PRG01FM,PRG01PYORRESMCIT,Did Miscarriage Occur in Any Previous Pregnancy?,Codelist
+PRG01FM,PRG01PYORRESCDTB,"Yes, describe",Text
+PRG01FM,PRG01PYORRESSBIT,Did Stillbirth Occur in Any Previous Pregnancy?,Codelist
+PRG01FM,PRG01PYORRESBDTB,"Yes, describe",Text
+PRG01FM,PRG01PYSPIDIT,Sequence Number,Number
+PRG01FM,PRG01PYORRESDCIT,Estimated Date of Conception,Date
+PRG01FM,PRG01FFORRESMUIT,Method Used to Determine Estimated Date of Conception,Label
+PRG01FM,PRG01PYORRESFHCB,Fundal Height,Boolean
+PRG01FM,PRG01PYORRESLPCB,LMP,Boolean
+PRG01FM,PRG01PYMETHODCB,Ultrasound,Boolean
+PRG01FM,PRG01PYDTCDOUDT,Date of Ultrasound,Date
+PRG01FM,PRG01PYORRESGATB,Gestational Age at Time of Ultrasound,Number
+PRG01FM,PRG01PYORRESURC,Unit,Codelist
+PRG01FM,PRG01PYORRESMPIT,Start Date of Last Menstrual Period,Date
+PRG01FM,PRG01PYORRESDLIT,Estimated Delivery Date,Date
+PRG01FM,PRG01PYORRESPCIT,Pregnancy Confirmed,Codelist
+PRG01FM,PRG01PYCNFPTCB,Pregnancy Test,Boolean
+PRG01FM,PRG01PYCNFUSCB,Ultrasound,Boolean
+PRG01FM,PRG01PYCNFUNKCB,Unknown,Boolean
+PRG01FM,PRG01PYOBJSM1IT,MK-2140,Codelist
+PRG01FM,PRG01PYORRESM1IT,Relationship of Pregnancy to MK-2140,Codelist
+PRG01FM,PRG01PYOBJSM2IT,Rituximab,Codelist
+PRG01FM,PRG01PYORRESM2IT,Relationship of Pregnancy to Rituximab,Codelist
+PRG01FM,PRG01PYOBJSM3IT,Truxima (Biosimilar to Rituximab),Codelist
+PRG01FM,PRG01PYORRESM3IT,Relationship of Pregnancy to Truxima (Biosimilar to Rituximab),Codelist
+PRG01FM,PRG01PYOBJSM4IT,Cyclophosphamide,Codelist
+PRG01FM,PRG01PYORRESM4IT,Relationship of Pregnancy to Cyclophosphamide,Codelist
+PRG01FM,PRG01PYOBJSM5IT,Doxorubicin,Codelist
+PRG01FM,PRG01PYORRESM5IT,Relationship of Pregnancy to Doxorubicin,Codelist
+PRG01FM,PRG01PYOBJSM6IT,Prednisone,Codelist
+PRG01FM,PRG01PYORRESM6IT,Relationship of Pregnancy to Prednisone,Codelist
+PRG01FM,PRG01PYOBJSM7IT,Prednisolone,Codelist
+PRG01FM,PRG01PYORRESM7IT,Relationship of Pregnancy to Prednisolone,Codelist
+PRG01FM,PRG01PYCATPPIT,Form Category,Codelist
+PRG01FM,PRG01PYCATCPIT,Form Category,Codelist
+PRG01FM,DELETEDFM,Deleted Form - Sponsor use Only,Codelist
+PRG01FM,PRG01_SAF_DRV,Event Reported,Codelist
+PRG01FM,PRG01_DRV_PARA,Para / Parity,Number
+PRG01FM,PRG01_O_DM_DRV,"Derived Sex, Race and Ethnicity",Text
+PRG01FM,PRG01_O_SAFRAND_DRV,Derived Randomization,Text
+PRG01FM,PRG01_SAFCOMLBL,Sponsor use only.,Label
+PRG01FM,PRG01_O_SAFCOMSEC,Section,Codelist
+PRG01FM,PRG01_O_SAFCOM_DRV,Reporter's Comments,Text
+PRG02FM,PRG02PXDTASMTIT,Date of Assessment,Date
+PRG02FM,PRG02PXDTCIT,Date of Delivery/Termination,Date
+PRG02FM,PRG02PXTERMDIT,Type of Delivery/Termination,Codelist
+PRG02FM,PRG02_LBL,"C-section Live Birth, check all that apply",Label
+PRG02FM,PRG02PXTERMDBMCB,"Breech, Malpresentation, or Transverse Lie",Boolean
+PRG02FM,PRG02PXTERMDCDCB,Cephalopelvic Disproportion,Boolean
+PRG02FM,PRG02PXTERMDCPCB,"Cord Prolapse, Placenta Previa",Boolean
+PRG02FM,PRG02PXTERMDPDCB,Failure to Progress or Dystocia,Boolean
+PRG02FM,PRG02PXTERMDFDCB,Fetal Distress,Boolean
+PRG02FM,PRG02PXTERMDMGCB,"Premature Delivery, Multiple Gestation",Boolean
+PRG02FM,PRG02PXTERMDRECB,Repeat or Elective Section,Boolean
+PRG02FM,PRG02PXTERMDOCB,"Other, specify",Boolean
+PRG02FM,PRG02PXTERMDOTTB,"Other, specify",Text
+PRG02FM,PRG02PXFETALLDTPD,"Fetal Loss, select only one",Codelist
+PRG02FM,PRG02PXMODEIT,Mode of Delivery,Codelist
+PRG02FM,PRG02PXPRDEXMIT,Were the products of conception examined?,Codelist
+PRG02FM,PRG02PXPRDEXMNTB,"Yes, describe",Text
+PRG02FM,PRG02COVALRIIT,Describe other relevant information regarding this pregnancy,Text
+PRG02FM,PRG02COVALRIIT1,Describe other relevant information regarding this pregnancy Cont.,Text
+PRG02FM,PRG02FFORRESGAIT,Gestational Age,Number
+PRG02FM,PRG02FFORRESSXIT,Sex,Codelist
+PRG02FM,PRG02FFORRESBWIT,Birth Weight,Number
+PRG02FM,PRG02FFORRESUBWIT,Birth Weight Unit,Codelist
+PRG02FM,PRG02FFORRESA1IT,Apgar score - 1 min,Number
+PRG02FM,PRG02FFORRESA5IT,Apgar score - 5 min,Number
+PRG02FM,PRG02FFORRESBLIT,Birth Length,Number
+PRG02FM,PRG02FFORRESUBLIT,Birth Length Unit,Codelist
+PRG02FM,PRG02FFORRESHCIT,Head circumference,Number
+PRG02FM,PRG02FFORRESUHCIT,Head circumference Unit,Codelist
+PRG02FM,PRG02FFORRESCAIT,Congenital Anomaly,Codelist
+PRG02FM,PRG02FFORRESOAIT,Other Abnormality,Codelist
+PRG02FM,PRG02COVALOAIT,Describe Other Abnormality,Text
+PRG02FM,PRG02COVALOAIT1,Describe Other Abnormality Cont.,Text
+PRG02FM,PRG02FFORRESELIT,Was Child Exposed Through Lactation?,Codelist
+PRG02FM,PRG02COVALYELYTB,"Yes, if exposed, please specify any anomalies",Text
+PRG02FM,PRG02COVALYELYTB1,"Yes, if exposed, please specify any anomalies Cont.",Text
+PRG02FM,PRG02FFOBJM1IT,MK-2140,Codelist
+PRG02FM,PRG02FFORRESM1IT,Relationship of Lactation to MK-2140,Codelist
+PRG02FM,PRG02FFOBJM2IT,Rituximab,Codelist
+PRG02FM,PRG02FFORRESM2IT,Relationship of Lactation to Rituximab,Codelist
+PRG02FM,PRG02FFOBJM3IT,Truxima (Biosimilar to Rituximab),Codelist
+PRG02FM,PRG02FFORRESM3IT,Relationship of Lactation to Truxima (Biosimilar to Rituximab),Codelist
+PRG02FM,PRG02FFOBJM4IT,Cyclophosphamide,Codelist
+PRG02FM,PRG02FFORRESM4IT,Relationship of Lactation to Cyclophosphamide,Codelist
+PRG02FM,PRG02FFOBJM5IT,Doxorubicin,Codelist
+PRG02FM,PRG02FFORRESM5IT,Relationship of Lactation to Doxorubicin,Codelist
+PRG02FM,PRG02FFOBJM6IT,Prednisone,Codelist
+PRG02FM,PRG02FFORRESM6IT,Relationship of Lactation to Prednisone,Codelist
+PRG02FM,PRG02FFOBJM7IT,Prednisolone,Codelist
+PRG02FM,PRG02FFORRESM7IT,Relationship of Lactation to Prednisolone,Codelist
+PRG02FM,PRG02PXCATFLIT,Category,Codelist
+PRG02FM,PRG02PXCATLBIT,Category,Codelist
+PRG02FM,PRG02PXCATGAIT,Category,Codelist
+PRG02FM,PRG02PXSCATGAIT,Subcategory,Codelist
+PRG02FM,PRG02PXCATGAUIT,Gestational Age Units,Codelist
+PRG02FM,PRG02PXCATVSIT,Category,Codelist
+PRG02FM,PRG02PXCATHDIT,Location,Codelist
+PRG02FM,PRG02PXCATPEIT,Category,Codelist
+PRG02FM,PRG02PXSPIDFIIT,Fetus/Infant Sequence Number,Number
+PRG02FM,PRG02_O_NARR,Narratives,Codelist
+PRG02FM,PRG02_COVAL,Narratives,Text
+PRG02FM,DELETEDFM,Deleted Form - Sponsor use Only,Codelist
+PRG02FM,PRG02_SAF_DRV,Event Reported,Codelist
+PRG02FM,PRG02_SAF_OUT_DRV,Derived Outcome (Safety),Codelist
+PRG02FM,PRG02_SAF_MODE_DRV,Derived Mode of Delivery (Safety),Codelist
+PRG02FM,PRG02_SAFCOMLBL,Sponsor use only.,Label
+PRG02FM,PRG02_O_SAFCOMSEC,Section,Codelist
+PRG02FM,PRG02_O_SAFCOM_DRV,Reporter's Comments,Text
+PRG03FM,PRG03_LBL,Pregnancy History - Indicate 0 if not applicable,Label
+PRG03FM,PRG03FFDTCIT,Date of Assessment,Date
+PRG03FM,PRG03FFORRESPPIT,Number of Previous Pregnancies,Number
+PRG03FM,PRG03FFORRESFBIT,Number of Full Term Births,Number
+PRG03FM,PRG03FFORRESPBIT,Number of Premature Births (Less Than 37 weeks),Number
+PRG03FM,PRG03FFORRESEPIT,Number of Ectopic Pregnancies,Number
+PRG03FM,PRG03FFORRESSAIT,Number of Spontaneous Abortions (Less than 20 weeks),Number
+PRG03FM,PRG03FFORRESFDIT,Number of Late Fetal Deaths (Greater than or equal to 20 weeks),Number
+PRG03FM,PRG03FFORRESEAIT,Number of Elective Abortions,Number
+PRG03FM,PRG03FFORRESAIT,Did Congenital Anomalies/Birth Defects Occur in Any Previous Pregnancy?,Codelist
+PRG03FM,PRG03FFCABNDTLTB,"Yes, describe",Text
+PRG03FM,PRG03FFORRESMSIT,Did Miscarriage Occur in Any Previous Pregnancy?,Codelist
+PRG03FM,PRG03FFMSCRGDTLTB,"Yes, describe",Text
+PRG03FM,PRG03FFORRESSBIT,Did Stillbirth Occur in Any Previous Pregnancy?,Codelist
+PRG03FM,PRG03FFORRESBDTB,"Yes, describe",Text
+PRG03FM,PRG03FFSPIDIT,Sequence Number,Number
+PRG03FM,PRG03FFORRESDCIT,Estimated Date of Conception,Date
+PRG03FM,PRG03FFORRESMUIT,Method Used to Determine Estimated Date of Conception,Label
+PRG03FM,PRG03PYORRESFHCB,Fundal Height,Boolean
+PRG03FM,PRG03PYORRESLPCB,LMP,Boolean
+PRG03FM,PRG03PYMETHODCB,Ultrasound,Boolean
+PRG03FM,PRG03PYDTCDT,Date of Ultrasound,Date
+PRG03FM,PRG03PYORRESGATB,Gestational Age at Time of Ultrasound,Number
+PRG03FM,PRG03PYORRESURC,Unit,Codelist
+PRG03FM,PRG03FFORRESLPIT,Start Date of Last Menstrual Period,Date
+PRG03FM,PRG03FFORRESDDIT,Estimated Delivery Date,Date
+PRG03FM,PRG03FFORRESPCIT,Pregnancy Confirmed,Codelist
+PRG03FM,PRG03FFCNFPTCB,Pregnancy Test,Boolean
+PRG03FM,PRG03FFCNFUSCB,Ultrasound,Boolean
+PRG03FM,PRG03FFCNFUNKCB,Unknown,Boolean
+PRG03FM,PRG03FFOBJSM1IT,MK-2140,Codelist
+PRG03FM,PRG03FFORRESM1IT,Relationship of Pregnancy to MK-2140,Codelist
+PRG03FM,PRG03FFOBJSM2IT,Rituximab,Codelist
+PRG03FM,PRG03FFORRESM2IT,Relationship of Pregnancy to Rituximab,Codelist
+PRG03FM,PRG03FFOBJSM3IT,Truxima (Biosimilar to Rituximab),Codelist
+PRG03FM,PRG03FFORRESM3IT,Relationship of Pregnancy to Truxima (Biosimilar to Rituximab),Codelist
+PRG03FM,PRG03FFOBJSM4IT,Cyclophosphamide,Codelist
+PRG03FM,PRG03FFORRESM4IT,Relationship of Pregnancy to Cyclophosphamide,Codelist
+PRG03FM,PRG03FFOBJSM5IT,Doxorubicin,Codelist
+PRG03FM,PRG03FFORRESM5IT,Relationship of Pregnancy to Doxorubicin,Codelist
+PRG03FM,PRG03FFOBJSM6IT,Prednisone,Codelist
+PRG03FM,PRG03FFORRESM6IT,Relationship of Pregnancy to Prednisone,Codelist
+PRG03FM,PRG03FFOBJSM7IT,Prednisolone,Codelist
+PRG03FM,PRG03FFORRESM7IT,Relationship of Pregnancy to Prednisolone,Codelist
+PRG03FM,PRG03PYCATPPIT,Form Category,Codelist
+PRG03FM,PRG03PYCATCPIT,Form Category,Codelist
+PRG03FM,PRG03PYCATPGIT,Form Category,Codelist
+PRG03FM,DELETEDFM,Deleted Form - Sponsor use Only,Codelist
+PRG03FM,PRG03_SAF_DRV,Event Reported,Codelist
+PRG03FM,PRG03_DRV_PARA,Para / Parity,Number
+PRG03FM,PRG03_SAF_PARTNER,Derived Partner ID,Text
+PRG03FM,PRG03_SAFCOMLBL,Sponsor use only.,Label
+PRG03FM,PRG03_O_SAFCOMSEC,Section,Codelist
+PRG03FM,PRG03_O_SAFCOM_DRV,Reporter's Comments,Text
+PRG04FM,PRG04FEDTCIT,Date of Assessment,Date
+PRG04FM,PRG04FESTDTCIT,Date of Delivery/Termination,Date
+PRG04FM,PRG04FETERMDTIT,Type of Delivery/Termination,Codelist
+PRG04FM,PRG04_LBL,"C-section Live Birth, check all that apply",Label
+PRG04FM,PRG04FEINDBMTCB,"Breech, Malpresentation, or Transverse Lie",Boolean
+PRG04FM,PRG04FEINDCDCB,Cephalopelvic Disproportion,Boolean
+PRG04FM,PRG04FEINDCPPCB,"Cord Prolapse, Placenta Previa",Boolean
+PRG04FM,PRG04FEINDFPDCB,Failure to Progress or Dystocia,Boolean
+PRG04FM,PRG04FEINDFDCB,Fetal Distress,Boolean
+PRG04FM,PRG04FEINDPDMCB,"Premature Delivery, Multiple Gestation",Boolean
+PRG04FM,PRG04FEINDRESCB,Repeat or Elective Section,Boolean
+PRG04FM,PRG04FEINDVOTHCB,"Other, specify",Boolean
+PRG04FM,PRG04FEINDVTB,"Other, specify",Text
+PRG04FM,PRG04FETERMFLPD,"Fetal Loss, select only one",Codelist
+PRG04FM,PRG04FEMODEIT,Mode of Delivery,Codelist
+PRG04FM,PRG04XPRDEXMIT,Were the products of conception examined?,Codelist
+PRG04FM,PRG04XPRDEXMYDTB,"Yes, describe",Text
+PRG04FM,PRG04FERELDTLIT,Describe other relevant information regarding this pregnancy,Text
+PRG04FM,PRG04FERELDTLIT1,Describe other relevant information regarding this pregnancy Cont.,Text
+PRG04FM,PRG04FFORRESGAIT,Gestational Age,Number
+PRG04FM,PRG04FFORRESSXIT,Sex,Codelist
+PRG04FM,PRG04FFORRESWIT,Birth Weight,Number
+PRG04FM,PRG04FFORRESUWIT,Birth Weight Unit,Codelist
+PRG04FM,PRG04FFORRESA1IT,Apgar score - 1 min,Number
+PRG04FM,PRG04FFORRESA5IT,Apgar score - 5 min,Number
+PRG04FM,PRG04FFORRESLIT,Birth Length,Number
+PRG04FM,PRG04FFORRESULIT,Birth Length Unit,Codelist
+PRG04FM,PRG04FFORRESHIT,Head Circumference,Number
+PRG04FM,PRG04FFORRESUHIT,Head Circumference Unit,Codelist
+PRG04FM,PRG04FFORRESCAIT,Congenital Anomaly,Codelist
+PRG04FM,PRG04FFORRESOAIT,Describe Other Abnormality,Text
+PRG04FM,PRG04FFORRESOAIT1,Describe Other Abnormality Cont.,Text
+PRG04FM,PRG04FFORRESELIT,Was Child Exposed Through Lactation?,Codelist
+PRG04FM,PRG04COVALEXDTB,"Yes, if exposed, please specify any anomalies",Text
+PRG04FM,PRG04COVALEXDTB1,"Yes, if exposed, please specify any anomalies Cont.",Text
+PRG04FM,PRG04FFOBJSM1IT,MK-2140,Codelist
+PRG04FM,PRG04FFORRESM1IT,Relationship of Lactation to MK-2140,Codelist
+PRG04FM,PRG04FFOBJSM2IT,Rituximab,Codelist
+PRG04FM,PRG04FFORRESM2IT,Relationship of Lactation to Rituximab,Codelist
+PRG04FM,PRG04FFOBJSM3IT,Truxima (Biosimilar to Rituximab),Codelist
+PRG04FM,PRG04FFORRESM3IT,Relationship of Lactation to Truxima (Biosimilar to Rituximab),Codelist
+PRG04FM,PRG04FFOBJSM4IT,Cyclophosphamide,Codelist
+PRG04FM,PRG04FFORRESM4IT,Relationship of Lactation to Cyclophosphamide,Codelist
+PRG04FM,PRG04FFOBJSM5IT,Doxorubicin,Codelist
+PRG04FM,PRG04FFORRESM5IT,Relationship of Lactation to Doxorubicin,Codelist
+PRG04FM,PRG04FFOBJSM6IT,Prednisone,Codelist
+PRG04FM,PRG04FFORRESM6IT,Relationship of Lactation to Prednisone,Codelist
+PRG04FM,PRG04FFOBJSM7IT,Prednisolone,Codelist
+PRG04FM,PRG04FFORRESM7IT,Relationship of Lactation to Prednisolone,Codelist
+PRG04FM,PRG04PXCATFLIT,Category,Codelist
+PRG04FM,PRG04PXCATLBIT,Category,Codelist
+PRG04FM,PRG04PXCATGAIT,Category,Codelist
+PRG04FM,PRG04PXSCATGAIT,Subcategory,Codelist
+PRG04FM,PRG04PXCATGAUIT,Gestational Age Units,Codelist
+PRG04FM,PRG04PXCATVSIT,Category,Codelist
+PRG04FM,PRG04PXCATHDIT,Location,Codelist
+PRG04FM,PRG04PXCATPEIT,Category,Codelist
+PRG04FM,PRG04FESPIDIT,Fetus/Infant Sequence Number,Number
+PRG04FM,PRG04_O_NARR,Narratives,Codelist
+PRG04FM,PRG04_COVAL,Narratives,Text
+PRG04FM,DELETEDFM,Deleted Form - Sponsor use Only,Codelist
+PRG04FM,PRG04_SAF_DRV,Event Reported,Codelist
+PRG04FM,PRG04_SAF_OUT_DRV,Derived Outcome (Safety),Codelist
+PRG04FM,PRG04_SAF_MODE_DRV,Derived Mode of Delivery (Safety),Codelist
+PRG04FM,PRG04_SAF_PARTNER,Derived Partner ID,Text
+PRG04FM,PRG04_SAFCOMLBL,Sponsor use only.,Label
+PRG04FM,PRG04_O_SAFCOMSEC,Section,Codelist
+PRG04FM,PRG04_O_SAFCOM_DRV,Reporter's Comments,Text
+SAEIFM,SAEIFETERMIT,AE Term(for Lab AE use the term increased or decreased),Text
+SAEIFM,SAEIFEPYPRG1IT,Associated Pregnancy Sequence Number (from PRG01 form),Number
+SAEIFM,SAEIFEPYPRG1IT_LINK,Associated Pregnancy Sequence Number,Form Link
+SAEIFM,SAEIFEPYSPID1IT,Associated Infant Sequence Number (from PRG02 form),Number
+SAEIFM,SAEIFEPYSPID1IT_LINK,Associated Infant Sequence Number,Form Link
+SAEIFM,SAEIFEPYPRG3IT,Associated Partner Pregnancy Sequence Number (from PRG03 form),Number
+SAEIFM,SAEIFEPYPRG3IT_LINK,Associated Partner Pregnancy Sequence Number,Form Link
+SAEIFM,SAEIFEPYSPID2IT,Associated Partner Infant Sequence Number (from PRG04 form),Number
+SAEIFM,SAEIFEPYSPID2IT_LINK,Associated Partner Infant Sequence Number,Form Link
+SAEIFM,SAEISAEINFAGEIT,Age of infant at the time of the SAE,Codelist
+SAEIFM,SAEISAEINFFEEDIT,Was the infant breastfeeding at the time of the SAE?,Codelist
+SAEIFM,SAEIFESTDTCONSIT,Onset Date and Time (Lab collection date if lab AE),Date
+SAEIFM,SAEIFEENDTCIT,End Date and Time,Codelist
+SAEIFM,SAEIFEENDTCDT,Date,Date
+SAEIFM,SAEI_LBL_1,Duration if less than 24 hrs,Label
+SAEIFM,SAEIFEOUTDHRSTB,Number of Hours,Number
+SAEIFM,SAEIFEOUTDMINSTB,Number of Minutes,Number
+SAEIFM,SAEIFEOUTDSECSTB,Number of Seconds,Number
+SAEIFM,SAEIFEOUTIT,Outcome of AE,Codelist
+SAEIFM,SAEIFESEVINTIT,Severity/Intensity,Codelist
+SAEIFM,SAEIFETOXGRIT,Overall Toxicity,Codelist
+SAEIFM,SAEIFETOXIT,Overall Toxicity Description,Text
+SAEIFM,SAEIFEACNIT,Overall action taken for the subjects (parents) study medication,Codelist
+SAEIFM,SAEIFERELIT,Overall Relationship to Subjects (Parents) Study Medication,Codelist
+SAEIFM,SAEIFFORRESM1IT,MK-2140,Codelist
+SAEIFM,SAEIFFORRESAPM1IT,Action Taken for the Subjects (Parents) MK-2140,Codelist
+SAEIFM,SAEIFFORRESRPM1IT,Relationship to Subjects (Parents) MK-2140,Codelist
+SAEIFM,SAEIFFORRESM2IT,Rituximab,Codelist
+SAEIFM,SAEIFFORRESAPM2IT,Action Taken for the Subjects (Parents) Rituximab,Codelist
+SAEIFM,SAEIFFORRESRPM2IT,Relationship to Subjects (Parents) Rituximab,Codelist
+SAEIFM,SAEIFFORRESM3IT,Truxima (Biosimilar to Rituximab),Codelist
+SAEIFM,SAEIFFORRESAPM3IT,Action Taken for the Subjects (Parents) Truxima (Biosimilar to Rituximab),Codelist
+SAEIFM,SAEIFFORRESRPM3IT,Relationship to Subjects (Parents) Truxima (Biosimilar to Rituximab),Codelist
+SAEIFM,SAEIFFORRESM4IT,Cyclophosphamide,Codelist
+SAEIFM,SAEIFFORRESAPM4IT,Action Taken for the Subjects (Parents) Cyclophosphamide,Codelist
+SAEIFM,SAEIFFORRESRPM4IT,Relationship to Subjects (Parents) Cyclophosphamide,Codelist
+SAEIFM,SAEIFFORRESM5IT,Doxorubicin,Codelist
+SAEIFM,SAEIFFORRESAPM5IT,Action Taken for the Subjects (Parents) Doxorubicin,Codelist
+SAEIFM,SAEIFFORRESRPM5IT,Relationship to Subjects (Parents) Doxorubicin,Codelist
+SAEIFM,SAEIFFORRESM6IT,Prednisone,Codelist
+SAEIFM,SAEIFFORRESAPM6IT,Action Taken for the Subjects (Parents) Prednisone,Codelist
+SAEIFM,SAEIFFORRESRPM6IT,Relationship to Subjects (Parents) Prednisone,Codelist
+SAEIFM,SAEIFFORRESM7IT,Prednisolone,Codelist
+SAEIFM,SAEIFFORRESAPM7IT,Action Taken for the Subjects (Parents) Prednisolone,Codelist
+SAEIFM,SAEIFFORRESRPM7IT,Relationship to Subjects (Parents) Prednisolone,Codelist
+SAEIFM,SAEIDOSTOXLIMIT,Did the infant SAE result in a dose change for the Subject (Parents) medication?,Codelist
+SAEIFM,SAEIFESERCIT,Serious Criteria(check all that apply),Label
+SAEIFM,SAEIFESERCNCB,None,Boolean
+SAEIFM,SAEIFESHOSPCB,Inpatient hospitalization or prolongation of hospitalization,Boolean
+SAEIFM,SAEIFESCANCB,Cancer,Boolean
+SAEIFM,SAEIFESLIFECB,Immediately life threatening,Boolean
+SAEIFM,SAEIFESDISABCB,Persistent or significant disability/incapacity,Boolean
+SAEIFM,SAEIFESCONGCB,Congenital anomaly/birth defect,Boolean
+SAEIFM,SAEIFESODCB,Overdose,Boolean
+SAEIFM,SAEIFESMIECB,Other important medical event,Boolean
+SAEIFM,SAEIFESDTHCB,Death,Boolean
+SAEIFM,SAEIFEEVNTAUTCB,Event reported in autopsy as cause of death?,Boolean
+SAEIFM,SAEIFESERCRC,Event reported in autopsy as cause of death?,Codelist
+SAEIFM,SAEIFECLINTIT,Is the AE an Event of Clinical Interest?,Codelist
+SAEIFM,SAEIFESPIDIT,Sponsor ID Number,Number
+SAEIFM,DELETEDFM,Deleted Form - Sponsor use Only,Codelist
+SAEIFM,SAEIFFCATRCDIT,Primary Reported Cause of Death Category,Codelist
+SAEIFM,SAEIFFORRESPCDIT,Primary Reported Cause of Death,Text
+SAEIFM,SAEIFESTDTCIT,Date/Time of Death,Date
+SAEIFM,SAEIFFORRESAUTIT,Was Autopsy Completed?,Codelist
+SAEIFM,SAEIFFDTHDSCRIT,Describe Death Information,Text
+SAEIFM,SAEI_LBL,Note: Complete section below only if AE meets serious AE criteria or is an event of clinical interest,Label
+SAEIFM,SAEIFFORRESCTRIT,Country Where Event Occurred?,Codelist
+SAEIFM,SAEIFFORRESPRIT,Relationship to Study Procedure,Codelist
+SAEIFM,SAEIFFORRESPQCIT,Is There a Product Quality Complaint Attached?,Codelist
+SAEIFM,SAEIFFORRESD1IT,Did the event improve or disappear after the subject (parent) stopped MK-2140? (Dechallenge),Codelist
+SAEIFM,SAEIFFORRESR1IT,Did the event reappear or worsen after the subject (parent) restarted MK-2140?(Rechallenge),Codelist
+SAEIFM,SAEIFFORRESD2IT,Did the event improve or disappear after the subject (parent) stopped Rituximab? (Dechallenge),Codelist
+SAEIFM,SAEIFFORRESR2IT,Did the event reappear or worsen after the subject (parent) restarted  Rituximab?(Rechallenge),Codelist
+SAEIFM,SAEIFFORRESD3IT,Did the event improve or disappear after the subject (parent) stopped Truxima (Biosimilar to Rituximab)? (Dechallenge),Codelist
+SAEIFM,SAEIFFORRESR3IT,Did the event reappear or worsen after the subject (parent) restarted  Truxima (Biosimilar to Rituximab)?(Rechallenge),Codelist
+SAEIFM,SAEIFFORRESD4IT,Did the event improve or disappear after the subject (parent) stopped Cyclophosphamide? (Dechallenge),Codelist
+SAEIFM,SAEIFFORRESR4IT,Did the event reappear or worsen after the subject (parent) restarted  Cyclophosphamide? (Rechallenge),Codelist
+SAEIFM,SAEIFFORRESD5IT,Did the event improve or disappear after the subject (parent) stopped Doxorubicin? (Dechallenge),Codelist
+SAEIFM,SAEIFFORRESR5IT,Did the event reappear or worsen after the subject (parent) restarted  Doxorubicin? (Rechallenge),Codelist
+SAEIFM,SAEIFFORRESD6IT,Did the event improve or disappear after the subject (parent) stopped Prednisone? (Dechallenge),Codelist
+SAEIFM,SAEIFFORRESR6IT,Did the event reappear or worsen after the subject (parent) restarted  Prednisone? (Rechallenge),Codelist
+SAEIFM,SAEIFFORRESD7IT,Did the event improve or disappear after the subject (parent) stopped Prednisolone? (Dechallenge),Codelist
+SAEIFM,SAEIFFORRESR7IT,Did the event reappear or worsen after the subject (parent) restarted  Prednisolone? (Rechallenge),Codelist
+SAEIFM,SAEIFERELNSTSIT,"If event was related to subjects (parent) other suspect therapy, briefly describe AEOST information",Text
+SAEIFM,SAEIFERELNSTSIT1,"If event was related to subjects (parent) other suspect therapy, briefly describe AEOST information Cont.",Text
+SAEIFM,SAEIFERELNSTIIT,"If event was related to infants other suspect therapy, briefly describe AEOST information",Text
+SAEIFM,SAEIFERELNSTIIT1,"If event was related to infants other suspect therapy, briefly describe AEOST information Cont.",Text
+SAEIFM,SAEICOVALPSSIT,Briefly describe the presentation of the event including Signs and Symptoms,Text
+SAEIFM,SAEICOVALPSSIT1,Briefly describe the presentation of the event including Signs and Symptoms Cont.,Text
+SAEIFM,SAEICOVALCCDTIT,Describe the clinical course of the event including pertinent laboratory or diagnostic tests performed,Text
+SAEIFM,SAEICOVALCCDTIT1,Describe the clinical course of the event including pertinent laboratory or diagnostic tests performed Cont.,Text
+SAEIFM,SAEICOVALCRSTXIT,Course of treatment for event,Text
+SAEIFM,SAEICOVALCRSTXIT1,Course of treatment for event Cont.,Text
+SAEIFM,SAEICOVALEVRVIT,Evidence supporting recovery (return to baseline or description of new baseline),Text
+SAEIFM,SAEICOVALEVRVIT1,Evidence supporting recovery (return to baseline or description of new baseline) Cont.,Text
+SAEIFM,SAEICOVALCCFUIT,Provide follow-up to clinical course of the infant,Text
+SAEIFM,SAEICOVALCCFUIT1,Provide follow-up to clinical course of the infant Cont.,Text
+SAEIFM,SAEIFFSTDTCIT,Toxicity Grade Onset Date,Date
+SAEIFM,SAEIFFENDTCIT,Toxicity Grade Stop Date,Date
+SAEIFM,SAEIFFORRESTXGIT,Toxicity Grade,Codelist
+SAEIFM,SAEIFFORRESTXIT,Toxicity Description,Text
+SAEIFM,SAEIFFSPIDIT,Associated AE Sponsor ID Number (from top of AE form),Number
+SAEIFM,DELETEDSN,Deleted Section - Sponsor use Only,Codelist
+SAEIFM,AE_AELBL8,Sponsor use only.,Label
+SAEIFM,SAEIFECTRYEVIT_SAF,Country Where Event Occurred?,Codelist
+SAEIFM,SAEI_SAF_INFANT,Derived Infant ID,Text
+SAEIFM,SAEI_O_SAF_INFANTDM_DRV,Infant Sex and Date of Birth,Text
+SAEIFM,SAEI_SAF_PIDM_DRV,Derived Partner Infant Demographics,Text
+SAEIFM,SAEI_SAF_LACRELS_DRV,Derived Relationship of Lactation from Subject Pregnancy,Text
+SAEIFM,SAEI_SAF_LACRELP_DRV,Derived Relationship of Lactation from Partner Pregnancy,Text
+SAEIFM,SAEI_O_SAFCOMSEC,Section,Codelist
+SAEIFM,SAEI_O_SAFCOM_DRV,Reporter's Comments,Text
+SAEPFM,SAEPFETERMIT,AE Term (for Lab AE use the term increased or decreased),Text
+SAEPFM,SAEPFEPYPRG3IT,Associated Partner Pregnancy Sequence Number (from PRG03 form),Number
+SAEPFM,SAEPFEPYPRG3IT_LINK,Associated Partner Pregnancy Sequence Number (from PRG03 form),Form Link
+SAEPFM,SAEPFESTDTCIT,Onset Date and Time (Lab collection date if lab AE),Date
+SAEPFM,SAEPFEENDTCIT,End Date and Time,Codelist
+SAEPFM,SAEPFEENDTCDT,Date,Date
+SAEPFM,SAEP_LBL_1,Duration if less than 24 hrs,Label
+SAEPFM,SAEPFEOUTDHRSTB,Number of Hours,Number
+SAEPFM,SAEPFEOUTDMINSTB,Number of Minutes,Number
+SAEPFM,SAEPFEOUTDSECSTB,Number of Seconds,Number
+SAEPFM,SAEPFEOUTIT,Outcome of AE,Codelist
+SAEPFM,SAEPFESEVINTIT,Severity/Intensity,Codelist
+SAEPFM,SAEPFETOXGRIT,Overall Toxicity Grade,Codelist
+SAEPFM,SAEPFETOXIT,Overall Toxicity Description,Text
+SAEPFM,SAEPFEACNIT,Overall action taken for the subjects study medication,Codelist
+SAEPFM,SAEPFERELIT,Overall Relationship to Subjects Study Medication,Codelist
+SAEPFM,SAEPFFORRESSM1IT,MK-2140,Codelist
+SAEPFM,SAEPFFORRESAM1IT,Action Taken for the Subjects MK-2140,Codelist
+SAEPFM,SAEPFFORRESRLM1IT,Relationship to Subjects MK-2140,Codelist
+SAEPFM,SAEPFFORRESSM2IT,Rituximab,Codelist
+SAEPFM,SAEPFFORRESAM2IT,Action Taken for the Subjects Rituximab,Codelist
+SAEPFM,SAEPFFORRESRLM2IT,Relationship to Subjects Rituximab,Codelist
+SAEPFM,SAEPFFORRESSM3IT,Truxima (Biosimilar to Rituximab),Codelist
+SAEPFM,SAEPFFORRESAM3IT,Action Taken for the Subjects Truxima (Biosimilar to Rituximab),Codelist
+SAEPFM,SAEPFFORRESRLM3IT,Relationship to Subjects Truxima (Biosimilar to Rituximab),Codelist
+SAEPFM,SAEPFFORRESSM4IT,Cyclophosphamide,Codelist
+SAEPFM,SAEPFFORRESAM4IT,Action Taken for the Subjects Cyclophosphamide,Codelist
+SAEPFM,SAEPFFORRESRLM4IT,Relationship to Subjects Cyclophosphamide,Codelist
+SAEPFM,SAEPFFORRESSM5IT,Doxorubicin,Codelist
+SAEPFM,SAEPFFORRESAM5IT,Action Taken for the Subjects Doxorubicin,Codelist
+SAEPFM,SAEPFFORRESRLM5IT,Relationship to Subjects Doxorubicin,Codelist
+SAEPFM,SAEPFFORRESSM6IT,Prednisone,Codelist
+SAEPFM,SAEPFFORRESAM6IT,Action Taken for the Subjects Prednisone,Codelist
+SAEPFM,SAEPFFORRESRLM6IT,Relationship to Subjects Prednisone,Codelist
+SAEPFM,SAEPFFORRESSM7IT,Prednisolone,Codelist
+SAEPFM,SAEPFFORRESAM7IT,Action Taken for the Subjects Prednisolone,Codelist
+SAEPFM,SAEPFFORRESRLM7IT,Relationship to Subjects Prednisolone,Codelist
+SAEPFM,SAEPFESERCIT,Serious Criteria (check all that apply),Label
+SAEPFM,SAEPFESERCNCB,None,Boolean
+SAEPFM,SAEPFESHOSPCB,Inpatient hospitalization or prolongation of hospitalization,Boolean
+SAEPFM,SAEPFESCANCB,Cancer,Boolean
+SAEPFM,SAEPFESLIFECB,Immediately life threatening,Boolean
+SAEPFM,SAEPFESDISABCB,Persistent or significant disability/incapacity,Boolean
+SAEPFM,SAEPFESCONGCB,Congenital anomaly/birth defect,Boolean
+SAEPFM,SAEPFESODCB,Overdose,Boolean
+SAEPFM,SAEPFESMIECB,Other important medical event,Boolean
+SAEPFM,SAEPFESDTHCB,Death,Boolean
+SAEPFM,SAEPFEEVNTAUTCB,Event reported in autopsy as cause of death?,Boolean
+SAEPFM,SAEPFEEVNTAUTRC,Event reported in autopsy as cause of death?,Codelist
+SAEPFM,SAEPFECLINTIT,Is the AE an Event of Clinical Interest?,Codelist
+SAEPFM,SAEPFESPIDIT,Sponsor ID Number,Number
+SAEPFM,SAEPFFCATRCDIT,Primary Reported Cause of Death Category,Codelist
+SAEPFM,SAEPFFORRESPRCDIT,Primary Reported Cause of Death,Text
+SAEPFM,SAEPFFTDTCIT,Date/Time of Death,Date
+SAEPFM,SAEPFFORRESACIT,Was Autopsy Completed?,Codelist
+SAEPFM,SAEPFFORRESDDIIT,Describe Death Information,Text
+SAEPFM,SAEP_LBL,Note: Complete section below only if AE meets serious AE criteria or is an event of clinical interest,Label
+SAEPFM,SAEPFFORRESCTRYIT,Country Where Event Occurred?,Codelist
+SAEPFM,SAEPFFORRESRSPIT,Relationship to Study Procedure,Codelist
+SAEPFM,SAEPFFORRESDM1IT,Did the event improve or disappear after the subject stopped MK-2140? (Dechallenge),Codelist
+SAEPFM,SAEPFFORRESRM1IT,Did the event reappear or worsen after the subject restarted MK-2140?(Rechallenge),Codelist
+SAEPFM,SAEPFFORRESDM2IT,Did the event improve or disappear after the subject stopped Rituximab? (Dechallenge),Codelist
+SAEPFM,SAEPFFORRESRM2IT,Did the event reappear or worsen after the subject restarted Rituximab?(Rechallenge),Codelist
+SAEPFM,SAEPFFORRESDM3IT,Did the event improve or disappear after the subject stopped Truxima (Biosimilar to Rituximab)? (Dechallenge),Codelist
+SAEPFM,SAEPFFORRESRM3IT,Did the event reappear or worsen after the subject restarted Truxima (Biosimilar to Rituximab)?(Rechallenge),Codelist
+SAEPFM,SAEPFFORRESDM4IT,Did the event improve or disappear after the subject stopped Cyclophosphamide? (Dechallenge),Codelist
+SAEPFM,SAEPFFORRESRM4IT,Did the event reappear or worsen after the subject restarted Cyclophosphamide? (Rechallenge),Codelist
+SAEPFM,SAEPFFORRESDM5IT,Did the event improve or disappear after the subject stopped Doxorubicin? (Dechallenge),Codelist
+SAEPFM,SAEPFFORRESRM5IT,Did the event reappear or worsen after the subject restarted Doxorubicin? (Rechallenge),Codelist
+SAEPFM,SAEPFFORRESDM6IT,Did the event improve or disappear after the subject stopped Prednisone? (Dechallenge),Codelist
+SAEPFM,SAEPFFORRESRM6IT,Did the event reappear or worsen after the subject restarted Prednisone? (Rechallenge),Codelist
+SAEPFM,SAEPFFORRESDM7IT,Did the event improve or disappear after the subject stopped Prednisolone? (Dechallenge),Codelist
+SAEPFM,SAEPFFORRESRM7IT,Did the event reappear or worsen after the subject restarted Prednisolone? (Rechallenge),Codelist
+SAEPFM,SAEPFERELNSTSIT,"If event was related to subjects other suspect therapy, briefly describe AEOST information",Text
+SAEPFM,SAEPFERELNSTSIT1,"If event was related to subjects other suspect therapy, briefly describe AEOST information Cont.",Text
+SAEPFM,SAEPFERELNSTIIT,"If event was related to partners other suspect therapy, briefly describe AEOST information",Text
+SAEPFM,SAEPFERELNSTIIT1,"If event was related to partners other suspect therapy, briefly describe AEOST information Cont.",Text
+SAEPFM,SAEPCOVALPSSIT,Briefly describe the presentation of the event including Signs and Symptoms,Text
+SAEPFM,SAEPCOVALPSSIT1,Briefly describe the presentation of the event including Signs and Symptoms Cont.,Text
+SAEPFM,SAEPCOVALCCDTIT,Describe the clinical course of the event including pertinent laboratory or diagnostic tests performed,Text
+SAEPFM,SAEPCOVALCCDTIT1,Describe the clinical course of the event including pertinent laboratory or diagnostic tests performed Cont.,Text
+SAEPFM,SAEPCOVALCRSTXIT,Course of treatment for event,Text
+SAEPFM,SAEPCOVALCRSTXIT1,Course of treatment for event Cont.,Text
+SAEPFM,SAEPCOVALEVRVIT,Evidence supporting recovery (return to baseline or description of new baseline),Text
+SAEPFM,SAEPCOVALEVRVIT1,Evidence supporting recovery (return to baseline or description of new baseline) Cont.,Text
+SAEPFM,SAEPCOVALCCFUIT,Provide follow-up to clinical course of the partner,Text
+SAEPFM,SAEPCOVALCCFUIT1,Provide follow-up to clinical course of the partner Cont.,Text
+SAEPFM,DELETEDFM,Deleted Form - Sponsor use Only,Codelist
+SAEPFM,SAEPCFSTDTCIT,Toxicity Grade Onset Date,Date
+SAEPFM,SAEPCFENDTCIT,Toxicity Grade Stop Date,Date
+SAEPFM,SAEPCFORRESTGIT,Toxicity Grade,Codelist
+SAEPFM,SAEPCFORRESTDIT,Toxicity Description,Text
+SAEPFM,SAEPCFSPIDIT,Associated AE Sponsor ID Number (from top of AE form),Number
+SAEPFM,DELETEDSN,Deleted Section - Sponsor use Only,Codelist
+SAEPFM,SAEP_O_NARR,Narratives,Codelist
+SAEPFM,SAEP_COVAL,Narratives,Text
+SAEPFM,SAEP_SAEPLBL1,Sponsor use only.,Label
+SAEPFM,SAEPFECTRYEVIT_SAF,Country Where Event Occurred?,Codelist
+SAEPFM,SAEP_SAF_PARTNER,Derived Partner ID,Text
+SAEPFM,AE_AELBL8,Sponsor use only.,Label
+SAEPFM,SAEP_O_SAFCOMSEC,Section,Codelist
+SAEPFM,SAEP_O_SAFCOM_DRV,Reporter's Comments,Text
+ORAD2FM,ORAD2PRDTCIT,Date of Assessment,Date
+ORAD2FM,ORAD2PRINDCIT,Reason for Radiation,Codelist
+ORAD2FM,ORAD2PRTRTIT,Type of Therapy,Codelist
+ORAD2FM,ORAD2PRTRTPD,List,Codelist
+ORAD2FM,ORAD2PRTRTOTHTB,Other,Text
+ORAD2FM,ORAD2PRORRESPSIT,Pre-Specify,Codelist
+ORAD2FM,ORAD2PROCCURIT,Pre-Specify Occurrence,Codelist
+ORAD2FM,ORAD2PRACMSINUMIT,Associated Sponsor ID number for Chemotherapy Given Concurrently with Radiation (From ODBF form),Text
+ORAD2FM,ORAD2PRSTDTCIT,Start Date,Date
+ORAD2FM,ORAD2PRENDTCIT,Stop Date,Date
+ORAD2FM,ORAD2RSORRESBPIT,Best Response,Codelist
+ORAD2FM,ORAD2RSCATIT,Category for Response Assessment,Codelist
+ORAD2FM,ORAD2PRSPIDIT,Sponsor ID Number,Number
+ORAD2FM,DELETEDFM,Deleted Form - Sponsor use Only,Codelist
+ORAD2FM,ORAD2SEQNUMIT,Sequence Number,Number
+ORAD2FM,ORAD2PRLOCATNIT,Location,Codelist
+ORAD2FM,ORAD2PRLOCOTHIT,Other Location,Text
+ORAD2FM,ORAD2PRLOCDTLIT,Location Site Details,Text
+ORAD2FM,ORAD2PRSPID1IT,Associated Sponsor ID Number,Number
+ORAD2FM,DELETEDSN,Deleted Section - Sponsor use Only,Codelist
+ORAD2FM,ORAD2_PRORDLBL4,Sponsor use only.,Label
+ORAD2FM,ORAD2_O_SAFPRSCAT_DRV,Derived Radiation Therapy Type,Text
+ORAD2FM,ORAD2_O_SAFCOM_DRV,Comments,Text
+OSOFFM,OSOFPRSTDTCIT,Date of Surgery,Date
+OSOFFM,OSOFAESEQIT,Associated AE Sequence Number (from AE form),Label
+OSOFFM,OSOFPRAAESNUM1TB,Associated ID 1,Number
+OSOFFM,OSOFPRAAESNUM2TB,Associated ID 2,Number
+OSOFFM,OSOFPRAAESNUM3TB,Associated ID 3,Number
+OSOFFM,OSOFPRAAESNUM4TB,Associated ID 4,Number
+OSOFFM,OSOFPRAAESNUM5TB,Associated ID 5,Number
+OSOFFM,OSOFPRAAESNUM6TB,Associated ID 6,Number
+OSOFFM,OSOFPRTRTIT,Oncologic Surgery,Text
+OSOFFM,OSOFPRSURGTYPEIT,Surgery Type,Codelist
+OSOFFM,OSOFPRINTSURGIT,Intent of Surgery,Codelist
+OSOFFM,OSOFPRINTSURGORC,Curative,Codelist
+OSOFFM,OSOFLOCIT,Location,Codelist
+OSOFFM,OSOFPRLOCPD,List,Codelist
+OSOFFM,OSOFPRLOCOTHTB,Other,Text
+OSOFFM,OSOFPRLOCDTLIT,Lesion Site Details,Text
+OSOFFM,OSOFPATHRDIT,Pathology Findings,Codelist
+OSOFFM,OSOFPHORRESPATHPD,List,Codelist
+OSOFFM,OSOFPHORRESPATHOTB,"Other, Specify",Text
+OSOFFM,OSOFPRCATIT,Category,Codelist
+OSOFFM,OSOFPHSPECIT,Specimen Type,Codelist
+OSOFFM,OSOFPRSPIDIT,Sponsor ID Number,Number
+OSOFFM,DELETEDFM,Deleted Form - Sponsor use Only,Codelist
+HSU1FM,HSU1HODTCASMTIT,Date/Time of Assessment,Date
+HSU1FM,HSU1HOTERMIT,Specialty Unit,Codelist
+HSU1FM,HSU1PRPRESPIT,Pre-Specify,Codelist
+HSU1FM,HSU1HOSTDTCADMSIT,Admission Date/Time,Date
+HSU1FM,HSU1HOENDTCDRIT,Discharge Ready Date/Time,Date
+HSU1FM,HSU1HOENDTCIT,Discharge Date/Time,Codelist
+HSU1FM,HSU1HOENDTCONDT,Date,Date
+HSU1FM,HSU1HORSNDXIT,Was Admission to the Specialty Care Unit Related to the Disease?,Codelist
+HSU1FM,HSU1COVALDDIAGIT,List Discharge Diagnosis(es),Text
+HSU1FM,HSU1COVALDDIAGIT1,List Discharge Diagnosis(es) Cont.,Text
+HSU1FM,HSU1HOOCCURIT,Specialty Unit,Codelist
+HSU1FM,HSU1HOSPIDIT,Sponsor ID Number,Number
+HSU1FM,DELETEDFM,Deleted Form - Sponsor use Only,Codelist
+LOELFM,LOEL_LBL,"Note to Site: Besides Entering Locations for Target, Non-Target, and New Lesions There Must be a Separate Record for Each of the Following Organ or System Assessment Locations: Spleen, Liver, Bone, and Body.",Label
+LOELFM,LOELLSTULNKIDIT,Lesion Number,Text
+LOELFM,LOELTUDTCIT,Date of Initial Lesion/Organ Identification for This Trial (Scan/Image/Physical Exam),Date
+LOELFM,LOELLSPRDFLAGIT,Study Period,Codelist
+LOELFM,LOELLSCATIT,Lesion Identification,Codelist
+LOELFM,LOELLOCLTNTNIT,"Target, Non-Target and New Lesion Location",Codelist
+LOELFM,LOELTULOCPD,LIST,Codelist
+LOELFM,LOELTULOCOTHTB,OTHER,Text
+LOELFM,LOELTULOCDTLIT,Lesion Site Details,Text
+LOELFM,LOELTULOCLOSAIT,Organ or System Assessment Location,Codelist
+LOELFM,LOELTUORRESMSIT,Indicate if Lesion Merged or Split,Codelist
+LOELFM,Merged,Merged (Provide Associated Lesion Number),Label
+LOELFM,LOELTUALSNNUM1TB,MERGED1,Text
+LOELFM,LOELTUALSNNUM2TB,MERGED2,Text
+LOELFM,LOELTUALSNNUM3TB,MERGED3,Text
+LOELFM,LOELTUALSNNUM4TB,MERGED4,Text
+LOELFM,LOELTUALSNNUM5TB,MERGED5,Text
+LOELFM,LOELTUORRESSSPTTB,Split (Provide Associatied Lesion Number),Text
+LOELFM,LOELTUFRGMTNUMIT,Fragment Number,Codelist
+LOELFM,LOELTUPREVIRIT,Was the Target Lesion Previously Irradiated?,Codelist
+LOELFM,LOELTUPREVIRPIT,Has the Lesion Grown Since Radiation?,Codelist
+LOELFM,LOELLSEVALIT,Evaluator,Codelist
+LOELFM,LOELLSSPIDIT,Sponsor ID Number,Number
+LOELFM,DELETEDFM,Deleted Form - Sponsor use Only,Codelist
+LOELFM,LOELLSLNKGRPIT,Associated Lesion Number,Text
+LOELFM,LOELLSDTCLEVIT,Date of Current Lesion/Organ Evaluation (Scan/Image/Physical Exam),Date
+LOELFM,LOELLSTPTIT,Scheduled Time,Codelist
+LOELFM,LOELLSMETHODIT,Method of Assessment,Codelist
+LOELFM,LOELLSREASNDIT,"Was the Lesion, Organ, or System Evaluable at this Visit?",Codelist
+LOELFM,LOELLSSTATLEIT,Lesion Evaluable Status,Codelist
+LOELFM,LOELLSORRESDLIT,Longest Diameter,Number
+LOELFM,LOELLSORRESSAIT,Short Axis,Number
+LOELFM,LOELLSORRESULIT,Lesion Measurement Unit,Codelist
+LOELFM,LOELLSORRESPDIT,Product of Diameters,Number
+LOELFM,LOELLSORRESUPIT,Product of Diameters Unit,Codelist
+LOELFM,LOELLSDRVFLPPDIT,Derived Flag,Codelist
+LOELFM,LOELLSORRESNTIT,Non-Target or New Lesion Status,Codelist
+LOELFM,LOELLSORRESSPIT,Spleen Vertical Length Measurement,Number
+LOELFM,LOELLSORRESSDIT,Spleen Enlarged Portion,Number
+LOELFM,LOELLSORRESPUSIT,Spleen Measurement Unit,Codelist
+LOELFM,LOELLSDRVFLSVLIT,Derived Flag,Codelist
+LOELFM,LOELLSORRESOSTIT,Organ Status,Codelist
+LOELFM,LOELLSORRES5PIT,5 (5PS) Score,Codelist
+LOELFM,LOELLSFDPL5PSDRC,5 (Uptake Markedly Higher Than Liver and/or New Lesions),Codelist
+LOELFM,LOELLSNUAULRINIT,Are There Any New Uptake Areas Unlikely to Be Related to Lymphoma?,Codelist
+LOELFM,LOELGFDGULOCIT,Location of Greatest FDG Uptake,Codelist
+LOELFM,LOELLSGFDGULOCPD,LIST,Codelist
+LOELFM,LOELLSGFDGULOCOTB,OTHER,Text
+LOELFM,LOELLSORRESUCBIT,Overall FDG Uptake Compared to Baseline,Codelist
+LOELFM,LOELLSORRESUCNIT,Overall FDG Uptake Compared to Nadir,Codelist
+LOELFM,LOELLSORRESBMIT,Bone Marrow FDG Uptake,Codelist
+LOELFM,LOELSPIDIT,Associated Sponsor ID Number,Number
+LOELFM,DELETEDSN,Deleted Section - Sponsor use Only,Codelist
+DS01FM,DS01DSSTDTCLCIT,Date of Disposition,Date
+DS01FM,DS01DSTERMCMPIT,Select the Status of the Subject for the Study,Codelist
+DS01FM,DS01DSTERMDSCRC,Discontinued (select reason below):,Codelist
+DS01FM,DS01ADDDSDTLIT,Reason for Study Discontinuation Details (see note immediately above),Text
+DS01FM,DS01ADDDSDTLIT1,Reason for Study Discontinuation Details (see note immediately above) Cont.,Text
+DS01FM,DS01DSEPRELNIT,Was Subject Discontinued due to COVID-19?,Codelist
+DS01FM,DS01DSCATIT,Form Category,Codelist
+DS01FM,DS01DSSCATIT,Form Subcategory,Codelist
+DEATHFM,DEATHCESPIDSIT,Associated AE Sequence Number(s) (from AE form),Label
+DEATHFM,DEATHCESPIDS1TB,Associated ID 1,Number
+DEATHFM,DEATHCESPIDS2TB,Associated ID 2,Number
+DEATHFM,DEATHCESPIDS3TB,Associated ID 3,Number
+DEATHFM,DEATHCESPIDS4TB,Associated ID 4,Number
+DEATHFM,DEATHCESPIDS5TB,Associated ID 5,Number
+DEATHFM,DEATHCESPIDS6TB,Associated ID 6,Number
+DEATHFM,DEATHCESPIDS7TB,Associated ID 7,Number
+DEATHFM,DEATHCESPIDS8TB,Associated ID 8,Number
+DEATHFM,DEATHCECATREPIT,Primary Reported Cause of Death Category,Codelist
+DEATHFM,DEATHCETERMREPIT,Primary Reported Cause of Death,Text
+DEATHFM,DEATHCESTDTCIT,Date/Time of Death,Date
+DEATHFM,DEATHCESOUCIT,Source for notification of the cause of death (check all that apply),Label
+DEATHFM,DEATHCESOUCDCCB,Death Certificate,Boolean
+DEATHFM,DEATHCESOUCDHCB,Hospital Records,Boolean
+DEATHFM,DEATHCESOUCDICB,Investigator,Boolean
+DEATHFM,DEATHCESOUCDFCB,Family,Boolean
+DEATHFM,DEATHCESOUCDOCB,Other,Boolean
+DEATHFM,DEATHCESTATACIT,Was Autopsy Completed?,Codelist
+DARFM,DARCESPIDSIT,Associated AE Sequence Number (from AE form),Number
+DARFM,DARCECATAUTIT,Autopsy Category,Codelist
+DARFM,DARCETERMAUTIT,Autopsy Determined Cause of Death,Text
+DARFM,DARCESTDTCIT,Date/Time of Death,Date
+DARFM,DARCESOUCIT,Source for notification of the cause of death (check all that apply),Label
+DARFM,DARCESOUCDCCB,Death Certificate,Boolean
+DARFM,DARCESOUCDHCB,Hospital Records,Boolean
+DARFM,DARCESOUCDICB,Investigator,Boolean
+DARFM,DARCESOUCDFCB,Family,Boolean
+DARFM,DARCESOUCDOCB,Other,Boolean
+DARFM,DARCOVALAUTSIT,Autopsy Synopsis,Text
+DARFM,DARCOVALAUTSIT1,Autopsy Synopsis Cont.,Text
+DARFM,DELETEDFM,Deleted Form - Sponsor use Only,Codelist
+frmHNR,itmHNRSeqNum,Sequence Number,Number
+frmHNR,itmHNRName,Laboratory Name,Text
+frmHNR,itmHNRDt,Effective Date,Date
+frmHNR,MTXTHNRLLN_ITMHNRWBC,White Blood Cell Count Lower Limit of Normal:,Number
+frmHNR,MTXTHNRULN_ITMHNRWBC,White Blood Cell Count Upper Limit of Normal:,Number
+frmHNR,pdcHNRWBCUnit,White Blood Cell Count Unit:,Codelist
+frmHNR,MTXTHNRLLN_ITMHNRRBC,Red Blood Cell Count Lower Limit of Normal:,Number
+frmHNR,MTXTHNRULN_ITMHNRRBC,Red Blood Cell Count Upper Limit of Normal:,Number
+frmHNR,pdcHNRRBCUnit,Red Blood Cell Count Unit:,Codelist
+frmHNR,MTXTHNRLLN_ITMHNRHEMOGLOBIN,Hemoglobin Lower Limit of Normal:,Number
+frmHNR,MTXTHNRULN_ITMHNRHEMOGLOBIN,Hemoglobin Upper Limit of Normal:,Number
+frmHNR,pdcHNRHemoglobinUnit,Hemoglobin Unit:,Codelist
+frmHNR,MTXTHNRLLN_ITMHNRHEMATOCRIT,Hematocrit Lower Limit of Normal:,Number
+frmHNR,MTXTHNRULN_ITMHNRHEMATOCRIT,Hematocrit Upper Limit of Normal:,Number
+frmHNR,pdcHNRHematocritUnit,Hematocrit Unit:,Codelist
+frmHNR,MTXTHNRLLN_ITMHNRMCV,MCV Lower Limit of Normal:,Number
+frmHNR,MTXTHNRULN_ITMHNRMCV,MCV Upper Limit of Normal:,Number
+frmHNR,pdcHNRMCVUnit,MCV Unit:,Codelist
+frmHNR,MTXTHNRLLN_ITMHNRMCH,MCH Lower Limit of Normal:,Number
+frmHNR,MTXTHNRULN_ITMHNRMCH,MCH Upper Limit of Normal:,Number
+frmHNR,pdcHNRMCHUnit,MCH Unit:,Codelist
+frmHNR,MTXTHNRLLN_ITMHNRMCHC,MCHC Lower Limit of Normal:,Number
+frmHNR,MTXTHNRULN_ITMHNRMCHC,MCHC Upper Limit of Normal:,Number
+frmHNR,pdcHNRMCHCUnit,MCHC Unit:,Codelist
+frmHNR,MTXTHNRLLN_ITMHNRRDW,RDW Lower Limit of Normal:,Number
+frmHNR,MTXTHNRULN_ITMHNRRDW,RDW Upper Limit of Normal:,Number
+frmHNR,pdcHNRRDWUnit,RDW Unit:,Codelist
+frmHNR,MTXTHNRLLN_ITMHNRRDWSD,RDW Standard Deviation Lower Limit of Normal:,Number
+frmHNR,MTXTHNRULN_ITMHNRRDWSD,RDW Standard Deviation Upper Limit of Normal:,Number
+frmHNR,pdcHNRRDWSDUnit,RDW Standard Deviation Unit:,Codelist
+frmHNR,MTXTHNRLLN_ITMHNRPLATELET,Platelet Count Lower Limit of Normal:,Number
+frmHNR,MTXTHNRULN_ITMHNRPLATELET,Platelet Count Upper Limit of Normal:,Number
+frmHNR,pdcHNRPlateletUnit,Platelet Count Unit:,Codelist
+frmHNR,MTXTHNRLLN_ITMHNRABSNEUTROPHIL,Absolute Neutrophil Lower Limit of Normal:,Number
+frmHNR,MTXTHNRULN_ITMHNRABSNEUTROPHIL,Absolute Neutrophil Upper Limit of Normal:,Number
+frmHNR,pdcHNRAbsNeutrophilUnit,Absolute Neutrophil Unit:,Codelist
+frmHNR,MTXTHNRLLN_ITMHNRABSBNEUTR_1,Absolute Band Neutrophil Lower Limit of Normal:,Number
+frmHNR,MTXTHNRULN_ITMHNRABSBNEUTR_1,Absolute Band Neutrophil Upper Limit of Normal:,Number
+frmHNR,pdcHNRAbsBNeutrophilUnit,Absolute Band Neutrophil Unit:,Codelist
+frmHNR,MTXTHNRLLN_ITMHNRABSLYMPHOCYTE,Absolute Lymphocyte Lower Limit of Normal:,Number
+frmHNR,MTXTHNRULN_ITMHNRABSLYMPHOCYTE,Absolute Lymphocyte Upper Limit of Normal:,Number
+frmHNR,pdcHNRAbsLymphocyteUnit,Absolute Lymphocyte Unit:,Codelist
+frmHNR,MTXTHNRLLN_ITMHNRABSMONOCYTE,Absolute Monocyte Lower Limit of Normal:,Number
+frmHNR,MTXTHNRULN_ITMHNRABSMONOCYTE,Absolute Monocyte Upper Limit of Normal:,Number
+frmHNR,pdcHNRAbsMonocyteUnit,Absolute Monocyte Unit:,Codelist
+frmHNR,MTXTHNRLLN_ITMHNRABSEOSINOPHIL,Absolute Eosinophil Lower Limit of Normal:,Number
+frmHNR,MTXTHNRULN_ITMHNRABSEOSINOPHIL,Absolute Eosinophil Upper Limit of Normal:,Number
+frmHNR,pdcHNRAbsEosinophilUnit,Absolute Eosinophil Unit:,Codelist
+frmHNR,MTXTHNRLLN_ITMHNRABSBASOPHIL,Absolute Basophil Lower Limit of Normal:,Number
+frmHNR,MTXTHNRULN_ITMHNRABSBASOPHIL,Absolute Basophil Upper Limit of Normal:,Number
+frmHNR,pdcHNRAbsBasophilUnit,Absolute Basophil Unit:,Codelist
+frmHNR,MTXTHNRLLN_ITMHNRABLASTS,Absolute Blasts Lower Limit of Normal:,Number
+frmHNR,TXTHNRABLASTSULN,Absolute Blasts Upper Limit of Normal:,Number
+frmHNR,pdcHNRAbsBlastsUnit,Absolute Blasts Unit:,Codelist
+frmHNR,MTXTHNRLLN_ITMHNRABSATYPLYMPH,Absolute Atypical Lymphocyte Lower Limit of Normal:,Number
+frmHNR,MTXTHNRULN_ITMHNRABSATYPLYMPH,Absolute Atypical Lymphocyte Upper Limit of Normal:,Number
+frmHNR,pdcHNRAbsAtpLymphUnit,Absolute Atypical Lymphocyte Unit:,Codelist
+frmHNR,MTXTHNRLLN_ITMHNRNEUTROPHIL,Neutrophil (%) Lower Limit of Normal:,Number
+frmHNR,TXTHNNEUTRORULN,Neutrophil (%) Upper Limit of Normal:,Number
+frmHNR,TXTHNNEUTRORULN_U,Neutrophil (%) Unit,Codelist
+frmHNR,MTXTHNRLLN_ITMHNRBNEUTROPHIL,Band Neutrophil (%) Lower Limit of Normal:,Number
+frmHNR,TXTHNRBNEUTROULN,Band Neutrophil (%) Upper Limit of Normal:,Number
+frmHNR,TXTHNRBNEUTROULN_U,Band Neutrophil (%) Unit,Codelist
+frmHNR,MTXTHNRLLN_ITMHNRLYMPHOCYTE,Lymphocyte (%) Lower Limit of Normal:,Number
+frmHNR,TXTHNRLYMPULN,Lymphocyte (%) Upper Limit of Normal:,Number
+frmHNR,TXTHNRLYMPULN_U,Lymphocyte (%) Unit,Codelist
+frmHNR,MTXTHNRLLN_ITMHNRMONOCYTE,Monocyte (%) Lower Limit of Normal:,Number
+frmHNR,TXTHNRMONOULN,Monocyte (%) Upper Limit of Normal:,Number
+frmHNR,TXTHNRMONOULN_U,Monocyte (%) Unit,Codelist
+frmHNR,MTXTHNRLLN_ITMHNREOSINOPHIL,Eosinophil (%) Lower Limit of Normal:,Number
+frmHNR,TXTHNREOSINOULN,Eosinophil (%) Upper Limit of Normal:,Number
+frmHNR,TXTHNREOSINOULN_U,Eosinophil (%) Unit,Codelist
+frmHNR,MTXTHNRLLN_ITMHNRBASOPHIL,Basophil (%) Lower Limit of Normal:,Number
+frmHNR,TXTHNRBASOULN,Basophil (%) Upper Limit of Normal:,Number
+frmHNR,TXTHNRBASOULN_U,Basophil (%) Unit,Codelist
+frmHNR,MTXTHNRLLN_ITMHNRATYPLYMPH,Atypical Lymphocyte (%) Lower Limit of Normal:,Number
+frmHNR,TXTHNRATYPULN,Atypical Lymphocyte (%) Upper Limit of Normal:,Number
+frmHNR,TXTHNRATYPULN_U,Atypical Lymphocyte (%) Unit,Codelist
+frmHNR,MTXTHNRLLN_ITMHNRBLASTS,Blasts (%) Lower Limit of Normal:,Number
+frmHNR,TXTHNRBLASTULN,Blasts (%) Upper Limit of Normal:,Number
+frmHNR,TXTHNRBLASTULN_U,Blasts (%) Unit,Codelist
+frmHNR,MTXTHNRLLN_ITMHNRPROTHROBIN,Prothrombin Time Lower Limit of Normal:,Number
+frmHNR,MTXTHNRULN_ITMHNRPROTHROBIN,Prothrombin Time Upper Limit of Normal:,Number
+frmHNR,pdcHNRProthrobinUnit,Prothrombin Time Unit:,Codelist
+frmHNR,MTXTHNRLLN_ITMHNRINR,INR Lower Limit of Normal:,Number
+frmHNR,MTXTHNRULN_ITMHNRINR,INR Upper Limit of Normal:,Number
+frmHNR,MTXTHNRLLN_ITMHNRPTT,Activated Partial Thromboplastin Time (sec) Lower Limit of Normal:,Number
+frmHNR,MTXTHNRULN_ITMHNRPTT,Activated Partial Thromboplastin Time (sec) Upper Limit of Normal:,Number
+frmHNR,pdcHNRPTTUnit,Activated Partial Thromboplastin Time (sec) Unit:,Codelist
+frmHNR,MTXTHNRLLN_ITMHNRPRTTT,Partial Thromboplastin Time (sec) Lower Limit of Normal:,Number
+frmHNR,MTXTHNRULN_ITMHNRPRTTT,Partial Thromboplastin Time (sec) Upper Limit of Normal:,Number
+frmHNR,pdcHNRPRTTTUnit,Partial Thromboplastin Time (sec) Unit:,Codelist
+frmHNR,DELETEDFM,Deleted Form - Sponsor use Only,Codelist
+frmCNR,itmCNRSeqNum,Sequence Number,Number
+frmCNR,itmCNRName,Laboratory Name,Text
+frmCNR,itmCNRDt,Effective Date,Date
+frmCNR,itmCNRType,Specimen Type,Codelist
+frmCNR,MTXTCNRLLN_ITMCNRALBUMIN,Albumin Lower Limit of Normal:,Number
+frmCNR,MTXTCNRULN_ITMCNRALBUMIN,Albumin Upper Limit of Normal:,Number
+frmCNR,pdcCNRAlbuminUnit,Albumin Unit:,Codelist
+frmCNR,MTXTCNRLLN_ITMCNRALKALINE,Alkaline Phosphatase Lower Limit of Normal:,Number
+frmCNR,MTXTCNRULN_ITMCNRALKALINE,Alkaline Phosphatase Upper Limit of Normal:,Number
+frmCNR,pdcCNRAlkalineUnit,Alkaline Phosphatase Unit:,Codelist
+frmCNR,MTXTCNRLLN_ITMCNRALANINE,ALT (Alanine Aminotransferase) Lower Limit of Normal:,Number
+frmCNR,MTXTCNRULN_ITMCNRALANINE,ALT (Alanine Aminotransferase) Upper Limit of Normal:,Number
+frmCNR,pdcCNRAlanineUnit,ALT (Alanine Aminotransferase) Unit:,Codelist
+frmCNR,MTXTCNRLLN_ITMCNRAMY,Amylase Lower Limit of Normal:,Number
+frmCNR,MTXTCNRULN_ITMCNRAMY,Amylase Upper Limit of Normal:,Number
+frmCNR,pdcCNRAmy,Amylase Unit:,Codelist
+frmCNR,MTXTCNRLLN_ITMCNRASPARTATE,AST(Aspartate Aminotransferase) Lower Limit of Normal:,Number
+frmCNR,MTXTCNRULN_ITMCNRASPARTATE,AST(Aspartate Aminotransferase) Upper Limit of Normal:,Number
+frmCNR,pdcCNRAspartateUnit,AST(Aspartate Aminotransferase) Unit:,Codelist
+frmCNR,MTXTCNRLLN_ITMCNRBICARBONATE,Bicarbonate Lower Limit of Normal:,Number
+frmCNR,MTXTCNRULN_ITMCNRBICARBONATE,Bicarbonate Upper Limit of Normal:,Number
+frmCNR,pdcCNRBicarbonateUnit,Bicarbonate Unit:,Codelist
+frmCNR,MTXTCNRLLN_ITMCNRBUN,Blood Urea Nitrogen Lower Limit of Normal:,Number
+frmCNR,MTXTCNRULN_ITMCNRBUN,Blood Urea Nitrogen Upper Limit of Normal:,Number
+frmCNR,pdcCNRBUNUnit,Blood Urea Nitrogen Unit:,Codelist
+frmCNR,MTXTCNRLLN_ITMCNRCALCIUM,Calcium Lower Limit of Normal:,Number
+frmCNR,MTXTCNRULN_ITMCNRCALCIUM,Calcium Upper Limit of Normal:,Number
+frmCNR,pdcCNRCalciumUnit,Calcium Unit:,Codelist
+frmCNR,MTXTCNRLLN_ITMCNRCHLORIDE,Chloride Lower Limit of Normal:,Number
+frmCNR,MTXTCNRULN_ITMCNRCHLORIDE,Chloride Upper Limit of Normal:,Number
+frmCNR,pdcCNRChlorideUnit,Chloride Unit:,Codelist
+frmCNR,MTXTCNRLLN_ITMCNRCREATININE,Creatinine Lower Limit of Normal:,Number
+frmCNR,MTXTCNRULN_ITMCNRCREATININE,Creatinine Upper Limit of Normal:,Number
+frmCNR,pdcCNRCreatinineUnit,Creatinine Unit:,Codelist
+frmCNR,MTXTCNRLLN_ITMCNRDIRECTBIL,Direct Bilirubin Lower Limit of Normal:,Number
+frmCNR,MTXTCNRULN_ITMCNRDIRECTBIL,Direct Bilirubin Upper Limit of Normal:,Number
+frmCNR,pdcCNRDirectBilUnit,Direct Bilirubin Unit:,Codelist
+frmCNR,MTXTCNRLLN_ITMCNRGLUCOSE,Glucose Lower Limit of Normal:,Number
+frmCNR,MTXTCNRULN_ITMCNRGLUCOSE,Glucose Upper Limit of Normal:,Number
+frmCNR,pdcCNRGlucoseUnit,Glucose Unit:,Codelist
+frmCNR,MTXTCNRLLN_ITMCNRLDH,LDH(Lactate Dehydrogenase) Lower Limit of Normal:,Number
+frmCNR,MTXTCNRULN_ITMCNRLDH,LDH(Lactate Dehydrogenase) Upper Limit of Normal:,Number
+frmCNR,pdcCNRLDHUnit,LDH(Lactate Dehydrogenase) Unit:,Codelist
+frmCNR,MTXTCNRLLN_ITMCNRLIPASE,Lipase Lower Limit of Normal:,Number
+frmCNR,MTXTCNRULN_ITMCNRLIPASE,Lipase Upper Limit of Normal:,Number
+frmCNR,pdcCNRUnit,Lipase Unit:,Codelist
+frmCNR,MTXTCNRLLN_ITMCNRMAG,Magnesium Lower Limit of Normal:,Number
+frmCNR,MTXTCNRULN_ITMCNRMAG,Magnesium Upper Limit of Normal:,Number
+frmCNR,pdcCNRMag,Magnesium Unit:,Codelist
+frmCNR,MTXTCNRLLN_ITMCNRPHOSPHORUS,Phosphorus Lower Limit of Normal:,Number
+frmCNR,MTXTCNRULN_ITMCNRPHOSPHORUS,Phosphorus Upper Limit of Normal:,Number
+frmCNR,pdcCNRPhosphorus,Phosphorus Unit:,Codelist
+frmCNR,MTXTCNRLLN_ITMCNRPOTASSIUM,Potassium Lower Limit of Normal:,Number
+frmCNR,MTXTCNRULN_ITMCNRPOTASSIUM,Potassium Upper Limit of Normal:,Number
+frmCNR,pdcCNRPotassiumUnit,Potassium Unit:,Codelist
+frmCNR,MTXTCNRLLN_ITMCNRSODIUM,Sodium Lower Limit of Normal:,Number
+frmCNR,MTXTCNRULN_ITMCNRSODIUM,Sodium Upper Limit of Normal:,Number
+frmCNR,pdcCNRSodiumUnit,Sodium Unit:,Codelist
+frmCNR,MTXTCNRLLN_ITMCNRTOTALBIL,Total Bilirubin Lower Limit of Normal:,Number
+frmCNR,MTXTCNRULN_ITMCNRTOTALBIL,Total Bilirubin Upper Limit of Normal:,Number
+frmCNR,pdcCNRTotalBilUnit,Total Bilirubin Unit:,Codelist
+frmCNR,MTXTCNRLLN_ITMCNRTOTALPROT,Total Protein Lower Limit of Normal:,Number
+frmCNR,MTXTCNRULN_ITMCNRTOTALPROT,Total Protein Upper Limit of Normal:,Number
+frmCNR,pdcCNRTotalProtUnit,Total Protein Unit:,Codelist
+frmCNR,MTXTCNRLLN_ITMCNRURICACID,Uric Acid Lower Limit of Normal:,Number
+frmCNR,MTXTCNRULN_ITMCNRURICACID,Uric Acid Upper Limit of Normal:,Number
+frmCNR,pdcCNRUricAcidUnit,Uric Acid Unit:,Codelist
+frmCNR,MTXTCNRUREALLN,Urea Lower Limit of Normal:,Number
+frmCNR,MTXTCNRUREALLNULN,Urea Upper Limit of Normal:,Number
+frmCNR,pdcCNRUREA,Urea Unit:,Codelist
+frmCNR,DELETEDFM,Deleted Form - Sponsor use Only,Codelist
+ONRFM,itmONRSeqNum,Sequence Number,Number
+ONRFM,itmONRName,Laboratory Name,Text
+ONRFM,itmONRDt,Effective Date,Date
+ONRFM,DELETEDFM,Deleted Form - Sponsor use Only,Codelist
+ONRFM,itmONRSubSpecType,Specimen Type,Codelist
+ONRFM,itmONRSubTestNm,Test Name,Codelist
+ONRFM,itmONRSubLLN,Test Lower Limit of Normal:,Number
+ONRFM,itmONRSubULN,Test Upper Limit of Normal:,Number
+ONRFM,itmONRSubTestUn,Test Unit:,Codelist
+ONRFM,DELETEDSN,Deleted Section - Sponsor use Only,Codelist
+frmSLCNR,itmSLCNRlab,Laboratory Name,Text
+frmSLCNR,itmSLCNRdate,Effective Date,Date
+frmSLCNR,itmSLCNRSpec,Specimen Type,Codelist
+frmSLCNR,itmSLCNRSeqnum,Sequence Number,Number
+frmSLCNR,DELETEDFM,Deleted Form - Sponsor use Only,Codelist
+frmSLCNR,itmSLCNRSex,Sex,Codelist
+frmSLCNR,itmSLCNRlow,Low Age Range,Unit
+frmSLCNR,itmSLCNRhigh,High Age Range,Unit
+frmSLCNR,itmSLCNRtest,Test Name,Codelist
+frmSLCNR,itmSLCNRtestlow,Test Lower Limit of Normal:,Number
+frmSLCNR,itmSLCNRtestupper,Test Upper Limit of Normal:,Number
+frmSLCNR,itmSLCNRtestunit,Test Unit:,Codelist
+frmSLCNR,DELETEDSN,Deleted Section - Sponsor use Only,Codelist
+frmSLHNR,itmSLHNRlab,Laboratory Name,Text
+frmSLHNR,itmSLHNRdate,Effective Date,Date
+frmSLHNR,itmSLHNRSpec,Specimen Type,Codelist
+frmSLHNR,itmSLHNRSeqnum,Sequence Number,Number
+frmSLHNR,DELETEDFM,Deleted Form - Sponsor use Only,Codelist
+frmSLHNR,itmSLHNRSex,Sex,Codelist
+frmSLHNR,itmSLHNRlow,Low Age Range,Unit
+frmSLHNR,itmSLHNRhigh,High Age Range,Unit
+frmSLHNR,itmSLHNRtest,Test Name,Codelist
+frmSLHNR,itmSLHNRtestlow,Test Lower Limit of Normal:,Number
+frmSLHNR,itmSLHNRtestupper,Test Upper Limit of Normal:,Number
+frmSLHNR,itmSLHNRtestunit,Test Unit:,Codelist
+frmSLHNR,DELETEDSN,Deleted Section - Sponsor use Only,Codelist
+SLONRFM,itmSOLABName,Laboratory Name,Text
+SLONRFM,itmSLOLABStDt,Effective Date,Date
+SLONRFM,itmSLOLABSeqNum,Sequence Number,Number
+SLONRFM,DELETEDFM,Deleted Form - Sponsor use Only,Codelist
+SLONRFM,itmSLOLABsex,Sex,Codelist
+SLONRFM,txtSLOLABlar,Age,Number
+SLONRFM,rdcSLOLABlar,Unit,Codelist
+SLONRFM,txtSLOLABhar,Age,Number
+SLONRFM,rdcSLOLABhar,Unit,Codelist
+SLONRFM,itmSLOLABSpecType,Specimen Type,Codelist
+SLONRFM,itmSLOLABTestNam,Test Name,Codelist
+SLONRFM,itmSLOLABLLN,Test Lower Limit of Normal:,Number
+SLONRFM,itmSLOLABULN,Test Upper Limit of Normal:,Number
+SLONRFM,itmSLOLABTestUn,Test Unit:,Codelist
+SLONRFM,itmSLOLABRace,Race (Only enter if differentiated by the lab),Codelist
+SLONRFM,DELETEDSN,Deleted Section - Sponsor use Only,Codelist
+ODBHFFM,ODBHF_LBL,Note: This form is to be used to capture prior oncologic drugs and biologics administered for the primary diagnosis.,Label
+ODBHFFM,ODBHFCMCNRGTYPIT,Type of Conditioning Regimen,Codelist
+ODBHFFM,ODBHFRSORRESBRIT,Best Response,Codelist
+ODBHFFM,ODBHFRSBRPDDTLRC,Progressive Disease,Codelist
+ODBHFFM,ODBHFCMREASTRTIT,Reason for Therapy,Codelist
+ODBHFFM,ODBHFCMRSDISCIT,Reason for Discontinuation From This Regimen,Codelist
+ODBHFFM,ODBHFCFCATIT,Category,Codelist
+ODBHFFM,ODBHFCMSPIDIT,Sponsor ID Number,Number
+ODBHFFM,DELETEDFM,Deleted Form - Sponsor use Only,Codelist
+ODBHFFM,ODBHFCMTRTIT,Oncologic Drug or Biologic Name,Text
+ODBHFFM,ODBHFCMCARINDCB,Indicate if Medication is Considered CAR-T Therapy?,Boolean
+ODBHFFM,ODBHFCMSTDTCIT,Start Date of Medication,Date
+ODBHFFM,ODBHFCMSTDTIIT,Imputed Start Date of Medication,Date
+ODBHFFM,ODBHFCMENDTCIT,Stop Date of Medication,Codelist
+ODBHFFM,ODBHFCMENDTDT,Stop Date of Medication,Date
+ODBHFFM,ODBHFCMENDTIIT,Imputed Stop Date of Medication,Date
+ODBHFFM,ODBHFSPIDASSOCIT,Associated Sponsor ID Number,Number
+ODBHFFM,DELETEDSN,Deleted Section - Sponsor use Only,Codelist
+SCTFFM,SCTFTRNSPLNTDTIT,Date of Transplant,Date
+SCTFFM,SCTFPRSDTIIT,Imputed Date of Transplant,Date
+SCTFFM,SCTFPRTRTIT,Procedure,Codelist
+SCTFFM,SCTFPRPRESPIT,Procedure Event Pre-Specified,Codelist
+SCTFFM,SCTFPROCCURIT,Procedure Occurrence,Codelist
+SCTFFM,SCTFCFORRESSCTTIT,Type of Stem Cell Transplant?,Codelist
+SCTFFM,SCTFCFORRESSASCIT,Source of Allogeneic Stem Cells,Codelist
+SCTFFM,SCTFCFORRESSCCTIT,Type of Stem Cell Collection,Codelist
+SCTFFM,SCTFCFORRESSBRIT,Best Response,Codelist
+SCTFFM,SCTFPRGRSNIT,Date of Progression Post Transplant,Codelist
+SCTFFM,SCTFCFORRESDPDT,Date of Progression Post Transplant,Date
+SCTFFM,SCTFCFEVLINXIT,Progression Interval,Codelist
+SCTFFM,SCTFCFSPIDIT,Sponsor ID Number,Number
+SCTFFM,DELETEDFM,Deleted Form - Sponsor use Only,Codelist

@@ -1,0 +1,103 @@
+Report ID: RID089
+
+Report Title:
+LOINC Code reconciliation
+
+Description:
+This report displays discrepancies or missing information between Loinc version and Loinc Code for each test in LABS.
+
+Column Heading:
+1. Country
+
+2. Site
+
+3. Subject Number
+
+4. Vendor
+
+5. Visit Name
+
+6. Sample Collection Date
+
+7. Specimen ID Number
+
+8. Lab Test
+
+9. LOINC Code
+
+10. Actual LOINC Version
+
+11. Expected LOINC Version
+
+12. Error Message
+
+Logic:
+This report will output discrepancies or missing information between Loinc version and Loinc Code for each test in LABS based on the following Scenarios:
+
+Scenario 1:
+
+LOINC Version was provided but LOINC Code is missing
+
+Scenario 2:
+
+LOINC Code was provided but LOINC Version is missing
+
+Scenario 3:
+
+LOINC Version Reportes in transfer is previous to the LOINC Version valid for protocol
+
+Note: For scenario 3 a parameter selection "LOINC VERSION" will be added, when running the report a numeric value will be specified as the valid version for protocol (e.g: Loinc Version: 3), if the LOINC version on the transfer is previous to the number reported on the prompt: OUTPUT.
+
+Note II: No output should be generated for Logic 3 if the parameter "LOINC Version" is not provided in the parameter prompts section (in this case, any LOINC Version will be considered correct).
+
+Report Scenarios:
+Scenario 1:
+
+Output YES: LOINC Version was provided but LOINC Code is missing
+
+Scenario 2:
+
+Outputs YES: LOINC Code was provided but LOINC Version is missing
+
+Scenario 3:
+
+LOINC Version Reportes in transfer is previous to the LOINC Version valid for protocol
+
+Scenario 4 - Output No
+
+Output should not be produced if LOINC Code and LOINC Version are both missing.
+
+Yes, When match Logic
+
+No, When not match logic
+
+Sorting:
+Country, Site, Subject number
+
+Parameter Selection:
+Country, Site, Subject, List of Subjects, Visit, Loinc Version
+
+Form.Item Names:
+1. SA.Sitecountry
+
+2. SA.Sitemnemonic
+
+3. SA.NUM
+
+4. LABS.Vendor Name
+
+5. LABS.LBVISNM
+
+6. LABS.LBACDTC
+
+7. LABS.LBREFID
+
+8. LABS.LBTESTNM
+
+9. LABS.LBLOINC
+
+10. LABS.LBLOINCV
+
+11. LOINC Version from parameter selection.
+
+12. Scenario 1, Scenario 2, Scenario 3

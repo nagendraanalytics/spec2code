@@ -1,0 +1,79 @@
+Report ID: RID167
+
+Report Title:
+Toxicity grade vs Death check
+
+Description:
+This report lists subjects whose Maximum Toxicity is equal to selected toxicity grade (4 or 5, but SAEI outcome is not fatal or serious criteria is not Death.
+
+The report also lists subjects who have SAEI outcome that is fatal or Serious criteria is Death, but Maximum Toxicity is not equal to selected toxicity grade (4 or 5).
+
+Column Heading:
+1. Country
+
+2. Site
+
+3. Subject Number
+
+4. SAEI Seq
+
+5. Maximum Toxicity Grade
+
+6. SAEI Outcome
+
+7. Serious Criteria
+
+Logic:
+Logic 1: when maximum Toxicity Grade is equal x.
+
+And SAEI outcome is not Fatal or serious criteria is not Death.
+
+Or
+
+Logic 2: when SAEI outcome is Fatal or serious criteria is Death. And maximum Toxicitiy Grade is not equal to x.
+
+Note: 1. Report should not display deleted record
+
+          2. X can be 4 or 5.
+
+Report Scenarios:
+Scenario A, output Yes:
+
+when max Toxicity grade=x. And SAEI outcome <> fatal or serious criteria <> death
+
+Scenario B, output No:
+
+when max Toxicity grade=x. And SAEI outcome= fatal or serious critieria=death
+
+Scenario C, output Yes:
+
+ when SAEI outcome= fatal or serious critieria=death. And max Toxicity grade<>x
+
+Scenario D, output No:
+
+ when SAEI outcome= fatal or serious critieria=death. And max Toxicity grade=x
+
+Scenario E, output No:
+
+Deleted record
+
+Sorting:
+Country, Site, Subject Number, SAEI Seq, Max Toxicity Grade, SAEI outcome, Serious Criteria
+
+Parameter Selection:
+Country, Site, Subject Number, Randomized only, List of Subjects, Maximum Toxicity Grade
+
+Form.Item Names:
+1. Subject Assignment.Site Country
+
+2. Subject Assignment.Site Mnemonic
+
+3. Subject Assignment.Subject Number
+
+4.SERIOUS ADVERSE EVENTS - INFANT.Sequence Number
+
+5. Derived: Max (Adverse Event Toxicity Grade Change Itemset.Toxicity Grade)
+
+6. SERIOUS ADVERSE EVENTS - INFANT.AE Outcome
+
+7. SERIOUS ADVERSE EVENTS - INFANT. Serious Criteria

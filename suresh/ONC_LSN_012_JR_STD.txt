@@ -1,0 +1,123 @@
+Report ID: ONC_LSN_012_JR_STD
+Title: Baseline Lesion is Not present or out of window
+
+Forms / Items:
+1. Subject Assignment.Site Country
+2. Subject Assignment form.Site Mnemonic
+3. Subjects. Subject Number
+4. LSN eCRF (as per report-specific supporting document)
+5. First Visit Mnemonic of Treatment Phase (as per study phase supporting document)
+6. SR or DOV (as per report-specific supporting document)
+7. If Logic 1 is met display "Scenario 1"; If Logic 2 is met display "Scenario 2"
+
+Description:
+This report will list subjects who do not have at least one measurable Lesion at baseline within the specify window.
+
+Logic:
+Logic 1:
+DOV.Date of Visit for First Visit Mnemonic for a Treatment Phase <> NULL
+OR
+SR.Date of Assessment <> NULL
+AND
+There is not at least one 'LSN eCRF'
+Logic 2:
+DOV.Date of Visit for First Visit Mnemonic for each Treatment Phase <> NULL
+OR
+SR.Date of Assessment <> NULL
+AND
+(There is NO 'LSN eCRF' with
+'Date of Initial Identification' that is within [X] days prior the DOV.Date of Visit for First Visit Mnemonic for each Treatment Phase OR SR.Date of Assessment
+AND
+'Lesion Category'/'Tumor Identification' = Any of the values selected as 'Lesion Type' in the supporting document)
+
+Note 1:  Date of Visit for First Visit Mnemonic for each Treatment Phase is defined in the Study Phase Supporting Document.
+The items 'LSN eCRF', 'Lesion Type' and [X](window days) are values from report-specific supporting document.
+The items 'Date of Initial Identification', 'Lesion Category' and 'Tumor Identification' are defined in the LSN_supp_doc.
+Note 2: Erroneous visit or deleted record will not be considered in the programming or output.
+Note 3: If report-specific supporting document is not provided, display the message as "ONC_LSN_012_JR_STD Supporting Document Not Present for This Trial".
+Note 4: Produce output for each Treatment Phase separately
+Note 5: LCDM should define the Date of Assessment eCRF in the supporting document, in order to find the missing baseline evaluation from DOV or SR for each treatment phase
+
+Requires report-specific supporting document to be named ONC_LSN_012_supp_<MKxxxxxxx>.csv and will contain the following columns and associated content: 1 row for each expected Lesion Evaluation Form, Treatment Phase, Window of days, Lesion Type and Date of Assessment eCRF
+
+Definition of each column criteria:
+1. LSN eCRF - Lesion Evaluation form to be used in the logic [e.g. LSNEV, LSRIR, LSNPC, LSNPI, LSNIR, LSNHM]
+2. Treatment Phase - enter the phase name as provided in the protocol
+3. Window of days - Number of days to be used in Logic 2
+4. Lesion Type - Lesion Category/Lesion Identification/Tumor Identification to be used in logic 2. Enter NA if the report should consider any value.
+5. Date of Assessment eCRF - eCRF from which the window of days for baseline evaluation should be calculated (DOV or SR) for each treatment phase
+
+e.g.
+LSN eCRF, Treatment Phase, Window of days, Lesion Type, Date of Assessment eCRF
+LSNIR, Initial Treatment Phase, 28, Target Nodal, SR
+LSNIR, Second Course Phase, 28, Target Extra Nodal, DOV
+
+Also, requires a Study Phase Supporting Document to be created only one time per trial and that will work for multiple reports:
+The Study Phase Supporting Document is required for all trials regardless if only one treatment phase is present.
+This supporting document is only required to be created once per trial. If it was already created and uploaded, there is no need to duplicate it.
+Requires supporting document to be named study_phase_supp_<MKxxxxxxx>.csv and will contain the following columns and associated content:
+1. Phase Order: the order on which phases will appear on protocol
+2. Treatment Phase: this information is the phase name given in the protocol (Initial Treatment Phase/Second Course Phase/Crossover/Neoadjuvant)
+3. First Visitmnemonic of Treatment Phase: the first visit on which treatment is expected to be administered on each phase.
+
+e.g.
+Phase Order, Treatment Phase,First Visitmnemonic of Treatment Phase
+1,Initial Treatment Phase,Cycle 1
+2,Second Course Phase,Second Course Cycle 1
+3,Crossover Phase,Crossover Cycle 1
+
+Prompts (runtime parameters):
+Country, First Site, Last Site, First Subject, Last Subject, List of Subjects, Radomized Only (N/Y default as N), Supporting Doc Page (N/Y default as N)
+
+Column Headings:
+1. Country
+2. Site
+3. Subject Number
+4. Lesion Evaluation Form
+5. Related First Visit Treatment Phase
+6. eCRF
+7. Scenario
+
+Sorting:
+NA
+
+Report Scenarios:
+SCENARIO 1 [Logic 1, Output = Yes]
+
+DOV.Date of Visit for First Visit Mnemonic for a Treatment Phase or SR.Date of Assessment <> NULL and there is no initiated  'LSN eCRF'
+
+SCENARIO 2 [Logic 1, Output = No]
+
+DOV.Date of Visit for First Visit Mnemonic for a Treatment Phase or SR.Date of Assessment = NULL and there is no initiated  'LSN eCRF'
+
+SCENARIO 3 [Logic 1, Output = No]
+
+DOV.Date of Visit for First Visit Mnemonic for a Treatment Phase or SR.Date of Assessment <> NULL and there is an initiated  'LSN eCRF'
+
+SCENARIO 4 [Logic 2, Output = Yes]
+
+DOV.Date of Visit for First Visit Mnemonic for a Treatment Phase or SR.Date of Assessment <> NULL and there is NO 'LSN eCRF' with 'Date of Initial Identification' that is within [X] days prior the DOV.Date of Visit or SR.Date of Assessment
+
+SCENARIO 5 [Logic 2, Output = Yes]
+
+DOV.Date of Visit for First Visit Mnemonic for a Treatment Phase or SR.Date of Assessment <> NULL and there is NO 'LSN eCRF' with 'Lesion Category'/'Tumor Identification' = Any of the values selected as 'Lesion Type' in the supporting document
+
+SCENARIO 6 [Logic 2, Output = No]
+
+DOV.Date of Visit for First Visit Mnemonic for a Treatment Phase or SR.Date of Assessment <> NULL and there is an 'LSN eCRF' with 'Date of Initial Identification' that is within [X] days prior the DOV.Date of Visit or SR.Date of Assessment and with 'Lesion Category'/'Tumor Identification' = Any of the values selected as 'Lesion Type' in the supporting document
+
+Revision History:
+Version 1 - Initial Version
+Version 2 - Report update for covering the transformation for multiple ITEMREFNAMES
+Version 3 - Report update for inclusion of study phase supporting doc and internal master supporting document (LSN_supp_doc)
+Version 4 - Code update to make the coding for logic "'Date of Lesion evaluation' that is within [X] days prior the DOV.Date of Visit for First Visit Mnemonic for each Treatment Phase " as the same as " 'Date of Lesion evaluation'  >= DOV.Date - [x] days  of Visit for First Visit Mnemonic for each Treatment Phase And 'Date of Lesion evaluation'  < = DOV.Date  of Visit for First Visit Mnemonic for each Treatment Phase"; no spec update.
+Version 5 - Supporting document update to include an option to choose SR Date of Assessment as a reference point
+Version 6 - Code update. Updating to fix missing output when study provide two or more treatment phase.
+Version 7 - Note 5 and information about the supporting document modified in the Logic, in order to find the missing evaluation for each treatment phase based on the SR Date of Assessment or DOV Date of Visit
+Version 8 - Programming update
+
+UAT Docs Location:
+Retired
+
+Test Case Docs:
+Retired

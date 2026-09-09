@@ -1,0 +1,119 @@
+Report ID: RID302
+
+Report Title:
+Fragment number entry missing or duplicate
+
+Description:
+This report will list when fragment number is selected but there are missing or duplicate fragment numbers for the same lesion.
+
+Column Heading:
+1. Country
+
+2. Site Mnemonic
+
+3. Subject Number
+
+4. Lesion evaluation form
+
+5 .Seq #
+
+6. Lesion Number
+
+7. Indicate if Lesion Merged or Split
+
+8. Fragment Number
+
+9. Error message
+
+Logic:
+Logics
+
+This report will list when fragment number is selected but there are missing or duplicate fragment numbers for the same lesion.
+
+Logic 1 (missing)
+
+Logic 1: Lesion Number <> Null and Indicate if Lesion Merged or Split = Split and Split (Provide Associated Lesion Number) <> Null and Fragment Number <> Null
+
+Logic 1.2: There is no Lesion in logic 1 with Fragment Number1 is selected
+
+OR
+
+Logic 1.3: There is only one Lesion in logic 1 entered
+
+OR
+
+Logic 1.4: There is one Lesion in logic 1 with Fragment Number X is selected, but missing any of Fragment (X-1, X-2, …, 1) with the same original lesion.
+
+OR
+
+Logic 2 (duplicate)
+
+Logic 2: Lesion Number <> Null and Indicate if Lesion Merged or Split = Split and Split (Provide Associated Lesion Number) <> Null and Fragment Number <> Null.
+
+AND
+
+Logic 2.1: There are more than 1 record in logic 2 with the same Split (Provide Associated Lesion Number) and Fragment Number.
+
+Note1:  Fragments should start sequentially with Fragment Number 1.
+
+Note 2: FRAGMENT NUMBER, LESION NUMBER, INDICATE IF LESION MERGED OR SPLIT, ASSOCIATED LESION NUMBER, ASSOCIATED SPONSOR ID NUMBER belongs to LSN support doc.
+
+Note 3: Deleted record will not be considered in the programming or output.
+
+Note 4: If lesion splits is expected to be divided into two new lesions, then it should not be outputted, example: TN1 splits, the new lesions should be TN1.1 and TN1.2 and no output should be produced.
+
+Report Scenarios:
+Scenarios
+
+A-Yes:
+
+Lesion Number <> null AND Indicate if Lesion Merged or Split  = Split AND Fragment Number <> null AND there is no Lesion with Fragment Number 1 selected.
+
+B-Yes:
+
+Lesion Number <> null AND Indicate if Lesion Merged or Split = Split AND Fragment Number <> null AND there is only one Lesion entered.
+
+C-No:
+
+Lesion Number <> null AND Indicate if Lesion Merged or Split  = Split AND Fragment Number <> null AND there is Lesion with Fragment Number 1 selected AND there is more than one Lesion in logic 1 entered.
+
+D-Yes:
+
+Lesion Number X <> null AND Indicate if Lesion Merged or Split = Split AND Fragment Number <> null AND Lesion Number (X-1, X-2, …, 1) with the same Split (Provide Associated Lesion Number) = NULL.
+
+E-No:
+
+Lesion Number X <> null AND Indicate if Lesion Merged or Split = Split AND Fragment Number <> null AND Lesion Number (X-1, X-2, …, 1) with the same Split (Provide Associated Lesion Number) <> NULL
+
+F-Yes:
+
+Lesion Number X <> null AND  Indicate if Lesion Merged or Split  = Split AND  Fragment Number <> null AND Lesion Number  Y<> null AND Split (Provide Associated Lesion Number) is the same for Lesion X and Lesion Y.
+
+G-No:
+
+Lesion Number X <> null AND  Indicate if Lesion Merged or Split  = Split AND  Fragment Number <> null AND Lesion Number 2 <>null AND Split (Provide Associated Lesion Number) is different  for Lesion X and Lesion Y.
+
+Sorting:
+Country, Site, Subject Number, Form Mnemonic, Seq #, Lesion Number, Indicate if Lesion Merged or Split, Fragment Number
+
+Parameter Selection:
+Country, Site, Subject, List of Subject, Lesion evaluation form
+
+Form.Item Names:
+1. SA. Country
+
+2. SA. Site Mnemonic
+
+3. SA. Subject Number
+
+4. Lesion evaluation form
+
+5. Lesion evaluation form. Sponsor ID number
+
+6. Lesion evaluation form. Lesion number
+
+7. Lesion evaluation form. Indicate if Lesion Merged or Split
+
+8. Lesion evaluation form. Fragment Number
+
+9. Error message (Fragment Number missing or Fragment Number duplicate)

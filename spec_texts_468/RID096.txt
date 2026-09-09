@@ -1,0 +1,167 @@
+Report ID: RID096
+
+Report Title:
+Missing or Mismatched Data between InForm and Vendor
+
+Description:
+################
+
+Column Heading:
+1. Country
+
+2. Site
+
+3. Screening Number
+
+4. Subject Number
+
+5. SCI Visit
+
+6. SCI Collection Date
+
+7. SCI Sample ID
+
+8. SCI Specimen Collection Status
+
+9. Vendor eCRF
+
+10. Vendor
+
+11. Vendor Visit
+
+12. Vendor Collection Date/Time
+
+13. Vendor Sample ID
+
+14. Issue
+
+Logic:
+Scenario 1: No External data
+
+Output is produced if patient has a Date of Invoice and sample identification entered for a scheduled/unscheduled visit and there are no corresponding laboratory records in the LABS/GEFCF eCRFs .
+
+Scenario 2: No Inform data
+
+a. Output is produced if patient has a eCRF records (LABS/GEFCF) with sample identification for scheduled /unscheduled visits and there are no corresponding invoice records in the SCI eCRFs.
+
+or
+
+b. Output is produced if patient has a eCRF records (LABS/GEFCF) with sample identification for scheduled /unscheduled visits but corresponding invoice records in the SCI form Specimen Collection Status is “Not Obtained”.
+
+Scenario 3: Date mismatch
+
+Data from both Inform & external vendor is present with same visit description and sample identification but different dates
+
+The join is done on subject, eCRF, vendor, visit id, sample identification.
+
+Deleted records should not be considered.
+
+Data from erroneous visits should not be considered.
+
+Required supporting document to be named as EVD016_supp_<xxxxxxx>.csv and will contain the following columns and associated content:
+
+1 row for each visit.
+
+1)visit_name : Visitmnemonic from T&E
+
+2)ecrf : Formmnemonic of External vendor data
+
+3)vendor : Vendor name as per PSA
+
+4)visitid_or_number : visit number's given in column 'Visit ID or Number' as per PSA
+
+5)sci_form : Formmnemonic of SCI(or Variant) forms
+
+6)sample_identification : specify 1 sample identification to be used to make the comparison between InForm and external vendor, e.g Kit ID, Specimen ID, Accession ID or NA if sample identification should not be considered.
+
+e.g.,
+
+visit_name,ecrf,vendor,visitid_or_number,sci_form,sample_identification
+
+SCREENING ,LABS,PPDGCL,1,SCIA,NA
+
+SCREENING,GEFCF,BSA,1,SCI,NA
+
+CYCLE 1 DAY 1,LABS,PPDGCL,2,SCIA,NA
+
+SCREENING ,GEFCF,QUALTEK,1,SCI,NA
+
+Report Scenarios:
+Scenario 1: No External data
+
+Output is produced if patient has a Date of Invoice and sample identification entered for a scheduled/unscheduled visit and there are no corresponding laboratory records in the LABS/GEFCF eCRFs .
+
+Scenario 2: No Inform data
+
+a.	Output is produced if patient has a eCRF records (LABS/GEFCF) with sample identification for scheduled /unscheduled visits and there are no corresponding invoice records in the SCI eCRFs.
+
+or
+
+b.	Output is produced if patient has a eCRF records (LABS/GEFCF) with sample identification for scheduled /unscheduled visits but corresponding invoice records in the SCI form Specimen Collection Status is “Not Obtained”.
+
+Scenario 3: Date mismatch
+
+Data from both Inform & external vendor is present with same visit description and sample identification but different dates
+
+The join is done on subject, eCRF, vendor, visit id, sample identification.
+
+Deleted records should not be considered.
+
+Data from erroneous visits should not be considered.
+
+The requestor should:
+
+- specify which sample identification to use to make the comparison between InForm and external vendor, e.g Kit ID, Specimen ID, Accession ID.
+
+- specify if the sample identification as is or part of the sample identification should be used.
+
+- provide the supporting data to link the visits from InForm and from external vendor.
+
+Sorting:
+Country, Site, Subject Number, Visit
+
+Parameter Selection:
+Country, Site, Subject Number, Randomized Only, Vendor, eCRF, Vendor Visit, List of Subjects
+
+Form.Item Names:
+1. Subject Assignment.Site Country
+
+2. Subject Assignment.Site Mnemonic
+
+3. Subject Assignment.Screening Number
+
+4. Subjects.Subject Number
+
+5. SPECIMEN COLLECTION INVOICE Form.Visit Mnemonic
+
+6. SPECIMEN COLLECTION INVOICE Form.Date/Time of Invoice
+
+7. SPECIMEN COLLECTION INVOICE Form.Specimen ID or
+
+SPECIMEN COLLECTION INVOICE Form.Kit ID
+
+8. SPECIMEN COLLECTION INVOICE Form.Specimen Collection Status
+
+9. LABORATORY TESTS Form.Form Mnemonic or
+
+    GENERIC EXTERNAL FINDINGS Form.Form Mnemonic
+
+10. LABORATORY TESTS Form.Transmission Source ID or
+
+    GENERIC EXTERNAL FINDINGS Form.Vendor Name
+
+11. LABORATORY TESTS Form.Visit ID or Number or
+
+    GENERIC EXTERNAL FINDINGS Form.Visit Number
+
+12. LABORATORY TESTS Form.Actual Collection Date and Time or
+
+      GENERIC EXTERNAL FINDINGS Form.Date/Time of Measurement
+
+13. LABORATORY TESTS Form.Specimen ID or
+
+      GENERIC EXTERNAL FINDINGS Form.Reference ID or
+
+      GENERIC EXTERNAL FINDINGS Form.Kit ID
+
+14. Hardcoded as specified

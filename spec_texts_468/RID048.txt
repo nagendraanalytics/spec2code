@@ -1,0 +1,114 @@
+Report ID: RID048
+
+Report Title:
+Premedication Stop Date Reconciliation
+
+Description:
+This report will list all CMs that have Medication Category indicated as Premedication with Stop date after or equal to the following administration start date of a given Study Medication.
+
+Column Heading:
+1.Country
+
+2.Site
+
+3.Subject Number
+
+4.CM Sequence Number
+
+5.CM Medication Name
+
+6.CM Start Date and Time
+
+7.CM Stop Date and Time
+
+8.Study Medication
+
+9.SM Start Date
+
+Logic:
+Scenario 1:
+
+"Compare with First Dose or Cycles" parameter is selected as "compare with first dose only"
+
+AND
+
+CM.Medication Category = Premedication
+
+AND
+
+SM_form.Please Indicate if this is the First Dose for this Label Description = First Dose
+
+AND
+
+CM.Stop Date >= minimum SM_form.Start Date
+
+Scenario 2:
+
+"Compare with First Dose or Cycles" parameter is selected as "compare with cycles"
+
+AND
+
+CM.Medication Category = Premedication
+
+AND
+
+There is a SM_form record meet below criteria:
+
+CM.start date <= SM_form. Start Date <= CM.Stop Date
+
+Note:
+
+1. Deleted record should not be outputted.
+
+2. If CM start and stop date contains UNK, then Impput Date should be considered.
+
+3. SM_form include SM/SMAB/SMAU, please only consider SM_form selected in the "Study Medication" parameter. If no SM_form is selected, please consider all SM_form listed in "Study Medication" parameter.
+
+4. For Scenario 1, please find the minimum date of all SM_form selected.
+
+5. For Scenario 2, please compare and display by each SM_form. If CM cross several visits and has overlap with more than 1 dose, output the maximum start date of each SM_form.
+
+6. Using "Protocol Requirement" parameter to determine if include "=" in all the date comparision
+
+Report Scenarios:
+A: Yes
+
+When CM Medication Category = Premedication, and CM stop date is on or after First dose of SMAU/SMAB/SM start date.
+
+B: No
+
+When CM Medication Category = Premedication, and CM stop date is prior to First dose of SMAU/SMAB/SM start date.
+
+C: Yes
+
+When CM medication Category =Premedication, and CM duration cross the visit and  has overlap with SM/SMAB/SMAB dose's start date.
+
+C: No
+
+When CM medication Category =Premedication, and CM's duration is between 2 consecutive visits and  has no overlap with any SM/SMAB/SMAB dose's start date.
+
+Parameter Selection:
+Country, Site, Subject,  Randomized only, Study Medication (not required, multiple selection)
+
+Protocol Requirement (required, single selection, Display "Greater Than Date of SM", "Greater Than or Equal to Date SM")
+
+Compare with First Dose or Cycles (Required, single selection, Display "compare with First Dose", "compare with cycles")
+
+Form.Item Names:
+1. SA. Site Country
+
+2. SA. Site Mnemonic
+
+3. SA. Subject Number
+
+4. Prior/Concomitant Medication Form. Sequence Number
+
+5. Prior/Concomitant Medication Form. Medication Name
+
+6. Prior/Concomitant Medication Form. Start Date and Time
+
+7. Prior/Concomitant Medication Form. Stop Date and Time
+
+8. SM/SMAU/SMAB form. Study Medication
+
+9. SM/SMAU/SMAB form. Start Date and Time

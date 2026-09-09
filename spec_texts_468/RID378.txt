@@ -1,0 +1,123 @@
+Report ID: RID378
+
+Report Title:
+Overall Response Reconciliation
+
+Description:
+This report will output when for some specific cases, the Overall Response is incorrect based on Soft tissue response, Bone lesion response and Bone lesions in LSNPC
+
+Column Heading:
+1. Country
+
+2. Site
+
+3. Subject Number
+
+4. Lesion Seq
+
+5. Date of Lesion Evaluation
+
+6. Lesion Identification
+
+7. Response Seq
+
+8. Date Response Determined
+
+9. Soft Tissue Response
+
+10. Bone Lesion Response
+
+11. Overall Response
+
+12.  Scenario
+
+Logic:
+Scenario 1
+
+There is at least one LSNPC record with LSNPC.Lesion identification = BONE LESION
+
+AND
+
+There is a record in ORPC with Date Response Determined <> Null
+
+AND
+
+ORPC. Bone Lesion Response = “Not Evaluable”
+
+AND
+
+ORPC. Soft Tissue Response <> “Progressive Disease”
+
+AND
+
+ORPC. Overall Response <> “Not Evaluable”
+
+Note: Display Scenario 1 if logic is met, and disregard deleted rows in LSNPC and ORPC.
+
+Scenario 2
+
+There is NOT at least one LSNPC record with LSNPC.Lesion identification = BONE LESION
+
+AND
+
+There is a record in ORPC with Date Response Determined <> Null
+
+AND
+
+ORPC. Soft Tissue Response = ["Stable Disease" OR "Partial Response" OR "Non-CR/Non-PD"]
+
+AND
+
+ORPC. Bone Lesion Response = ["Not Evaluable" OR No Bone Lesions Present]
+
+AND
+
+ORPC. Bone Lesion Response = "Not Evaluable"
+
+AND
+
+ORPC. Overall Response <> ["Stable Disease" OR "Partial Response" OR "Non Progressive Disease"]
+
+Note: Display Scenario 2 if logic is met, and disregard deleted rows in LSNPC and ORPC. Please consider ORPC.Overall Response = Non Progressive Disease equivalent to ORPC.Soft Tissue Response= "Non-CR/Non-PD"
+
+Report Scenarios:
+LSNPC, ORPC
+
+Scenario 1:
+
+Output is produced when Bone Lesion Response is NE, there are Bone lesions entered in LSNPC, Soft Tissue Response is not PD but Overall Response is not NE
+
+Scenario 2:
+
+Soft tissue response is either SD, PR or Non-CR/Non-PD, Bone Lesion Response is NE, and there are no Bone lesions entered in LSNPC; however, overall response is not equal to soft tissue response.
+
+Sorting:
+Country, Site, Subject Number
+
+Parameter Selection:
+Country, First Site, Last Site, First Subject, Last Subject, List of Subjects, Randomized Only (N/Y, default as N)
+
+Form.Item Names:
+1. SA Form. Site Country
+
+2. SA Form. Site Mnemonic
+
+3. SA Form. Subject Number
+
+4. LSNPC. Sponsor ID Number
+
+5. LSNPC. Date of Lesion Evaluation
+
+6. LSNPC. Lesion Identification
+
+7. ORPC. Sponsor ID Number
+
+8. ORPC Form. Date Response Determined
+
+9. ORPC Form. Soft Tissue Response
+
+10. ORPC Form. Bone Lesion Response
+
+11. ORPC Form. Overall Response
+
+12. Display “Scenario 1” or “Scenario 2” depending on the logic that is met

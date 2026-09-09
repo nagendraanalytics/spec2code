@@ -1,0 +1,109 @@
+Report ID: RID162
+
+Report Title:
+Study medication reconciliation between pregnancies
+
+Description:
+This report will list subjects where there is an inconsistency in the study medications order entered in the pregnancies forms
+
+Column Heading:
+1. Country
+
+2. Site
+
+3. Subject Number
+
+4. PRG Form #1
+
+5. PRG Seq #1
+
+6. PRG Date of assessment #1
+
+7. Study medication List #1
+
+8. PRG Form #2
+
+9. PRG Seq #2
+
+10. PRG Date of assessment #2
+
+11. Study medication  List #2
+
+12. Scenario
+
+Logic:
+Scenario A:
+
+Logic 1: PRG01.Date of assessment = PRG02.Date of assessment
+
+AND
+
+Logic 2: There is at least one PRG02.Study Medication X item mismatching the PRG01.Study Medication X item  meaning PRG01.Study Medication X <> PRG02.Study Medication X with X being possible values from 1...n. (e.g. PRG01.Study Medication 1<> PRG02.Study Medication 1 or .... or PRG01.Study Medication 4<> PRG02.Study Medication 4).
+
+Scenario B
+
+Logic 3: PRG03.Date of assessment = PRG04.Date of assessment
+
+AND
+
+Logic 4: There is at least one PRG03.Study Medication X item mismatching the PRG04.Study Medication X item  meaning PRG03.Study Medication X <> PRG04.Study Medication X with X being possible values from 1...n. (e.g. PRG03.Study Medication 1<> PRG04.Study Medication 1 or .... or PRG03.Study Medication 4<> PRG04.Study Medication 4).
+
+Note 1: Please exclude deleted records from programming
+
+Note 2: #1 in Column headings should be completed with data of PRG01/PRG03 and #2 in Column headings should be completed with data of PRG02/PRG04 depending on the applicable scenario.
+
+Note 3: The number of Study Medication Items vary depending on each study.
+
+Note 4: Regarding NULLs in the Study Medication Items, if mentioned items from both PRG0X forms are null, the record shouldn´t appear.
+
+Note 5: Column "Study Medication List #1" will show the concatenated study medications from either PRG01 or PRG03 in the corresponding ordered entered in the form
+
+Note 6: Column "Study Medication List #2" will show the concatenated study medications from either PRG02 or PRG04 in the corresponding ordered entered in the form
+
+Report Scenarios:
+Scenario A, Output = Yes
+
+The order in the selection of study medications is not consistent between PRG01 and PRG02 forms.
+
+Scenario B, Output= Yes
+
+The order in the selection of study medications is not consistent between PRG03 and PRG04 forms.
+
+Scenario C, Output= No
+
+The order in the selection of study medications is consistent between PRG01 and PRG02 forms.
+
+Scenario D, Output = No
+
+The order in the selection of study medications is consistent between PRG03 and PRG04 forms.
+
+Sorting:
+Country, Site, Subject Number
+
+Parameter Selection:
+Country, Site, Subject Number
+
+Form.Item Names:
+1. SA. Country
+
+2. SA. Site
+
+3. SA. Subject Number
+
+4. PRG.formmnemonic
+
+5. PRG.formidx
+
+6. PRG.Date of assessment
+
+7. PRG.Study Medication
+
+8. PRG.formmnemonic
+
+9. PRG.formidx
+
+10. PRG.Date of assessment
+
+11. PRG.Study Medication
+
+12. When Scenario A is met display “Scenario A” / When Scenario B is met display “Scenario B”

@@ -1,0 +1,85 @@
+Report ID: RID236
+
+Report Title:
+ADA Listing Report
+
+Description:
+This report is a Listing provided to Quantitative Pharmacology/Pharmacometrics (QPP) for Anti-Drug Antibodies reconciliation (ADA) with an external file.
+
+Column Heading:
+1. Country
+
+2. Site
+
+3. Subject Number
+
+4. Visit
+
+5. Sponsor ID
+
+6. Date/Time Specimen Obtained
+
+7. Specimen ID
+
+8. Kit ID
+
+9. Scheduled time
+
+10. Specimen Collection Status
+
+11. Reason Specimen Not Collected and/or Not Sent
+
+Logic:
+Please list all the ‘SCI form’ entries
+
+Notes:
+
+1. Disregard deleted records
+
+2. For SCI form prompt, please list all the SCI forms avaialble in the study.
+
+3. For column 7 and 8, please display the item present in the SCI form either Specimen type or Kit ID. If neither is present, leave the column blank.
+
+4. If more than one SCI form was selected in the prompt, please list all entries for the selected forms.
+
+5. For Date/Time Specimen Obtained display by format 'Day-Mon-Year_HH:MM (24-hour clock)', such as 01-Jul-2014_21:10. If time is entered as UNK:UNK then please display such as 01-Jul-2014_UNK:UNK in column 6
+
+6. For column 9, if scheduled time is not present in the SCI form, please leave column blank
+
+Report Scenarios:
+Scenario A: YES
+
+List all SCI form entries for all visits
+
+Scenario B: NO
+
+Deleted records
+
+Sorting:
+Country, Site, Subject Number, Sponsor ID
+
+Parameter Selection:
+Country, Site, Subject Number, SCI form
+
+Form.Item Names:
+1. SA. Country
+
+2. SA. Site mnemonic
+
+3. Subject Number
+
+4. Display the visit on which SCI form is entered
+
+5. SCI form. Sponsor ID
+
+6. SCI form. Date/Time Specimen(s) Obtained
+
+7. SCI form. Specimen ID
+
+8. SCI form. Kit ID
+
+9. SCI form. Scheduled time
+
+10. SCI form. Specimen Collection Status
+
+11. SCI. Reason Specimen Not Collected and/or Not Sent

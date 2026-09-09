@@ -1,0 +1,117 @@
+Report ID: ONC_ODB_010_JR_STD
+Title: Non-study related oncologic treatment reconciliation.
+
+Forms / Items:
+1. Subject ASSIGNMENT. Site Country
+2. Subject Assignment. Site Mnemonic
+3. Subject Assignment. Subject Number
+4. [ODB, ODBF, ODBCF, ODBCS, ODBH, ODBHF, ODBHN, ODBNF] Visit Mnemonic
+5. [ODB, ODBF, ODBCF, ODBCS, ODBH, ODBHF, ODBHN, ODBNF] Form Mnemonic
+6. ODB_FORM. Formidx?ODB. Associated Sponsor ID Number). eg: 1(1)
+7. ODB_FORM. Standardized Oncologic Drug or Biologic Name
+8. ODB_FORM. Imputed Start Date of Medication. In format "dd-mmm-yyyy"
+9. ODB. Imputed Stop Date of Medication. In format "dd-mmm-yyyy" if present, otherwise, if blank show the word "Continuing"
+10. AE. Sequence Number
+11. AE. LLT Term
+12. AE. Onset Date and Time. In format "dd-mmm-yyyy"
+
+Description:
+This report output all Oncologic Drugs and Biologic provided 14 days prior to/after the start of a SAE or ECI, that are not present in the CM form.
+
+Logic:
+Logic 1.1 ODB_FORM. Imputed Start Date of Medication <> null
+AND
+Logic 1.2 SAE/ECI with Onset Date <> null
+AND
+Logic 1.3 ODB_FORM duration is overlap with SAE/ECI duration
+AND
+There is no at least one CM record meet below criteria:
+Logic 1.4 CM. Medication Category = Oncologic
+AND
+Logic 1.5 CM. Standardized Medication Name = ODB_FORM Standardized Oncologic Drug or Biologic Name from record identified in logic 1.1
+AND
+Logic 1.6 CM. Imputed Start Date and Time = ODB_FORM Imputed Start Date of Medication from record identified in logic 1.1
+
+Note 1: Please consider a SAE any AE record with either:
+-	Serious Criteria <> Null AND Serious Criteria <> None OR
+-	Is the AE an Event of Clinical Interest? = Yes
+
+Note 2: Disregard time in CM and AE and ODB_FORM
+
+Note 3: ODB_FORM includes ODB, ODBF, ODBCF, ODBCS, ODBH, ODBHF, ODBHN, ODBNF.
+
+Note 4: Clarification for duration in logic 1.3:
+1.	ODB_FORM duration -  ODB_FORM. Imputed Start Date of Medication TO ODB_FORM. Imputed Stop Date of Medication
+2.	SAE/ECI duration - SAE Onset Date -14 TO SAE Onset Date + 14
+
+Note 5: Please exclude deleted records and erroneous visits from programming.
+
+Note 6: ODB_FORM. Imputed Stop Date of Medication is considered as system date when value is NULL
+
+Note7:For older studies where imputed start/stop date of medication is not available consider to use imputed start/stop date of regimen.
+
+Prompts (runtime parameters):
+Country, Site Number, Subject Number, Randomized Only, List of Subjects.
+
+Column Headings:
+1.Country
+2. Site
+3. Subject Number
+4.ODB Visit
+5.ODB Form
+6.ODB Sequence
+7.ODB Name
+8. ODB Start Date
+9. ODB Stop Date
+10. AE Sequence
+11. AE Term
+12. AE Onset Date and Time
+
+Sorting:
+Country, Site Number, Subject Number, ODB Visit, ODB Sequence, AE Sequence
+
+Report Scenarios:
+Scenario 1 Output Yes:
+
+A-	ODB Imputed Stop Date of Medication less than or equal to 14 days before SAE/ECI Onset Date and there is no at least one CM record with the following characteristcs:
+1.	CM Medication Category = Oncologic
+2.	CM Standardized Medication Name = ODB Standardized Oncologic Drug or Biologic Name
+3.	CM Imputed Start Date and Time = ODB Imputed Start Date of Medication
+
+B.	ODB Imputed Start Date of Medication is less than or equal to SAE/ECI Onset Date and ODB Imputed Stop Date of Medication is null, i.e., ODB and SAE are overlapping.
+
+C.	ODB Imputed Start Date of Medication is less than or equal to 14 days before SAE/ECI Onset Date and there is no at least one CM record with the following characteristics:
+1.	CM Medication Category = Oncologic
+2.	CM Standardized Medication Name = ODB Standardized Oncologic Drug or Biologic Name
+3.	CM Imputed Start Date and Time = ODB Imputed Start Date of Medication
+
+D.	ODB Imputed Start Date of Medication is less than or equal to SAE/ECI Onset Date and ODB Imputed Stop Date of Medication is greater than or equal to SAE/ECI Onset Date, i.e., ODB and SAE are overlapping.
+
+E. ODB Imputed Start Date of Medication is less than or equal to 14 days after SAE/ECI Onset Date and there is no at least one CM record with the following characteristics:
+1.	CM Medication Category = Oncologic
+2.	CM Standardized Medication Name = ODB Standardized Oncologic Drug or Biologic Name
+3.	CM Imputed Start Date and Time = ODB Imputed Start Date of Medication
+
+F. ODB Imputed Stop Date of Medication is less than or equal to 14 days after SAE/ECI Onset Date and there is no at least one CM record with the following characteristics:
+1.	CM Medication Category = Oncologic
+2.	CM Standardized Medication Name = ODB Standardized Oncologic Drug or Biologic Name
+3.	CM Imputed Start Date and Time = ODB Imputed Start Date of Medication
+
+Scenario 1 Output No:
+
+A.	ODB Imputed Stop Date of Medication is greater than 14 days before SAE/ECI Onset Date
+B.	ODB Imputed Start Date of Medication is greater than 14 days after to SAE/ECI Onset Date
+C.	ODB and SAE/ECI do not overlap between each other
+D.            ODB  completed and No SAE/ECI
+
+Revision History:
+Version 1 - Initial Version
+Version 2 - Report Description updated. Scenarios 1 and 3 removed from the Scenarios section. Scenario 2 reworded as Scenario 1 on the Scenarios section.  Scenarios 1, 2 and 3 removed from the logic section. Logic 1 to Logic 6 included in the logic section. Note 1 to 2 and Note 7 to 15 removed from logic section. Column headings and forms.items sections updated to remove CM and include AE.
+Version 3 - Code update to improve performance, no logic and layout update.
+Version 4 - Report Description, Screnario and Logic update to include '14 days after the start of a SAE or ECI'.
+
+UAT Docs Location:
+Retired
+
+Test Case Docs:
+Retired

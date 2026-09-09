@@ -1,0 +1,103 @@
+Report ID: RID178
+
+Report Title:
+Mismatch of SM Units Taken and SMP Volume Prepared
+
+Description:
+The report will output when SMA in Units taken does not match SMP Volume Prepared
+
+Column Heading:
+1. Country
+
+2. Site
+
+3. Subject Number
+
+4. Visit Mnemonic
+
+5. Dose Number
+
+6. SMA Form
+
+7. SMA Seq
+
+8. SMA Units Taken
+
+9. SMA Reason for Variation
+
+10. SMP Form
+
+11. SMP Seq
+
+12. SMP Volume Prepared
+
+Logic:
+This report shows mismatches between SMA number of units taken and SMP volume prepared for the same dose number at the same visit:
+
+a) Sum of SMA number of units taken > SMP volume prepared;
+
+b) Sum of SMA number of units taken < SMP volume prepared, and SMA "Reason for Dose Variation" is null in any of the related records, if selected in the prompt
+
+The SMP Volume Prepared will only be shown for SMPU form. It will be masked to 'xxxx' for SMPB form.
+
+Deleted records should not be considered.
+
+Records in erronenous visits should not be considered.
+
+Report Scenarios:
+1) Output=YES
+
+At a given visit and for the same dose number, SMA number of units taken is greater than the SMP volume prepared.
+
+2) Output=YES
+
+"Consider Null Reason for Dose Variation" prompt = checked and
+
+At a given visit and for the same dose number, the sum of SMA number of units taken is less than the SMP volume prepared and there is no SMAU Reason for dose variation.
+
+3) Output=NO
+
+"Consider Null Reason for Dose Variation" prompt = checked and
+
+At a given visit and for the same dose number, the sum of SMA number of units taken is less than the SMP volume prepared and there is SMA Reason for dose variation.
+
+4) Output=YES
+
+"Consider Null Reason for Dose Variation" prompt = not checked and
+
+At a given visit and for the same dose number, the sum of SMA number of units taken is less than the SMP volume prepared.
+
+5) Output=NO
+
+Deleted records or records in erroneous visits
+
+Sorting:
+Country, Site, Subject Number, Visitorder, SMA Form, Dose Number, SMA Seq, SMP Seq
+
+Parameter Selection:
+Country, Site, Subject Number, Visit Mnemonic, List of Subjects, Randomized Only, Consider Null Reason for Dose Variation
+
+Form.Item Names:
+1. SA form. Country
+
+2. SA form. Site
+
+3. Subjects. Subject number
+
+4. DOV form. Visit Mnemonic
+
+5. SMAU or SMAB form.Dose Number
+
+6. SMAU or SMAB form.Formmnemonic
+
+7. SMAU or SMAB form.Formidx
+
+8. SMAU or SMAB form.Number of Units Taken
+
+9. SMAU or SMAB form.Reason for Dose Variation
+
+10. SMPU or SMPB form.Form
+
+11. SMPU or SMPB form.Formidx
+
+12. SMPU form.Volume Prepared or 'xxxx' if SMPB Form

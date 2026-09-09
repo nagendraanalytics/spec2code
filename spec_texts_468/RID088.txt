@@ -1,0 +1,171 @@
+Report ID: RID088
+
+Report Title:
+Visits Missing External Vendor Data - External Vendor Data with No Corresponding Visit Date - Date Mismatch between InForm vs Vendor
+
+Description:
+This report displays the following pts scenario
+
+1. Scheduled visit date is entered at particular visit, but there are no corresponding external data records with a collection date equal to the visit date.
+
+2. External vendor record is present with a Visit Type of 'S' and a Collection Date that has no corresponding scheduled Visit Date.
+
+3. Data from both Inform & external vendor is present with same visit description with different dates
+
+Column Heading:
+1. Country
+
+2. Site
+
+3. Screening Number
+
+4. Subject Number
+
+5. InForm Visit Number
+
+6. InForm Visit Date
+
+7. Days since Visit Date
+
+8. eCRF
+
+9. Vendor
+
+10. Specimen ID
+
+11. Visit ID or Number
+
+12. Collection Date/Time
+
+13. Requisition number
+
+14. Issue
+
+Logic:
+Scenario 1: No External data
+
+Output is produced if patient has a Date of Visit entered for a scheduled visit and there are no corresponding external records in the LABS/GEFCF/PFT/CECG eCRFs with the same Collection Date.
+
+Hardcode the issue as ""Missing External Data""
+
+Scenario 2: No Inform data
+
+Output is produced if patient has external records in LABS/GEFCF/PFT/CECG eCRFs for scheduled visits and there is no corresponding scheduled Date of Visit. This output is typically produced if DOV is not entered yet or if the wrong label was used.
+
+Hardcode the issue as ""Missing Visit in InForm""
+
+Scenario 3: Data from both InForm & external vendor is present with same visit description with different dates.
+
+Output is produced for mismatches between external Collection Date and Date of visit for each Visit in InForm and external vendor.
+
+Hardcode the issue as ""Date Mismatch""
+
+Visits should have the Erroneous visit checkbox unchecked.
+
+Test Status for LABS should not be 'X' or 'N'.
+
+Visit is not matched for PFT records since the Visit ID or Number does not exist on the eCRF.
+
+Report should not consider deleted records.
+
+Requires supporting document to be named EVD009_supp_<xxxxxxx>.csv and will contain the following columns and associated content:
+
+1 row for each visit.
+
+1)Visit name : Vistmnemonic from T&E.
+
+2)Visit type : To be given as 1 for all Scheduled visits.
+
+3)eCRF: Formmnemonic of External vendor data.
+
+4)Vendor:Vendor name as per PSA
+
+5)Visitid or number : visit number's given in column 'Visit ID or Number' as per PSA
+
+e.g.
+
+Visit_Name, Visit_Type_Code,eCRF,Vendor,visit_id_or_number
+
+Screening ,1,GEFCF,NEOGENOM,1
+
+Cycle 1, 1,GEFCF,CRFH,2
+
+Cycle 2, 1,GEFCF,CRFH,3
+
+Report Scenarios:
+Corresponding detail Scenarios please see the test workbook 3
+
+Sorting:
+Country, Site, Subject Number, Collection Date/Time, eCRF
+
+Parameter Selection:
+Country, Site, Subject Number, Randomized Only, eCRF, Vendor.
+
+Form.Item Names:
+1. Subject Assignment.Site Country
+
+2. Subject Assignment form.Site Mnemonic
+
+3. Subject Assignment form.Screening Number
+
+4. Subjects.Subject Number
+
+5. Visit.Visit Mnemonic
+
+6. Visit.DOV
+
+7. Vendor Collection Date - DOV
+
+8. Form Mnemonic
+
+9. Vendor.
+
+    LABORATORY TESTS Form.Transmission Source ID or
+
+    GENERIC EXTERNAL FINDINGS Form.Vendor Name or
+
+    PULMONARY FUNCTION TEST Form.Transmission Source ID or
+
+    CENTRAL VENDOR ELECTROCARDIOGRAM Form.Vendor Name
+
+10. Specimen ID.
+
+    LABORATORY TESTS Form.Specimen ID or
+
+    GENERIC EXTERNAL FINDINGS Form.Reference ID or
+
+    null if PULMONARY FUNCTION TEST Form or
+
+    CENTRAL VENDOR ELECTROCARDIOGRAM Form.Specimen ID
+
+11. Visit ID or Number.
+
+    LABORATORY TESTS Form.Visit Id or Number or
+
+    GENERIC EXTERNAL FINDINGS Form.Visit Id or Number or
+
+    PULMONARY FUNCTION TEST Form.Visit Code or
+
+    CENTRAL VENDOR ELECTROCARDIOGRAM Form.Visit Number
+
+12. Collection Date/Time.
+
+    LABORATORY TESTS Form.Actual Collection Date and Time or
+
+    GENERIC EXTERNAL FINDINGS Form.Date/Time of Measurement or
+
+    PULMONARY FUNCTION TEST Form.Date and Time or
+
+    CENTRAL VENDOR ELECTROCARDIOGRAM Form.Collection date and Time
+
+13. Requisition number.
+
+     LABORATORY TESTS form. Accession ID or Number
+
+     GENERIC EXTERNAL FINDINGS form. Specimen ID and/or Kit ID
+
+     PULMONARY FUNCTION TEST Form. Specimen ID
+
+     CENTRAL VENDOR ELECTROCARDIOGRAM form. ECG Provider   Internal ECG ID
+
+14. Issue. Display scenario that apply Hardcode is specified

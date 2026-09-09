@@ -1,0 +1,87 @@
+Report ID: RID336
+
+Report Title:
+NAPS, PMS1, PMS1A, PMST listing
+
+Description:
+This report will list subjects who have data in PMS1/PMS1A/PMST/NAPS.
+
+Column Heading:
+1. Country
+
+2. Site
+
+3. Subject Number
+
+4. Visit Mnemonic
+
+5. Form Mnemonic
+
+6. Date of Assessment
+
+7. Reason for Discontinuation
+
+8. Next Trial Segment
+
+9. NAPS Seq #
+
+10. Indicate the Phase Not Started by the Subject
+
+11. Reason Phase Not Started
+
+Logic:
+If PMS1/PMS1A/PMST/NAPS.Date of Assessment AND PMS1.Status of Study Medication at the End of This Trial Segment/PMS1A.Status of Subject at End of This Trial Segment/PMST.Status of Subject at end of all Study Treatments AND PMS1/PMS1A/PMST.Select the Status of the Subject for the Next Trial Segment AND NAPS. Indicate the Phase Not Started by the Subject AND NAPS. Reason Phase Not Started are entered
+
+Notes:
+
+1. PMS1A.Status of Subject at End of This Trial Segment should only be considered if present in the study.
+
+2. NAPS.Sponsor ID Number, NAPS. Indicate the Phase Not Started by the Subject and NAPS. Reason Phase Not Started columns should be blank for PMS1, PMS1A and PMST forms in the report. (columns 9, 10 and 11)
+
+3. PMS1/PMS1A/PMST. Status of Study Medication at the End of This Trial Segment/Status of Subject at End of This Trial Segment/Status of Subject at end of all Study Treatments should be blank for NAPS form in the report. (column 7)
+
+4. Deleted records and erroneous visit should not be considered
+
+5. PMST.Status of Subject at end of all Study Treatments should only be considered if present in the study.
+
+Report Scenarios:
+A- Yes
+
+PMS1/PMS1A/PMST/NAPS.Date of Assessment AND PMS1.Status of Study Medication at the End of This Trial Segment/PMS1A.Status of Subject at End of This Trial Segment/PMST.Status of Subject at end of all Study Treatments AND PMS1/PMS1A/PMST.Select the Status of the Subject for the Next Trial Segment AND NAPS. Indicate the Phase Not Started by the Subject AND NAPS. Reason Phase Not Started are entered
+
+B- No
+
+One or more of the following times is missing: PMS1/PMS1A/PMST/NAPS.Date of Assessment,  PMS1.Status of Study Medication at the End of This Trial Segment/PMS1A.Status of Subject at End of This Trial Segment/PMST.Status of Subject at end of all Study Treatments, PMS1/PMS1A/PMST.Select the Status of the Subject for the Next Trial Segment OR NAPS. Indicate the Phase Not Started by the Subject OR NAPS. Reason Phase Not Started are missing
+
+C- No
+
+NAPS.Records are deleted or NULL
+
+Sorting:
+Country, Site, Subject Number, Date of Assessment
+
+Parameter Selection:
+Country, First Site, Last Site, First Subject, Last Subject, List of Subjects, Randomized Only (N/Y, default as N).
+
+Form.Item Names:
+1. SA. Site Country
+
+2. SA. Site Mnemonic
+
+3. SA. Subject Number
+
+4. PMS1/PMS1A/PMST/NAPS. Visit Mnemonic
+
+5. Form Mnemonic
+
+6. PMS1/PMS1A/PMST/NAPS. Date of Assessment
+
+7. PMS1/PMS1A/PMST. Status of Study Medication at the End of This Trial Segment/Status of Subject at End of This Trial Segment/Status of Subject at end of all Study Treatments
+
+8. PMS1/PMS1A/PMST/NATS.Select the Status of the Subject for the Next Trial Segment
+
+9. NAPS.Sponsor ID Number
+
+10. NAPS.Indicate the Phase Not Started by the Subject
+
+11. NAPS. Reason Phase Not Started

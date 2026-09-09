@@ -1,0 +1,329 @@
+Report ID: RID262
+
+Report Title:
+Consistency between Protocol Milestone status and Post End of treatment visits
+
+Description:
+This report lists subjects that have  completed item "Select the Status of the Subject for the Next Trial Segment" in Status forms and the expected visit has not been entered or is out of the expected window or the option selected does not match with Post End of treatment visits initialized.
+
+Column Heading:
+1. Country
+
+2. Site
+
+3. Subject Number
+
+4. Form
+
+5. Trial Segment Reference
+
+6. Next Trial Segment
+
+7. New Therapy Form
+
+8. Date of New Therapy9. Count Days From
+
+10. Date Selected
+
+11. Expected Visit Mnemonic
+
+12. Expected Visit DOV
+
+13. Days elapsed from date selected
+
+14. Scenario
+
+Logic:
+Scenario 1a:
+
+Logic 1a.1 "Count days from" <> New Therapy
+
+AND
+
+Logic 1a.2 "Form". Trial Segment Reference = "Trial Segment Reference"
+
+AND
+
+Logic 1a.3 "Form". Select the Status of the Subject for the Next Trial Segment = "Next trial segment"
+
+AND
+
+(Logic 1a.4 The "Expected visit" DOV Date of visit = NULL
+
+OR
+
+Logic 1a.5 The "Expected visit" DOV Erroneous visit box is checked)
+
+AND
+
+Logic 1a.6 System Date – "Count days from" >= "Upper number of days" + "Data entry window")
+
+AND
+
+(Logic 1a.7 "eCRF cutoff phase"."Item cutoff phase" on "Visit cutoff phase" is NULL
+
+OR
+
+Logic 1a.8 "eCRF cutoff phase"."Item cutoff phase" on "Visit cutoff phase" <> NULL
+
+AND
+
+Logic 1a.9 "Item cutoff phase" > "Count days from" + "Upper number of days")
+
+Scenario 1b:
+
+Logic 1b.1 "Count days from" = New Therapy
+
+AND
+
+Logic 1b.2 "Form". Trial Segment Reference = "Trial Segment Reference"
+
+AND
+
+Logic 1b.3 "Form". Select the Status of the Subject for the Next Trial Segment = "Next trial segment"
+
+AND
+
+Logic 1b.4 "New Therapy Form". "Date of New Therapy" <> NULL
+
+AND
+
+(Logic 1b.5 The "Expected visit" DOV Date of visit = NULL
+
+OR
+
+Logic 1b.6 The "Expected visit" DOV Erroneous visit box is checked)
+
+AND
+
+Logic 1b.7 System Date  – "Count days from" >= "Data entry window"
+
+Scenario 2a:
+
+Logic 2a.1 "Count days from" <> New Therapy
+
+AND
+
+Logic 2a.2 "Form". Trial Segment Reference = "Trial Segment Reference"
+
+AND
+
+Logic 2a.3 "Form". Select the Status of the Subject for the Next Trial Segment = "Next trial segment"
+
+AND
+
+Logic 2a.4 "Expected visit" DOV Date of visit <> NULL
+
+AND
+
+(Logic 2a.5 "Expected visit" DOV Date of visit – "Count days from" < "Lower number of days"
+
+OR
+
+Logic 2a.6 "Expected visit" DOV Date of visit – "Count days from" > "Upper number of days")
+
+Scenario 2b:
+
+Logic 2b.1 "Count days from" = New Therapy
+
+AND
+
+Logic 2b.2 "New Therapy Form". "Date of New Therapy" <> NULL
+
+AND
+
+Logic 2b.3 "Expected visit" DOV Date of visit > "Date of New Therapy"
+
+Scenario 3
+
+Logic 3.1 "Expected visit" DOV Date of visit <> NULL
+
+AND
+
+Logic 3.2 There is not at least one "Form" with Trial Segment Reference = "Trial Segment Reference" and Select the Status of the Subject for the Next Trial Segment = "Next trial segment"
+
+Note 1: Erroneous visit or deleted records will not be considered in the programming.
+
+Note 2: Form, New Therapy Form, Date of New Therapy, Trial Segment Reference, Next trial segment, expected visit, Count days from, Upper number of days, Lower Number of days are values from supporting document
+
+Note 3: Please check below clarification for "Count days from" in supporting document.
+
+For Date of Visit: report use "Visit Mnemonic" DOV.
+
+For Last dose: report use the maximum SM04/SMAB/SMAU/STR/SM Stop date prior to “Form” date. If more than one study medication form is present in the study, use the maximum last dose date across all of them.
+
+For Date of Assessment: report use the Date of Assessment in "Form" with Trial Segment Reference = "Trial Segment Reference" and Select the Status of the Subject for the Next Trial Segment = "Next trial segment"
+
+For New Therapy: report use the "Date of New Therapy".
+
+Note 4: Only use date for calculation in this report, disregard time. If New therapy form indicates day or month as UNK, please use the imputed date for the calculation.
+
+Note 5: Check that Criteria Form, Criteria Item question and Criteria Value matches data on InForm for each scenario logic according to the supporting doc provided.
+
+Note 6: If supporting doc is not provided, display the message as "ONC_DOV_002_JR_STD Supporting Document Not Present for This Trial".
+
+Requires supporting document to be named ONC_DOV_002_supp_<xxxxxxx>.csv and will contain the following columns and associated content:
+
+One row for each group of Scenario to be reviewed according to protocol design
+
+1. Group - Required for Scenario 3 this is a unique value that can be used between two or more records when there is a need to check the "Expected visit" vs the "Next Trial Segment" in two different forms example, PMS1 and OEFU. For Scenario 1 and 2 just simply enter NA.
+
+2. Criteria Form1 - Arm/Cohort/Stratification Form Mnemonic (E.g. SR/SRIVRS/TRIG). If applies for all subjects regardless the Arm/Cohort/Stratification, enter NA
+
+3. Criteria Itemquestion1 - Arm/Cohort/Stratification Itemquestion1. If applies for all subjects regardless the Arm/Cohort/Stratification, enter NA OR if the Itemquestion1 is not applicable for the protocol, enter NA
+
+4. Criteria Value1 - Arm/Cohort/Stratification Value. If applies for all subjects regardless the Arm/Cohort/Stratification, enter NA OR if the itemValue1 is not applicable for the protocol, enter NA
+
+5. Criteria Form2 - Arm/Cohort/Stratification Form Mnemonic (E.g. SR/SRIVRS/TRIG). If applies for all subjects regardless the Arm/Cohort/Stratification, or is not needed enter NA
+
+6. Criteria Itemquestion2 - Arm/Cohort/Stratification Itemquestion2. If applies for all subjects regardless the Arm/Cohort/Stratification, enter NA OR if the Itemquestion2 is not applicable for the protocol, or is not needed enter NA
+
+7. Criteria Value2 - Arm/Cohort/Stratification Value2. If applies for all subjects regardless the Arm/Cohort/Stratification, enter NA OR if the Value2 is not applicable for the protocol, enter NA
+
+8. Criteria Form3 - Arm/Cohort/Stratification Form Mnemonic (E.g. SR/SRIVRS/TRIG). If applies for all subjects regardless the Arm/Cohort/Stratification, or is not needed enter NA
+
+9. Criteria Itemquestion3 - Arm/Cohort/Stratification Itemquestion3. If applies for all subjects regardless the Arm/Cohort/Stratification, enter NA OR if the Itemquestion3 is not applicable for the protocol, or is not needed enter NA
+
+10. Criteria Value3 - Arm/Cohort/Stratification Value3. If applies for all subjects regardless the Arm/Cohort/Stratification, enter NA OR if the Value3 is not applicable for the protocol, enter NA5. Expected visit - Required for Scenario 1, 2, 3. Enter Visit mnemonic. Note: For scenario 1b and 2b enter Safety Follow-up visit mnemonic.
+
+11. Expected visit - Required for Scenario 1, 2, 3. Enter Visit mnemonic. Note: For scenario 1b and 2b enter Safety Follow-up visit mnemonic.
+
+12. Form - Required for Scenario 1, 2, 3. Enter PMST/PMS1/OEFU/PMS1A
+
+13. Trial Segment Reference - Required for Scenario 1, 2, 3. Enter value list of Trial Segment Reference of corresponding Form
+
+14. Next trial segment - Required for Scenario 1, 2, 3. Enter value of Trial Segment Reference of corresponding Form.
+
+15. New Therapy Form - Required only for Scenario 1b and 2b,  Enter OABF/ODBF/ODBHF/ODBNF/ODBCF/ORAD2/OSOF/OSOFL. For Scenario 1a, 2a and 3 just simply enter NA.
+
+16. Date of New Therapy- Required for Scenario 1b and 2b. Enter date item name of New Therapy Form. If the date contains ‘UNK’, please use imputed date e.g. Date of Assessment, Date of Progression/Recurrence For This Regimen, Start Date of Regimen, Imputed Start Date of Regimen, Date of Progression For This Regimen, Date of Surgery. For Scenario 1a, 2a and 3 just simply enter NA.
+
+17. Count days from - Required for Scenario 1 and 2. For Scenario 1a, 2a: enter either of Last dose, Date of Assessment, Date of Visit. For Scenario 1b, 2b: enter New Therapy. For Scenario 3 : enter NA
+
+18. Visit mnemonic - Required only if “Count days from” is equal to Date of Visit. Enter Visit Mnemonic related to Discontinuation visit as per T&E, eg: "Discontinuation", "Discontinuation Visit", "End of Treatment" or any additional mnemonic variation.
+
+19. Lower number of days - Enter 'NA' for Scenario 1 and 3. At least one of Lower number of days and Upper number of days need to be provided for Scenario 2a, enter 'NA' if it is not needed.
+
+20. Upper number of days - Required for Scenario 1a and 2a; At least one of Lower number of days and Upper number of days need to be provided for Scenario 2a, enter 'NA' if it is not needed.
+
+21.Visit cutoff phase – Required only for Scenario 1a; Enter 'NA' for Scenario 1b, 2a, 2b and 3.
+
+22.eCRF cutoff phase - Required only for Scenario 1a; Enter DS01/OEDRA/OEFU. Enter 'NA' for Scenario 1b, 2a, 2b and 3.
+
+23. Item date cutoff phase – Required only for Scenario 1a; Date that should be completed that close the specific FU phase, Enter Date of Assessment, Date of Disposition. Enter 'NA' for Scenario 1b, 2a, 2b and 3.
+
+24. Scenario - Required. Enter 1a/1b/2a/2b/3.
+
+e.g.
+
+Group, Criteria Form1, Criteria Itemquestion1, Criteria Value1, Criteria Form2, Criteria Itemquestion2, Criteria Value2, Criteria Form3, Criteria Itemquestion3, Criteria Value3, Expected visit,Form, Trial Segment Reference,Next trial segment, New Therapy Form,Date of New Therapy,Count days from,Visit mnemonic,Lower number of days,Upper number of days,Visit cutoff phase,eCRF cutoff phase, item cutoff phase,Scenario
+
+NA,SR,Cohort,Cohort 1,NA,NA,NA,NA,NA,NA,Neoadjuvant Tx 2 Cycle 1, NA, NA, Continuing into Neoadjuvant Treatment 2, ODBF,Start Date of Regimen, New Therapy, NA, NA, 10, 1
+
+NA,SR,Cohort,Cohort 1,NA,NA,NA,NA,NA,NA,Neoadjuvant Tx 2 Cycle 1, PMS1, End of Neoadjuvant Treatment 1, Continuing into Neoadjuvant Treatment 2, NA,NA,Last Dose, NA, NA, 10, 1
+
+NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,Neoadjuvant Tx 2 Cycle 1, NA, NA, Continuing into Neoadjuvant Treatment 2, OSOF,Date of Assessment,Date of visit, Neoadjuvant Tx 1 Cycle 4 Visit 3, NA, 10,,1
+
+NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,Neoadjuvant Tx 2 Cycle 1, PMS1, End of Neoadjuvant Treatment 1, Continuing into Neoadjuvant Treatment 2, NA,NA,Date of Assessment, NA, 6, 10, 2
+
+NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,Neoadjuvant Tx 2 Cycle 1, NA, NA, Continuing into Neoadjuvant Treatment 2, OSOFL,Date of Surgery,Last Dose, NA, 6, 10, 2
+
+NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,Neoadjuvant Tx 2 Cycle 1, PMS1, End of Neoadjuvant Treatment 1, Continuing into Neoadjuvant Treatment 2, NA,NA,Date of visit Neoadjuvant Tx 1 Cycle 4 Visit 3 6 10 2
+
+1,SR,Cohort, Cohort 1,NA,NA,NA,NA,NA,NA, Neoadjuvant Tx 2 Cycle 1, PMS1, End of Neoadjuvant Treatment 1, Continuing into Neoadjuvant Treatment 2, NA,NA, NA, NA, NA, NA, 3
+
+2,SR,Arm,Arm 1,NA,NA,NA,NA,NA,NA,Definitive Surgery,NA, NA,Continuing into Definitive Surgery, ODBF,Start Date of Regimen,Date of Assessment,NA,NA,NA,3
+
+2,NA,NA,NA,NA,NA,NA,NA,NA,NA,Definitive Surgery,OEFU, End of Neoadjuvant Safety Follow-up,Continuing into Definitive Surgery, NA,NA,Date of Assessment,NA,NA,NA,3
+
+The number of rows in the supporting document will be represented in the Report Header as "# of rows for customization".
+
+The actual information provided by the supporting doc can be outputted by selecting Y in the parameter "Supporting doc Page".
+
+Report Scenarios:
+Scenario 1a: Output Yes
+
+A-	There is a "Form" record completed, the “Expected visit” DOV has not been entered and the number of days allowed plus the data entry window has elapsed since the “count days from”  specified in supporting document
+
+B-	There is a "Form" record completed, the “Expected visit” DOV is set as erroneous visit after the number of days allowed plus the data entry window has been elapsed since the “count days from” specified in supporting document
+
+Scenario 1a: Output No
+
+A-	There is a "Form" record completed and the “Expected visit” DOV has been entered
+
+B-	There is a "Form" record completed and the “Expected visit” DOV is entered and not set as erroneous visit.
+
+C-          There is a visit cutoff phase, eCRF and Item Date completed per supp doc and date is less than “count days from + upper number of days”
+
+Scenario 1b: Output Yes
+
+A-	There is a "New Therapy Form" record completed and the “Expected visit” DOV has not been entered
+
+B-	There is a "New Therapy Form" record completed and the “Expected visit” DOV is set as erroneous visit
+
+Scenario 1b: Output No
+
+A-	There is a "New Therapy Form" record completed and the “Expected visit” DOV has been entered
+
+B-	There is a "New Therapy Form" record completed and the “Expected visit” DOV is entered and not set as erroneous visit.
+
+Scenario 2a: Output Yes
+
+A-	The "Expected visit" DOV minus date of “Count days from” is less than the lower number of days allowed per supporting document
+
+B-	The "Expected visit" DOV minus date of “Count days from” is greater than the lower number of days allowed per supporting document
+
+Scenario 2a: Output No
+
+A-	The "Expected visit" DOV minus date of “Count days from” is greater than the lower number of days  and less than the upper number of days allowed per supporting document
+
+Scenario 2b: Output Yes
+
+A-            “Date of New Therapy” is before the "Expected visit" DOV
+
+Scenario 2b: Output No
+
+A-            “Date of New Therapy” is after the "Expected visit" DOV
+
+Scenario 3: Output Yes
+
+A-	DOV from "Expected visit" is entered and there is not at least one "Form" completed with “Trial Segment” and “Next trial segment” as per supporting document
+
+Scenario 3: Output No
+
+A-	DOV from "Expected visit" is entered and there is at least one "Form" completed with “Trial Segment” and “Next trial segment” as per supporting document
+
+Sorting:
+Country, Site, Subject Number, LL Visit, LL eCRF, LL Row #.
+
+Parameter Selection:
+Country, First Site, Last Site, First Subject, Last Subject, List of Subjects, Randomized Only (N/Y, Default as N), Data entry window (free textbox, only numeric values are allowed, if not specified set by default as 14), Supporting Doc Page (N/Y, Default as N)
+
+Form.Item Names:
+1. SA. Site Country
+
+2. SA. Site Mnemonic
+
+3. SA. Subject Number
+
+4. For Scenario 1 and 2. Display the "Form" value as per supporting document. For Scenario 3, leave it blank
+
+5. For Scenario 1 and 2. Display the "Trial Segment Reference" value as per supporting document. For Scenario 3, leave it blank
+
+6. For Scenario 1 and 2. Display the "Next Trial Segment" value as per supporting document. For Scenario 3, leave it blank
+
+7. For Scenario 1 and 2. Display the "New Therapy Form" value as per supporting document. For Scenario 3, leave it blank
+
+8. For Scenario 1 and 2. Display the "Date of New Therapy" value as per supporting document. For Scenario 3, leave it blank
+
+9. Count Days From should be displayed according to the date entered in "Count Days from" parameter: Last dose/Date of Assessment. In case count days from is "Date of Visit" then display the actual visit mnemonic as per supporting document column "Visit Mnemonic".Leave it blank for scenario 3
+
+10. Date Selected should be displayed according to the date selected in "Count Days from" parameter in format "DDMMMYYYY". Leave it blank for scenario 3
+
+11. DOV. Visit Mnemonic of visit selected in "Expected Visit"
+
+12. DOV. Date of Visit of visit selected in "Expected Visit" parameter. For Scenario 1 this value should be blank.
+
+13. For Scenario 2: "Expected visit" DOV Date of visit – "Count days from", Leave it blank for scenario 1 and 3
+
+14. Display as "Scenario 1a or 1b" for Scenario 1; "Scenario 2a or 2b" for Scenario 2; "Scenario 3" for Scenario 3

@@ -1,0 +1,45 @@
+Report ID: RID462
+
+Report Title:
+Tissue Sample Information Form (TSIF) records missing
+
+Description:
+The report generates output for all subjects with missing Tissue Sample Information Form (TSIF)
+
+Column Heading:
+1. Country
+
+2. Site
+
+3. Subject Number
+
+4. TSIF seq#
+
+5. Testing Information Details
+
+Logic:
+Logic 1. Every patient should have a TSIF test completed as options selected in prompts “Required Testing to be performed” in Screening visit, if not, then output generated
+
+Report Scenarios:
+Scenario A, Output: Yes Output is produced for all patients with missing TSIF record in Screening visit with Testing to be Performed completed as options selected in prompts “Required Testing to be performed”.
+
+Scenario B, Output: No Output shouldn´t be produced for all patients with TSIF record in Screening completed with Testing to be Performed selected as options selected in prompts “Required Testing to be performed
+
+Sorting:
+Country, Site, Subject Number
+
+Parameter Selection:
+Country(ies), Site(s) and Subject(s), Randomized Only, List of Subjects
+
+Required Testing to be performed: (shows all the options available in item Testing to be performed 1,2,3,4,5,6,7,8,9 and 10, multiple selection, required)
+
+Form.Item Names:
+1. SA. Country.
+
+2. SA. Site Mnemonic
+
+3. SA. Subject Number
+
+4. TSIF. Sponsor ID Number
+
+5. TSIF. Testing to be Performed [X] (Concatenated as one line by comma)

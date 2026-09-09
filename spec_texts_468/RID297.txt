@@ -1,0 +1,140 @@
+Report ID: RID297
+
+Report Title:
+Missing record in LOEL form for B-cell NHL patients
+
+Description:
+This report will list subjects who have missing record at baseline in LOEL form for B-cell NHL patients
+
+Column Heading:
+1. Country
+
+2. Site
+
+3. Subject number
+
+4. C1D1 Date of Visit
+
+5. CDD form
+
+6. Primary Diagnosis
+
+7. Scenario
+
+Logic:
+Scenario 1: Output if CDD.Primary Diagnosis <> NULL and C1D1 Date of Visit <> NULL and there is no  LOEL.lesion Identification = “Target Nodal” or “Target Extra Nodal” AND LOEL.Date of Initial Lesion Identification for This Trial (Scan Image Physical Exam) within 28 days prior to C1D1 Date of Visit.
+
+Scenario 2: Output if CDD.Primary Diagnosis <> NULL and C1D1 Date of Visit <> NULL and there is no LOEL. Lesion Identification= Non-Target Nodal or Non-Target Extra Nodal AND LOEL.Date of Initial Lesion Identification for This Trial (Scan Image Physical Exam) within 28 days prior to C1D1 Date of Visit.
+
+Scenario 3: Output if CDD.Primary Diagnosis <> NULL and C1D1 Date of Visit <> NULL and there is no LOEL.Organ or System Assessment Location= Liver AND LOEL.Date of Initial Lesion Identification for This Trial (Scan Image Physical Exam) within 28 days prior to C1D1 Date of Visit.
+
+Scenario 4: Output if CDD.Primary Diagnosis <> NULL and C1D1 Date of Visit <> NULL and there is no LOEL.Organ or System Assessment Location= Spleen AND LOEL.Date of Initial Lesion Identification for This Trial (Scan Image Physical Exam) within 28 days prior to C1D1 Date of Visit.
+
+Scenario 5: Output if CDD.Primary Diagnosis <> NULL and C1D1 Date of Visit <> NULL and there is no LOEL. Organ or System Assessment Location= Whole Body Assessment by FDG-PET AND LOEL.Date of Initial Lesion Identification for This Trial (Scan Image Physical Exam) within 28 days prior to C1D1 Date of Visit.
+
+Scenario 6: Output if CDD.Primary Diagnosis <> NULL and C1D1 Date of Visit <> NULL and there is no LOEL.Organ or System Assessment Location= Bone Marrow Assessment by FDG-PET AND LOEL.Date of Initial Lesion Identification for This Trial (Scan Image Physical Exam) within 28 days prior to C1D1 Date of Visit.
+
+Note 1: If there is more than one CDD form in protocol please show outputs according to “CDD form” provided in parameter selection. If this field is blank show outputs for all CDD forms present in protocol.
+
+Report Scenarios:
+Scenario 1:
+
+A. Output = Yes
+
+CDD form was initiated AND there is no record in LOEL form with Lesion Identification= Target Nodal or Target Extra Nodal AND Date of Initial Lesion Identification for This Trial (Scan Image Physical Exam) within 28 days prior to C1D1 Date of Visit.
+
+B. Output = No
+
+CDD form was initiated AND there is record in LOEL form with Lesion Identification= Target Nodal or Target Extra Nodal AND Date of Initial Lesion Identification for This Trial (Scan Image Physical Exam) within 28 days prior to C1D1 Date of Visit.
+
+C. Output = No
+
+CDD form was not initiated
+
+Scenario 2:
+
+A. Output = Yes
+
+CDD form was initiated AND there is no record in LOEL form with Lesion Identification= Non-Target Nodal or Non-Target Extra Nodal AND Date of Initial Lesion Identification for This Trial (Scan Image Physical Exam) within 28 days prior to C1D1 Date of Visit.
+
+B. Output = No
+
+CDD form was initiated AND there is record in LOEL form with Lesion Identification= Non-Target Nodal or Non-Target Extra Nodal AND Date of Initial Lesion Identification for This Trial (Scan Image Physical Exam) within 28 days prior to C1D1 Date of Visit.
+
+C. Output = No
+
+CDD form was not initiated
+
+Scenario 3:
+
+A. Output = Yes
+
+CDD form was initiated AND there is no record in LOEL form with Organ or System Assessment Location= Liver AND Date of Initial Lesion Identification for This Trial (Scan Image Physical Exam) within 28 days prior to C1D1 Date of Visit.
+
+B. Output = No
+
+CDD form was initiated AND there is record in LOEL form with Organ or System Assessment Location= Liver AND Date of Initial Lesion Identification for This Trial (Scan Image Physical Exam) within 28 days prior to C1D1 Date of Visit.
+
+C. Output = No
+
+CDD form was not initiated
+
+Scenario 4:
+
+A. Output = Yes
+
+CDD form was initiated AND there is no record in LOEL form with Organ or System Assessment Location= Spleen AND Date of Initial Lesion Identification for This Trial (Scan Image Physical Exam) within 28 days prior to C1D1 Date of Visit.
+
+B. Output = No
+
+CDD form was initiated AND there is record in LOEL form with Organ or System Assessment Location= Spleen AND Date of Initial Lesion Identification for This Trial (Scan Image Physical Exam) within 28 days prior to C1D1 Date of Visit.
+
+C. Output = No
+
+CDD form was not initiated
+
+Scenario 5:
+
+A. Output = Yes
+
+CDD form was initiated AND there is no record in LOEL form with Organ or System Assessment Location= Whole Body Assessment by FDG-PET AND Date of Initial Lesion Identification for This Trial (Scan Image Physical Exam) within 28 days prior to C1D1 Date of Visit.
+
+B. Output = No
+
+CDD form was initiated AND there is record in LOEL form with Organ or System Assessment Location= Whole Body Assessment by FDG-PET AND Date of Initial Lesion Identification for This Trial (Scan Image Physical Exam) within 28 days prior to C1D1 Date of Visit.
+
+C. Output = No
+
+CDD form was not initiated
+
+Scenario 6:
+
+A. Output = Yes
+
+CDD form was initiated AND there is no record in LOEL form with Organ or System Assessment Location= Bone Marrow Assessment by FDG-PET AND Date of Initial Lesion Identification for This Trial (Scan Image Physical Exam) within 28 days prior to C1D1 Date of Visit.
+
+B. Output = No
+
+CDD form was initiated AND there is record in LOEL form with Organ or System Assessment Location= Bone Marrow Assessment by FDG-PET AND Date of Initial Lesion Identification for This Trial (Scan Image Physical Exam) within 28 days prior to C1D1 Date of Visit.
+
+C. Output = No
+
+CDD form was not initiated
+
+Parameter Selection:
+Country, First Site, Last Site, First Subject, Last Subject, List of Subjects, Randomized Only (N/ default as N), CDD Form(Separate by comma)
+
+Form.Item Names:
+1. SA. Site country
+
+2. SA. Site Mnemonic
+
+3. SA. Subject number
+
+4. DOV. Date of Visit of C1D1(DD-MMM-YYYY)
+
+5. CDD. form Mnemonic
+
+6. CDD. Primary Diagnosis
+
+7. Display Scenario

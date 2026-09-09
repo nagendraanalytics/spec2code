@@ -1,0 +1,95 @@
+Report ID: RID009
+
+Report Title:
+Overall Toxicity vs Toxicity Grade Mismatch
+
+Description:
+This report lists subjects whose Overall Toxicity is not equal to the Maximum Toxicity Grade <or Hematological Toxicity Grade Description for CLL> entered.
+
+Column Heading:
+1. Country
+
+2. Site
+
+3. Subject Number
+
+4. AE/SAEI/SAEP Form
+
+5. AE/SAEI/SAEP Seq
+
+6. AE/SAEI/SAEP Term
+
+7. Overall Toxicity
+
+8. Maximum Toxicity Grade
+
+Logic:
+Logic 1: If (Adverse Event Toxicity Grade Change Entry.Hematological Toxicity Grade Description for CLL does not exist OR Adverse Event Toxicity Grade Change Entry.Hematological Toxicity Grade Description for CLL = null) within an AE sequence number
+
+AND
+
+Logic 1.1 Overall Toxicity <> the maximum Adverse Event Toxicity Grade Change Entry.Toxicity Grade entered in the AE toxicity grade itemset for matching subject and AE sequence number
+
+Logic 2: If (Adverse Event Toxicity Grade Change Entry.Hematological Toxicity Grade Description for CLL <> null AND Adverse Event Toxicity Grade Change Entry.Toxicity Grade = null ) within an AE sequence number
+
+AND
+
+Logic 2.1Overall Toxicity <> the maximum (Adverse Event Toxicity Grade Change Entry. Hematological Toxicity Grade Description for CLL) entered in the AE toxicity grade itemset for matching subject and AE sequence number
+
+Logic 3: This report lists subjects whose Overall Toxicity is not equal to the maximum Toxicity Grade entered in the SAEI/SAEP toxicity grade itemset for matching subject and SEAI/SAEP sequence number. The report will derive maximum toxicity from all related toxicity grade records and compare this to the overall toxicity in the SAEI/SAEP form.
+
+Notes:
+
+1.	Report should not display deleted records.
+
+2.	If "Randomized only" parameter selection checkbox is checked, the report should only output subjects with Randomization number that is not null.
+
+3.	If within an AE sequence number both Toxicity Grade and Hematological Toxicity Grade for CLL are completed, please ignore this sequence until reconciliation is complete and only one type of Toxicity Grade is reported
+
+Report Scenarios:
+Scenario A: Yes
+
+For AEs in which the item Adverse Event Toxicity Grade Change Entry.Hematological Toxicity Grade Description for CLL is not used: Overall Toxicity <> the maximum Toxicity Grade entered in the AE/SAEI/SAEP. Toxicity Grade item in the Adverse Event Toxicity Grade Change Entry section for matching subject and AE/SEAI/SAEP sequence number.
+
+Scenario B: Yes
+
+For AEs in which the item Adverse Event Toxicity Grade Change Entry.Hematological Toxicity Grade Description for CLL is used: Overall Toxicity <> the maximum Adverse Event Toxicity Grade Change Entry.Hematological Toxicity Grade  for CLL itemset for matching subject and AE sequence number
+
+Scenario C: No
+
+For AEs in which the item Adverse Event Toxicity Grade Change Entry.Hematological Toxicity Grade Description for CLL is not used:
+
+Overall Toxicity = the maximum Toxicity Grade entered in the AE/SAEI/SAEP.Toxicity Grade item in the Adverse Event Toxicity Grade Change Entry section for matching subject and AE/SEAI/SAEP sequence number
+
+Scenario D: No
+
+For AEs in which the item Adverse Event Toxicity Grade Change Entry.Hematological Toxicity Grade Description for CLL is used:
+
+Overall Toxicity = the maximum Toxicity Grade entered in Adverse Event Toxicity Grade Change Entry.Hematological Toxicity Grade for CLL itemset for matching subject and AE sequence number
+
+Scenario F: No
+
+AE/SEAI/SAEP deleted records
+
+Sorting:
+Country, Site, Subject Number, AE/SAEI/SAEP Seq
+
+Parameter Selection:
+Country, Site, Subject Number, Randomized Only, List of Subjects
+
+Form.Item Names:
+1. Subject Assignment.Site Country
+
+2. Subject Assignment.Site Mnemonic
+
+3. Subject Assignment.Subject Number
+
+4. Adverse Events/SERIOUS ADVERSE EVENTS - INFANT/SERIOUS ADVERSE EVENTS - PARTNER Form.Form
+
+5. Adverse Events/SERIOUS ADVERSE EVENTS - INFANT/SERIOUS ADVERSE EVENTS - PARTNER Form.Sequence Number
+
+6. Adverse Events/SERIOUS ADVERSE EVENTS - INFANT/SERIOUS ADVERSE EVENTS - PARTNER Form.AE Term
+
+7. Adverse Events/SERIOUS ADVERSE EVENTS - INFANT/SERIOUS ADVERSE EVENTS - PARTNER Form.Overall Toxicity
+
+8. Derived: Max (Adverse Event Toxicity Grade Change Entry.Toxicity Grade OR Adverse Event Toxicity Grade Change Entry.Hematological Toxicity Grade Description for CLL)

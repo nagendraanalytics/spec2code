@@ -1,0 +1,118 @@
+Report ID: RID196
+
+Report Title:
+Missing required records for locally sourced Study Medications
+
+Description:
+The report generates output for missing lot IDs and Manufacturer ID in SM eCRF.
+
+Column Heading:
+1. Country
+
+2. Site
+
+3. Subject Number
+
+4. Form
+
+5. Seq #
+
+6. SM name
+
+7. Dose Amount
+
+8. Error message
+
+Logic:
+Logic 1.
+
+Produce output if
+
+Item Lot ID 1 AND Lot ID 2 AND Lot ID 3 AND Lot ID 4 AND Lot ID 5 AND Lot ID 6 = BLANK
+
+Logic 2.
+
+Produce output if
+
+Manufacturer ID item = BLANK
+
+Note 1: Please exclude deleted records from programming
+
+Note 2: Please display output for both logics in one row
+
+Note 3: If only Logic 1 is fulfilled, please display error message "Missing Lot IDs", if only logic 2 is fulfilled, please display error message "Missing Manufacturer ID"
+
+Note 4: If parameter Exclude zero doses is selected as Y, please do not output SM entries with Dose Amount or corresponding dose item as 0
+
+Requires supporting document to be named SM030_supp_<xxxxxxx>.csv and will contain the following columns and associated content:
+
+1) Criteria Form - SR Form or specified as 'NA' for all subjects
+
+2) Criteria itemquestion - Unique value in each group, specified as 'NA' for all subjects
+
+3) Criteria Value - Unique value in each group, specified as 'NA' for all subjects
+
+4) Study medication - Value for specific Study Medication, specified as 'ALL' for all Study Medications
+
+5) Itemquestion - Specify as ALL to check all items available for the study
+
+6) Dose Item - specify dose item name that should be taken into account for each study medication
+
+e.g.
+
+Criteria Form	Criteria itemquestion	Criteria Value	Sm form	Study medicationItemquestionDose Item
+
+SR	Cohort	-1234 Fixed Dose in Combination with Pembrolizumab 200mg + Pemetrexed + Carboplatin	SM	CARBOPLATIN	ALLDose Amount
+
+SR	Cohort	-1234 Fixed Dose in Combination with Pembrolizumab 200mg + Pemetrexed + Carboplatin	SM	PEMETREXED	ALLDose Amount
+
+Report Scenarios:
+Scenario 1:
+
+Output - No
+
+ALL Lot ID items on SM eCRF are completed and Manufacturer ID is completed.
+
+Scenario 2:
+
+Output - No
+
+Not all Lot ID items on SM eCRF are missing and Manufacturer ID is completed.
+
+Scenario 3:
+
+Output - Yes
+
+All Lot ID items on SM eCRF are missing and Manufacturer ID is completed.
+
+Scenario 4:
+
+Output - Yes
+
+All Lot ID items on SM eCRF are missing and Manufacturer ID is missing.
+
+Scenario 5:
+
+Output - Yes
+
+All Lot ID items on SM eCRF are completed and Manufacturer ID is missing.
+
+Parameter Selection:
+Exclude zero doses (default as Y)
+
+Form.Item Names:
+1. Subject Assignment.Site Country
+
+2. Subject Assignment.Site Mnemonic
+
+3. Subject Assignment.Subject Number
+
+4. SM.Form Mnemonic
+
+5. SM.Form Sequence
+
+6. SM.Label Description
+
+7. SM.Dose Amount (please refer to the dose item provided in supporting document)
+
+8. "Missing Lot IDs" or "Missing Manufacturer ID"

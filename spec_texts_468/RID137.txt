@@ -1,0 +1,81 @@
+Report ID: RID137
+
+Report Title:
+Discrepancy between SOC and medical history disease
+
+Description:
+This report lists subjects who have  medical history that code to "Surgical and medical procedures" in SOC and "Is the medical disease/condition or event still ongoing" is not null.
+
+Column Heading:
+1. Country
+
+2. Site
+
+3. Subject Number
+
+4. eCRF
+
+5. Seq
+
+6. Term
+
+7. Ongoing?
+
+Logic:
+The report should display output if patient has following conditions.
+
+1. SOC = "Surgical and medical procedures"
+
+And
+
+2. "Is the medical history disease/condition or event still ongoing?" is not null.
+
+And
+
+3. Report should not display deleted forms.
+
+And
+
+4. Erroneous Visit should be ignored
+
+Note 1. Logic applies for MH, MHA, MHNC, APMH eCRFs.
+
+Report Scenarios:
+The report should display output if patient has following conditions.
+
+1. SOC = "Surgical and medical procedures"
+
+And
+
+2. "Is the medical history disease/condition or event still ongoing?" is not null.
+
+And
+
+3. Report should not display deleted forms.
+
+And
+
+4. Erroneous Visit should be ignored
+
+Note 1. Scenarios should be reconciled for MH, MHA, MHNC, APMH eCRFs.
+
+Sorting:
+Country, Site, Subject Number, eCRF, Seq
+
+Parameter Selection:
+Country, Site, Subject, Randomized Only, List of Subjects
+
+Form.Item Names:
+1. Subject Assignment.Site Country
+
+2. Subject Assignment form.Site Mnemonic
+
+3. Subjects.Subject Number
+
+4. MEDICAL HISTORY forms.Formmnemonic
+
+5. MEDICAL HISTORY forms.Sequence Number
+
+6. MEDICAL HISTORY forms.Medical History Term
+
+7. MEDICAL HISTORY forms.MHENRFONGOINGRC

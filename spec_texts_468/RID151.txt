@@ -1,0 +1,101 @@
+Report ID: RID151
+
+Report Title:
+Repeated Time Sample Obtained
+
+Description:
+The report will display randomized subjects that have 2 or more entries which one Analyte  AND Scheduled Time is different AND Date and Time Sample Obtained was the same, at the same Visit.
+
+Column Heading:
+1. Country
+
+2. Site
+
+3. Subject Number
+
+4. Visit
+
+5. DOV
+
+6. eCRF
+
+7. Seq
+
+8. Analyte
+
+9 Scheduled Time
+
+10. Date/Time Obtained
+
+Logic:
+This report will output in PK eCRF within same visit:
+
+Subject with SA. Treatment/Randomization Number<> Null
+
+AND
+
+there are >= 2 PK records with same Analyte
+
+AND
+
+Scheduled Time are different
+
+AND
+
+Date and Time Sample Obtained are same
+
+* Please exclude erroneous visit/deleted records into programming
+
+* Please include both Date and Time in programming
+
+* If in a same visit,  both PK04 and PK05 forms are existing, please check each form separately
+
+* All variations of PK04 and PK05 form should be included in this report
+
+Report Scenarios:
+A-No
+
+non randomized subject
+
+B-Yes
+
+Within same visit, >=2 PK records witih same Analyte/different Scheduled Time/Same Date and Time Sample Obtained.
+
+C-No
+
+Within same visit, >=2 PK records witih DIFFERENT Analyte/different Scheduled Time/DIFFERENT or SAME Date and Time Sample Obtained.
+
+D-No
+
+Within same visit, >=2 PK records witih same Analyte/different Scheduled Time/Different Date and Time Sample Obtained.
+
+E-No
+
+Within different visit, >=2 PK records witih same Analyte/different Scheduled Time/Same Date and Time Sample Obtained.
+
+Sorting:
+Country, Site, Subject Number, Visit, eCRF, Analyte, Date/Time Obtained, Scheduled Time, Seq
+
+Parameter Selection:
+Country, Site, Subject Number, Visit,  Analyte, Scheduled Time
+
+Form.Item Names:
+1. Subject Assignment.Site Country
+
+2. Subject Assignment.Site Mnemonic
+
+3. Subjects.Subject Number
+
+4. Pharmacokinetic Forms.Visit Mnemonic
+
+5. Visits. Date of Visit
+
+6. Pharmacokinetic Forms.Formmnemonic
+
+7. Pharmacokinetic Forms.Formidx
+
+8. Pharmacokinetic Forms.Analyte
+
+9. Pharmacokinetic Forms.Scheduled Times
+
+10.Pharmacokinetic Forms.Date and Time Sample Obtained

@@ -1,0 +1,143 @@
+Report ID: RID140
+
+Report Title:
+Missing OLAB Tests
+
+Description:
+This report will list subjects that have missing required OLAB based on protocol requirements.
+
+Column Heading:
+1. Country
+
+2. Site
+
+3. Subject Number
+
+4. Visit
+
+5. DOV
+
+6. Form
+
+7. Test
+
+8. Scheduled Time
+
+9. Group
+
+10. Error message = Missing Test / Missing Result
+
+Logic:
+Output is produced when a subject does not have at least one <lab test name parameter> test on the OLAB eCRF with Result populated at the specified Arm/Cohort in SR/TRIG and/or Visit and/or Scheduled Time.
+
+*Optional field: Arm and/or Cohort and/or scheduled Time may be null if not available in the study.
+
+*If Arm or Cohort or visit or scheduled Time is not specified by user, please leave corresponding columns blank in output.
+
+*Data in erroneous visits / deleted records should not be considered in programming.
+
+*>If user provides different information for each OLAB variation, please consider each OLAB variation separately.
+
+	E.g.	V1,	OLABA-Test 1, Test 2
+
+				OLABB-Test 2, Test 3
+
+ >If all OLAB variations are considered together, please provide it as NA.
+
+	E.g.	V1,	NA-Test 1, Test 2
+
+Output should be produced based on supporting document for sellected visits even if the visit is not initiated.
+
+Requires supporting document to be named OLAB002_supp_<xxxxxxx>.csv and will contain the following columns and associated content:
+
+1.Group: It indicates the numeric values such as 1, 2, 3 etc based on values provided in the testname column. If testname values are going to check either of test names then Group values should same for both the tests.
+
+For example, Total Triiodothyronine OR Free T3 is present then both test names should not come as missing. Here, please provide Group value as 1 for both test names.
+
+Rest of the test names such as Free Thyroxine, TSH please update the group value as 2 , 3 respectively.
+
+2.Criteria_Form: Formmnemonic of SR variations. If not required please provide it as NA.
+
+3.Criteria_Itemquestion: item question of SR variations. If not required please provide it as NA.
+
+4.Criteria_Value: value of arm or cohort from SR variations. If not required please provide it as NA.
+
+5.Visitmnemonic: Visitmnemonic from OLAB form, NOT NULL.
+
+6.Formmnemonic: Formmnemonic from OLAB form. If all OLAB variations are considered, please provide it as NA.
+
+7.ScheduledTime: Scheduled Time name from OLAB form. If not required please provide it as NA.
+
+8.Testname: Test name from OLAB form. Provide it in single row for each test names.
+
+9.Form_Initialized_Flag - Unique value in each group, enter Y/N (Y: Missing Test will be outputted when form is initialized, N: Missing Test outputted even if form is not initialized.)
+
+Ex:
+
+Group,Criteria_Form,Criteria_Itemquestion,Criteria_Value,Visitmnemonic,Formmnemonic,ScheduledTime,Testname,Form_Initialized_Flag
+
+1,NA,NA,NA,Screening,OLAB,Scheduled,Total Triiodothyronine,Y
+
+1,NA,NA,NA,Screening,OLAB,Scheduled,Free T3,Y
+
+2,NA,NA,NA,Screening,OLAB,NA,Free Thyroxine,Y
+
+3,NA,NA,NA,Screening,NA,Scheduled,TSH,Y
+
+4,SR,Arm,Pembrolizumab - SoC RT with/without cisplatin,Screening,OLAB,Scheduled,Hepatitis B Virus Surface Antigen,N
+
+5,SR,Arm,Pembrolizumab - SoC RT with/without cisplatin,Screening,OLAB,Scheduled,Hepatitis C RNA,N
+
+Report Scenarios:
+1) Output = Yes
+
+If OLAB eCRF is initiated and specified test(s) and/or result(s) per study requirements are missing on OLAB.
+
+2) Output = No
+
+If there are at least one record for each specified test(s) with result(s) per study requirements on OLAB eCRF.
+
+3) Output = No
+
+If OLAB eCRF is in Erroneous Visit.
+
+4) Output = Yes
+
+If specified test(s) per study requirements was/were entered but all deleted on OLAB eCRF.
+
+5) Output = Yes
+
+If OLAB eCRF is not initiated and specified test(s) and/or result(s) per study requirements are missing on OLAB.
+
+Sorting:
+Country, Site Number, Subject Number, Visit, Group, Forms, Scheduled Time, Lab Test
+
+Parameter Selection:
+Country, First Site, Last Site, First Subject, Last Subject, List of Subjects, Randomized Only
+
+Form.Item Names:
+1. SA. Site Country
+
+2. SA. Site Number
+
+3. SA. Subject Number
+
+4. OLAB. Visitmnemonic
+
+5. OLAB. DOV
+
+6. OLAB. Formmnemonic
+
+7. Testname from supporting doc
+
+8. ScheduledTime from supporting doc
+
+9. Group from supporting doc
+
+10. Hardcode-
+
+Missing Test: required test missing
+
+Missing Result: there is required test however result is null
+
+* For missing test, column 7 should be hardcode as required test name.

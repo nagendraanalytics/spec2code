@@ -1,0 +1,111 @@
+Report ID: RID327
+
+Report Title:
+Scheduled time mismatch
+
+Description:
+This report will list subjects who have an incorrect scheduled time selected in LSNLG, LFLG and Oncologic Response eCRFs ORLLG and ORSLG
+
+Column Heading:
+1. Country
+
+2. Site
+
+3. Subject Number
+
+4. Seq# Form 1
+
+5. Date of Lesion Evaluation / Date Response Determined Form#1
+
+6. Scheduled time Form#1
+
+7. Seq# Form 2
+
+8. Date of Lesion Evaluation / Date Response Determined Form #2
+
+9. Scheduled time Form#2
+
+10. Error Message
+
+Logic:
+SCENARIO 1
+
+LSNLG or LFLG or ORLLG or ORSLG  Scheduled time<> Null
+
+AND
+
+Logic 1.1:  Scheduled Time in [LSNLG] <> Scheduled Time in [ORLLG] for the same date [(Date of Current Lesion Evaluation in LSNLG form) or (Date Response Determined in ORLLG form).
+
+OR
+
+Logic 2.1:  Scheduled Time in [LSNLG] <> Scheduled Time in [ORSLG] for the same date [(Date of Current Lesion Evaluation in LSNLG form) or (Date Response Determined in ORSLG form)].
+
+OR
+
+Logic 3.1:  Scheduled Time in [LFLG] <> Scheduled Time in [ORLLG] for the same date [(Date of Assessment in LFLG form) or (Date Response Determined in ORLLG form)].
+
+OR
+
+Logic 4.1:  Scheduled Time in [LFLG] <> Scheduled Time in [ORSLG] for the same date [(Date of Assessment in LFLG form) or (Date Response Determined in ORSLG form)].
+
+OR
+
+Logic 5.1: Scheduled Time in [LSNLG] <> Scheduled Time in [LFLG] for the same date [(Date of Current Lesion Evaluation in LSNLG form) or (Date of Assessment in LFLG form)].
+
+OR
+
+Logic 6.1: Scheduled Time in [ORLLG] <> Scheduled Time in [ORSLG ] for the same date  [(Date Response Determined in ORLLG form ) or (Date Response Determined in ORSLG form)].
+
+Note 1:  Randomized patients
+
+Note 2:  Erroneous visit or deleted record will not be considered in the programming or output.
+
+Report Scenarios:
+LSNLG or LFLG or ORLLG or ORSLG  Scheduled time<> Null
+
+REPORT SCENARIOS: SCENARIO [Output = Yes]
+
+Will output if Scheduled Time is not the same between forms [LSNLG or LFLG] AND [ORLLG or ORSLG] for the same date [(Date of Current Lesion Evaluation in LSNLG form) or (Date of Assessment in LFLG form) or (Date Response Determined in ORLLG form) or (Date Response Determined in ORSLG form)].
+
+OR
+
+Will output if Scheduled Time is not the same between forms LSNLG AND LFLG for the same date [(Date of Current Lesion Evaluation in LSNLG form) or (Date of Assessment in LFLG form)].
+
+OR
+
+Will output if Scheduled Time is not the same between forms ORLLG AND ORSLG for the same date [(Date Response Determined in ORLLG form ) or (Date Response Determined in ORSLG form)].
+
+Note 1: Only output of randomized patients
+
+Note 2: Erroneous visit or deleted record will not be considered in the programming or output.
+
+Sorting:
+1. Country
+
+2. Site
+
+3. Subject Number
+
+Parameter Selection:
+Country, Site, Subject Number, List of Subjects
+
+Form.Item Names:
+1. SA.Site Country
+
+2. SA.Site Mnemonic
+
+3. SA.Subject Number
+
+4. LSNLG.LSNLGLSSPID, LFLG.LFLGLSSPID, ORLLG.ORLLGLSSPID
+
+5. LSNLGLFE.LSNLGLSDTCE, LFLG.LFLGLSDTC, ORLLG.ORLLGLSDTC
+
+6. LSNLGLFE.LSNLGLSTPT, LFLG.LFLGLSTPT, ORLLG.ORLLGLSTPT
+
+7. ORLLG.ORLLGLSSPID, ORSLG.ORSLGLSSPID, LFLG.LFLGLSSPID
+
+8. ORLLG.ORLLGLSDTC, ORSLG.ORSLGLSDTC, LFLG.LFLGLSDTC
+
+9. ORLLG.ORLLGLSTPT, ORSLG.ORSLGLSTPT, LFLG.LFLGLSTPT
+
+10.Display "Scheduled Time Mismatch (LSNLG and ORLLG)” if Logic 1.1 is met. Display "Scheduled Time Mismatch (LSNLG and ORSLG)” if Logic 2.1 is met.Display "Scheduled Time Mismatch (LFLG and ORLLG)” if Logic 3.1 is met.Display "Scheduled Time Mismatch (LFLG and ORSLG)” if Logic 4.1 is met. Display "Scheduled Time Mismatch (LSNLG and LFLG)” if Logic 5.1 is met. Display "Scheduled Time Mismatch (ORLLG and ORSLG)” if Logic 6.1 is met.

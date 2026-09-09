@@ -1,0 +1,65 @@
+SELECT
+  base.CountryCol AS `Country`,
+  base.SiteCol AS `Site`,
+  base.SubjectCol AS `Subject Number`,
+  base.LabelDescCol AS `Label Description`,
+  base.VisitCol AS `Visit Mnemonic`,
+  base.SeqCol AS `Sequence Number`,
+  base.StartDateCol AS `Start date`,
+  base.StopDateCol AS `Stop date`,
+  base.FirstDoseCol AS `First dose`,
+  base.LastDoseCol AS `Last dose`,
+  base.ScenarioCol AS `Scenario`
+FROM
+(
+  SELECT
+    `@HDR`.`Subject`.`ID` AS SubjectID,
+    `@HDR`.`Site`.`Country` AS CountryCol,
+    `@HDR`.`Site`.`Number` AS SiteCol,
+    `@HDR`.`Subject`.`Name` AS SubjectCol,
+    SA.`SA_LBL` AS LabelDescCol,
+    STR.`STRSPIDIT` AS VisitCol,
+    STR.`STRSPIDIT` AS SeqCol,
+    DATE_FORMAT(RAWDATE(STR.`ORADPRSTDTCIT`), '%d-%m-%Y %H:%i') AS StartDateCol,
+    RAWDATE(STR.`ORADPRSTDTCIT`) AS StartDateRaw,
+    DATE_FORMAT(RAWDATE(STR.`ORADPRENDTCIT`), '%d-%m-%Y %H:%i') AS StopDateCol,
+    RAWDATE(STR.`ORADPRENDTCIT`) AS StopDateRaw,
+    CASE WHEN STR.`ORADPROCCURIT` = 'Y' THEN 'First Dose' ELSE '' END AS FirstDoseFlagCol,
+    CASE WHEN STR.`ORADTRTRCIT` = 'Y' THEN 'Last Dose' ELSE '' END AS LastDoseFlagCol,
+    CASE
+      WHEN EXISTS (
+        SELECT 1 FROM `EDC`.`ORADFM` STR2
+        WHERE `@HDR`.`Subject`.`ID` = `@HDR`.`Subject`.`ID`
+          AND STR2.`ORADPRTRTPD` = STR.`ORADPRTRTPD`
+          AND STR2.`ORADPROCCURIT` = 'Y'
+          AND RAWDATE(STR2.`ORADPRSTDTCIT`) < RAWDATE(STR.`ORADPRSTDTCIT`)
+      ) THEN 'Scenario 1'
+      WHEN EXISTS (
+        SELECT 1 FROM `EDC`.`ORADFM` STR3
+        WHERE `@HDR`.`Subject`.`ID` = `@HDR`.`Subject`.`ID`
+          AND STR3.`ORADPRTRTPD` = STR.`ORADPRTRTPD`
+          AND STR3.`ORADTRTRCIT` = 'Y'
+          AND RAWDATE(STR3.`ORADPRENDTCIT`) > RAWDATE(STR.`ORADPRENDTCIT`)
+      ) THEN 'Scenario 2'
+      WHEN (
+        SELECT COUNT(*) FROM `EDC`.`ORADFM` STR4
+        WHERE `@HDR`.`Subject`.`ID` = `@HDR`.`Subject`.`ID`
+          AND STR4.`ORADPRTRTPD` = STR.`ORADPRTRTPD`
+          AND STR4.`ORADPROCCURIT` = 'Y'
+      ) > 1 THEN 'Scenario 3'
+      WHEN (
+        SELECT COUNT(*) FROM `EDC`.`ORADFM` STR5
+        WHERE `@HDR`.`Subject`.`ID` = `@HDR`.`Subject`.`ID`
+          AND STR5.`ORADPRTRTPD` = STR.`ORADPRTRTPD`
+          AND STR5.`ORADTRTRCIT` = 'Y'
+      ) > 1 THEN 'Scenario 4'
+      ELSE NULL
+    END AS ScenarioCol
+  FROM `EDC`.`SAFM` SA
+  INNER JOIN `EDC`.`ORADFM` STR
+    ON `@HDR`.`Subject`.`ID` = `@HDR`.`Subject`.`ID`
+  WHERE `@Form`.`Status` = 'submitted__v'
+    AND (STR.`DELETEDFM` = 'N' OR STR.`DELETEDFM` IS NULL)
+) base
+WHERE base.ScenarioCol IS NOT NULL
+ORDER BY base.CountryCol, base.SiteCol, base.SubjectCol, base.VisitCol

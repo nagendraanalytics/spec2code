@@ -1,0 +1,101 @@
+Report ID: RID324
+
+Report Title:
+Mismatch of lesion category and axis´measurements on the LSNEI form
+
+Description:
+This report generates a list of mismatches between the measurements of a lesion reported on the LSNEI and the category selected for that lesion.
+
+Column Heading:
+1. Country
+
+2. Site
+
+3. Subject Number
+
+4. LSNEI Seq
+
+5. Lesion Category
+
+6. Location (Organ)
+
+7. Expected measurement
+
+8. Error message
+
+Logic:
+Report will check each LSNEI entry where:
+
+Logic1: Lesion Category = Index     AND
+
+Logic2: Within LSNEI record mentioned in logic1, there is no measurement meeting following criteria:
+
+       Location (Organ) =  Lymph Node  and  Index Lesion Measurement (Dimension 1 x Dimension 2)>=15mm  OR
+
+       Location (Organ) <> Lymph Node and  Index Lesion Measurement (Dimension 1 x Dimension 2)>=10mm
+
+--------------
+
+Logic3: Lesion Category = Non-Index     AND
+
+Logic4: Within LSNEI record mentioned in logic4, there is no measurement meeting following criteria:
+
+         Location (Organ) =  Lymph Node  and  Index Lesion Measurement (Dimension 1 x Dimension 2)>=10mm but <15mm  OR
+
+         Location (Organ) <> Lymph Node and  Index Lesion Measurement (Dimension 1 x Dimension 2)<10mm
+
+Exclude deleted data from programming.
+
+Report Scenarios:
+Report will check each LSNEI entry where:
+
+Logic1: Lesion Category = Index     AND
+
+Logic2: Within LSNEI record mentioned in logic1, there is no measurement meeting following criteria:
+
+       Location (Organ) =  Lymph Node  and  Index Lesion Measurement (Dimension 1 x Dimension 2)>=15mm  OR
+
+       Location (Organ) <> Lymph Node and  Index Lesion Measurement (Dimension 1 x Dimension 2)>=10mm
+
+--------------
+
+Logic3: Lesion Category = Non-Index     AND
+
+Logic4: Within LSNEI record mentioned in logic4, there is no measurement meeting following criteria:
+
+         Location (Organ) =  Lymph Node  and  Index Lesion Measurement (Dimension 1 x Dimension 2)>=10mm but <15mm  OR
+
+         Location (Organ) <> Lymph Node and  Index Lesion Measurement (Dimension 1 x Dimension 2)<10mm
+
+Exclude deleted data from programming.
+
+Sorting:
+Country, Site, Subject Number, LSNEI Seq
+
+Parameter Selection:
+Country, Site, Subject Number, Randomized only
+
+Form.Item Names:
+1. SA Form. Site Country
+
+2. SA Form. Site Mnemonic
+
+3. SA Form. Subject Number
+
+4. LSNEI Form. Formidx
+
+5. LSNEI Form. Lesion Category
+
+6. LSNEI Form. Location (Organ)
+
+7. Hardcode as ">=15mm" when Lesion Category=Index and Location (Organ)= Lymph Node
+
+    Hardcode as ">=10mm"when Lesion Category=Index and Location (Organ) is selected but < > Lymph Node
+
+     Hardcode as ">=10mm and <15mm" when Lesion Category=Non-Index and Location (Organ)= Lymph Node
+
+     Hardcode as "<10mm" when  Lesion Category=Non-Index and Location (Organ) is selected but < > Lymph Node
+
+8. Display as "no long axis existing" per Logic1~2
+
+    Display as "no short axis existing" per Logic3~4

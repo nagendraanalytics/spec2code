@@ -1,0 +1,224 @@
+Report ID: RID152
+
+Report Title:
+PK record missing in InForm or Vendor transfer file
+
+Description:
+PK eCRF AND CENTRAL LAB/BA VENDOR RECONCILIATION
+
+The report will output when there is a PK record in eCRF with no matching record in the external vendor transfer file.
+
+The report will also output when there is a PK record in the external vendor transfer file that has no matching record in Inform.
+
+Column Heading:
+Tab 1: BA
+
+1. Country
+
+2. Site
+
+3. Screening Number
+
+4. Subject Number
+
+5. InForm Visit Name
+
+6. InForm Schedule Time
+
+7. InForm Specimen ID
+
+8. InForm Analyte
+
+9. InForm Specimen Type
+
+10. Inform Collection Date
+
+11. Inform Collection Time
+
+12. BA NOMDAY
+
+13. BA NOMHOUR
+
+14. BA Specimen ID
+
+15. BA Analyte
+
+16. BA Specimen Type
+
+17. BA Collection Date
+
+18. BA Collection Time
+
+19. Error Message
+
+TAB 2: Central Lab
+
+1. Country
+
+2. Site
+
+3. Screening Number
+
+4. Subject Number
+
+5. InForm Visit Name
+
+6. InForm Schedule Time
+
+7. InForm Specimen ID
+
+8. InForm Analyte
+
+9. InForm Specimen Type
+
+10. Inform Collection Date
+
+11. Inform Collection Time
+
+12. CENTRAL NOMDAY
+
+13. CENTRAL NOMHOUR
+
+14. CENTRAL Specimen ID
+
+15. CENTRAL Analyte
+
+16. CENTRAL Specimen Type
+
+17. CENTRAL Collection Date
+
+18. CENTRAL Collection Time
+
+19. Error Message
+
+Logic:
+Scenario 1
+
+1A
+
+Output is displayed when a combination of screening number and Specimen ID entered in InForm cannot be found in vendor data. Output error message "Missing in Vendor".
+
+1B
+
+Output is displayed when a combination of screening number and Specimen ID loaded from vendor cannot be found in InForm data. Output error message "Missing in InForm".
+
+Notes: 1. Logic considers specimen ID in InForm only when "If Sample Was Collected But Not Sent, Indicate Reason" and “Check if Sample Was Not Collected” in PK eCRF are blank.
+
+2. Please do not consider deleted records from PK forms in this logic.
+
+3. No case sensitive when comparing Specimen ID from INFORM and Vendor data
+
+4. DOV should be initialized, and visit should not be erroneous for the record to be considered in the logic.
+
+5. SITEID is always a 4-digit number, SCRNID is a 9-digit number and SUBJID is a 6-digit number if any of them have a smaller number of digits please complete with zeros at the left to make the comparison, i.e. SITEID: 100 should be 0100 to match with Site from InForm.
+
+6. It should be one tab for BA and another for Central Lab if data of both is included using the prompts.
+
+7.	For Missing in InForm scenario "Site and Screening Number" column, information missing will be populated using SITEID and SCRNID from vendor file.
+
+8.	For Missing in InForm scenario for "Subject Number" column, information missing will be populated from vendor file as the following concatenate (BA/Central.SITEID + "--" + BA/Central. SUBJID).
+
+Report Scenarios:
+Scenario 1
+
+1A Output = Yes
+
+Output is displayed when a combination of screening number and Specimen ID entered in InForm cannot be found in vendor data.
+
+1A Output = No
+
+Output is not displayed when a combination of screening number and Specimen ID entered in InForm can be found in vendor data.
+
+1B Output = Yes
+
+Output is displayed when a combination of screening number and Specimen ID loaded from vendor cannot be found in InForm data.
+
+1B Output = No
+
+Output is not displayed when a combination of screening number and Specimen ID loaded from vendor can be found in InForm data.
+
+Parameter Selection:
+Protocol Number, First Site No., Last Site No., First Subject No., Last Subject No.
+
+Vendors: Central/BA/Both.
+
+Form.Item Names:
+Tab 1: BA
+
+1. Subject Assignment.Site Country
+
+2. Subject Assignment.Site Mnemonic
+
+3. Subjects Assignment. Screening Number
+
+4. Subjects Assignment.  Subject Number
+
+5. DOV.Visit mnemonic
+
+6. PK.Scheduled Time
+
+7. PK.Specimen ID
+
+8. PK.Analyte
+
+9. PK.Specimen Type
+
+10.PK.Date of Sample Collection
+
+11.PK.Time of Sample Collection
+
+12. BA.NOMDAY
+
+13. BA.NOMHOUR
+
+14. BA.REFID
+
+15. BA.ANALYTE
+
+16. BA.SAMPLE
+
+17. BA.DDT
+
+18. BA.DTM
+
+19. Display Error Message in logic
+
+Tab 2: Central Lab
+
+1. Subject Assignment.Site Country
+
+2. Subject Assignment.Site Mnemonic
+
+3. Subjects Assignment. Screening Number
+
+4. Subjects Assignment.  Subject Number
+
+5. DOV.Visit mnemonic
+
+6. PK.Scheduled Time
+
+7. PK.Specimen ID
+
+8. PK.Analyte
+
+9. PK.Specimen Type
+
+10.PK.Date of Sample Collection
+
+11.PK.Time of Sample Collection
+
+12. Central.NOMDAY
+
+13. Central.NOMHOUR
+
+14. Central.REFID
+
+15. Central.ANALYTE
+
+16. Central.SAMPLE
+
+17. Central.DDT
+
+18. Central.DTM
+
+19. Display Error Message in logic

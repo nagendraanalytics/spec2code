@@ -1,0 +1,111 @@
+Report ID: RID233
+
+Report Title:
+Hypertension management
+
+Description:
+This report generates a list of Participants who have had systolic BP ≥140 mm Hg or diastolic BP ≥90 mm Hg with a second BP missing for the same date.
+
+Column Heading:
+1. Country
+
+2. Site
+
+3. Subject Number
+
+4. Visit
+
+5. Form name
+
+6. Sequence number
+
+7. Date/Time of Assessment
+
+8. Scheduled Time
+
+9. Blood Pressure (Systolic/Diastolic)
+
+10. Scenario
+
+Logic:
+Logic 1:
+
+This report should display output if a subject has a Systolic Blood Pressure ≥ 140 OR Diastolic Blood Pressure ≥ 90 in either VS01 OR VS02 OR VS02A
+
+AND
+
+there is not another VS01 OR VS02 OR VS02A entry with Blood Pressure (Systolic/Diastolic) recorded within the same date of assessment and visit.
+
+Logic 2:
+
+This report should display output if a subject has a Blood Pressure (Systolic/Diastolic): systolic BP ≥ 140 mm Hg or diastolic BP ≥ 90 mm Hg and there is no additional entry in VS02 OR VS02A form on the same date performed more than 30 minutes apart from the initial measurement. Any other entered entry is with time less than 30 minutes apart from the initial measurement.
+
+Notes:
+
+-Do not include deleted records/erroneous visits in programming.
+
+-Report should work within form and within visit.
+
+-Report should work across all Vital Signs forms: VS01, VS02 and VS02A.
+
+-For Logic 2, the report should take into consideration the elevated Blood Pressure entry
+
+with the earliest time entered per given day.
+
+-Unscheduled entry should be treated as missing entry.
+
+-For studies without recording time of vital signs measurement Scenario 2 should not be use
+
+-Blood Pressure (Systolic/Diastolic): systolic BP ≥ 140 mm Hg or diastolic BP ≥ 90 mm Hg should be checked only for initial measurement
+
+Report Scenarios:
+Scenario 1:
+
+a. Output=Yes
+
+If Systolic Blood Pressure from ‘Blood Pressure (Systolic/Diastolic)’ is ≥140 mm Hg and another ‘Blood Pressure (Systolic/Diastolic)’ record is missing within the same date
+
+b. Output=Yes
+
+If Diastolic Blood Pressure from ‘Blood Pressure (Systolic/Diastolic)’ is ≥90 mm Hg and another ‘Blood Pressure (Systolic/Diastolic)’ record is missing within the same date
+
+c. Output=No
+
+If Systolic Blood Pressure from Blood Pressure (Systolic/Diastolic) is <140 mm Hg and Diastolic Blood Pressure from Blood Pressure (Systolic/Diastolic) is <90 mm Hg
+
+Scenario 2:
+
+d. Output=Yes
+
+The entry with the earliest Date/Time of Assessment for particular day is entered with elevated blood pressure (systolic BP ≥ 140 mm Hg or diastolic BP ≥ 90 mm Hg) and there is not an additional entry in VS02 or VS02A form on the same date performed more than 30 minutes apart from the initial measurement. Any other entered entry is with time less than 30 minutes apart from the initial measurement.
+
+c. Output=No
+
+The entry with the earliest Date/Time of Assessment for particular day is entered with elevated blood pressure (systolic BP ≥ 140 mm Hg or diastolic BP ≥ 90 mm Hg) and there is an additional entry in VS02 or VS02A form on the same date performed more than 30 minutes apart from the initial measurement.
+
+Sorting:
+Country, Site Number, Subject Number
+
+Parameter Selection:
+Country, Site Number, Subject Number, VS Form (VS01, VS02, VS02A)
+
+Form.Item Names:
+1. SA.Country
+
+2. SA.Site Mnemonic
+
+3. SA.Subject Number
+
+4. DOV.Visit Mnemonic
+
+5. VS02A/VS02/VS01.Form Mnemonic
+
+6. VS02A/VS02/VS01.Formidx
+
+7. VS02A/VS02/VS01.Date/Time of Assessment
+
+8. VS02A/VS02/VS01.Scheduled Time
+
+9. VS02A/VS02/VS01.Blood Pressure (Systolic/Diastolic)
+
+10. Scenario: for logic 1 display: Scenario 1; for Logic 2 display: Scenario 2

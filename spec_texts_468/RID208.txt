@@ -1,0 +1,227 @@
+Report ID: RID208
+
+Report Title:
+Duplicate date of assessment or Scheduled Time
+
+Description:
+Report lists patients where there are Duplicate record (eg: duplicate Date/Time of assessment, Date/Time sample obtained, Scheduled time, etc) within the same form
+
+Column Heading:
+Scenario 1
+
+1. Country
+
+2. Site
+
+3. Subject Number
+
+4. Visit
+
+5. DOV
+
+6. Form name
+
+7. Seq#
+
+8. Date/Time Name
+
+9. Date/Time value
+
+10. Condition within form
+
+11. Scenario
+
+Scenario 2
+
+1. Country
+
+2. Site
+
+3. Subject Number
+
+4. Visit
+
+5. Form name
+
+6. Seq#
+
+7. Date/Time Name
+
+8. Date/Time value
+
+9. Condition within form
+
+10. Scenario
+
+Logic:
+Scenario 1: Report will output subjects where there are more than one record with same Date/Time and any condition/restriction (as applicable) within the same form across the visits selected by user. Compare both Date and Time, if there is no Time, just compare Date.
+
+Scenario 2: Report will output subjects where there are more than one record with same Scheduled Time and any condition/restriction (as applicable) within the same form and visit. Date item per form should be specified for this scenario if for the protocol it is allowed multiple assessments as scheduled under the same visit if not please complete the column with N/A
+
+User can select modules and visits which will be reviewed in the parameter selection. If there is no forms or visits are selected by user, then consider all forms and all visits in the programming.
+
+Deleted record and Erroneous visit will not be considered in programming and logic.
+
+Report output will be displayed as .lst(.pdf) and .xls format.
+
+Note: User should create fresh supporting document for every study and should avoid retaining the information from any other studies as there might be the chances of errors as every study has different information that do not match with other study.
+
+Requires supporting document to be named TQ016_supp_<xxxxxxx>.csv and will contain the following columns and associated content:
+
+1 row for each group of duplicate date or scheduled time for each form.
+
+-Scenario 1: If more than one condition is applied to duplicate date, i.e. Date is duplicate per the same study medication and study period, then all those rows for the same date should have the same Group Number. i.e. if it checks duplicate across VS01 and VS02, then all those rows for two forms should have the same Group Number. Otherwise, each formmnemonic and date should have unique Group Number.
+
+-Scenario 2: If more than one condition is applied to duplicate scheduled time, i.e. Scheduled time is duplicate per the same study medication and study period, then all those rows for the same scheduled time should have the same Group Number. i.e. if it checks duplicate across VS01 and VS02, then all those rows for two forms should have the same Group Number. Otherwise, each formmnemonic should have unique Group Number.
+
+User should provide all 7 columns and associated content:
+
+1) Group - Unique key for group of duplicate date/schedule time, NOT NULL.
+
+2) Formmnemonic
+
+   (-Forms provided in 'Formmnemonic' Column of supporting document should be available in the required study.)
+
+3) Date - Date Itemquestion.
+
+   (-Please complete if for the protocol it is allowed multiple assessments as scheduled under the same visit if not please complete the column with N/A.
+
+    -As every study has different itemquestions, Date itemquestion provided in the 'Date' Column of the supporting document should match Date itemquestion present in Inform (for required study).)
+
+4) Date_only - Yes/No
+
+   (-Complete as NA for Scenario 2.
+
+    -Provide Yes : (When we have only date field (time field is not present) in inform)
+
+		    or
+
+		   (When we have Date and Time field both present in inform and only date needs to be compared for duplicates).
+
+    -Provide No : When we have Date and Time field both present in inform and date and time both needs to be compared for duplicates.)
+
+5) Blinded Tables - Y/N
+
+   (-Provide Y : If its a blinded table
+
+    -Provide N : If its not a blinded table)
+
+6) Condition - Condition or restriction (eg.: analyte, study medication, test, laboratory name, Kit ID) within the form and Date to set truly duplicates, or NA if not applicable.
+
+   (-As every study has different itemquestions, Condition itemquestion provided in the 'Condition' Column of the supporting document should match Condition itemquestion present in Inform (for required study).)
+
+7) Scenario - 1 for Date/Time, 2 for Scheduled Time
+
+   (-Provide 1 For Scenario 1: Duplicate Date/Time
+
+    -Provide 2 For Scenario 2: Duplicate Scheduled Time)
+
+e.g.
+
+Group,Formmnemonic,Date,Date_only, Blinded Tables,Condition, Scenario
+
+1,DISP,Date Dispensed,yes,N,NA,1
+
+2,OLAB,Start Date Specimen Collected,no,N,Test Name,1
+
+3,PK04,Date and Time of Sample Collection,no,N,Scheduled Time,1
+
+3,PK04,Date and Time of Sample Collection,no,N, Analyte,1
+
+4,PK04,Last Dose Date and Time Prior to Sample Collected, no,N,NA,1
+
+5,VS01,NA,NA,N,NA,2
+
+5,VS02,NA,NA,N,NA,2
+
+6,CLAB,NA,NA,N,Laboratory Name,2
+
+6,CLAB,NA,NA,N,Specimen Type,2
+
+7,SLAB,Enter date/time specimen collected,no,N,Laboratory Test,1
+
+7,SLAB,Enter date/time specimen collected,no,N,Numeric Test Result,1
+
+7,SLAB,Enter date/time specimen collected,no,N,Numeric Test Unit,1
+
+7,SLAB,Enter date/time specimen collected,no,N,Character Test Result,1
+
+8, SMPB,Date/Time Prepared,no,Y,Dosage Prepared,1
+
+Notes:
+
+1. If Blinded table is provided as 'Y' Please blind data for condition column for respective table, replacing real datapoint with "XXX"
+
+2. If add entry sections under the same main section of the form are duplicate, output should be produced.
+
+3. For Scenario 2, if Scheduled Time is 'Unscheduled', output should not be produced.
+
+Report Scenarios:
+A - Yes
+
+There are more than one record with same Date/Time within the same form across the visits selected by user.
+
+B - No
+
+There is no duplicate Date/Time within the same form across the visits selected by user.
+
+C - Yes
+
+There are more than one record with same Scheduled Time within the same form and visit.
+
+B - No
+
+There is no duplicate Scheduled Time within the same form across the visits selected by user.
+
+Sorting:
+Country, Site, Subject Number, Form Name, Date/Time Value, Visit, Seq#
+
+Parameter Selection:
+Country, Site , Subject , Randomized Only, Modules, Visits, Scenario (ALL/Scenario 1/Scenario 2, required, single selection, default ALL)
+
+Form.Item Names:
+Scenario 1
+
+1. Subject Assignment. Site Country
+
+2. Subject Assignment. Site Mnemonic
+
+3. Subjects. Subject Number
+
+4. Date of Visit.Visit Mnemonic
+
+5. Date of Visit. Date of Visit
+
+6. Forms provided by user. Form name
+
+7. Forms provided by user. Formidx(leave blank for flat form)
+
+8. Forms provided by user.Date/Time Name
+
+9. Forms provided by user. Date/Time Assessment
+
+10. Condition provided by user(if more than one, concatenate each value with comma)
+
+11. Scenario from Supporting Document: Date/Time if completed as 1, Scheduled Time if completed as 2.
+
+Scenario 2
+
+1. Subject Assignment. Site Country
+
+2. Subject Assignment. Site Mnemonic
+
+3. Subjects. Subject Number
+
+4. Date of Visit.Visit Mnemonic
+
+5. Forms provided by user. Form name
+
+6. Forms provided by user. Formidx(leave blank for flat form)
+
+7. Forms provided by user.Date/Time Name
+
+8. Forms provided by user.Date/Time Assessment
+
+9. Condition provided by user(if more than one, concatenate each value with comma)
+
+10. Scenario from Supporting Document: Date/Time if completed as 1, Scheduled Time if completed as 2.

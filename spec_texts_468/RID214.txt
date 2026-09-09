@@ -1,0 +1,127 @@
+Report ID: RID214
+
+Report Title:
+Duplicated Information on Different forms
+
+Description:
+This report lists subjects who have the same information on different forms.
+
+Column Heading:
+1. Country
+
+2. Site
+
+3. Screening Number
+
+4. Subject Number
+
+5. Form1
+
+6. Form1 Visit
+
+7. Form1 seq
+
+8. Form1 Date
+
+9. Form2
+
+10. Form2 Visit
+
+11. Form2 seq
+
+12. Form2 Date
+
+13. Duplicate item
+
+Logic:
+Logic:
+
+<Form1> <Date><>null AND <Form2><Date><>null AND <Form1> <Date>=<Form2> <Date>
+
+AND
+
+<Form1><Conditon1><>null AND <Form2><Conditon1><>null AND <Form1>< Conditon1>=<Form2> < Conditon1>
+
+AND
+
+<Form1><Conditon2><>null AND <Form2><Conditon2><>null AND <Form1>< Conditon2>=<Form2> < Conditon2>
+
+AND
+
+…
+
+AND
+
+<Form1><Condition N><>null AND <Form2><Condition N><>null AND <Form1>< Condition N>=<Form2> < Condition N>
+
+Note 1: Don’t consider deleted records and Erroneous visits.
+
+Note 2: Requires supporting document to be named TQ030_supp_1234XX (in csv format) and will contain the following columns and associated content:
+
+1)Combo
+
+2)Form1
+
+3)Form2
+
+4)Date
+
+5) Condition1/Condition2/…/Condition N
+
+LCDM to provide condition or restriction (eg.: 1. VS01 and VS02, Blood Pressure, Pules/Respiratory Rate/…/ Weight; 2. PMS1A and PMS1B, Status of Study Medication at the End of This Trial Segment ) within the Form1 (VS01/PMS1A) and Form2 (VS02/PMS1B) as applicable to set truly duplicates.
+
+Eg:
+
+Combo/Form1/ Form2/ Date/ Condition1/ Condition2/…/Condition N
+
+1/VS01/ VS02/ Date/Time of assessment/Blood Pressure/Pules/…/ Weight
+
+2/PMS1A/PMS1B/Date of Assessment/Status of Study Medication at the End of This Trial Segment
+
+3/ORST/ORAJ/Date Response Determined,Date of Assessment (Scan/Image/Physical Exam)/Scheduled Time
+
+Conditions can remain blank
+
+Note: 1. on Column "Date" only specify all the date Items
+
+2. Comma separator to be used only in "Date" Column. It should not be used "Condition" columns
+
+3. Date Items should not be mentioned in any Condition Columns, make sure to enter only not date items in "Condition" columns .
+
+4. All the Items should be enter in supp doc as per Inform.
+
+Report Scenarios:
+Scenario 1a, Yes.
+
+VS01. Date/Time of assessment = VS02. Date/Time of assessment, AND all provided Conditions have same value for each of them.
+
+Scenario 1b, No.
+
+VS01. Date/Time of assessment = VS02. Date/Time of assessment, AND any of provided Conditions don’t have same value.
+
+Form.Item Names:
+1. Subject Assignment. Site Country
+
+2. Subject Assignment. Site Mnemonic
+
+3. Subject Assignment. Screening Number
+
+4. Subject Assignment. Subject Number
+
+5. Form1 Index. FORMNEMONIC
+
+6. Visit. Visit Mnemonic
+
+7. [Form1]. Sequence Number
+
+8. [Form1]. [Date] display item in supp doc
+
+9. Form2 Index. FORMNEMONIC
+
+10. Visit. Visit Mnemonic
+
+11. [Form2]. Sequence Number
+
+12. [Form2]. [Date] display item in supp doc
+
+13. Display according to Conditions in supp doc.

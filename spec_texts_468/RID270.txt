@@ -1,0 +1,167 @@
+Report ID: RID270
+
+Report Title:
+Mismatch of First Dose and/or Last dose between STR and SME for Radiation.
+
+Description:
+This report will output subjects with mismatching First Dose and/or Last dose between STR and SME for Radiation.
+
+Column Heading:
+1. Country
+
+2. Site
+
+3. Subject Number
+
+4. STR Visit
+
+5. STR Sequence
+
+6. STR Start Date/Time
+
+7. STR First or Last Dose
+
+8. SME Sequence
+
+9. SME Start Date/Time
+
+10. SME. Stop Date/Time
+
+11. Scenario
+
+Logic:
+Scenario 1
+
+(
+
+Logic 1.1: STR. Please Indicate if this is the First Dose for this Label Description <> Null
+
+AND
+
+Logic 1.2: SME. Please Indicate if this is the First Dose for this Label Description <> Null
+
+AND
+
+Logic 1.3: STR. Start Date/Time from logic 1.1 <> SME. Start Date/Time from logic 1.2
+
+)
+
+OR
+
+Logic 1.4.: SME. Please Indicate if this is the First Dose for this Label Description <> Null
+
+AND
+
+Logic 1.5: there is no STR. Please Indicate if this is the First Dose for this Label Description <> Null
+
+)
+
+OR
+
+Scenario 2
+
+(
+
+Logic 2.1: STR. Please Indicate if this is the Last Dose for this Label Description <> Null
+
+AND
+
+Logic 2.2: SME. Please Indicate if this is the Last Dose for this Label Description <> Null
+
+AND
+
+Logic 2.3: STR. Stop Date/Time from logic 2.1 <> SME. Stop Date/Time from logic 2.2.
+
+)
+
+OR
+
+(
+
+Logic 2.4: SME. Please Indicate if this is the Last Dose for this Label Description <> Null
+
+AND
+
+Logic 2.5: there is no STR. Please Indicate if this is the Last Dose for this Label Description <> Null
+
+)
+
+OR
+
+Scenario 3
+
+(
+
+Logic 3.1: STR. Please Indicate if this is the First Dose for this Label Description <> Null
+
+AND
+
+Logic 3.2: there is no SME. Please Indicate if this is the First Dose for this Label Description <> Null
+
+OR
+
+Scenario 4
+
+(
+
+Logic 4.1 STR. Please Indicate if this is the Last Dose for this Label Description <> Null
+
+AND
+
+Logic 4.2 there is no SME. Please Indicate if this is the Last Dose for this Label Description <> Null
+
+Note 1: Please exclude deleted records and erroneous visits from programming.
+
+Note 2: Please disregard time.
+
+Note 3: If logic 1.5 or 2.5 is met, display column 4, 5 , 6 and 7 blank.If logic 3.4 is met, display column 8,9 and 10 blank
+
+Note 4: display all outputs on the same table updating in column 11 scenario according to logic
+
+Note5: For date/time onyl consider Dates, do not consider times in the programing
+
+Report Scenarios:
+Scenario 1 output yes
+
+There is a SME record with “Please Indicate if this is the First Dose for this Label Description” completed AND the Start Date/Time on STR does not match or is missing for First Dose
+
+Scenario 2 output yes
+
+There is a SME record with “Please Indicate if this is the Last Dose for this Label Description” completed AND the Start Date/Time on STR does not match or is missing for Last Dose
+
+Scenario 3 output yes
+
+There is a STR record with “Please Indicate if this is the First Dose for this Label Description” completed AND there is no SME record with “Please Indicate if this is the First Dose for this Label Description” completed.
+
+Scenario 4 output yes
+
+There is a STR record with “Please Indicate if this is the Last Dose for this Label Description” completed AND there is no SME record with “Please Indicate if this is the Last Dose for this Label Description” completed
+
+Sorting:
+Country, Site Number, Subject Number, STR Visit, STR Sequence, STR Start Date/Time, SME Start Date/Time
+
+Parameter Selection:
+Country, First Site, Last Site, First Subject, Last Subject, List of Subjects, Randomized Only (N/Y, default as N).
+
+Form.Item Names:
+1. SA Form. Site Country
+
+2. SA Form. Site Mnemonic
+
+3. SA Form. Subject Number
+
+4. STR. Visit Mnemonic
+
+5. STR. Sponsor ID Number
+
+6. STR. Start Date/Time
+
+7. STR. Display “First dose” when “Please Indicate if this is the First Dose for this Label Description” is checked or display “Last dose” when “Please Indicate if this is the Last Dose for this Label Description”. If both first and last dose are checked please display “First Dose, Last Dose”
+
+8. SME.formidx
+
+9. SME. Start Date/Time
+
+10. SME. Stop Date/Time
+
+11. Display corresponding scenario according to logics that are completed

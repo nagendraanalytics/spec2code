@@ -1,0 +1,119 @@
+Report ID: RID449
+
+Report Title:
+STR Last Dose Reconciliation
+
+Description:
+This report reconciles the date of STR last dose and first dose against the dates of Study medication.
+
+Column Heading:
+1.	Country
+
+2.	Site
+
+3.	Subject Number
+
+4.	STR Visit
+
+5.	STR Sequence
+
+6.	STR Start Date/Time
+
+7.	STR first dose or last dose
+
+8.	Study Medication Form
+
+9.	Study Medication Visit
+
+10.	Study Medication Sequence
+
+11.	Study Medication Date
+
+12.	Scenario
+
+Logic:
+(
+
+Logic 1.1: STR. Start Date/Time <> Null AND STR. Please Indicate if this is the Last Dose for this Label Description <> Null
+
+AND
+
+Logic 1.2: there is a study medication record after the window from STR. Start Date/Time from logic 1.1
+
+)
+
+OR
+
+(
+
+Logic 2.1: STR. Start Date/Time <> Null AND STR. Please Indicate if this is the First Dose for this Label Description <> Null
+
+AND
+
+Logic 2.2: there is a study medication record before the window from STR. Start Date/Time from logic 2.1
+
+)
+
+Note 1: Study medication forms and dates are:
+
+SM. Start Date/Time
+
+SMAB. Start Date/Time
+
+SMAU. Start Date/Time
+
+Use the Study medication forms selected in “Study Medication Form” Prompt. If multiple forms are selected compare with all forms
+
+Note 2: Disregard the time for comparison
+
+Note 3: window is defined in prompts “Window After Last Dose of STR”  for logic 1.2 and “Window Before First Dose of STR” for logic 2.2.
+
+Note 4: Please exclude deleted records and erroneous visits from programming.
+
+Report Scenarios:
+Scenario 1 output yes
+
+There is an STR date of last dose and study medication after the window for STR date.
+
+Scenario 2 output yes
+
+There is an STR date of first dose and study medication before the window for STR date.
+
+Scenario 3 output no
+
+There is an STR date of last dose and study medication within the window for STR date or before.
+
+Scenario 4 output no
+
+There is an STR date of first dose and study medication within the window for STR date or after.
+
+Sorting:
+Country, Site, Subject Number, Visit Mnemonic
+
+Parameter Selection:
+Country, Site, Subject Number, List of subjects, Study Medication Form (Multiple selection, display the study medication forms present in the trial), Window After Last Dose of STR (Text box to enter numeric values, default to 0), Window Before First Dose of STR (Text box to enter numeric values, default to 0), Scenario.
+
+Form.Item Names:
+1.	SA Form. Site Country
+
+2.	SA Form. Site Mnemonic
+
+3.	SA Form. Subject Number
+
+4.	STR. Visit Mnemonic
+
+5.	STR. Sponsor ID Number
+
+6.	STR. Start Date/Time
+
+7.	Display First Dose if logic 2.1 is met or Last Dose if logic 1.1 is met
+
+8.	SM/SMAU/SMAB. Formmnemonic
+
+9.	SM/SMAU/SMAB. Visitmnemonic
+
+10.	SM/SMAU/SMAB. formidx
+
+11.	SM/SMAU/SMAB. Date
+
+12.	display Scenario 1 if logic 1.1 and 1.2 are met, display scenario 2 if logic 2.1 and 2.2 are met.

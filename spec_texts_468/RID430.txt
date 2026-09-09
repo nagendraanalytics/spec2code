@@ -1,0 +1,111 @@
+Report ID: RID430
+
+Report Title:
+Reconciliation between SFU and AE when Subject Have a New Immune Related Adverse Event
+
+Description:
+This report will display subjects who have inconsistencies between SFU record with "Did the Subject Have a New Immune Related Adverse Event Since the Last Contact? " and a corresponding Adverse Event between the previous SFU and the current.
+
+Column Heading:
+1. Country
+
+2. Site
+
+3. Subject number
+
+5. SFU seq. #
+
+6. SFU Date of contact
+
+7. SFU New Immune Related Adverse?
+
+8. AE Seq #
+
+9. Date of AE
+
+10. Is the AE immune related
+
+11. Error Message
+
+Logic:
+Logic 1: SFU form, “Did the Subject Have a New Immune Related Adverse Event Since the Last Contact?" = Yes
+
+AND
+
+Logic 2: There is no entry in AE form with “Is the AE immune related?” as Yes with Onset Date and Time (Lab collection date if lab AE) <=the minimum SFU Date of contact or last attempt of contact in logic 1
+
+OR
+
+Logic 3: SFU form “Did the Subject Have a New Immune Related Adverse Event Since the Last Contact?" = Yes
+
+AND
+
+Logic 4: SFU form, 'Date of contact or last attempt of contact' <> the minimum SFU Date of contact or last attempt of contact in logic 3.
+
+AND
+
+Logic 5: There is no an entry in AE form with “Is the AE immune related?” as Yes with Onset Date and Time (Lab collection date if lab AE) > than previous SFU 'Date of contact or last attempt of contact and <= to current SFU 'Date of contact or last attempt of contact in logic 4.
+
+OR
+
+Logic 6: SFU form, “Did the Subject Have a New Immune Related Adverse Event Since the Last Contact?" = No
+
+AND
+
+Logic 7: There is at least one entry in AE form with “Is the AE immune related?” as Yes with Onset Date and Time (Lab collection date if lab AE) <= the minimum SFU Date of contact or last attempt of contact in logic 6
+
+OR
+
+Logic 8: SFU form “Did the Subject Have a New Immune Related Adverse Event Since the Last Contact?"= No
+
+AND
+
+Logic 9 : SFU form, 'Date of contact or last attempt of contact' <> the minimum SFU Date of contact or last attempt of contact in logic 8
+
+AND
+
+Logic 10 : There is an entry in AE form with “Is the AE immune related?” as Yes with Onset Date and Time (Lab collection date if lab AE) >than previous SFU 'Date of contact or last attempt of contact' and <= to current SFU 'Date of contact or last attempt of contact' in logic 9.
+
+Note 1: previous SFU is defined as the previous SFU entry based on dates.
+
+Note 2: Please exclude deleted records and erroneous visits from programming
+
+Note3: Time can be ignored for the comparison.
+
+Report Scenarios:
+Scenario 1: A-Yes: Subjects who have "Did the Subject Have a New Immune Related Adverse Event Since the Last Contact?" equal to Yes in the minimum SFU contact but have no AE entries with “Is the AE immune related?” as Yes before or equal to the minimum SFU contact.
+
+B-Yes: Subjects who have "Did the Subject Have a New Immune Related Adverse Event Since the Last Contact?" equal to Yes in the current SFU form,  but have no AE entries with “Is the AE immune related?” as Yes between the previous and the current SFU contact.
+
+Scenario 2: C-Yes: Subjects who have "Did the Subject Have a New Immune Related Adverse Event Since the Last Contact?" equal to No in the minimum SFU contact but have AE entries with “Is the AE immune related?” as Yes form before or equal to the minimum SFU contact.
+
+D-Yes: Subjects who have "Did the Subject Have a New Immune Related Adverse Event Since the Last Contact?" equal to No in the current SFU form, AE entries with “Is the AE immune related?” as Yes between the previous and the current SFU contact.
+
+E- No: Correct data entry
+
+Sorting:
+Country, Site Number and Subject Number
+
+Parameter Selection:
+Country, Site Number, Subject Number, Randomized Only, List of Subjects.
+
+Form.Item Names:
+1. SA form. country
+
+2. SA form. site
+
+3. SA form. Subject number
+
+5. SFU form. Sponsor ID Number
+
+6. SFU form. Date of contact or last attempt of contact
+
+7. SFU form. Did the Subject Have a New Immune Related Adverse Event Since the Last Contact?
+
+8. AE form. Sponsor ID Number
+
+9. AE form. Onset Date and Time (Lab collection date if lab AE)
+
+10. AE form. Is the AE immune related
+
+11. Display the value “Scenario 1” if Logic the logic for Scenario 1 applies, display the value “Scenario 2” if Logic the logic for Scenario 2 applies.

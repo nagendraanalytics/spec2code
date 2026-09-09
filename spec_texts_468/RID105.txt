@@ -1,0 +1,105 @@
+Report ID: RID105
+
+Report Title:
+Mismatch of First Dose and/or Last dose between SM and SME
+
+Description:
+This report will output subject with mismatching First Dose and/or Last dose between SM and SME.
+
+Column Heading:
+1. Country
+
+2. Site
+
+3. Subject Number
+
+4. Study Medication
+
+5. First Dose/Last Dose
+
+6. SM Seq
+
+7. SM Start Date/Time
+
+8. SME Seq
+
+9. SME Start Date/Time
+
+10. Vendor
+
+Logic:
+Logic1: Within the same Study Medication     AND
+
+Logic2: First Dose of Start Date/Time on SM form < > First Dose of Start Date/Time on SME form.           OR
+
+Logic3: Last Dose of Start Date/Time on SM form < > Last Dose of Start Date/Time on SME form.
+
+Note:
+
+1. To find First dose/Last dose on SM form: find the SM entry where First Dose/Last Dose is checked.
+
+2. To find First dose/Last Dose on SME form:
+
+    1) Mode1: when SME Form "Please Indicate if this is the First Dose for this Label Description" and "Please Indicate if this is the Last Dose for this Label Description" are transferred based on PSA, then First dose/Last dose should be the entry where the 2 items are not null.
+
+    2) Mode2: when SME Form "Please Indicate if this is the First Dose for this Label Description" and "Please Indicate if this is the Last Dose for this Label Description" are NOT transferred, then First dose derived from Minimum Start Date/Time and Last dose derived from Maximum Start Date/Time.
+
+3. Both Date and Time should be considered
+
+4. A match on study medication between SM and SME should be done.
+
+5. For the parameter of Mode, it should be a mandatory prompt. Diplay below 2 options for users to select:
+
+"Please Indicate if this is the First/Last Dose for this Label Description" transferred;
+
+"Please Indicate if this is the First/Last Dose for this Label Description" not transferred
+
+6. Exclude deleted data from programming.
+
+Report Scenarios:
+A- Yes
+
+Date of First dose does not match with eDiary first dose.
+
+B-Yes
+
+Date of Last dose does not match with eDiary Last dose.
+
+C-No
+
+Date of first dose and Last dose match with eDiary records.
+
+Sorting:
+Country
+
+Site
+
+Subject Number
+
+Study Medication
+
+Parameter Selection:
+Country, Site, Subject Number, Randomized only, List of Subjects, Mode
+
+Form.Item Names:
+1. SA Form. Site Country
+
+2. SA Form. Site Mnemonic
+
+3. SA Form. Subject Number
+
+4. SM Form. Study Medication
+
+5. Hardcode as "First Dose" when comparing first dose between SM and SME;
+
+    Hardcode as "Last Dose" when comparing last dose between SM and SME.
+
+6. SM Form. Formidx (display first dose SM Seq when First dose is compared and display last dose SM seq when Last Dose is compared)
+
+7. SM Form. Start Date/Time
+
+8. SME Form. Formidx (display first dose SME Seq when First dose is compared and display last dose SME seq when Last Dose is compared)
+
+9. SME Form. Start Date/Time
+
+10. Display the vendor name per protocol

@@ -1,0 +1,129 @@
+Report ID: RID275
+
+Report Title:
+Imaging data dates not expected in subject transfer.
+
+Description:
+This report will output subjects with imaging data in Vendor database after the completion of OEDRA or PMS1A.
+
+Column Heading:
+1. Country
+
+2. Site
+
+3. Subject Number
+
+4. Disposition Form Visit
+
+5. Disposition Form
+
+6. Disposition Form Date
+
+7. External data form
+
+8. Seq#
+
+9. Date of external data form
+
+10. Test Name
+
+Logic:
+Scenario1: (Date of image compared to End of imaging Form= “Equal, Greater Than”)
+
+[Logic 1.1: imaging external data form = CIMG
+
+AND
+
+Logic 1.2: CIMG. Date of Imaging <> NULL
+
+AND
+
+Logic 1.3: Date in Logic 1.2 >= End of imaging Form. Date of Assessment.
+
+OR
+
+Logic 2.1: imaging external data form = GEFCF
+
+AND
+
+Logic 2.2: GEFCF. Date/Time of Measurement <> NULL
+
+AND
+
+Logic 2.3: Date in Logic 2.2 >= End of imaging Form. Date of Assessment.
+
+Scenario 2:( Date of image compared to End of imaging Form= “Greater Than”)
+
+Logic 1.1: imaging external data form = CIMG
+
+AND
+
+Logic 1.2: CIMG. Date of Imaging <> NULL
+
+AND
+
+Logic 1.3: Date in Logic 1.2 > End of imaging Form. Date of Assessment.
+
+OR
+
+Logic 2.1: imaging external data form = GEFCF
+
+AND
+
+Logic 2.2: GEFCF. Date/Time of Measurement <> NULL
+
+AND
+
+Logic 2.3: Date in Logic 2.2 > End of imaging Form. Date of Assessment.
+
+Notes:
+
+Note 1: Disregard erroneous visits
+
+Note 2: For Logic 1.3 and 2.3 when End of imaging Form is selected as PMS1A use the latest PMS1A. Date of assessment
+
+Note 3: If CIMG is selected on “Imaging external data form”, evaluate logics that starts with 1 (1.1,1.2,1.3) and if GEFCF is selected on “Imaging external data form” section , evaluate logics that starts with 2 (2.1,2.2,2.3)
+
+Note 4:  If “Equal, Greater Than” is selected on “Date of image compared to End of imaging Form” section , evaluate Scenario 1 and if  “Greater Than” is selected on “Date of image compared to End of imaging Form” section evaluate Scenario 2
+
+Report Scenarios:
+Scenario A: YES
+
+A CIMG or GEFCF record was received with the following condition
+
+A CIMG or GEFCF record was received with the following condition CIMG. Date of Imaging/GEFCF. Date/Time of Measurement AFTER OEDRA. Date of Assessment. OR PMS1A.Date of Assessment.
+
+Scenario B: NO
+
+A CIMG or GEFCF record was received with the following condition CIMG. Date of Imaging/GEFCF. Date/Time of Measurement BEFORE OEDRA. Date of Assessment. OR PMS1A.Date of Assessment.
+
+Scenario C: NO
+
+Do not consider erroneous visits
+
+Sorting:
+Country, Site, Subject Number, Seq#
+
+Parameter Selection:
+Country, First Site, Last Site, First Subject, Last Subject, List of Subjects, Imaging external data form (CIMG/GEFCF), End of imaging Form (OEDRA/ PMS1A), Date of image compared to End of imaging Form (“Greater Than”, “Equal, Greater Than” Default as “Greater Than”)
+
+Form.Item Names:
+1. Subject Assessment.Country
+
+2. Subject Assessment.Site Mnemonic
+
+3. Subject Assessment.Subject Number
+
+4. Display Disposition Form Visit
+
+5. Display Disposition Form (PMS1A/OEDRA) from logic
+
+6. PMS1A/OEDRA. Date of Assessment
+
+7. External Data form (CIMG/GEFCF)
+
+8. (CIMG/GEFCF). Sequence Number
+
+9. CIMG. Date of Imaging/GEFCF. Date/Time of Measurement
+
+10. GEFCF.Test/CIMG.Test Name

@@ -1,0 +1,211 @@
+Report ID: RID211
+
+Report Title:
+Missing scheduled assessment against date of a specific timepoint
+
+Description:
+This report outputs  subjects with no assessment/test date within an acceptable range of days as compared to the specified reference timepoint.
+
+Column Heading:
+1. Country
+
+2. Site
+
+3. Subject Number
+
+4. Reference form
+
+5. Study Medication
+
+6. Reference timepoint
+
+7. Visit
+
+8. Form
+
+9. Condition
+
+Logic:
+<Criteria Form1>.<Criteria Itemquestion1> = <Criteria Value1>  AND
+
+<Criteria Form2>.<Criteria Itemquestion2> = <Criteria Value2> AND
+
+<Criteria Form3>.<Criteria Itemquestion3> = <Criteria Value3> AND
+
+Output subjects who meet following criteria:
+
+Logic1: Start Date of First dose of specified Treatment label in SM form is not null OR Date of Assessment in SR is not null
+
+AND
+
+Logic2: for each specified condition on specified form in specified visit, there is no at least one record with "Date of Assessment" is not null and the gap between Date of Assessment and start date of first dose of SM OR Date of Assessment in SR is as below:
+
+VS01; Screening; -28 <= (Date of assessment - Date of first dose) <= 0 day
+
+VS02; Screening; -28 <= (Date of assessment - Date of first dose) <= 0 day
+
+LECG; Screening; -28 <= (Date of assessment - Date of first dose) <= 0 day
+
+HLAB; Screening; -10 <= (Date of assessment - Date of first dose) <= 0 day
+
+CLAB; Screening; -10 <= (Date of assessment - Date of first dose) <= 0 day
+
+ULAB; Screening; -10 <= (Date of assessment - Date of first dose) <= 0 day
+
+OLAB; Screening; -10 <= (Start Date of Collection - Date of first dose) <= 0 day
+
+OLABA; Screening; -10 <= (Start Date of Collection - Date of first dose) <= 0 day
+
+OLABB; Screening; -10 <= (Start Date of Collection - Date of first dose) <= 0 day
+
+OLABC; Screening; -10 <= (Date of assessment - Date of first dose) <= 0 day
+
+ECOG; Screening; -28 <= (Date of assessment - Date of first dose) <= 0 day
+
+DLCO; Screening; -28 <= (Date of assessment - Date of first dose) <= 0 day
+
+PFTL; Screening; -28 <= (Date of assessment - Date of first dose) <= 0 day
+
+PO; Screening; -28 <= (Date of assessment - Date of first dose) <= 0 day
+
+From; visit; Lower range; Upper range; SM;  Condition
+
+OLAB; Screening; (Start Date of Collection - Date of first dose  for 0000) <-10, or > 0 day;SM1;  test 1
+
+OLAB; Screening; (Start Date of Collection - Date of first dose  for 0000) <-20, or > 0 day;SM1;  test 2
+
+OLAB; Screening; (Start Date of Collection - Date of first dose  for 0000) <-30, or > 0 day;SM1;  test 3
+
+OLAB; Screening; (Start Date of Collection - Date of first dose  for 0000) <-15, or > 0 day;SM2;  test 1
+
+OLAB; Cycle 1; (Start Date of Collection - Date of first dose  for 0000) <-25, or > 0 day;SM1;  test 1
+
+If same group is used for multiple rows only output if all the conditions are NOT met. For example:
+
+1; LECG; Screening; -28 <= (Date of assessment - Date of first dose) <= 0 day
+
+1; LECG; Cycle 1; -28 <= (Date of assessment - Date of first dose) <= 0 day
+
+Output should only be display if there is no Date of Assessment within the Specified range in LECG form in neither Screening or Cycle 1
+
+Notes:
+
+(1) for different study, first dose of SM is different:
+
+*if there is SM01 form, use the dose in SM01 form as the first dose.
+
+*Use 'Study Medication' directly in SM/SME form. While for SMAU/SMAB,  'Study medication' should be retrieved from SMPU/SMPB form by using 'Dose Number+ Visit Number' between SMAU/SMAB and SMPU/SMPB. It will not use Study Medication item from SMA directly.
+
+(2) Time should be considered if Time is available.
+
+(3) If Date contains UNK, output the records.
+
+(4) Deleted records and Erroneous visit should be excluded.
+
+(5) When specific form was not even initiated, it should be present in outputs.
+
+Requires Supporting Document to be named TQ024_supp_<xxxxxxx>.csv and will contain the following columns and associated content:
+
+1.	Group - Unique key for group of visits, NOT NULL. If more than one visit can be used to record the assessment, consider to use the same key group
+
+2.	Criteria Form1 - Arm/Cohort/Stratification Form Mnemonic SR/SRIVRS/TRIG. If applies for all subjects regardless the Arm/Cohort/Stratification, enter NA
+
+3.	Criteria Itemquestion1 - Arm/Cohort/Stratification Itemquestion1. If applies for all subjects regardless the Arm/Cohort/Stratification, enter NA OR if the Itemquestion1 is not applicable for the protocol, enter NA
+
+4.	Criteria Value1 - Arm/Cohort/Stratification Value. If applies for all subjects regardless the Arm/Cohort/Stratification, enter NA OR if the itemValue1 is not applicable for the protocol, enter NA
+
+5.	Criteria Form2 - Arm/Cohort/Stratification Form Mnemonic SR/SRIVRS/TRIG. If applies for all subjects regardless the Arm/Cohort/Stratification, or is not needed enter NA
+
+6.	Criteria Itemquestion2 - Arm/Cohort/Stratification Itemquestion2. If applies for all subjects regardless the Arm/Cohort/Stratification, enter NA OR if the Itemquestion2 is not applicable for the protocol, or is not needed enter NA
+
+7.	Criteria Value2 - Arm/Cohort/Stratification Value2. If applies for all subjects regardless the Arm/Cohort/Stratification, enter NA OR if the Value2 is not applicable for the protocol, enter NA
+
+8.	Criteria Form3 - Arm/Cohort/Stratification Form Mnemonic SR/SRIVRS/TRIG. If applies for all subjects regardless the Arm/Cohort/Stratification, or is not needed enter NA
+
+9.	Criteria Itemquestion3 - Arm/Cohort/Stratification Itemquestion3. If applies for all subjects regardless the Arm/Cohort/Stratification, enter NA OR if the Itemquestion3 is not applicable for the protocol, or is not needed enter NA
+
+10.	Criteria Value3 - Arm/Cohort/Stratification Value3. If applies for all subjects regardless the Arm/Cohort/Stratification, enter NA OR if the Value3 is not applicable for the protocol, enter NA
+
+11.	Formmnemonic : Formmnemonic for the assessment.
+
+12.	Date_columnname : Date of the assessment.
+
+13.	Visitmnemonic : Visitmnemonic for the assessment.
+
+14.	Reference Formnemonic: The eCRF that should be taken as reference to identify the missing assessment
+
+15.	Reference Visitmnemonic: If the reference eCRF is a visit based one that is present in more than one visit please provide the visit that should be taken into account if don't please fill the column as NA
+
+16.	Reference Studymedication : Study Medication to be considered for the first dose. If not required provide it as NA.
+
+17.	Lower_range : Lower range in days relative to the specified reference timepoint.
+
+18.	Upper_range : Upper range in days relative tothe specified reference timepoint.
+
+19.	Condition_itemname : item question of the condition to define Formmnemonic. If not required please provide it as NA.
+
+20.	Condition_Value : value of the condition to define Formmnemonic. If not required please provide it as NA.
+
+Ex:
+
+Group,Criteria Form1,Criteria Itemquestion1,Criteria Value1, Criteria Form2,Criteria Itemquestion2,Criteria Value2, Criteria Form3,Criteria Itemquestion3,Criteria Value3,Formmnemonic,Date_columnname,Visitmnemonic,ReferenceFormnemonic,ReferenceVisitmnemonic,Reference Studymedication,Lower_range,Upper_range,Condition_itemname,Condition_Value
+
+1,SR,Arm,Arm 1,SR,Stratification,Strat1,NA,NA,NA,ECOG,Date/Time of Assessment,Screening,SMAB,Cycle 1,-3475/Placebo,-7,0,Scheduled time,SCHEDULED
+
+2,SR,Stratification,Strat1,NA,NA,NA,NA,NA,NA,VS01,Date/Time of Assessment,Screening,SMAB,Cycle 1,-3475/Placebo,-42,0,NA,NA
+
+3,NA,NA,NA,NA,NA,NA,NA,NA,NA,LECG,Date/Time of Assessment,Screening,SMAB,Cycle 1,-3475/Placebo,-42,0,NA,NA
+
+3,NA,NA,NA,NA,NA,NA,NA,NA,NA,LECG,Date/Time of Assessment,Cycle 1,SMAB,Cycle 1,-3475/Placebo,-42,0,NA,NA
+
+4,NA,NA,NA,NA,NA,NA,NA,NA,NA,HLAB,Date Specimen Collected,Screening,SR,NA,NA,-7,0,Scheduled time,SCHEDULED
+
+The number of rows in the supporting document will be represented in the Report Header as "# of rows for customization".
+
+The actual information provided by the supporting doc can be outputted by selecting Y in the parameter "Supporting doc Page".
+
+Report Scenarios:
+A-Yes
+
+First Dose or SR Date of assessment is entered. But Date of Assessment in required form in visits with same group is Blank
+
+B-No
+
+First Dose or SR Date of assessment is not entered
+
+C-No
+
+First Dose or SR Date of assessment entered . Date of Assessment in required form is within the range
+
+D-Yes
+
+First Dose or SR Date of assessment entered. Date of Assessment in required form is out of the range
+
+E-Yes
+
+First dose or SR Date of assessment is entered. But date of assessment do not have at least one record at the given visit
+
+Sorting:
+Country, Site, Subject Number
+
+Parameter Selection:
+Country, First Site, Last Site, First Subject Number, Last Subject Number, List of Subjects, Randomized Only, Supporting Doc Page (N/Y, Default as N)
+
+Form.Item Names:
+1. Subject Assignment.Site Country
+
+2. Subject Assignment.Site Mnemonic
+
+3. Subjects.Subject Number
+
+4. SM01/SM/SMPU/SMAB/SR
+
+5. SM01/SM/SMPU/SMPB.Study Medication
+
+6. SM01/SM/SMAU/SMAB. Start Date and Time/SR.Date of assessment
+
+7. DATE OF VISIT. Specified Form. Visit Mnemonic
+
+8. Specified Form Name
+
+9. Specified condition

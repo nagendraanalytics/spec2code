@@ -1,0 +1,175 @@
+Report ID: RID371
+
+Report Title:
+iCPD reconciliation against new response
+
+Description:
+This report will output if Target, Non-Target or Overall response is entered as iCPD but in the previous evaluation response is not iUPD or iCPD.
+
+Column Heading:
+1. Country
+
+2. Site
+
+3. Subject Number
+
+4. ORIR seq#
+
+5. ORIR Date of Assessment
+
+6. Previous ORIR seq#
+
+7. Previous ORIR Date of Assessment
+
+8. Target Lesion iRECIST Response
+
+9. Previous Target Lesion iRECIST Response
+
+10. Non-target lesion iRECIST Response
+
+11. Previous Non-target lesion iRECIST Response
+
+12. Overall iRECIST Response
+
+13. Previous Overall iRECIST Response
+
+14. Item in error
+
+Logic:
+Logic 1: Current ORIR.Target Lesion  (Identified at Baseline) iRECIST Response = iCPD AND Previous ORIR.Target Lesion (Identified at Baseline) iRECIST Response <>  iCPD OR iUPD
+
+OR
+
+Logic 2: Current ORIR.Non-Target Lesion (Identified At Baseline) iRECIST Response= iCPD AND Previous ORIR.Non-Target Lesion (Identified At Baseline) iRECIST Response <> iCPD OR iUPD
+
+OR
+
+Logic 3: Current ORIR.Overall iRECIST Response = iCPD AND Previous ORIR.Overall iRECIST Response <> iCPD OR iUPD
+
+Notes:
+
+1. Previous ORIR entry should be the closest previous date to the current ORIR entry date.
+
+EG:
+
+ORIR row 1: 4-Apr-2018 -> Previous ORIR entry
+
+ORIR row 2: 5-Mar-2018
+
+ORIR row 3: 18-May-2018 -> Current ORIR entry
+
+2. Exclude deleted records
+
+3. The supporting document is required for all trials if treatment phase is applied to logic even if only one treatment phase is present.
+
+This supporting document is only required to be created once per trial. If it was already created and uploaded, there is no need to duplicate it.
+
+Requires supporting document to be named study_phase_supp_<xxxxxxx>.csv and will contain the following columns and associated content:
+
+1. Phase Order: the order on which phases will appear on protocol
+
+2. Treatment Phase: this information is the phase name given in the protocol (Initial Treatment Phase/Second Course Phase/Crossover/Neoadjuvant)
+
+3. First Visitmnemonic of Treatment Phase: the first visit on which treatment is expected to be administered on each phase.
+
+e.g.
+
+Treatment Phase Order, Treatment Phase,First visit of corresponding phase
+
+1,Initial Treatment Phase,Cycle 1
+
+2,Second Course Phase,Second Course Cycle 1
+
+3,Crossover Phase,Crossover Cycle 1
+
+The actual information provided by the supporting doc can be outputted by selecting Y in the parameter "Study Phase Page".
+
+4. The report logics should be checked the records that have the same treatment phase and Study period defined in the supporting document and InForm
+
+Report Scenarios:
+A- NO
+
+Current ORIR Target Lesion (Identified at Baseline) iRECIST Response = iCPD AND Previous ORIR Target Lesion (Identified at Baseline) iRECIST Response =  iCPD
+
+OR
+
+Current ORIR Non-Target Lesion (Identified At Baseline) iRECIST Response= iCPD AND Previous ORIR Non-Target Lesion (Identified At Baseline) iRECIST Response = iCPD
+
+OR
+
+Current Overall iRECIST Response= iCPD AND Previous ORIR Overall iRECIST Response = iCPD
+
+B-NO
+
+Current ORIR Target Lesion (Identified at Baseline) iRECIST Response = iCPD AND Previous ORIR Target Lesion (Identified at Baseline) iRECIST Response =  iUPD
+
+OR
+
+Current ORIR Non-Target Lesion (Identified At Baseline) iRECIST Response= iCPD AND Previous ORIR Non-Target Lesion (Identified At Baseline) iRECIST Response = iUPD
+
+OR
+
+Current Overall iRECIST Response= iCPD AND Previous ORIR Overall iRECIST Response = iUPD
+
+C-NO
+
+Current ORIR entry Date of Procedure for Overall Response (Scan/Image/Physical Exam) > Previous ORIR entry Date of Procedure for Overall Response (Scan/Image/Physical Exam)
+
+AND
+
+Current ORIR Target Lesion (Identified at Baseline) iRECIST Response <> iCPD
+
+OR
+
+Current ORIR Non-Target Lesion (Identified At Baseline) iRECIST Response<> iCPD
+
+OR
+
+Current Overall iRECIST Response <> iCPD
+
+D-YES
+
+Current ORIR Target Lesion (Identified at Baseline) iRECIST Response = iCPD AND Previous ORIR Target Lesion (Identified at Baseline) iRECIST Response  <>  iUPD OR iCPD
+
+OR
+
+Current ORIR Non-Target Lesion (Identified At Baseline) iRECIST Response= iCPD AND Previous ORIR Non-Target Lesion (Identified At Baseline) iRECIST Response <>  iUPD OR iCPD
+
+OR
+
+Current Overall iRECIST Response= iCPD AND Previous ORIR Overall iRECIST Response<>  iUPD OR iCPD
+
+Sorting:
+Country, Site, Subject number, ORIR Date of Assessment, Previous ORIR Date of Assessment
+
+Parameter Selection:
+Country, Site, Subject Number, List of Subjects, Study Phase Page (N/Y, Default as N)’
+
+Form.Item Names:
+1. SA. Country
+
+2. SA. Site mnemonic
+
+3. Subject Number
+
+4. ORIR. Sponsor ID Number
+
+5. ORIR. Date of Procedure for Overall Response (Scan/Image/Physical Exam)
+
+6. Previous ORIR. Sponsor ID Number. Review Note 1
+
+7. Previous ORIR. Date of Procedure for Overall Response (Scan/Image/Physical Exam). Review Note 1
+
+8. ORIR. Target Lesion (Identified at Baseline) iRECIST Response
+
+9. Previous ORIR. Target Lesion (Identified at Baseline) iRECIST Response. Review Note 1
+
+10. ORIR. Non-Target Lesion (Identified At Baseline) iRECIST Response
+
+11. Previous ORIR. Non-Target Lesion (Identified At Baseline) iRECIST Response. Review Note 1
+
+12. ORIR. Overall iRECIST Response
+
+13. Previous ORIR. Overall iRECIST Response. Review Note
+
+14. Display ‘Overall iRECIST Response’ if previous ORIR. Overall iRECIST Response is not iUPD/iCPD, Display ‘Target Lesion (Identified at Baseline) iRECIST Response’ if previous ORIR. Target Lesion (Identified at Baseline) iRECIST Response is not iUPD/iCPD or Display ‘Non-Target Lesion (Identified at Baseline) iRECIST Response’ if previous ORIR. Non-Target Lesion (Identified at Baseline) iRECIST Response is not iUPD/iCPD. If more than one of these is fulfilled, please consider showing the output in a different row.

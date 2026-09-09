@@ -1,0 +1,81 @@
+Report ID: RID072
+
+Report Title:
+Missing MedDRA Derivations
+
+Description:
+This report displays a listing of all MedDRA terms where: 1) LLT is not null, but PT or SOC is null; or 2) LLT is null, but PT or SOC is not null.  This report pulls from the Adverse Event, Medical History, Death, Death Autopsy, Primary Diagnosis, and Procedure forms.
+
+Column Heading:
+1. Country
+
+2. Site
+
+3. Subject Number
+
+4. eCRF
+
+5. Seq
+
+6. Verbatim Term
+
+7. LLT
+
+8. PT
+
+9. SOC
+
+Logic:
+The report should display output if
+
+1) the LLT is not null but the PT or SOC is null; or
+
+2) the LLT is null but the PT or SOC is not null.
+
+The forms evaluated are: MH, AE, PROC, PDIAG, DAR, DEATH, SAEI, SAEP, MHA, APAE, APMH, APPRC
+
+Display row count in footer. Report should not display deleted records.
+
+If "Randomized only" parameter selection checkbox  is checked, the report should only output subjects with Randomization number that is not null.
+
+Report Scenarios:
+1) Output=Yes
+
+the LLT is not null but the PT or SOC is null
+
+2) Output=Yes
+
+the LLT is null but the PT or SOC is not null
+
+3) Output=No
+
+the LLT and the PT or SOC are all null, or all not null
+
+4) Output=No
+
+Deleted record
+
+Sorting:
+Country, Site, Subject Number, eCRF, Seq
+
+Parameter Selection:
+Country, Site, Subject Number, Randomized Only, eCRF, List of Subjects
+
+Form.Item Names:
+1. Subject Assignment.Site Country
+
+2. Subject Assignment.Site Mnemonic
+
+3. Subjects.Subject Number
+
+4. Forms.Form Mnemonic
+
+5. Forms.Form Index
+
+6. Forms.AE Term/MHA.Medical History Term/Associated Persons Adverse Events.Adverse Event Term/Associated Persons Medical History.Medical History Term/Associated Persons Procedures.Procedure Term
+
+7. Forms.LLT
+
+8. Forms.PT
+
+9. Forms.SOC

@@ -1,0 +1,169 @@
+Report ID: RID016
+
+Report Title:
+AE Causality vs. Study Medication
+
+Description:
+The report generates a listing of subjects who have AE Relationship with Study Medication as "Related" and AE Onset date is after Maximum non-zero Study Medication Date. A window of days is provided as a selection parameter and this defaults to 0 if not entered.
+
+Column Heading:
+1. Country
+
+2. Site
+
+3. Subject Number
+
+4. AE Seq
+
+5. AE Term
+
+6. AE Onset Date
+
+7. Study Medication
+
+8. SM Visit
+
+9. SM Form
+
+10. SM Seq
+
+11. Max SM Stop Date
+
+12. AE Date-Max SM Date
+
+13. DS01 Status
+
+14. SAE
+
+Logic:
+Logic:
+
+Logic1: AE Relationship with Study Medication [x] = "Related" AND
+
+Logic2: AE Onset date - Maximum non-zero Study Medication [x] Stop Date > window of days
+
+Notes:
+
+1. Consider Date field only in this report.
+
+2. Maximum non-zero dose is derived as the maximum stop date of the study medication where last dose checkbox is selected and Number of Units Taken is not null or zero across SM, SMAU, SMAB, STR.
+
+3. For AE’s that have any of the serious criteria selected the window of days for logic 2 corresponds to the column “Window of days for SAE” in the supporting document. For AEs that don’t have any serious criteria selected the window of days for logic 2 corresponds to the column “Window of days for NSAE” in the supporting document.
+
+4. An AE record is considered an SAE if any of the 8 serious AE criteria is marked Yes or "Is the AE an Event of Clinical Interest?" selected Yes.
+
+5. If in supporting document “Include SAE” is = N or BLANK, exclude SAE from Logic.
+
+6. For studies with single study medication, Overall Relationship is checked and a match on Study Medication name is not performed.
+
+7.[x] may range from 1 to 10.
+
+8. Exclude deleted data and erroneous visit from programming
+
+9. If "Randomized only" parameter selection checkbox is checked, the report should only output subjects with Randomization number that is not null.
+
+10: Requires supporting document to be named AE024_supp_<xxxxxxx>.csv and will contain the following columns and associated content:
+
+1.SM Form
+
+2.Study Medication – Value of Study Medication
+
+3.Window of days for NSAE-Window of days for washout period for non-serious AE’s. Please provide window of days as 0 if no washout period.
+
+4.Window of days for SAE-Window of days for washout period for serious AE’s. Please provide window of days as 0 if no washout period. If Include SAE = N, leave as 'NA'.
+
+5. Include SAE (Y/N)
+
+Include SAE =’N’, means report only show output for non-SAE. Then disregard Window of days for SAE in Supporting document.
+
+Include SAE =’Y’, means report show output for non-SAE and SAE.
+
+E.g. SM Form, Study Medication, Window of days:
+
+SMAU,3475/Placebo,x,x, N
+
+SM Form,  Study Medication, Window of days for NSAE, Window of days for SAE, Include SAE
+
+SMAU,        3475/Placebo,      30,	3  ,  N
+
+SMAU,        3475/Placebo,      15,	0  ,  Y
+
+The number of rows in the supporting document will be represented in the Report Header as "# of rows for customization".
+
+The actual information provided by the supporting doc can be outputted by selecting Y in the parameter "Supporting doc Page".
+
+ 11. If SM/STR Label Description and SMAU/SMAB Dose Number are exactly matched within forms For SM/SMAU/SMAB Study Medication, use SM.Label Description/STR.Label Description/SMAU.Dose Number/SMAB.Dose Number directly.
+
+The optional supporting document is only required in the following cases:
+
+ - SM/STR Label Description and SMAU/SMAB Dose Number are not exactly matched with Study Medication.
+
+This supporting document is only required to be created once per trial. If it was already created and uploaded, there is no need to duplicate it.
+
+Optional supporting document should be named as study_med_match_supp_.csv and will contain the following columns and associated content:
+
+1 row for each Label Description or Dose Number present in SM/STR/SMAU/SMAB eCRFs.
+
+1. eCRF – SM/STR/SMAU/SMAB
+
+2. Study Medication – Value of Study Medication
+
+3. Matching Item – SM/STR Label Description or SMAU/SMAB Dose Number
+
+4. Matching Value – Value of SM/STR Label Description or SMAU/SMAB Dose Number
+
+eCRF,Study Medication,Matching Item,Matching Value
+
+SM,-1439,Label Description,-1439 100 mg
+
+SM,Methadone,Label Description,Methadone Tablet 5 mg
+
+SM,Methadone,Label Description,Methadone Tablet 10 mg
+
+SMAB,3475/Placebo,Dose Number,3475/Placebo
+
+SMAU,Carboplatin,Dose Number,Carboplatin
+
+SMAU,Carboplatin,Dose Number,Carboplatin - Dose 1
+
+SMAU,Carboplatin,Dose Number,Carboplatin - Dose 2
+
+SMAU,Carboplatin,Dose Number,Carboplatin - Dose 3
+
+The actual information provided by the optional supporting doc can be outputted by selecting Y in the parameter "Study Med Match Page".
+
+Report Scenarios:
+Scenario 1 - Yes AE Relationship with Study Medication = "Related" and AE Onset date is after Maximum non-zero Study Medication Date plus an allowable window as defined by user. Scenario 2 - No AE Relationship with Study Medication = "Related" and AE onset date not after Maximum non-zero Study Medication Date plus an allowable window as defined by user. Scenario 3 - No AE Relationship with Study Medication = "Not Related" and AE onset date is after Maximum non-zero Study Medication Date plus an allowable window as defined by user.
+
+Sorting:
+Country(ies), Site(s), Subject(s), AE Seq
+
+Parameter Selection:
+Country, First Site, Last Site, First Subject Number, Last Subject Number, Randomized Only, Supporting Doc Page (N/Y, Default as N), Study Med Match Page (N/Y, Default as N)
+
+Form.Item Names:
+1. SITECOUNTRY (CV_SAFM)
+
+2. SITEMNEMONIC (CV_SAFM)
+
+3. subjectnumberstr(irv_cur_subject )
+
+4. NVL(aeaespidit, formidx) (CV_AEFM)
+
+5. AEAETERMIT (CV_AEFM)
+
+6. if there is no time collected then DT_AEAESTDTCIT (CV_AEFM); if time is collected then DT_AEAESTDTCIT ||' ' ||TMS_AEAESTDTCIT (CV_AEFM)
+
+7.SMEXTRTIT(CV_SMFM)/(CV_STRFM)/CV_SMPB.SMPBEXTRTIT/CV_SMPU.SMPUEXTRTIT
+
+8. VISITMNEMONIC (CV_SMABFM, CV_SMAUFM, CV_SMFM, CV_STRFM)
+
+9. formmnemonic (CV_SMABFM, CV_SMAUFM, CV_SMFM, CV_STRFM)
+
+10.formidx(CV_SMABFM, CV_SMAUFM, CV_SMFM, CV_STRFM)
+
+11. Derived: if there is no time collected then Maximum of (CV_SMFM.DT_SMEXENDTCIT/(CV_STRFM.DT_SMEXENDTCIT/CV_SMAU.DT_SMAUEXENDTCIT/CV_SMAB.DT_SMABEXENDTCIT) prior to Column 6 if time is collected then Maximum of (CV_SMFM.DT_SMEXENDTCIT||' '||TMS_SMEXENDTCIT /CV_STRFM.DT_STREXENDTCIT||' '||TMS_STREXENDTCIT /CV_SMAU.DT_SMAUEXENDTCIT||' '||TMS_SMAUEXENDTCIT /CV_SMAB.DT_SMABEXENDTCIT||' '||TMS_SMABEXENDTCIT) prior to Column 6
+
+12. Derived: Column6-Column11
+
+13. C_DS01DSTERMCMPRC_DS01DSTE_1 (CV_DS01FM) 14. Pull from Note #4. If is a SAE show ‘Y’ if not show ‘N’

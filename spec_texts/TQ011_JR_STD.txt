@@ -1,0 +1,49 @@
+Report ID: TQ011_JR_STD
+
+Report Title:
+Visits ready for Freeze  Flag
+
+Description:
+This report is a listing of a subject's visits within the base study phase, including UNS and DC visits that occur on or prior to the end of the base study phase.
+
+Column Heading:
+1. Country
+
+2. Site
+
+3. Subject Number
+
+4. Visit
+
+5. DOV
+
+Logic:
+For scheduled visits, output if visits are selected in parameter selection field and have been activated and are NOT frozen
+
+For unscheduled visits and Discontinuation visits that have not been frozen, if the 1st extension is selected and HAS a DOV date then the Discontinuation and Unscheduled Visits that occur prior to the 1st extension visit will be included in the output of the report; if the 1st extension visit is NOT selected or DOES NOT have a DOV date then ALL activated Discontinuation and Unscheduled visits will be included in the output of the report.
+
+The report should output erroneous visits that have not been frozen.
+
+Report Scenarios:
+For scheduled visits, output if visits are selected in parameter selection field and have been activated and are NOT frozen
+
+For unscheduled visits and Discontinuation visits that have not been frozen, if the 1st extension is selected and HAS a DOV date then the Discontinuation and Unscheduled Visits that occur prior to the 1st extension visit will be included in the output of the report; if the 1st extension visit is NOT selected or DOES NOT have a DOV date then ALL activated Discontinuation and Unscheduled visits will be included in the output of the report.
+
+The report should output erroneous visits that have not been frozen.
+
+Sorting:
+Country, Site, Subject Number, Visit Order, Visit
+
+Parameter Selection:
+Country, Site, Subject, Randomized only, First Visit of Extension, Base Study Visits
+
+Form.Item Names:
+1. Subject Assignment.Site Country
+
+2. Subject Assignment.Site Mnemonic
+
+3. Subject.Subject Number
+
+4. Visits.Visitmnemonic
+
+5. Visits.Date of Visit

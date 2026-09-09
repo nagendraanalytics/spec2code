@@ -1,0 +1,97 @@
+Report ID: RID169
+
+Report Title:
+ADA sample and Watson Analyte Reconciliation Non-matching number of & spec type analytes per scheduled time
+
+Description:
+This report is a SAS report run from J-Review on the protocol number specified at run time.  It counts the number of analytes per scheduled time for the specified sample type in Inform and the Watson file.  If the counts do not match, all analytes for that scheduled time are displayed.  If the counts do match, the first 8 characters of the analytes are compared to ensure the same analyte is present in both Inform and the Watson file.  If the first 8 characters do not match, the analytes are displayed on the report.
+
+Deleted items will not be considered.
+
+User may specify an email address and the output will be sent in Excel format via a zip file.
+
+Column Heading:
+1. Site
+
+2. Subject Number
+
+3. SCI Analyte
+
+4. Watson Analyte
+
+5. Period
+
+6. Scheduled Day
+
+7. Scheduled Time
+
+8. Issue
+
+Logic:
+This report is a SAS report run from J-Review on the protocol number specified at run time.  It counts the number of analytes per scheduled time for the specified sample type in Inform and the Watson file.  If the counts do not match, all analytes for that scheduled time are displayed.  If the counts do match, the first 8 characters of the analytes are compared to ensure the same analyte is present in both Inform and the Watson file.  If the first 8 characters do not match, the analytes are displayed on the report.
+
+Note 1: Deleted items will not be considered.
+
+Note 2: SCI(X) include SCI/SCIA/SCIB/SCIC
+
+Note 3: For SCI(X).Date/Time Specimen(s) Obtained Column ONLY display the date and not the time
+
+Note 4:Default  “Reconcile Analyte” parameter is “Exclude PEMBRO” . In this case,  if SCI Form name contain PEMBRO , will be excluded from reconcile.
+
+If “Reconcile Analyte” parameter selected as “Include PEMBRO”, SCI form name contain PEMBRO will be included for reconcile
+
+Report Scenarios:
+Scenario A output=Yes
+
+Counts the number of analytes per scheduled time for the specified sample type in Inform and the Watson file.  If the counts do not match and the count is higher for the Inform records, derived issue as 'More records in inform' per scheduled time for the specified sample type.
+
+Scenario B output=Yes
+
+Counts the number of analytes per scheduled time for the specified sample type in Inform and the Watson file.  If the counts do not match and the count is higher for the Watson records, derived issue as 'More records in Watson' per scheduled time for the specified sample type.
+
+Scenario C output=Yes
+
+Counts the number of analytes per scheduled time for the specified sample type in Inform and the Watson file.  If the counts do not match and the count is 0 for the Inform records, derived issue as 'Record missing in inform' are displayed on the report.
+
+Scenario D output=Yes
+
+Counts the number of analytes per scheduled time for the specified sample type in Inform and the Watson file.  If the counts do not match and the count is 0 for the Watson records, derived issue as 'Record missing in Watson' are displayed on the report.
+
+Scenario E output=Yes
+
+Counts the number of analytes per scheduled time for the specified sample type in Inform and the Watson file.  If the counts do match, the first 8 characters of the analytes are compared, If the first 8 characters do not match, derived issue as 'Analytes do Not Match' are displayed on the report.
+
+Scenario F output=No
+
+Both counts and the first 8 characters of the analytes match within inform and Watson file.
+
+Scenario G output=No
+
+Don't consider deleted records in inform.
+
+Scenario H output=No
+
+Don't consider when column indicating collection date in Watson file is blank.
+
+Sorting:
+Subject Number, Period, Scheduled Day, Scheduled Time
+
+Parameter Selection:
+Protocol Number, First Site No., Last Site No. , First Subject No. , Last Subject No., Specimen Type, Reconcile Analyte (Include PEMBRO ,Exclude PEMBRO)
+
+Form.Item Names:
+1. SA. Site Mnemonic
+
+2. SA. Subject Number
+
+3. SCI(X). Analyte
+
+4. Watson. Analyte
+
+5. SCI(X).Cycle(Visitmnemonic)/Watson.Period
+
+6. SCI(X).Day(Visitmnemonic)/Watson.Nomday
+
+7. SCI(X).Scheduled Time/Watson.Nomtime
+
+8. Derived. Issue

@@ -1,0 +1,89 @@
+Report ID: RID222
+
+Report Title:
+Dates after Last Patient Last Visit
+
+Description:
+This report will display eCRFs with Dates entered after LPLV milestone
+
+Column Heading:
+1. Country
+
+2. Site
+
+3. Subject Number
+
+4. Visit
+
+5. Sequence Number
+
+6. eCRF
+
+7. Date item
+
+8. Date
+
+Logic:
+Display output if eCRF.Date value > LPLV date
+
+Note 1: Exclude deleted records and erroneous visits from programming
+
+Note 2:  eCRF is pulled from “Form” column from supporting document
+
+              Date is pulled from “Item” column from supporting document
+
+Note 3: LPLV date is considered from Last Patient Last Visit (DDMMMYYYY) parameter
+
+Note 4: Requires supporting document to be named TQ040_supp_<xxxxxxx> and will contain the following columns and associated content:
+
+1. Form - Formmnemonic
+
+2. Item - Itemquestion
+
+3. itemrefname -  Corresponds to the item on the formmnemonic previously entered
+
+NOTE 1: Please enter only date items
+
+NOTE 2: Please provide only the items determined as not allowed to be entered after LPLV
+
+NOTE 3: formmnemonic, Itemquestion and itemrefname can be obtained from TQ028_STD
+
+eg.
+
+Form,Item,itemrefname
+
+DS01,DS01DSSTDTCLCIT,Date of Disposition
+
+PMS1,PMS1DSDTCIT,Date of Assessment
+
+Report Scenarios:
+1) Output = Yes
+
+eCRF.Date (as per supp doc) is greater than LPLV date
+
+2) Output = No
+
+eCRF.Date (as per supp doc) is equal or less than LPLV date
+
+Sorting:
+Country, Site Number, Subject Number
+
+Parameter Selection:
+Country, First Site, Last Site, First Subject, Last Subject, List of Subjects, Randomized Only, Last Patient Last Visit (DDMMMYYYY), Supporting Doc Page (N/Y, Default as N)
+
+Form.Item Names:
+1. Subject Assignment.Site Country
+
+2. Subject Assignment form.Site Mnemonic
+
+3. Subjects. Subject Number
+
+4. eCRF.Visit Mnemonic
+
+5. eCRF.Sequence number (If there is no sequence number, display as blank)
+
+6. eCRF.Form Mnemonic
+
+7. eCRF.Date (Display date item name)
+
+8. eCRF.Date value (Display the date, not the item name)

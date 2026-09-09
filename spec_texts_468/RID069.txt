@@ -1,0 +1,71 @@
+Report ID: RID069
+
+Report Title:
+Unencoded Terms on Standard Forms
+
+Description:
+This report identifies unencoded terms on the following forms in InForm:  Adverse Events, Medical History, Prior Concomitant Medication, Procedures,  Primary Diagnosis, Supplemental Labs, Death, Death Autopsy Report, Serious Adverse Events-Infant, Serious Adverse Events-Partner, MHA, Associated Persons Adverse Events, Associated Persons Medical History, Associated Persons Concomitant Medications, Associated Persons Procedures, Associated Persons Supplemental Labs.  This report does not pull data from Central Coding.
+
+Column Heading:
+1. Country
+
+2. Site
+
+3. Subject Number
+
+4. eCRF
+
+5. Seq
+
+6. Verbatim Term
+
+Logic:
+The report should display output if a Verbatim Term is not null and all of the corresponding derived fields are null in any of the following encoded forms: 1) MedDRA forms: MH, AE, PROC, PDIAG, DAR, DEATH, SAEI, SAEP, MHA, APAE, APMH, APPRC, 2) CM, APCM 3) SLAB, APSLB.
+
+1. MedDRA Forms: Term is not null and LLT is null and PT is null and SOC is null; OR
+
+2. PRIOR CONCOMITANT MEDICATION/Associated Persons Concomitant Medications Form.Medication Name is not null and PRIOR CONCOMITANT MEDICATION/Associated Persons Concomitant Medications Form.Encoded Drug Name is null, and PRIOR CONCOMITANT MEDICATION/Associated Persons Concomitant Medications Form.Standardized Medication Name is null and PRIOR CONCOMITANT MEDICATION/Associated Persons Concomitant Medications Form.Broader Term is null and PRIOR CONCOMITANT MEDICATION/Associated Persons Concomitant Medications Form.Medication Class Code is null and PRIOR CONCOMITANT MEDICATION/Associated Persons Concomitant Medications Form.Medication Class Term is null and PRIOR CONCOMITANT MEDICATION/Associated Persons Concomitant Medications Form.ATC1 Term is null and PRIOR CONCOMITANT MEDICATION/Associated Persons Concomitant Medications Form.ATC2 Term is null; OR
+
+3. SUPPLEMENTAL LABS/Associated Persons Supplemental Labs Form.Laboratory Test is not null and
+
+SUPPLEMENTAL LABS/Associated Persons Supplemental Labs Form.Abbreviated Dictionary Term is null and SUPPLEMENTAL LABS/Associated Persons Supplemental Labs Form.CDISC Code is null; OR
+
+4. SUPPLEMENTAL LABS/Associated Persons Supplemental Labs Form.Unit ~ Lab Test Result is not null and SUPPLEMENTAL LABS/Associated Persons Supplemental Labs Form.Unit ~ Numeric Test Unit is not null and SUPPLEMENTAL LABS/Associated Persons Supplemental Labs Form.Unit Dictionary Term is null and SUPPLEMENTAL LABS/Associated Persons Supplemental Labs Form.Abbreviated Unit Dictionary Term is null (for this item, report should only display when Numeric ~ Lab Test Result is not null; report should not display records where Character ~ Lab Test Result is not null and the CDISC Code is not INR or PH).
+
+Display row count in footer
+
+Report should not display deleted records.
+
+If "Randomized only" parameter selection checkbox  is checked, the report should only output subjects with Randomization number that is not null.
+
+Report Scenarios:
+1) Output=Yes
+
+If a Verbatim Term is not null and all of the corresponding derived fields are null in any of the following encoded forms: 1) MedDRA forms: MH, AE, PROC, PDIAG, DAR, DEATH, SAEI, SAEP, MHA, APAE, APMH, APPRC 2) CM, APCM 3) SLAB, APSLB
+
+2) Output=No
+
+If a Verbatim Term is not null and all of the corresponding derived fields are not null in any of the following encoded forms.
+
+3) Output=No
+
+If a Verbatim Term is null or record is deleted.
+
+Sorting:
+Country, Site, Subject Number, eCRF, Seq
+
+Parameter Selection:
+Country, Site, Subject, Randomized Only, eCRF, List of Subjects
+
+Form.Item Names:
+1. Subject Assignment.Site Country
+
+2. Subject Assignment.Site Mnemonic
+
+3. Subjects.Subject Number
+
+4. Form Mnemonic
+
+5. Formidx
+
+6. ADVERSE EVENTS Form.AE Term/MEDICAL HISTORY Form.Medical History Term/PRIOR CONCOMITANT MEDICATION Form.Medication Name/PROCEDURES Form.Procedure Term/SUPPLEMENTAL LABS Form.Laboratory Test/SUPPLEMENTAL LABS Form.Unit ~ Lab Test Result/Associated Persons Adverse Events.Adverse Event Term/Associated Persons Medical History.Medical History Term/Associated Persons Procedures.Procedure Term/Associated Persons Concomitant Medications.Medication Name/Associated Persons Supplemental Labs.Laboratory Test/Associated Persons Supplemental Labs.Numeric Test Unit/MHA.Medical History Term

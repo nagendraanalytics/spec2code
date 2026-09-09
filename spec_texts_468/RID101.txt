@@ -1,0 +1,219 @@
+Report ID: RID101
+
+Report Title:
+Missing Lab Tests by Subject
+
+Description:
+This report lists subjects missing lab tests at scheduled visits.
+
+Column Heading:
+1. Country
+
+2. Site
+
+3. Screening Number
+
+4. Randomization Number
+
+5. Subject Number
+
+6. Visit ID or Number
+
+7. InForm Visit Mnemonic
+
+8. InForm Visit Date
+
+9. Comments
+
+10. Vendor
+
+11. Test Short Name
+
+12. Test
+
+13. Category
+
+14. Specimen Type
+
+15. Specimen ID
+
+16. Planned Time Point Name
+
+17. Missing Test
+
+18. Subgroup
+
+Logic:
+1. The report should use the expected tests per visit and vendor, provided by the user, to identify the initialized scheduled visits with missing GEFCF tests. If there are multiple visits with the same Visitmnemonic in InForm, the supporting spreadsheet for visits provided by the user should be retrieved from the environment where the report is going to be run.
+
+2. Comments that are entered on corresponding DOV and SCI should be listed on output, and all comments for each visit should be concatenated in order to avoid multiple rows for multiple comments.
+
+3. ""Missing Test"" column will display the specific Test which is missing,
+
+Records with ""Cancelled' or ""Not Performed' test status should not be considered as missing.
+
+If the number of records for a given subject, visit, test, Category is less than the number of records expected, it should be outputted on the report.
+
+      If one or two tests are missing, Display as ""Missing <Test>""
+
+      If tests are less than expected, Display as ""<Test> mutiplicity not met""
+
+4. Country/Site/Randomization Number and List of Subjects prompts can be used independently. If both are used at the same time, the output will match both conditions.
+
+The subjects provided in the List of Subjects should match the subject number format.
+
+5. The Subgroup prompt allows to select one option as follows, it indicates if a given test is expected only by a certain group of subjects. This is only applicable if different tests or conditions are expected for different groups of subjects:
+
+- Enter the value for exact match, e.g. Group1.
+
+- Enter the value between percentages(%) for approximate match, e.g. %1%.
+
+- Enter 99999 for subjects with blank subgroup.
+
+6. Exclude deleted data and erroneous visit from programming
+
+This report requires 2 supporting documents and the naming conventions are as below.
+
+1)For Visits : ‘EVD023_Supp1_<xxxxxxx>.csv’
+
+2)For Tests : ‘EVD023_Supp2_<xxxxxxx>.csv’
+
+EVD023_Supp1_<xxxxxxx> requires the following items.
+
+1 row for each visit name for required ecrf, vendor and visitmenmonic.
+
+1)visit_name : External vendor Visit name as per PSA
+
+2)ecrf : Formmnemonic of External vendor data
+
+3)vendor : Vendor name as per PSA
+
+4)visitid_or_number : visit number's given in column 'Visit ID or Number' as per PSA
+
+5)visitmnemonic : Visitmnemonic from T&E
+
+EVD023_Supp2_<xxxxxxx> requires the following items.
+
+1 row for each test for required ecrf, vendor, category and specimen type
+
+1)ecrf : Formmnemonic of External vendor data
+
+2)vendor : Vendor name as per PSA
+
+3)visitid_or_number : visit number's given in column 'Visit ID or Number' as per PSA
+
+4)test_short_name : Test Short Name as per PSA
+
+5)test : Test Name as per PSA
+
+6)category : Test Category as per PSA, or NA if not applicable.
+
+7)planned_time_point_name : Planned time point name as present in External form, or NA if not applicable.
+
+8)multiplicity : number of times particular test is required for particular visit.
+
+9)specimen_type : Previde unique specimen type, or NA if not applicable
+
+10)subgroup : provide the value as per required sub group, or NA if not applicable.
+
+e.g., for Visit supporting document
+
+visit_name,ecrf,vendor,visitid_or_number,visitmnemonic
+
+Screening,GEFCF,Q2LAB,1,Screening
+
+e.g., for Tests supporting document
+
+eCRF,Vendor,visitid_or_numbe,test_short_name,test,category,planned_time_point_name,multiplicity,specimen_type,subgroup
+
+GEFCF,Q2LAB,1,SLDCUTDT,Slide Cut Date,NA,NA,1,TISSUE,NA
+
+GEFCF,Q2LAB,1,SLSTNDT,Slide Stain Date,NA,NA,1,TISSUE,NA
+
+GEFCF,Q2LAB,1,SLIDETHK,Slide Thickness,NA,NA,1,TISSUE,NA
+
+Notes:
+
+1. In GEFCF vendor is present then only output the records.
+
+2. If all tests are missing then do not output. ""All test missing"" should be considering as per EVD023_Supp2 test_short_name list only, do not consider category or other columns.
+
+3. For column 15. If ""Specimen ID"" is present then display ""Specimen ID""; if not display ""Kit ID"" or ""Ref ID""
+
+Report Scenarios:
+1) Multiplicity not met - Output=Yes
+
+Expected: Test=Resistance, Visit=2, Multiplicity=2
+
+Data: Test=Resistance, Visit=2, Multiplicity=1
+
+2) Missing Test at a given visit - Output=Yes
+
+Expected: Test=Resistance, Visit=2, Multiplicity=2
+
+a) Data: Test=Resistance, Visit=1, Multiplicity=2
+
+b) Data: No Test=Resistance
+
+3) Cancelled/Not Performed Test - Output=No
+
+Expected: Test=Resistance, Visit=2, Multiplicity=1
+
+Data: Test=Resistance, Visit=2, Multiplicity=1, Status=Cancelled/Not Performed
+
+4) Missing Planned Time Point Name - Output=Yes
+
+Expected: Test=Resistance, Visit=2, Planned Time Point Name=2h Post-dose
+
+Data: Test=Resistance, Visit=2, Planned Time Point Name=10h Post-dose
+
+5) Matching Data - Output=No
+
+Expected: Test=Resistance, Visit=2, Planned Time Point Name=2h Post-dose/Multiplicity=1
+
+Data: Lab Test ID=Resistance, Visit=2, Planned Time Point Name=2h Post-dose/Multiplicity=1
+
+6)When no data transferred by Vendor for a subject or specific visit - Output = No.
+
+Sorting:
+Country, Site, Screening Number, Randomization Number, Visit ID or Number, InForm Visit Date, Vendor, Test Short Name, Test, Category
+
+Parameter Selection:
+Country, Site, Randomization Number, Visit ID or Number, Vendor, Test Short Name, Subgroup, List of Subjects
+
+Form.Item Names:
+1. Subject Assignment.Site Country
+
+2. Subject Assignment form.Site Mnemonic
+
+3. Subject Assignment form.Screening Number
+
+4. Subject Assignment form.Randomization Number
+
+5. Subjects.Subject Number
+
+6. GENERIC EXTERNAL FINDINGS ~ Laboratory Tests.Visit ID or Number
+
+7. Visits.Visitmnemonic
+
+8. Visits.DOV
+
+9. Comments.Concatenated Comment Text on DOV and SCI
+
+10. GENERIC EXTERNAL FINDINGS  ~ Transmission Source ID
+
+11. GENERIC EXTERNAL FINDINGS  ~ Test Short Name
+
+12. GENERIC EXTERNAL FINDINGS ~ Test
+
+13. GENERIC EXTERNAL FINDINGS ~ Category
+
+14. GENERIC EXTERNAL FINDINGS ~ Specimen Type
+
+15. GENERIC EXTERNAL FINDINGS ~ Ref ID or GENERIC EXTERNAL FINDINGS ~ Kit ID or GENERIC EXTERNAL FINDINGS ~ Specimen ID
+
+16. GENERIC EXTERNAL FINDINGS ~ Planned Time Point Name
+
+17. GENERIC EXTERNAL FINDINGS ~ Concatenated missing Tests. ""Missing <Test>"" or ""<Test> multiplicity not met""
+
+18. Subgroup (display as blank if not applicable)

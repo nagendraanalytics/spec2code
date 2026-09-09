@@ -1,0 +1,79 @@
+Report ID: RID038
+
+Report Title:
+Incorrect lot number format for specific group of  subjects
+
+Description:
+This report will output entries with incorrect lot number format for specific subjects.
+
+Column Heading:
+1. Country
+
+2. Site
+
+3. Subject Number
+
+4. Visit
+
+5. eCRF
+
+6. Seq
+
+7. Study Medication
+
+Logic:
+This report displays subjects who have  Lot ID not according to Supporting Doc Page.
+
+Requires supporting document to be named BNR005_UNB_supp_<xxxxxxx>.csv and will contain the following columns and associated content:
+
+a. Length - include the appropriate length of the Lot ID.
+
+b. # of Letters - only complete if the appropriate number of letters is known. This item needs to be in synch with item a).
+
+c. # of Digits - only complete if the appropriate number of digits is known. This item needs to be in synch with item a).
+
+d. Starting with - only complete in case of just one common starting letter/s and/or digit/s per group of subjects. If there are more than one starting letter/s or digit/s then do not complete this item. This item needs to be in synch with items b) and c).
+
+e. eCRF Name: provide eCRFs that are applicable for the study and contain blinded data  (for example: SMPB or DISP)
+
+Leading or trailing spaces are not considered.
+
+Letter cases are not considered.
+
+Deleted records should not be considered.
+
+Erroneous visits should not be considered.
+
+Report Scenarios:
+1) Output=YES
+
+The Lot ID does not match the expected format on Supporting Doc Page.
+
+2) Output=NO
+
+The Lot ID matches the expected format on Supporting Doc Page.
+
+3) Output=NO
+
+Erroneous visits or Deleted records
+
+Sorting:
+Country, Site, Subject Number, Visit, eCRF, Seq
+
+Parameter Selection:
+Country, First Site, Last Site, First Subject, Last Subject, List of Subjects, Randomized only (N/Y, default as N), Study Medication, Supporting Doc Page (N/Y, default as N)
+
+Form.Item Names:
+1. Subject Assignment.Site Country
+
+2. Subject Assignment.Site Mnemonic
+
+3. Subjects.Subject Number
+
+4. STUDY MEDICATION PREPARATION - BLINDED DRUG Form.Visit Mnemonic/ DISPENSE Form.Visit Mnemonic
+
+5. STUDY MEDICATION PREPARATION - BLINDED DRUG Form.Formmnemonic/ DISPENSE Form.Formmnemonic
+
+6. STUDY MEDICATION PREPARATION - BLINDED DRUG Form.Formidx/ DISPENSE Form.Formidx
+
+7. STUDY MEDICATION PREPARATION - BLINDED DRUG Form.Study Medication/ DISPENSE Form.Study Medication

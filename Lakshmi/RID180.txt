@@ -1,0 +1,55 @@
+SELECT
+  sm1.`Country` AS `Country`,
+  sm1.`Site` AS `Site`,
+  sm1.`Subject Number` AS `Subject Number`,
+  sm1.`Form` AS `Form`,
+  sm1.SM1_Med AS `Study Medication 1`,
+  sm1.SM1_Period AS `Study Period`,
+  sm1.SM1_StopDT AS `Stop Date/Time`,
+  sm2.SM2_Med AS `Study Medication 2`,
+  sm2.SM2_StartDT AS `Start Date/Time`
+FROM
+  (
+    SELECT
+      `@HDR`.`Subject`.`ID` AS SubjID,
+      `@HDR`.`Site`.`Country` AS `Country`,
+      `@HDR`.`Site`.`Mnemonic` AS `Site`,
+      `@HDR`.`Subject`.`Name` AS `Subject Number`,
+      `@Form`.`Name` AS `Form`,
+      SM.SMEXTRTIT AS SM1_Med,
+      SM.SMEXCATIT AS SM1_Period,
+      DATE_FORMAT(SM.SMEXENDTCIT, '%d-%m-%Y %H:%i') AS SM1_StopDT,
+      RAWDATE(SM.SMEXENDTCIT) AS SM1_StopDT_Raw,
+      SM.SMEXENDTCIT AS SM1_StopDT_Item
+    FROM `EDC`.`SMFM` SM
+    WHERE `@Form`.`Status` = 'submitted__v'
+      AND (SM.DELETEDFM = 'N' OR SM.DELETEDFM IS NULL)
+      AND SM.SMEXTRTIT = '-3475'
+      AND `@HDR`.`Subject`.`Name` LIKE '%--%'
+  ) sm1
+  INNER JOIN
+  (
+    SELECT
+      `@HDR`.`Subject`.`ID` AS SubjID,
+      SM2.SMEXTRTIT AS SM2_Med,
+      SM2.SMEXCATIT AS SM2_Period,
+      DATE_FORMAT(SM2.SMEXSTDTCIT, '%d-%m-%Y %H:%i') AS SM2_StartDT,
+      RAWDATE(SM2.SMEXSTDTCIT) AS SM2_StartDT_Raw,
+      SM2.SMEXSTDTCIT AS SM2_StartDT_Item
+    FROM `EDC`.`SMFM` SM2
+    WHERE `@Form`.`Status` = 'submitted__v'
+      AND (SM2.DELETEDFM = 'N' OR SM2.DELETEDFM IS NULL)
+      AND SM2.SMEXTRTIT = '-6482'
+      AND `@HDR`.`Subject`.`Name` LIKE '%--%'
+  ) sm2
+  ON sm1.SubjID = sm2.SubjID
+WHERE
+  sm1.SM1_Period = sm2.SM2_Period
+  AND (
+       sm2.SM2_StartDT_Item IS NULL
+    OR sm1.SM1_StopDT_Item IS NULL
+    OR (
+         (sm2.SM2_StartDT_Raw - sm1.SM1_StopDT_Raw) < 25
+      OR (sm2.SM2_StartDT_Raw - sm1.SM1_StopDT_Raw) > 35
+       )
+  )

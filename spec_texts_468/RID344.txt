@@ -1,0 +1,177 @@
+Report ID: RID344
+
+Report Title:
+Missing Oncologic Drugs and Biologics entry
+
+Description:
+This report will produce output for randomized subjects that do not have entered any of the medications or combo of medications in Oncologic Drugs and Biologics form per protocol requirement.
+
+Column Heading:
+1. Country
+
+2. Site
+
+3. Subject Number
+
+4. ODB Seq#
+
+5. Form Mnemonic
+
+6. Start Date of Medication
+
+7. Best Response
+
+8. Oncologic Drugs or Biologics in Regimen
+
+9. Criteria
+
+10. Scenario
+
+Logic:
+Logic:
+
+Logic 1:
+
+Logic 1.1: ODB.Formmnemonic = ODB Form Name per supporting document
+
+AND
+
+Logic 1.2: There is NOT at least one ODB record with ODB.Encoded Item = Treatment Name per supporting document
+
+Logic 2:
+
+Logic 2.1: ODB.Formmnemonic = ODB Form Name per supporting document
+
+AND
+
+Logic 2.2: ODB.Encoded Item = Treatment Name per supporting document
+
+AND
+
+Logic 2.3: ODB. Best Response or Reason for Discontinuation from This Regimen <> "Response" per supporting document
+
+Logic 3:
+
+Logic 3.1: ODB.Encoded Item = Treatment Name per supporting document
+
+AND
+
+Logic 3.1. "Date of Progression/Recurrence After this Regimen"/"Date of Progression/Recurrence For this Regimen" – Maximum ODB.Date of Medication > "Weeks"
+
+Note 1: Please exclude deleted records and erroneous records.
+
+Note 2: Please only check randomized subjects.
+
+Note 3: ODB Form refers to ODB, ODBH, ODBHN, ODBCS.
+
+Note 4: For trial do not have "Date of Progression/Recurrence After this Regimen"/"Date of Progression/Recurrence For this Regimen", please ignore logic 3.
+
+Note 5: For UNK Date and Month. Use "Imputed Date of Medication" for "Date of Medication", use the first day and first month for "Date of Progression/Recurrence After this Regimen"/"Date of Progression/Recurrence For this Regimen".
+
+Note 6: Use Imputed Start Date of Regimen when trial do not have Imputed Start Date of Medication.
+
+Note 7: Please calculate Maximum ODB. Date of Medication per each treatment.
+
+Note 8: Requires supporting document to be named ONC_ODB_003_supp_<xxxxxxx>.csv and will contain the following columns and associated content:
+
+1. Group - It indicates the numeric values such as 1, 2, 3 etc based on values provided in the Treatment Name column. If Treatment Name values are going to check either of medication then Group values should same for both the medications.
+
+For example, Sorafenib OR sorafenib tosylate is present then both Treatment names should not come as missing. Here, please provide Group value as 1 for both Treatment names.
+
+Rest of the test names such as oxaliplatin please update the group value as 2 , 3 respectively.
+
+2. Criteria Form - Specified as 'NA' if logic is applicable for all subjects.
+
+3. Criteria Itemquestion - Specified as 'NA' if logic is applicable for all subjects.
+
+4. Criteria Value - Specified as 'NA' if logic is applicable for all subjects.
+
+5. ODB Form Name - ODB, ODBH, ODBHN, ODBCS.
+
+6. Encoded item: Standardized Oncologic Drug or Biologic Name/Encoded Oncologic Drug or Biologic Name (choose one depending on the item that you need).
+
+7. Treatment Name - Prior/Alternative Treatment Name.
+
+8. Weeks - A number of weeks, enter 'NA' if report do not want to check Scenario 3.
+
+9. Response - The column value of ODB. Best Response, enter NA if report do not want to check Scenario 2.
+
+E.g
+
+Group,Criteria Form,Criteria Itemquestion,Criteria Value,ODB Form,Encoded item,Treatment Name,Response
+
+1,NA,NA,NA,ODB,Standardized Oncologic Drug or Biologic Name,Gemcitabine,8,Complete Response
+
+1,NA,NA,NA,ODBH,Standardized Oncologic Drug or Biologic Name,Pemetrezed,12,Progressive Disease
+
+2,SR,Arm Code,Arm C,ODB,Encoded Oncologic Drug or Biologic Name,Gemcitabine,6,NA
+
+Note 9: Equivalent items questions across different ODB eCRFs are going to be retrieved from the ‘ODB_supp_doc’ global supporting document.
+
+Note 10: For scenario 1, report should output if all treatment from supp doc for specific criteria is missing.
+
+Note 11: For scenario 1, report should output also if ODB not initialized.
+
+Note 12: For scenario 1, leave blank for column 5,6,7,8, output value from supp doc for column 9.
+
+Note 13: For column 4, output value from supp doc. If in supp doc it’s specified as ‘NA’ then it can remain blank.
+
+Report Scenarios:
+Scenario 1: Outputs its expected
+
+YES:
+
+When randomized subjects have no medications reported in Oncologic Drugs and Biologics form per protocol requirement.
+
+NO:
+
+If there are entries of medications in Oncologic Drugs and Biologics form per protocol requirement.
+
+Note: This report will produce output for randomized subjects that do not have entered any of the medications or combo of medications in ODB form per supp document and the Treatment Name per supp document
+
+Scenario 2:
+
+YES:
+
+When randomized subjects have an specific medication with best response or reason for discontinuation from this regimen is not the expected response in ODB form. Please review and update accordingly.
+
+NO:
+
+When the best response or reason for discontinuation from this regimen is the expected according to the specific medication.
+
+Scenario 3:
+
+YES:
+
+IF the <Date of Progression/Recurrence After this Regimen> is not within 12 weeks for the last dose of the oncologic drug or medication.
+
+NO:
+
+IF the <Date of Progression/Recurrence After this Regimen> is within 12 weeks for the last dose of the oncologic drug or medication.
+
+Sorting:
+(Defaulted to Country, Site Number and Subject Number if not specified): Country, Site Number and Subject Number
+
+Parameter Selection:
+Country, First Site, Last Site, First Subject, Last Subject, List of Subjects,Supporting Doc Page (N/Y, Default as N)
+
+Form.Item Names:
+1. SA. Site Country
+
+2. SA. Site Mnemonic
+
+3. SA. Subject Number
+
+4. ODB .Formidx
+
+5. ODB. Form Mnemonic
+
+6. ODB. Imputed Start date of Regimen/ Imputed Start date of Medication
+
+7. ODB. Best Response
+
+8. ODB. Oncologic Drugs or Biologic Regimen
+
+9. Combinition of Criteria Form,Criteria Itemquestion,Criteria Value from supporting document
+
+10. Output “scenario 1” for logic 1, output “scenario 2” for logic 2, output “scenario 3” for logic 3

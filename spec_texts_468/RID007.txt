@@ -1,0 +1,81 @@
+Report ID: RID007
+
+Report Title:
+Overlapping AE Onset/End Dates
+
+Description:
+This report identifies AE overlaps based on matching PT terms and overlapping onset/end dates.
+
+Column Heading:
+1. Country
+
+2. Site
+
+3. Subject Number
+
+4. AE PT
+
+5. AE 1 Seq
+
+6. AE 1 Verbatim
+
+7. AE 1 Onset Dt
+
+8. AE 1 End Dt
+
+9. AE 2 Seq
+
+10. AE 2 Verbatim
+
+11. AE 2 Onset Dt
+
+12. AE 2 End Dt
+
+Logic:
+This report lists subjects with overlapping onset dates/end dates for identical AE Terms.  Identical AE terms are defined as having the same PT after encoding.  Each pair of overlapping AEs should be output on one line.
+
+Note:  Continuing AEs (with no End Date) should also be included in the check.
+
+Report should not display deleted records.
+
+If "Randomized only" parameter selection checkbox  is checked, the report should only output subjects with Randomization number that is not null.
+
+Report Scenarios:
+This report lists subjects with overlapping onset dates/end dates for identical AE Terms.  Identical AE terms are defined as having the same PT after encoding.  Each pair of overlapping AEs should be output on one line.
+
+Note:  Continuing AEs (with no End Date) should also be included in the check.
+
+Report should not display deleted records.
+
+If "Randomized only" parameter selection checkbox  is checked, the report should only output subjects with Randomization number that is not null.
+
+Sorting:
+Default
+
+Parameter Selection:
+Country, Site, Subject Number, Randomized Only
+
+Form.Item Names:
+1. Subject Assignment.Site Country
+
+2. Subject Assignment.Site Mnemonic
+
+3. Subject Assignment.Subject Number
+
+4. Adverse Events Form.PT
+
+5. Adverse Events Form.Sequence Number
+
+6. Adverse Events Form.AE Term
+
+7. Adverse Events Form.Onset Dt
+
+8. Adverse Events Form.End Dt
+
+9. Adverse Events Form.Sequence Number
+
+10. Adverse Events Form.AE Term
+
+11. Adverse Events Form.Onset Dt
+
+12. Adverse Events Form.End Dt

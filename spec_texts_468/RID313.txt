@@ -1,0 +1,131 @@
+Report ID: RID313
+
+Report Title:
+Associated Lesion/Sponsor ID Number Study Period Reconciliation
+
+Description:
+This report generates a list of subjects who has inconsistencies in Study Period between SMAU/SM visit and Lesion evaluation form
+
+Column Heading:
+1.	Country
+
+2.	Site
+
+3.	Subject
+
+4.	LSN Form
+
+5.	LSN Lesion Identifier
+
+6.	LSN Study Period
+
+7.	Expected Treatment Phase Study Period
+
+8.	SM Visit
+
+9.	SM Seq
+
+10.	SM Start Date/Time
+
+Logic:
+SM Form SM Lesion Identifier <> NULL
+
+AND
+
+Study Medication Form Start Date/Time between the First Visit DOVs of each treatment phase (start date inclusive and end date exclusive)
+
+AND
+
+SM Form SM Lesion Identifier = LSN Lesion Identifier on LSN Form
+
+AND
+
+Study Period on LSN Form <> Study Period provided in the supporting doc
+
+Notes:
+
+1. Please do not consider deleted records nor erroneous visits.
+
+2. SM Form Start Date/Time - SMAU. Start Date/Time or SM. Start Date/Time
+
+3. If user provides two Treatment Phases (Initial Treatment Phase and Crossover Phase) and First Visit for each phase (Cycle 1 Day 1 and Crossover Cycle 1 Day 1), then the report should check for SM Start Date/Time between Cycle 1 Day 1 DOV (inclusive) and Crossover Cycle 1 Day 1 (exclusive), and for SM Form Start Date/Time after Crossover Cycle 1 Day 1 (inclusive).
+
+4. If DOV of next Treatment Phase First Visit is not initialized, SM/SMAU record should be regarded as First Phase.
+
+5. If supporting doc is not provided, display the message as "ONC_LSN_020_JR_STD Supporting Document Not Present for This Trial".
+
+Requires supporting document to be named ONC_LSN_020_supp_<xxxxxxx>.csv and will contain the following columns and associated content:
+
+1 row to define LSN Form, LSN Lesion Identifier, SM Form, SM Lesion Identifier, Treatment Phase, Study Period, First Visit
+
+1. Group - Unique key for each Lesion Evaluation Form
+
+2. LSN Form
+
+3. LSN Lesion Identifier - Itemquestion for Lesion Number/Sponsor ID on Lesion Evaluation Form
+
+4. SM Form – SM/SMAU
+
+5. SM Lesion Identifier - Itemquestion for Associated Lesion Number/Sponsor ID from Lesion Form on SM Form
+
+6. Treatment Phase - Numeric to identify treatment phase
+
+7. Study Period - Expected Treatment Phase Study Period
+
+8. First Visit - Visit mnemonic for each treatment phase
+
+For example:
+
+Group,LSN Form,LSN Lesion Identifier,SM Form,SM Lesion Identifier,Treatment Phase,Study Period,First Visit
+
+1,LSRIR,Lesion Number,SMAU,Associated Lesion Number from Lesion Form,1,Initial Treatment Phase,Cycle 1 Day 1
+
+1,LSRIR,Lesion Number,SMAU,Associated Lesion Number from Lesion Form,2,Crossover Phase,Cross Over Cycle 1 Day 1
+
+2,LSNHM,Lesion Number,SMAU,Associated Lesion Number from Lesion Form,1,Initial Treatment Phase,Cycle 1 Day 1
+
+2,LSNHM,Lesion Number,SMAU,Associated Lesion Number from Lesion Form,2,Crossover Phase,Cross Over Cycle 1 Day 1
+
+The number of rows in the supporting document will be represented in the Report Header as "# of rows for customization".
+
+The actual information provided by the supporting doc can be outputted by selecting Y in the parameter "Supporting doc Page".
+
+Report Scenarios:
+Scenario 1: Yes
+
+SM Form Start Date/Time between the First Visit DOVs of each treatment phase (start date inclusive and end date exclusive) AND Study Period on LSN Form <> Study Period for defined Treatment Phase for lesion on LSN Form that has SM Form SM Lesion Identifier = LSN Lesion Identifier on LSN Form.
+
+Scenario 2: No
+
+SM Form Start Date/Time between the First Visit DOVs of each treatment phase (start date inclusive and end date exclusive) AND Study Period on LSN Form = Study Period for defined Treatment Phase for lesion on LSN Form that has SM Form SM Lesion Identifier = LSN Lesion Identifier on LSN Form.
+
+Scenario 3: No
+
+SM Lesion Identifier = NULL or is not present in LSN Lesion Identifier on LSN Form.
+
+Sorting:
+Default
+
+Parameter Selection:
+Country, First Site, Last Site, First Subject, Last Subject, List of Subjects, Supporting Doc Page (N/Y, Default as N)
+
+Form.Item Names:
+1.	SA. Country
+
+2.	SA. Site Mnemonic
+
+3.	SA. Subject Number
+
+4.	LSN form which satisfies logic
+
+5.	LSN Lesion Identifier on LSN Form
+
+6.	Study Period from LSN Form
+
+7.	Display Study Period provided in the supporting doc
+
+8.	SMAU Visit Mnemonic/SM: display 'Common eCRF'
+
+9.	SM/SMAU seq number
+
+10.	SM/SMAU. Start Date/Time

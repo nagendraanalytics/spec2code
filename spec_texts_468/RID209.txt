@@ -1,0 +1,167 @@
+Report ID: RID209
+
+Report Title:
+Incorrect Scheduled time
+
+Description:
+This report will list subjects whose Scheduled Time does not match what is specified in the protocol per form per visit.
+
+Column Heading:
+1. Country
+
+2. Site
+
+3. Subject Number
+
+4. Visit
+
+5. DOV
+
+6. Form name
+
+7. Seq
+
+8. Scheduled Time
+
+9. Condition within form
+
+10. Issue
+
+Logic:
+This report displays subjects that have missing or incorrect records by Scheduled Time and any condition/restriction as applicable per form per visit (provided by user).
+
+When user provided forms in specific visit, then
+
+1) Output to verify subject with missing Scheduled time as required per form per Visit.
+
+2) Output to verify subject with incorrect Scheduled time per form for a Visit when this is not expected.
+
+Notes:
+
+1) Missing records should only be considered when the form has been initialized, unless the column Form_Initialized_Flag is completed as N in the supporting document.
+
+2) Deleted record and Erroneous visit will not be considered in programming and logic.
+
+3) For Scenario 2, Unscheduled assessments can be disregarded when submitting the report spec
+
+4) For Scenario 2, when Form and Visit are not provided by user in supporting document and Form is entered with Scheduled Time=Scheduled, please output as Incorrect.
+
+5) Report output will be displayed as .lst(.pdf) and .csv format.
+
+Requires supporting document to be named TQ019_supp_<xxxxxxx>.csv and will contain the following columns and associated content:
+
+1 row for each group of required Scheduled Time for specific form and visit, with additional criteria per protocol.
+
+Each scheduled time and scenario for specific visits has unique Group Number.
+
+1) Group - Unique key for group of required Scheduled Time, NOT NULL. Criteria Form, Criteria Itemquestion, Criteria Value, Formmnemonic, Visitmnemonic, Scheduled Time and Flag must be unique in each group
+
+2) Criteria_Form1 - Unique value in each group, specified as 'NA' if it is checked for all subjects
+
+3) Criteria_Itemquestion1 - Unique value in each group, specified as 'NA' if it is checked for all subjects
+
+4) Criteria_Value1 - Unique value in each group, specified as 'NA' if it is checked for all subjects
+
+5) Criteria_Form2 - Unique value in each group, specified as 'NA' if it is checked for all subjects
+
+6) Criteria_Itemquestion2 - Unique value in each group, specified as 'NA' if it is checked for all subjects
+
+7) Criteria_Value2 - Unique value in each group, specified as 'NA' if it is checked for all subjects
+
+8) Criteria_Form3 - Unique value in each group, specified as 'NA' if it is checked for all subjects
+
+9) Criteria_Itemquestion3 - Unique value in each group, specified as 'NA' if it is checked for all subjects
+
+10) Criteria_Value3 - Unique value in each group, specified as 'NA' if it is checked for all subjects
+
+11) Formmnemonic - Unique value in each group
+
+12) Visitmnemonic - Unique value in each group, For missing scenario, specified as 'NA' if it is checked for all visits;
+
+13) Schedule_Time - Unique value in each group, specified as 'NA' if it is checked for all subjects
+
+14) CONDITEM - Itemquestion from Formmnemonic to be used for missing scenario (e.g. Study medication, Test, Laboratory Name, Kit ID); specified as 'NA' if not applicable
+
+15) CONDRESULT - For missing scenario, specify the appropriate condition result (e.g. CONDITEM = Study Medication, CONDRESULT = -3475).
+
+16) Form_Initialized_Flag - Unique value in each group, enter Y/N (Y: Missing Scheduled Time will be outputted when form is initialized, N: Missing Scheduled Time outputted even if form is not initialized.)
+
+e.g.
+
+Group,Criteria Form1,Criteria Itemquestion1,Criteria Value1,Criteria Form2,Criteria Itemquestion2,Criteria Value2,Criteria Form3,Criteria Itemquestion3,Criteria Value3,Formmnemonic,Visitmnemonic,Scheduled Time,CONDITEM,CONDRESULT,Form Initialized Flag
+
+1,NA,NA,NA,NA,NA,NA,NA,NA,NA,LECG,NA,Scheduled,NA,NA,Y
+
+2,NA,NA,NA,NA,NA,NA,NA,NA,NA,SCI,Cycle 1,Scheduled,NA,NA,Y
+
+3,NA,NA,NA,NA,NA,NA,NA,NA,NA,SCI,Cycle 2,Scheduled,NA,NA,Y
+
+4,SR,Arm,Arm 1,NA,NA,NA,NA,NA,NA,SM,NA,Predose,Study Medication,-3475,N
+
+Report Scenarios:
+A1- Yes
+
+There is incorrect Scheduled time when this visit is not expected
+
+A2- Yes
+
+There is missing Scheduled Time
+
+B2-No
+
+There is no missing Scheduled Time
+
+C2-No
+
+There is no incorrect Scheduled time when this visit is not expected
+
+D-No
+
+Form not initialized
+
+F-No
+
+Erroneous visit
+
+G-No
+
+Visit not initialized
+
+H-Yes
+
+Form and visit are not present in supporting document and Form is entered with Scheduled Time=Scheduled
+
+I-No
+
+Form and visit are not present in supporting document and Form is entered with Scheduled Time=Unscheduled
+
+Sorting:
+Country, Site, Subject Number, Visit, Form Name, Scheduled Time, Issue.
+
+Parameter Selection:
+Country, Site , Subject , Randomized Only, modules, Visits, List of Subjects
+
+Form.Item Names:
+1. Subject Assignment. Site Country
+
+2. Subject Assignment. Site Mnemonic
+
+3. Subjects. Subject Number
+
+4. Date of Visit.Visit Mnemonic
+
+5. Date of Visit. Date of Visit
+
+6. Forms provided by user. Form name
+
+7. Forms provided by user. formidx
+
+8. Forms provided by user.Scheduled Time
+
+9. Condition provided by user(if more than one, concatenate each value with comma)
+
+10. Hardcode-
+
+    Scenario 1- Missing
+
+    Scenario 2- Incorrect

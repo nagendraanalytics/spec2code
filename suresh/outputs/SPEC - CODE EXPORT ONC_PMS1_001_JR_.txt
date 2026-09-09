@@ -1,0 +1,171 @@
+SPEC -> CODE EXPORT: ONC_PMS1_001_JR_STD
+Exported 8/31/2026, 10:58:31 AM | Tenant: default
+
+======================================================================
+1. SPEC
+======================================================================
+Report ID:
+ONC_PMS1_001_JR_STD
+
+EDC System / Language:
+veeva / CQL
+
+Description:
+Identifies subjects whose Status form (e.g., PMS1/PMS1A/PMST/OEDRA) indicates a reason for treatment discontinuation equivalent to "starting new (non-study) anti-cancer therapy" or "excluded medication discontinuation criteria" (as defined per-study in an external supporting document), but for whom no corresponding new anti-cancer therapy form (e.g., ORAD2, OSOF, OSOFL, ODBF, ODBHF, ODBNF, ODBCF - whichever are active in the protocol) exists with a non-palliative reason recorded. The report flags a data-consistency gap: therapy discontinuation was reported as due to new anti-cancer therapy, but no therapy-form record substantiates it (other than purely palliative/symptom-control radiation records, which are excluded from consideration as substantiating evidence). Source data: clinical trial subject/visit/status ("disposition/status") forms and oncology anti-cancer therapy forms (radiation, surgery, other treatment forms) drawn from an Oracle clinical data warehouse (subject registry, visit/date-of-visit form, and a data dictionary describing form/item/column mappings), combined with a study-specific supporting CSV document that defines which status form + item/question + status value combinations count as "new anti-cancer therapy discontinuation reasons" for that particular protocol.
+
+Column Heading:
+Country | Site | Subject Number | Visit | Form | Date of assessment | Status (with a possible second output page listing supporting-document contents: Status form | Itemmnemonic | Reason for Discontinuation)
+
+Logic:
+1. Verify a study-specific supporting document (ONC_PMS1_001_supp_<protocol>.csv) exists; if not, output only a message page stating the supporting document is not present for the trial. 2. If present, read the supporting doc, which lists, per study, the combinations of Status Form (PMS1/PMS1A/PMST/OEDRA), Itemmnemonic (the question capturing reason for study completion/discontinuation), and Reason for Discontinuation value that represent "subject is receiving a new anti-cancer therapy." 3. Pull subject/site/screening reference data and a visit-level "date of visit" form (excluding visits flagged with a visit-level error). 4. Pull data-dictionary metadata to dynamically identify, for each configured status form, the database view/column holding the status value and (if present) an assessment date column, filtered to forms PMS1FM/PMS1AFM/PMSTFM/OEDRAFM and specific item codes representing "status of study medication" or "status of subject" at end of segment. 5. Similarly identify, for each of the possible new anti-cancer therapy forms present in the protocol (ORAD2, OSOF, OSOFL, ODBF, ODBHF, ODBNF, ODBCF), the columns holding a form index, a deleted-form flag, and (for ORAD2 only) a "reason" field. 6. For each configured status-form view, extract subject-level status records and inner-join them to the supporting document on matching Form + Itemmnemonic/Itemquestion + Status value (case-insensitive, trimmed) -- these are the "candidate discontinuation-due-to-new-therapy" records, accumulated into one dataset (PMS). 7. For each configured therapy-form view, extract subject-level records, excluding logically deleted forms (deletedform = 'Y'), and excluding records whose reason begins with "PALLIATIVE" (palliative/symptom-control treatment reasons do not count as evidence of active new anti-cancer therapy) -- accumulated into one dataset (ODB). 8. Build the final candidate population: status-form records (from step 6) joined to the visit/date-of-visit dataset on subject+visit (to pick up assessment date and exclude visits with a visit-error flag), restricted to subjects who have NO matching record at all in the therapy dataset (ODB) built in step 7 -- i.e., no non-palliative anti-cancer therapy form evidence exists for that subject. This requires at least one anti-cancer therapy form type to be configured/applicable in the protocol. 9. Restrict to the relevant analysis subject subset via a standard subdataset/population filter macro. 10. Merge in subject demographic/site identifiers (country, site number, subject number) keeping only matched records. 11. Deduplicate on country/site/subject/visit/visit-mnemonic/form/date/status. 12. Output the final listing sorted by subject; if zero qualifying records, output a "No records meet the test condition" message instead of the listing. 13. Optionally (if a report parameter Supporting doc Page = Y) output a second report page listing the raw contents of the supporting document, with the row count shown in the report header/title as "# of rows for Supporting Doc."
+
+Report Scenarios:
+Scenario A: Supporting document for the trial does not exist -- output a single message page: "ONC_PMS1_001_JR_STD Supporting Document Not Present for This Trial" plus guidance to check the DRP/contact programmer. Scenario B: Supporting document exists but the final filtered dataset has zero qualifying subject records -- output "No records meet the test condition" message page (titles still show supporting-doc row count and supporting-doc-page parameter value). Scenario C: Supporting document exists and qualifying records are found -- output the full listing report (Country/Site/Subject/Visit/Form/Date of assessment/Status). Scenario D: Special business rule -- when ORAD2 is the only applicable anti-cancer therapy eCRF completed for a subject (all other therapy forms OSOF, ODBF, ODBHF, ODBNF, ODBCF empty) and ALL of that subject's ORAD2 "reason" entries indicate palliative treatment/symptom control (or palliative treatment/symptom control of metastatic disease), the subject IS still output as a discrepancy (no substantiating non-palliative therapy exists); but if even one ORAD2 reason record is non-palliative, the subject is NOT output (a valid non-palliative therapy record exists). Scenario E (optional add-on, controlled by a parameter): output an additional page listing the raw supporting-document rows (Status form/Itemmnemonic/Reason for Discontinuation) when the "Supporting doc Page" parameter = Y.
+
+Sorting:
+Final listing is deduplicated and effectively ordered by Country, Site number, Subject number, Visit ID, Visit mnemonic, Form mnemonic, Date of assessment, Status (via PROC SORT NODUPKEY on final dataset by these keys); intermediate final dataset (finalini) is sorted by subjectid before merging with subject demographics. Supporting-document listing page has no explicit sort (row order as read from CSV).
+
+======================================================================
+2. LOGIC UNDERSTANDING
+======================================================================
+This report cross-references oncology Status forms (PMS1/PMS1A/PMST/OEDRA) against a study-specific external supporting CSV to identify which discontinuation reasons mean 'switched to new anti-cancer therapy,' then checks whether any corresponding, non-deleted, non-palliative anti-cancer therapy form (ORAD2/OSOF/OSOFL/ODBF/ODBHF/ODBNF/ODBCF) exists for that subject as substantiating evidence. If a subject's status record matches a 'new therapy' discontinuation reason but has zero substantiating non-palliative therapy records (evaluated per-record, so even one non-palliative ORAD2 reason clears the subject per Scenario D), the subject is flagged as a data-consistency gap and listed in the final output, subject to the existence of the supporting document, population filtering, demographic matching, and deduplication."
+
+1. First, check whether the study-specific supporting document ONC_PMS1_001_supp_<protocol>.csv exists for this trial; if it does not exist, stop processing and output only a message page stating the supporting document is not present for the trial (Scenario A).
+2. If the supporting document is present, read it in -- it lists, per study, the combinations of Status Form (PMS1/PMS1A/PMST/OEDRA), Itemmnemonic, and Reason-for-Discontinuation value that represent 'subject is receiving a new anti-cancer therapy.'
+3. Pull subject/site/screening reference data and a visit-level 'date of visit' form, excluding any visits flagged with a visit-level error -- this will later supply assessment dates and visit exclusions.
+4. Pull data-dictionary metadata to dynamically determine, for each configured status form (filtered to PMS1FM/PMS1AFM/PMSTFM/OEDRAFM database views and specific item codes for 'status of study medication' or 'status of subject' at end of segment), which database view/column holds the status value and, where present, the assessment date column.
+5. Similarly, use data-dictionary metadata to identify, for each applicable anti-cancer therapy form (ORAD2, OSOF, OSOFL, ODBF, ODBHF, ODBNF, ODBCF), the columns holding a form index, a deleted-form flag, and (only for ORAD2) a 'reason' field.
+6. For each configured status-form view, extract subject-level status records and inner-join them to the supporting document on matching Form + Itemmnemonic/Itemquestion + Status value (case-insensitive, trimmed comparison), producing 'candidate discontinuation-due-to-new-therapy' records accumulated into dataset PMS.
+7. For each configured therapy-form view, extract subject-level records but exclude logically deleted forms (deletedform = 'Y') and exclude records whose 'reason' field begins with 'PALLIATIVE' (since palliative/symptom-control reasons don't count as evidence of active new anti-cancer therapy), accumulating the result into dataset ODB.
+8. Build the final candidate population by joining the PMS status-form records (step 6) to the visit/date-of-visit dataset (step 3) on subject+visit to pick up the assessment date and drop error-flagged visits, then restrict to only those subjects who have NO matching record at all in ODB (step 7) -- meaning no non-palliative anti-cancer therapy evidence exists for them. This logic assumes at least one anti-cancer therapy form type is configured/applicable in the protocol.
+9. Restrict the candidate population further using a standard subdataset/population filter macro to keep only subjects in the relevant analysis population.
+10. Merge in subject demographic/site identifiers (country, site number, subject number), keeping only matched records (i.e., an inner-merge behavior discarding candidates without a demographic match).
+11. Deduplicate the resulting dataset on country/site/subject/visit/visit-mnemonic/form/date/status (PROC SORT NODUPKEY) to remove exact-duplicate rows.
+12. Output the final listing sorted by subject (per the Sorting section: Country, Site, Subject, Visit ID, Visit mnemonic, Form mnemonic, Date of assessment, Status); if the resulting dataset has zero records, output a 'No records meet the test condition' message page instead (Scenario B).
+13. If the report parameter 'Supporting doc Page' = Y, optionally output a second report page listing the raw contents of the supporting document (Status form/Itemmnemonic/Reason for Discontinuation), showing the row count of the supporting doc in the report header/title (Scenario E).
+14. Special business rule (Scenario D): if ORAD2 is the only anti-cancer therapy form completed for a subject (all of OSOF/ODBF/ODBHF/ODBNF/ODBCF are empty) and every one of that subject's ORAD2 'reason' records indicates palliative treatment/symptom control (including for metastatic disease), the subject is still flagged as a discrepancy because no substantiating non-palliative record exists; but if even a single ORAD2 reason record is non-palliative, the subject is excluded from output since a valid substantiating record exists. This is effectively a restatement/special case of the general exclusion logic in step 7-8, but the spec calls it out explicitly as a distinct business rule to confirm the 'exclude PALLIATIVE reason' logic applies per-record, not per-subject. (inferred)
+
+======================================================================
+3. SPEC REVIEW
+======================================================================
+Readiness: Needs revision -- The spec is largely well-structured with clear scenarios and step-by-step logic, but has a blocking-adjacent set of warnings around join semantics (per-subject vs per-visit output, join type in step 8) and the scope of the palliative-reason exclusion that a query generator would have to guess at in ways that could change which records are included -- these should be resolved before handoff, alongside some lower-priority naming and edge-case clarifications.
+
+[WARNING] (consistency) The 'PALLIATIVE' exclusion rule in Logic step 7 is only stated as applying to the 'reason' field, and step 5 says a reason field is only pulled 'for ORAD2 only.' But Scenario D describes ORAD2-specific palliative logic in detail while the Description generically says 'other than purely palliative/symptom-control radiation records' -- implying palliative exclusion is a radiation-only (ORAD2) concept, yet step 7 applies the 'reason begins with PALLIATIVE' filter across 'each configured therapy-form view' generically, without stating whether non-ORAD2 forms even have a reason column to filter on.
+  -> Clarify explicitly that the PALLIATIVE reason filter only applies to ORAD2 records (since only ORAD2 has a reason field per step 5), and that other therapy forms (OSOF, ODBF, etc.) are never excluded for palliative reasons because they carry no reason field.
+[WARNING] (ambiguity) Step 6 describes an inner-join between status records and the supporting document 'on matching Form + Itemmnemonic/Itemquestion + Status value (case-insensitive, trimmed)' but the spec doesn't state what happens if the same subject has multiple status records across different visits that both match -- are all such visit-level candidate records retained and each independently checked against the therapy dataset, or is only the subject's existence used downstream (step 8 restricts 'to subjects who have NO matching record at all')? This affects whether a subject with one qualifying visit and one non-qualifying visit produces one row or multiple rows in the output.
+  -> State explicitly whether the final output is per-subject or per-visit-occurrence when a subject has multiple qualifying status records across different visits, and confirm whether the ODB non-existence check is subject-level (any visit) or matched to the specific visit of the status record.
+[WARNING] (completeness) The spec doesn't address what happens if a subject's status record has a missing/null assessment date after the join to the visit/date-of-visit dataset in step 8, or if a visit is missing entirely from the date-of-visit dataset (step 8 requires joining status records to the visit dataset to 'pick up assessment date' -- an inner join is implied but not stated, so it's unclear whether unmatched status records are silently dropped).
+  -> Explicitly state the join type (inner vs. left) between status-form records and the visit/date-of-visit dataset in step 8, and specify the expected behavior (e.g., 'record dropped') when no matching visit/date record exists.
+[WARNING] (completeness) Step 8 notes that the therapy-form non-existence check 'requires at least one anti-cancer therapy form type to be configured/applicable in the protocol,' but the spec never states what the report should do if a protocol has zero anti-cancer therapy forms configured/active (e.g., output all candidates unconditionally, or emit an error/message page).
+  -> Add an explicit rule/scenario for the case where no anti-cancer therapy forms (ORAD2/OSOF/OSOFL/ODBF/ODBHF/ODBNF/ODBCF) are configured for a protocol -- clarify whether the report should still run (treating 'no therapy forms' as automatically satisfying 'no substantiating record'), refuse to run, or emit a special message.
+[INFO] (testability) Scenario D is described as a 'special business rule' but is actually just a specific instantiation of the general logic in steps 7-8 (ORAD2 records with all-palliative reasons contribute nothing to ODB, so the subject has no ODB match and is flagged; one non-palliative reason creates an ODB match and excludes the subject). It isn't a separately distinguishable report state from Scenario C in terms of output format.
+  -> Consider merging Scenario D into Scenario C as a clarifying example/edge-case note rather than a standalone lettered scenario, since it doesn't produce a distinguishable report output -- or explicitly say 'Scenario D is an example illustrating step 7/8 logic, not a distinct report state' to avoid a query-generator treating it as requiring separate branch logic.
+[INFO] (naming) The spec inconsistently refers to status forms with two different naming styles: 'PMS1/PMS1A/PMST/OEDRA' (Description, Logic step 2) versus 'PMS1FM/PMS1AFM/PMSTFM/OEDRAFM' (Logic step 4) -- presumably the FM suffix denotes the database view name versus the eCRF/form mnemonic, but this mapping convention is never explicitly stated.
+  -> Add a short note defining the naming convention, e.g. 'FM suffix denotes the underlying database view name corresponding to eCRF form PMS1, etc.' so the two naming styles are clearly linked rather than left for the reader to infer.
+[INFO] (ambiguity) The Description says therapy forms are 'whichever are active in the protocol' and Logic step 5 lists the same seven form codes, but the spec never explains how the system determines which of these forms are 'active/configured/applicable' for a given protocol -- e.g., is this derived from the data-dictionary metadata query in step 4/5, or from the supporting CSV, or some other configuration source?
+  -> Clarify the mechanism by which 'active in the protocol' therapy forms are determined -- e.g., 'a form is considered active if the data dictionary metadata query returns a matching view for that form mnemonic in this protocol's database.'
+
+======================================================================
+4. GENERATED CODE
+======================================================================
+CQL -- Guardrails: passed
+
+SELECT
+  PMS_D.Country AS `Country`,
+  PMS_D.Site AS `Site`,
+  PMS_D.SubjectNumber AS `Subject Number`,
+  PMS_D.Visit AS `Visit`,
+  PMS_D.StatusForm AS `Form`,
+  DATE_FORMAT(PMS_D.AssessDateRaw, '%d%b%Y') AS `Date of assessment`,
+  PMS_D.StatusValue AS `Status`
+FROM
+(
+
+-- Candidate discontinuation-due-to-new-therapy records from PMS1/PMS1A/PMST status forms,
+  -- joined to visit/date-of-visit data (excluding erroneous visits) for assessment date.
+  -- NOTE: the supporting-doc-driven Form+Itemmnemonic+Status combinations (step 6) cannot be
+  -- enumerated here since the external CSV content is not available; PMS1FM.PMS1DSTERMSTATIT
+  -- and PMS1DSDTCIT are used as the status/date items per study metadata, and the status value
+  -- filter below is a placeholder representing "matches supporting-doc value list."
+SELECT
+    `@HDR`.`Subject`.`ID` AS SubjectID,
+    `@HDR`.`Site`.`Country` AS Country,
+    `@HDR`.`Site`.`Number` AS Site,
+    `@HDR`.`Subject`.`Name` AS SubjectNumber,
+    DOV_M.VisitMnemonic AS Visit,
+    `@Form`.`Name` AS StatusForm,
+    DOV_M.VisitDateRaw AS AssessDateRaw,
+    PMS1FM.PMS1DSTERMSTATIT AS StatusValue
+  FROM `EDC`.`PMS1FM` PMS1FM
+  INNER JOIN
+  (
+    SELECT
+      `@HDR`.`Subject`.`ID` AS SubjectID,
+      `@HDR`.`Event`.`Name` AS VisitMnemonic,
+      RAWDATE(DOVFM.DOV) AS VisitDateRaw
+    FROM `EDC`.`DOVFM` DOVFM
+    WHERE `@Form`.`Status` = 'submitted__v'
+      AND (DOVFM.DOVSERRORVIT = 'N' OR DOVFM.DOVSERRORVIT IS NULL)
+  ) DOV_M
+    ON `@HDR`.`Subject`.`ID` = DOV_M.SubjectID
+  WHERE `@Form`.`Status` = 'submitted__v'
+
+-- Supporting-doc match placeholder: status value indicating "new anti-cancer therapy" or
+    -- "excluded medication discontinuation criteria" per ONC_PMS1_001_supp_<protocol>.csv
+    AND PMS1FM.PMS1DSTERMSTATIT IN ('New Anti-Cancer Therapy', 'Excluded Medication Discontinuation Criteria')
+
+  UNION ALL
+SELECT
+    `@HDR`.`Subject`.`ID` AS SubjectID,
+    `@HDR`.`Site`.`Country` AS Country,
+    `@HDR`.`Site`.`Number` AS Site,
+    `@HDR`.`Subject`.`Name` AS SubjectNumber,
+    DOV_M2.VisitMnemonic AS Visit,
+    `@Form`.`Name` AS StatusForm,
+    DOV_M2.VisitDateRaw AS AssessDateRaw,
+    OEDRAFM.OEDRATERMSUBDCRC AS StatusValue
+  FROM `EDC`.`OEDRAFM` OEDRAFM
+  INNER JOIN
+  (
+    SELECT
+      `@HDR`.`Subject`.`ID` AS SubjectID,
+      `@HDR`.`Event`.`Name` AS VisitMnemonic,
+      RAWDATE(DOVFM.DOV) AS VisitDateRaw
+    FROM `EDC`.`DOVFM` DOVFM
+    WHERE `@Form`.`Status` = 'submitted__v'
+      AND (DOVFM.DOVSERRORVIT = 'N' OR DOVFM.DOVSERRORVIT IS NULL)
+  ) DOV_M2
+    ON `@HDR`.`Subject`.`ID` = DOV_M2.SubjectID
+  WHERE `@Form`.`Status` = 'submitted__v'
+    AND OEDRAFM.OEDRATERMSUBDCRC IN ('New Anti-Cancer Therapy', 'Excluded Medication Discontinuation Criteria')
+) PMS_D
+WHERE NOT EXISTS (
+
+-- ORAD2: radiation therapy records, excluding deleted forms and palliative reasons
+SELECT 1 FROM `EDC`.`ORAD2FM` ORAD2FM
+  WHERE `@HDR`.`Subject`.`ID` = PMS_D.SubjectID
+    AND `@Form`.`Status` = 'submitted__v'
+    AND (ORAD2FM.DELETEDFM = 'N' OR ORAD2FM.DELETEDFM IS NULL)
+    AND (ORAD2FM.ORAD2PRINDCIT IS NULL OR UPPER(TRIM(ORAD2FM.ORAD2PRINDCIT)) NOT LIKE 'PALLIATIVE%')
+)
+AND NOT EXISTS (
+
+-- OSOF: surgery/other treatment records, excluding deleted forms
+SELECT 1 FROM `EDC`.`OSOFFM` OSOFFM
+  WHERE `@HDR`.`Subject`.`ID` = PMS_D.SubjectID
+    AND `@Form`.`Status` = 'submitted__v'
+    AND (OSOFFM.DELETEDFM = 'N' OR OSOFFM.DELETEDFM IS NULL)
+)
+AND NOT EXISTS (
+
+-- ODBHF: oncologic treatment/regimen records, excluding deleted forms
+SELECT 1 FROM `EDC`.`ODBHFFM` ODBHFFM
+  WHERE `@HDR`.`Subject`.`ID` = PMS_D.SubjectID
+    AND `@Form`.`Status` = 'submitted__v'
+    AND (ODBHFFM.DELETEDFM = 'N' OR ODBHFFM.DELETEDFM IS NULL)
+)
+ORDER BY
+  `Country`, `Site`, `Subject Number`, `Visit`, `Form`, `Date of assessment`, `Status`
+
+Explanation:
+I built the "candidate discontinuation" dataset (PMS) from the two status forms confirmed in the study metadata that carry a discontinuation-reason/status item and a date item (PMS1FM.PMS1DSTERMSTATIT/PMS1DSDTCIT and OEDRAFM.OEDRATERMSUBDCRC/OEDRADSDTCIT) -- PMS1A/PMST were mentioned in the spec but no matching Form was present in the provided metadata, so they are omitted and flagged here as a gap; the exact qualifying status VALUES are supposed to come from the external ONC_PMS1_001_supp CSV (which isn't accessible to this engine), so I used illustrative placeholder literals ('New Anti-Cancer Therapy'/'Excluded Medication Discontinuation Criteria') that must be replaced with the real values from that document. Each status record is joined to DOVFM (excluding erroneous visits, DOVSERRORVIT) for the assessment date/visit. The "no substantiating therapy" check (steps 7-8, including the ORAD2-only/palliative Scenario D rule) is implemented as three correlated NOT EXISTS subqueries against the therapy forms actually present in metadata (ORAD2FM, OSOFFM, ODBHFFM -- OSOFL/ODBF/ODBNF/ODBCF were not found in the metadata list and are therefore omitted/flagged), excluding deleted forms (DELETEDFM='N' or NULL) and, for ORAD2 only, excluding reasons beginning with "PALLIATIVE" per the spec's non-palliative-evidence rule; this NOT EXISTS structure naturally implements Scenario D since a subject is only excluded from output if at least one non-palliative ORAD2 record (or any OSOF/ODBHF record) exists. This query omits the supporting-document-existence check, the "Supporting doc Page" second output, and zero-result message handling since those are report-runtime/presentation logic outside CQL's SELECT scope -- these should be handled at the report-template layer, and the supporting-doc CSV content and item/status mappings should be confirmed via DESCRIBE FORM and the real supporting document before running.

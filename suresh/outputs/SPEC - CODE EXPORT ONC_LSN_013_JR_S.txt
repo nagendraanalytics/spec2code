@@ -1,0 +1,121 @@
+SPEC -> CODE EXPORT: ONC_LSN_013_JR_STD
+Exported 8/31/2026, 10:25:28 AM | Tenant: default
+
+======================================================================
+1. SPEC
+======================================================================
+Report ID:
+ONC_LSN_013_JR_STD
+
+EDC System / Language:
+veeva / CQL
+
+Description:
+This report identifies subjects/lesions where the "Date of Initial Identification" recorded in the lesion evaluation section of the Lesion Evaluation Form does not match the earliest "Date of Lesion Evaluation" recorded in the corresponding add-entry (repeating) section for the same lesion sequence number. It is a data quality/consistency check comparing a single-entry baseline date against the minimum of possibly multiple repeated evaluation dates for that lesion. Source data comes from clinical lesion evaluation forms (oncology tumor assessment eCRF data), specifically Subject Assessment level identifiers (Country, Site, Subject) joined to Lesion Evaluation Form records at the lesion (LSN) sequence level, plus a supplemental mapping document (master LSN_supp_doc.csv) that defines which underlying item/question text corresponds to "Date of Initial Identification" and "Date of Lesion Evaluation" for each specific Lesion Evaluation Form variant used in the study.
+
+Column Heading:
+1. Country; 2. Site; 3. Subject Number; 4. Lesion Evaluation Form; 5. Seq #; 6. Name of item on Lesion Evaluation Form (for Date of Initial Identification, per LSN_supp_doc.csv mapping); 7. Date (value of Date of Initial Identification); 8. Seq # Add Entry; 9. Name of item on Lesion Evaluation Form (for Date of Lesion Evaluation, per LSN_supp_doc.csv mapping); 10. Earliest Date (earliest Date of Lesion Evaluation value across add-entry records for that lesion)
+
+Logic:
+For each subject and lesion sequence number (LSN seq) on the Lesion Evaluation Form: 1) Determine the item on the form that represents "Date of Initial Identification" (this item's actual on-form label varies by form version, e.g., "Date of Assessment", "Date of Initial Identification (Scan/Image/Physical Exam)", or "Date of Initial Lesion Identification for This Trial (Scan/Image/Physical Exam)" -- the correct mapping for a given form comes from the ITEMQUESTION/original_itemquestion columns in the master LSN_supp_doc.csv reference file). 2) Determine the item(s) representing "Date of Lesion Evaluation" in the add-entry (repeating) section for that same lesion (on-form label varies similarly, e.g., "Date of Current Lesion Evaluation (Scan/Image/Physical Exam)" or "Date of Lesion Evaluation" -- again mapped via LSN_supp_doc.csv). 3) Compute the earliest (minimum) date among all add-entry "Date of Lesion Evaluation" records for that lesion sequence. 4) Compare the single "Date of Initial Identification" value to this computed earliest add-entry date for the same LSN seq. 5) Flag/include the lesion record if the two dates do NOT match (mismatch = Scenario A / "Yes"); records where the dates are equal are Scenario B / "No" and are not flagged as discrepancies (may or may not be excluded from output depending on report mode, but the discrepancy condition itself is the inequality test). 6) Deleted records are excluded from all comparisons and output entirely. Filtering by runtime prompts for Country, Site, Subject(s)/List of Subjects, specific Lesion Evaluation Form(s), Randomized Only flag, and a free-text LSN Form filter (comma-separated) further restricts the population before the comparison logic is applied.
+
+Report Scenarios:
+Scenario A (Yes/flagged): The Date of Initial Identification (regardless of its exact on-form label variant) does NOT equal the earliest Date of Lesion Evaluation among add-entry records for the same lesion sequence -- this is a data discrepancy to be reported. Scenario B (No): The Date of Initial Identification equals the earliest Date of Lesion Evaluation for the same lesion sequence -- no discrepancy, not reported as an issue.
+
+Sorting:
+Sorted by Country, then Site, then Subject Number.
+
+======================================================================
+2. LOGIC UNDERSTANDING
+======================================================================
+This report performs a per-lesion (Subject + LSN seq) date-consistency check on the Lesion Evaluation Form: it uses the LSN_supp_doc.csv mapping to correctly identify the 'Date of Initial Identification' item and the repeating-section 'Date of Lesion Evaluation' item(s) regardless of form-version label differences, computes the earliest add-entry date for the lesion, and flags the lesion (Scenario A) whenever that earliest date does not equal the single Date of Initial Identification value, after excluding deleted records and applying runtime population filters. Non-mismatches (Scenario B) are not flagged as discrepancies, and results are sorted by Country, Site, Subject Number.
+
+1. The comparison is performed per subject and per lesion sequence number (LSN seq) on the Lesion Evaluation Form -- i.e., grouping unit is (Subject, LSN seq), not the whole subject.
+2. First, identify which item on this particular form variant represents 'Date of Initial Identification'. The actual on-form label is not fixed -- it can appear as 'Date of Assessment', 'Date of Initial Identification (Scan/Image/Physical Exam)', or 'Date of Initial Lesion Identification for This Trial (Scan/Image/Physical Exam)' depending on form version. The correct mapping for a given form is looked up via the ITEMQUESTION/original_itemquestion columns in the master LSN_supp_doc.csv file, not hard-coded.
+3. Second, identify the item(s) representing 'Date of Lesion Evaluation' within the add-entry (repeating) section for that same lesion. This label also varies by form version (e.g., 'Date of Current Lesion Evaluation (Scan/Image/Physical Exam)' or 'Date of Lesion Evaluation'), and is likewise resolved via the LSN_supp_doc.csv mapping.
+4. Because the add-entry section is repeating, there can be multiple 'Date of Lesion Evaluation' records for the same lesion sequence -- compute the earliest (minimum) date among all of these add-entry records for that LSN seq.
+5. Compare the single 'Date of Initial Identification' value (from the non-repeating lesion evaluation section) against this computed earliest add-entry 'Date of Lesion Evaluation' date, for the same LSN seq.
+6. If the Date of Initial Identification does NOT equal the earliest add-entry Date of Lesion Evaluation, this is Scenario A ('Yes') -- a data discrepancy, and the lesion record is flagged/included in the report output.
+7. If the two dates ARE equal, this is Scenario B ('No') -- no discrepancy; the spec notes such records are not flagged as discrepancies, though whether they still appear in the raw dataset output depends on report mode (this is stated as ambiguous in the spec itself, not something I'm resolving).
+8. Deleted records are excluded entirely from both the comparison computation and the final output -- this applies to both the initial identification record and any add-entry records.
+9. Before the comparison logic runs, the population is restricted by runtime prompts: Country, Site, Subject(s)/List of Subjects, specific Lesion Evaluation Form(s), a Randomized Only flag, and a free-text comma-separated LSN Form filter. These act as pre-filters on which subjects/lesions/forms enter the comparison.
+10. Final output rows are sorted by Country, then Site, then Subject Number, per the Sorting field.
+
+======================================================================
+3. SPEC REVIEW
+======================================================================
+Readiness: Needs revision -- The spec is well-structured and the core comparison logic (Scenario A vs B) is clear and testable, but it has blocking gaps around missing/empty add-entry data and undefined 'report modes' referenced in the Logic, which would force a query generator to guess at inclusion criteria that materially affect output.
+
+[BLOCKING] (completeness) The Logic and Report Scenarios never address the case where a lesion has NO add-entry 'Date of Lesion Evaluation' records at all (i.e., the repeating section is empty for that LSN seq). Step 3 computes a minimum over 'all add-entry records for that lesion sequence' but doesn't state what happens if that set is empty -- there is no earliest date to compare against.
+  -> Add an explicit rule, e.g., 'If no add-entry Date of Lesion Evaluation records exist for a given LSN seq, exclude the lesion from comparison (or flag it as a separate scenario) rather than treating it as a match or mismatch.'
+[BLOCKING] (completeness) The spec doesn't address missing/null 'Date of Initial Identification' values, or add-entry records with missing/partial (e.g., month/year only) 'Date of Lesion Evaluation' values. Since the comparison is date equality, partial or null dates would make the equality test ambiguous.
+  -> State how partial dates and nulls are handled in the equality comparison (e.g., treat partial dates as unknown/excluded, or define comparison rules for partial-date matching).
+[WARNING] (ambiguity) Step 5 says non-matching records are Scenario A/flagged, and matching records 'may or may not be excluded from output depending on report mode' -- but no report modes are defined anywhere in the spec, and Column Heading/Sorting don't mention a mode parameter.
+  -> Either define the report modes (e.g., 'Discrepancies Only' vs 'All Records') as a runtime prompt/filter, or remove the 'may or may not be excluded' language and state definitively whether Scenario B rows appear in output.
+[WARNING] (ambiguity) The equality comparison ('does NOT equal') between Date of Initial Identification and earliest Date of Lesion Evaluation doesn't specify whether comparison is date-only or includes time components, and whether any tolerance window is allowed. Since both fields are described as 'Date', this may be fine, but the LSN_supp_doc.csv mapping could expose datetime-capable items.
+  -> Explicitly state the comparison is date-only (ignoring any time-of-day component) to preempt ambiguity if any underlying item stores a datetime.
+[WARNING] (consistency) The Description states the mapping document is 'master LSN_supp_doc.csv' while the Logic refers to it as 'master LSN_supp_doc.csv reference file' and cites specific columns 'ITEMQUESTION/original_itemquestion' -- these column names are introduced only in the Logic section and not previewed in the Description or Column Heading, making it unclear if Column Heading fields 6 and 9 ('Name of item...per LSN_supp_doc.csv mapping') pull from ITEMQUESTION or original_itemquestion specifically.
+  -> Clarify which column (ITEMQUESTION vs original_itemquestion) populates the Column Heading 'Name of item' fields, and use consistent terminology for the mapping file/columns across Description and Logic.
+[INFO] (testability) Report Scenarios A and B are clearly distinguishable by the stated equality/inequality test, and this part of the spec is unambiguous and well-defined.
+  -> No change needed for this aspect.
+[WARNING] (completeness) The runtime prompt 'Randomized Only flag' is listed in the Logic but there's no description of what determines 'Randomized' status (e.g., which field/form indicates randomization) or how it interacts with the LSN-level comparison.
+  -> Specify the source field/form for the Randomized Only flag (e.g., 'Randomization Date populated on Enrollment Form') so the generator knows which data element to filter on.
+[INFO] (naming) Column Heading item 8 is labeled 'Seq # Add Entry' while item 5 is labeled 'Seq #' -- both appear to represent the same LSN sequence number (since the spec states comparison is 'for the same lesion sequence number'), but the differing labels could be read as two different sequence numbers.
+  -> Rename column 8 to something like 'Seq # (Add Entry, same LSN)' or add a note confirming it always equals column 5's value, to avoid the generator interpreting them as independent identifiers.
+
+======================================================================
+4. GENERATED CODE
+======================================================================
+CQL -- Guardrails: passed
+
+SELECT
+  Base.Country AS `Country`,
+  Base.SiteMnemonic AS `Site`,
+  Base.SubjectNumber AS `Subject Number`,
+  Base.FormName AS `Lesion Evaluation Form`,
+  Base.LSN_SEQ AS `Seq
+#`,
+  Base.InitItemName AS `Name of item on Lesion Evaluation Form`,
+  DATE_FORMAT(Base.InitDateRaw, '%d%b%Y') AS `Date`,
+  AddEval.LSN_SEQ_ADD AS `Seq # Add Entry`,
+  Base.EvalItemName AS `Name of item on Lesion Evaluation Form`,
+  DATE_FORMAT(AddEval.EarliestEvalDateRaw, '%d%b%Y') AS `Earliest Date`
+FROM
+(
+SELECT
+    `@HDR`.`Subject`.`ID` AS SubjectID,
+    `@HDR`.`Site`.`Country` AS Country,
+    `@HDR`.`Site`.`Number` AS SiteMnemonic,
+    `@HDR`.`Subject`.`Name` AS SubjectNumber,
+    `@Form`.`Name` AS FormName,
+    LOELFM.LOELSPIDIT AS LSN_SEQ,
+    RAWDATE(LOELFM.LOELTUDTCIT) AS InitDateRaw,
+    'LOELTUDTCIT (Date of Initial Identification - per LSN_supp_doc.csv mapping)' AS InitItemName,
+    'LOELLSDTCLEVIT (Date of Lesion Evaluation - per LSN_supp_doc.csv mapping)' AS EvalItemName
+  FROM `EDC`.`LOELFM` LOELFM
+  WHERE `@Form`.`Status` = 'submitted__v'
+    AND (LOELFM.DELETEDFM = 'N' OR LOELFM.DELETEDFM IS NULL)
+) Base
+INNER JOIN
+(
+  SELECT
+    `@HDR`.`Subject`.`ID` AS SubjectID,
+    LOELFM2.LOELSPIDIT AS LSN_SEQ_ADD,
+    MIN(RAWDATE(LOELFM2.LOELLSDTCLEVIT)) AS EarliestEvalDateRaw
+  FROM `EDC`.`LOELFM` LOELFM2
+  WHERE `@Form`.`Status` = 'submitted__v'
+    AND (LOELFM2.DELETEDFM = 'N' OR LOELFM2.DELETEDFM IS NULL)
+    AND LOELFM2.LOELLSDTCLEVIT IS NOT NULL
+  GROUP BY `@HDR`.`Subject`.`ID`, LOELFM2.LOELSPIDIT
+) AddEval
+  ON Base.SubjectID = AddEval.SubjectID
+  AND Base.LSN_SEQ = AddEval.LSN_SEQ_ADD
+WHERE
+  Base.InitDateRaw <> AddEval.EarliestEvalDateRaw
+  OR (Base.InitDateRaw IS NULL AND AddEval.EarliestEvalDateRaw IS NOT NULL)
+  OR (Base.InitDateRaw IS NOT NULL AND AddEval.EarliestEvalDateRaw IS NULL)
+ORDER BY
+  `Country`, `Site`, `Subject Number`
+
+Explanation:
+Since no LSN_supp_doc.csv mapping data was supplied, I used the Lesion Evaluation Form LOELFM (found in the study metadata) and assumed LOELTUDTCIT represents the "Date of Initial Identification" single-entry item and LOELLSDTCLEVIT represents the repeating "Date of Lesion Evaluation" add-entry item, keyed by lesion sequence LOELSPIDIT -- this is a best-effort mapping and should be confirmed against the actual LSN_supp_doc.csv for this study/form variant via DESCRIBE FORM. The query builds a base derived table of one row per (subject, lesion seq) with the initial-identification date, joins it to a second derived table that computes MIN(RAWDATE(LOELLSDTCLEVIT)) per subject/lesion-seq across all non-deleted add-entry records, and flags/outputs only rows where the two dates differ (Scenario A), treating a NULL-vs-non-NULL pairing as a mismatch too. Deleted records are excluded via LOELFM.DELETEDFM on both sides; runtime prompts (Country/Site/Subject/List/Form/Randomized Only/free-text LSN Form filter) were not implemented since the spec did not give the exact parameter-to-item mappings needed to wire them in without guessing further, and would need to be added as additional WHERE clauses (e.g. Randomized Only via Subject.Name LIKE '%--%') once confirmed.

@@ -1,0 +1,235 @@
+Report ID: RID414
+
+Report Title:
+Missing/Duplicated Treatment Beyond Progression or Missing Oncology Response
+
+Description:
+This report will display subjects who completed Oncologic Response form and subjects continue with treatment but Treatment Beyond Progression information is not provided or subjects that has more than one Treatment Beyond Progression eCRF entry in the same Treatment Phase
+
+Column Heading:
+1. Country
+
+2. Site
+
+3. Subject Number
+
+4. Criteria
+
+5. Oncologic Response eCRF
+
+6. Oncologic Response seq
+
+7. Oncologic Response Date
+
+8. Oncologic Response Scheduled time
+
+9. Treatment Beyond Progression eCRF
+
+10. Treatment Beyond Progression Visit
+
+11. Treatment Beyond Progression Date
+
+12. Treatment Beyond Progression Scheduled time
+
+13. Scenario
+
+Logic:
+Scenario 1:
+
+Logic 1.1:
+
+[RSP eCRF.Overall Response Field = Progressive Disease/irProgressive Disease/iCPD/ ORAJ.Disease Recurrence Indicator = “Yes”
+
+AND
+
+SM/SM02/SM04/SMAU/SMAB.Start Date/Time > RSP eCRF.Date Response Determined]
+
+AND
+
+Logic 1.2
+
+[There is not a Treatment Beyond Progression eCRF.Date of Assessment = RSP eCRF.Date Response Determined
+
+OR
+
+There is not a Treatment Beyond Progression eCRF.Date of Assessment >= RSP eCRF.Date Response Determined AND <= next SM/SM02/SM04/SMAU/SMAB.Start Date/Time]
+
+Note: If Treatment Beyond Progression eCRF has not Scheduled time item, then skip logic 1.3
+
+AND
+
+Logic 1.3
+
+[If Form <> ATBP with Treatment Beyond Progression eCRF.Scheduled Time = RSP eCRF.Scheduled Time ]
+
+AND
+
+Logic 1.4:
+
+[Criteria Form.Criteria Itemquestion = Criteria Value (logic valid only If supporting document provided with Column 1 to 3 different than NA.)]
+
+Scenario 2:
+
+Logic 2.1:
+
+Treatment Beyond Progression eCRF.Date of Assessment <> NULL
+
+AND
+
+Logic 2.2:
+
+There is not an RSP eCRF.Date Response Determined <= Treatment Beyond Progression eCRF.Date of Assessment with RSP eCRF.Overall Response Field = Progressive Disease/irProgressive Disease/iCPD/ORAJ.Disease Recurrence Indicator = “Yes”
+
+AND
+
+Note: If Treatment Beyond Progression eCRF has not Scheduled time item, then skip  logic 2.3.
+
+Logic 2.3:
+
+If Form <> ATBP Treatment Beyond Progression eCRF.Scheduled Time = RSP eCRF.Scheduled Time
+
+AND
+
+Logic 2.4:
+
+Criteria Form.Criteria Itemquestion = Criteria Value (logic valid only If supporting document provided with Column 1 to 3 different than NA.)
+
+Scenario 3:
+
+Logic 3.1:
+
+There is more than one Treatment Beyond Progression eCRF entry in the same Treatment Phase.
+
+Note 1: Optional supporting document named ONC_RSP_004_supp_<xxxxxxx>.csv, that will contain the following columns and associated content: 1 row for each group of the Oncologic Response Item and Related Treatment Beyond Progression eCRF:
+
+1. Criteria form- Unique value in each group, specified as per each protocol and should reflect the appropriate form used to the stratification of the subjects. Specified as ‘NA’ if no criteria form is expected for any subject.
+2. Criteria itemquestion- Unique value in each group, specified as per each protocol and should reflect the cohort or arm that subject was randomized in. Specified as ‘NA’ if cohort or arm not required.
+3. Criteria Value- Unique value in each group, specified as per each protocol and should reflect the study medication assigned for subjects regarding stratification form and cohort or arm. Specified as ‘NA’ if cohort or arm not required.
+4. RSP eCRF: Provide Oncologic Response Form
+5. Overall Response Field: Please provide the Overall Response item for the related RSP (Oncologic Response Form) provided
+6. Related Treatment Beyond Progression eCRF: Treatment Beyond Progression eCRF includes: TBCP, TBIRP, TBPR, TBRP, ATBP,TBRD
+
+e.g. Criteria Form, Criteria Itemquestion, Criteria Value, RSP eCRF, Overall Response Field, Related Treatment Beyond Progression eCRF
+
+SR, Arm, Arm1, ORIR, Overall Response, TBPR/ATBP
+
+SR, Cohort, Cohort A, ORIR, Overall iRRECIST Response, TBCP/ATBP
+
+The number of rows in the supporting document will be represented in the Report Header as "# of rows for customization". The actual information provided by the supporting doc can be outputted by selecting Y in the parameter "Supporting doc Page".
+
+Required supporting document should be named as study_phase_supp_</Vxxxxxxx>.csv and will contain the following columns and associated content:
+
+One row for each Treatment Phase:
+
+1. Phase Order: the order on which phases will appear on protocol
+
+2. Treatment Phase: this information can be taken from PMS1/PMS1A/OEDRA Trial Segment Reference
+
+3. First Visitmnemonic of Treatment Phase: the first visit on which treatment is expected to be administered on each phase.
+
+e.g.
+
+Phase Order,Treatment Phase,First Visitmnemonic of Treatment Phase
+
+1,Initial Treatment Phase,Cycle 1
+
+2,Second Course Phase,Cycle 1 Course 2
+
+3,Crossover Phase,Crossover Cycle 1
+
+The actual information provided by the supporting doc can be outputted by selecting Y in the parameter "Study Phase Page".
+
+The supporting document is required for all trials if treatment phase is applied to logic even if only one treatment phase is present.
+
+This supporting document is only required to be created once per trial. If it was already created and uploaded, there is no need to duplicate it.
+
+Note 2: For Scenario 1 and Scenario 2: If supporting document is provided, report should consider appropriate Overall Response Field and Related Treatment Beyond Progression eCRF in combination.
+
+Note 3: For Scenario 1: If supporting document is not provided, report should consider as follows:
+
+for the first appearance of record with RSP eCRF. OVERALL RESPONSE / RSP eCRF.OVERALL IRECIST RESPONSE/ RSP eCRF.OVERALL IRRECIST RESPONSE    = Progressive Disease /ORAJ.Disease Recurrence Indicator = “Yes” should look for a TBPR/TBRP/ATBP entry and for subsequent records with RSP eCRF. OVERALL RESPONSE / RSP eCRF.OVERALL IRECIST RESPONSE/ RSP eCRF.OVERALL IRRECIST RESPONSE   = Progressive Disease/irProgressive Disease/iCPD/ORAJ.Disease Recurrence Indicator = “Yes”  entries should look for a TBRD/TBCP/TBIRP/ATBP entry.
+
+If supporting document is not provided for studies with Oncologic Response forms with 2 sections, both Overall Response Fields should be considered interchangeably.
+
+For Scenario 2: If supporting document is not provided, report should be working as per logic 2 (no additional considerations are needed).
+
+Note 4: if Treatment Beyond Progression eCRF.Scheduled Time = Other, specify; always show output.
+
+Note 5: Initial Treatment Phase: Cycle 1 <= Form.Date < Second Course Cycle 1
+
+Second Course Phase: Second Course Cycle 1 <= Form.Date
+
+Form.Date includes:, 'RSP eCRF'.'DATE RESPONSE DETERMINED', SM. Start Date/Time, Treatment beyond form.Date of Assessment
+
+Note 6: Deleted records should not be considered in the programming.
+
+Note 7: If Scenario 3 is met but one of the Treatment Beyond Progression eCRF.Date of Assessment = blank, do not show output.
+
+Note 8: If there is at least one SM entry after PD, there should be an output.
+
+Note 9: RSP.Date Response Determined  and Treatment Beyond Progression eCRF.Date of Assessment should be compared with the DOV of the First Visit of Treatment Phase prompt in supporting document to identify the corresponding treatment phase"
+
+Note 10: Treatment Beyond Progression eCRF includes: [TBCP, TBIRP, TBPR, TBRP, ATBP,TBRD]
+
+Note 11: The items: RSP eCRF.OVERALL RESPONSE, RSP eCRF.OVERALL IRECIST RESPONSE, RSP eCRF.OVERALL IRRECIST RESPONSE, RSP eCRF.Date Response Determined, RSP eCRF.Scheduled Time, RSP eCRF. Sponsor ID Number
+ should be used from the items in the ‘itemquestion’ column in the master global supporting document RSP_supp_doc.csv
+
+Note 12: For Logic1, SM DATE in logic1.1 and next SM DATE in logic1.2 refering to the same date.
+
+Report Scenarios:
+1A - YES Supporting document is not provided and There is a first Overall Response = Progressive Disease in the Oncologic Response eCRF selected and subject continued with treatment, but there is not a Treatment Beyond Progression eCRF = TBRP or TBPR or ATPB completed for the same date with the same Scheduled time. Or with a date after the progression but before the next SM dose is administered.
+
+1B - NO Supporting document is not provided and There is a first Overall Response = Progressive Disease in the Oncologic Response eCRF, subject continued with treatment and there is a Treatment Beyond Progression eCRF = TBRP or TBPR or ATBP completed for the same date of Progression with the same Scheduled time.  Or with a date after the progression but before the next SM dose is administered.
+
+1C - YES Supporting document is not provided and There is a subsequent Overall Response = Progressive Disease in the Oncologic Response eCRF selected and subject continued with treatment, but there is not a Treatment Beyond Progression eCRF = TBCP or TBIRP or ATBP completed for the same date with the same Scheduled time. Or with a date after the progression but before the next SM dose is administered.
+
+1D - NO Supporting document is not provided and There is a first Overall Response = Progressive Disease in the Oncologic Response eCRF, subject continued with treatment and there is a Treatment Beyond Progression eCRF = TBCP or TBIRP or ATBP completed for the same date of Progression with the same Scheduled time. Or with a date after the progression but before the next SM dose is administered.
+
+1E - YES Supporting document is provided and There is a Overall Response = Progressive Disease/irProgressive Disease/iCPD/ORAJ.Disease Recurrence Indicator = “Yes” as per supporting document in the Oncologic Response eCRF selected and subject continued with treatment, but there is not a Treatment Beyond Progression eCRF as per supporting document completed for the same date with the same Scheduled time. Or with a date after the progression but before the next SM dose is administered.
+
+1F - NO Supporting document is provided and There is a Overall Response = Progressive Disease/irProgressive Disease/iCPD/ORAJ.Disease Recurrence Indicator = “Yes” as per supporting document in the Oncologic Response eCRF selected and subject continued with treatment, and there is a Treatment Beyond Progression eCRF as per supporting document completed for the same date with the same Scheduled time.  Or with a date after the progression but before the next SM dose is administered.
+
+2A - YES Supporting document is not provided and Treatment Beyond Progression eCRF is completed but there is not an Overall Response = Progressive Disease in the Oncologic Response eCRF for the same date or prior of Treatment Beyond Progression eCRF with the same Scheduled time.
+
+2B - NO Supporting document is not provided and Treatment Beyond Progression eCRF is completed and there is an Overall Response = Progressive Disease in the Oncologic Response eCRF for the same date or prior of Treatment Beyond Progression eCRF with the same Scheduled time.
+
+2C - YES Supporting document is provided and Treatment Beyond Progression eCRF as per supporting document is completed but there is not an Overall Response = Progressive Disease in the Oncologic Response eCRF as per supporting document for the same date or prior of Treatment Beyond Progression eCRF with the same Scheduled time.
+
+2D - NO Supporting document is provided and Treatment Beyond Progression eCRF as per supporting document is completed and there is an Overall Response = Progressive Disease in the Oncologic Response eCRF as per supporting document for the same date or prior of Treatment Beyond Progression eCRF with the same Scheduled time.
+
+3A - YES There is more than one Treatment Beyond Progression eCRF entry in the same Treatment Phase.
+
+3B - NO There is only one Treatment Beyond Progression eCRF entry in the same Treatment Phase.
+
+Sorting:
+Country, Site, Subject Number
+
+Parameter Selection:
+Country, First Site, Last Site, First Subject, Last Subject, List of Subjects, Supporting Doc Page (N/Y, Default as N), Scheduled  visit not required (NO/YES, default  as NO), Scenario 1 (Y/N, set default as Y), Scenario 2 (Y/N, set default as Y), Scenario 3 (Y/N, set default as Y)
+
+Form.Item Names:
+1. SA.Country
+
+2. SA.Site
+
+3. SA.Subject number
+
+4. Display Criteria form.Criteria itemquestion provided in Supporting Document. If Not provided display as “NA”.
+
+5. Display RSP eCRF selected
+
+6. RSP eCRF. Sponsor ID Number per Master RSP_supp_doc.csv
+
+7. RSP eCRF.Date Response Determined/Date of Procedure for Overall Response (Scan/Image/Physical Exam) per Master RSP_supp_doc.csv
+
+8. RSP eCRF.Scheduled Time per Master RSP_supp_doc.csv
+
+9. Display Treatment Beyond Progression eCRF selected
+
+10. Treatment Beyond Progression eCRF.Visit Mnemonic
+
+11. Treatment Beyond Progression eCRF.Date of Assessment
+
+12. Treatment Beyond Progression eCRF.Scheduled time
+
+13. Display “1”, “2” or “3” depending on the Scenario that is met"

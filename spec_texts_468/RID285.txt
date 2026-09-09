@@ -1,0 +1,225 @@
+Report ID: RID285
+
+Report Title:
+Inconsistent Next Trial Segment Status and End of Follow Up and disease assessment information
+
+Description:
+This report will list subjects who have inconsistent data  in PMS1/PMST/OEFU/OEDRA
+
+Column Heading:
+1.Country
+
+2. Site
+
+3. Subject Number
+
+4. PMS Form
+
+5. PMS Status
+
+6. OEDRA Visit
+
+7. OEDRA Status
+
+8. OEFU Status
+
+9. Scenario
+
+Logic:
+LOGIC SCENARIO 1
+
+OEDRA. Status of Subject at End of This Trial Segment <> blank AND
+
+OEFU. Select the Status of the Subject for the Next Trial Segment <> (CONTINUING INTO SURVIVAL FOLLOW-UP PHASE, NOT CONTINUING INTO ANY TRIAL PHASE) an option selected in a column #3 in the supporting document.
+
+OR
+
+OEDRA. Status of Subject at End of This Trial Segment <> blank
+
+AND
+
+DOV.Visit = column #4 in the supporting document AND DOV.Date of Visit <> blank
+
+AND
+
+OEFU is not initilialized
+
+LOGIC SCENARIO 2
+
+OEDRA. Status of Subject at End of This Trial Segment <> blank AND
+
+(OEFU. Select the Status of the Subject for the Next Trial Segment = BLANK OR OEFU is not initialized) AND
+
+DEATH. Date/Time of Death = blank AND
+
+PMS1/PMST. Select the Status of the Subject for the Next Trial Segment <> (CONTINUING INTO SURVIVAL FOLLOW-UP PHASE, NOT CONTINUING INTO ANY TRIAL PHASE) an option selected in a column #3 in the supporting document.
+
+Note 1: Erroneous visit should be excluded.
+
+Note 2: There Death should be checked across all treatment phases.
+
+Note 3: The report logic should be checked within the same treatment phase defined in the supporting document.
+
+For example, if user provides two Treatment Phases in supporting document like below:
+
+Phase Order, Treatment phase, First Visitmnemonic of Treatment Phase
+
+1, Initial Treatment Phase,Cycle 1
+
+2,Second Course Phase,Second Course Cycle 1
+
+The treatment phase will be identified as following:
+
+Initial Treatment Phase: Cycle 1 <= Form.Date < Second Course Cycle 1
+
+Second Course Phase: Second Course Cycle 1 <= Form.Date
+
+Form.Date include: [OEFU, PMS1]. Date of assessment
+
+Note4: If supporting doc is not provided, display the message as “ONC_FU_003_JR_STD Supporting Document Not Present for This Trial”. (Used for other reports when the supporting doc is required)
+
+Requires supporting document to be named ONC_FU_003_supp_<xxxxxxx>.csv that contains the following columns:
+
+1 row for each Treatment Phase and its equivalent First Visitmnemonic.
+
+1) Treatment Phase Order – enter a number, the order on which phases will appear on protocol
+
+2) Form name – enter "OEFU" or "PMS1"or PMST
+
+3) Status of the Subject for the Next Trial Segment – enter "Continuing into Survival Follow-up Phase" or "Not Continuing into Any Trial Phase"
+
+4) Follow Up Visit Mnemonic - For scenario 1, enter the visit mnemonic from the T&E where OEFU can be triggered. For scenario 2, please complete as NA
+
+Example:
+
+Treatment Phase Order, Form name, Status of the Subject for the Next Trial Segment, Follow Up Visit Mnemonic
+
+1, OEFU, Continuing into Survival Follow-up Phase, Follow-up Day 30
+
+2, OEFU, Not Continuing into Any Trial Phase, Follow-up Day 30
+
+1, OEFU, Continuing into Survival Follow-up Phase, Efficacy Follow-up
+
+2, OEFU, Not Continuing into Any Trial Phase, Efficacy Follow-up
+
+1, PMS1, Continuing into Survival Follow-up Phase, NA
+
+2, PMS1, Not Continuing into Any Trial Phase, NA
+
+The number of rows in the supporting document will be represented in the Report Header as "# of rows for Supporting doc".
+
+The actual information provided by the supporting doc can be outputted by selecting Y in the parameter "Supporting doc Page".
+
+Required supporting document should be named as study_phase_supp_<xxxxxxx>.csv and will contain the following columns and associated content:
+
+One row for each Treatment Phase
+
+1. Phase Order: the order on which phases will appear on protocol
+
+2. Treatment Phase: this information can be taken from PMS1/PMS1A/OEDRA Trial Segment Reference
+
+3. First Visitmnemonic of Treatment Phase: the first visit on which treatment is expected to be administered on each phase.
+
+e.g.
+
+1, Initial Treatment Phase, Cycle 1
+
+2, Second Course Phase, Cycle 1 Course 2
+
+3, Crossover Phase, Crossover Cycle 1
+
+The actual information provided by the supporting doc can be outputted by selecting Y in the parameter "Study Phase Page".
+
+Report Scenarios:
+Scenario 1: OEDRA is completed but Status of the Subject for the Next Trial Segment in OEFU is not Continuing into Survival Follow up/Not continuing into any trial phase.
+
+Scenario 2: OEDRA is completed, OEFU and DEATH form are not initialized but Status of the Subject for the Next Trial Segment in PMS1/PMST is not Continuing into Survival Follow up/Not continuing into any trial phase.
+
+Scenario 1: Output: YES
+
+-the same trial segment
+
+-OEDRA is completed and OEFU is initialized,
+
+- “Select The Status of The Subject for the Next Trail Segment” on OEFU is not an option selected in column #3 in the supporting document.
+
+Scenario 1: Output: YES
+
+-the same trial segment
+
+-OEDRA is completed and OEFU is missing and Safety Follow Up/ Efficacy Follow Up is completed.
+
+Scenario 1: Output: NO
+
+-the same trial segment
+
+-OEDRA is completed
+
+-“Select The Status of The Subject for the Next Trail Segment” selected on corresponding OEFU is one of options present in a column #3 in the supporting document.
+
+Scenario 2: Output: YES
+
+-the same trial segment
+
+-OEDRA is completed
+
+-DEATH and OEFU are not initialized
+
+- “Select The Status of The Subject for the Next Trail Segment” selected on PMS1/PMST is not any of options present in a column #3 in the supporting document.
+
+Scenario 2: Output: NO
+
+-the same trial segment
+
+-OEDRA is completed
+
+- “Select The Status of The Subject for the Next Trail Segment” selected on PMS1/PMST is one of options present in a column #3 in the supporting document.
+
+Scenario 2: Output: NO
+
+-the same trial segment
+
+- OEDRA is completed
+
+- DEATH is initialized
+
+- “Select The Status of The Subject for the Next Trail Segment” selected on PMS1/PMST is not any of options present in a column #3 in the supporting document.
+
+Scenario 2: Output: NO
+
+-the same trial segment
+
+-OEDRA is completed
+
+-“Select The Status of The Subject for the Next Trail Segment” selected on PMS1/PMST is not any of options present in a column #3 in the supporting document
+
+-OEFU is completed
+
+Scenario 1 and 2: Output: NO
+
+-OEDRA is not completed
+
+Sorting:
+1. Country 2. Site 3. Subject number
+
+Parameter Selection:
+Country, First Site, Last Site, First Subject, Last Subject, List of Subjects, Randomized Only, Supporting Doc Page (N/Y, Default as N), Study Phase Page (N/Y, Default as N)
+
+Form.Item Names:
+1. SA Form. Site Country
+
+2. SA Form. Site Mnemonic
+
+3. SA Form. Subject Number
+
+4. PMS Form. Formmnemonic
+
+5. PMS1/PMST Form. Select the Status of the Subject for the Next Trial Segment
+
+6. OEDRA Form. Visit Mnemonic for OEDRA
+
+7. OEDRA Form. Status of Subject at End of This Trial Segment
+
+8. OEFU Form. Select the Status of the Subject for the Next Trial Segment
+
+9. 'Scenario 1' for Logic 1 and 'Scenario 2' for Logic 2

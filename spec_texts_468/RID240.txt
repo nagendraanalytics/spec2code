@@ -1,0 +1,157 @@
+Report ID: RID240
+
+Report Title:
+Reconciliation between AE and  DS01 information related to Malignant Neoplasm Progression terms
+
+Description:
+This report will provide output based on “The subject discontinued study participation due to this event = yes” if applicable, Adverse events reported as “Malignant Neoplasm Progression" and toxicity grade in AE form but the corresponding DS01 option is not selected.
+
+Column Heading:
+1. Country
+
+2. Site
+
+3. Subject Number
+
+4. AE Seq
+
+5. AE Term
+
+6. AE LLT
+
+7. AE End Date
+
+8. Discontinue due to this AE
+
+9. Overall Toxicity
+
+10. Outcome of AE
+
+11. DS01 Status of the Subject
+
+12. Date of Disposition
+
+13. Error Message
+
+Logic:
+Requires supporting document to be named ONC_AE_004_supp_<xxxxxxx>.csv and will contain the following columns and associated content:
+
+1 row for each Scenario and expected Reason subject discontinued from protocol in DS01
+
+1. Scenario
+
+2. Reason subject discontinued from protocol
+
+If all available options in Reason subject discontinued from protocol are applicable for any scenario, please enter ‘NA’ in column #2.
+
+If any scenario is not applicable for the study, please do not include it in the supporting doc.
+
+e.g.
+
+Scenario    Discontinued Reason
+
+Scenario 1   Adverse Event
+
+Scenario 2    Death
+
+Sceanrio 2    Lost to Follow-Up
+
+Scenario 2    Withdrawal by subject
+
+Scenario 3    NA
+
+Sceanario 4    Adverse Event
+
+Sceanario 5    Death
+
+Sceanario 5    Adverse Event
+
+The number of rows in the supporting document will be represented in the Report Header as "# of rows for Supporting doc".
+
+The actual information provided by the supporting doc can be outputted by selecting Y in the parameter "Supporting doc Page".
+
+Logic 1: AE.LLT <> Malignant Neoplasm Progression AND AE.The subject discontinued study participation due to this event is checked AND DS01.Select the Status of the Subject for the Study <> Options provided in supporting doc for Scenario 1 OR AE. Outcome of AE <> Fatal
+
+Logic 2: AE.LLT = Malignant Neoplasm Progression AND AE.The subject discontinued study participation due to this event is checked AND DS01.Select the Status of the Subject for the Study <> Options provided in supporting doc for Scenario 2 OR AE. Outcome of AE <> Fatal
+
+Logic 3: AE.The subject discontinued study participation due to this event is checked AND AE.End Date and Time < DS01.Date of Disposition
+
+Logic 4: If AE.LLT <> Malignant Neoplasm Progression AND AE. Overall Toxicity = 5 AND DS01.Select the Status of the Subject for the Study <> Options provided in supporting doc for Scenario 4
+
+Logic 5: If AE.LLT = Malignant Neoplasm Progression AND AE. Overall Toxicity = 5 AND DS01.Select the Status of the Subject for the Study <> Options provided in supporting doc for Scenario 5
+
+Logic 6: If AE.LLT = Malignant Neoplasm Progression AND AE. Overall Toxicity = 5 AND AE.End Date and Time < DS01.Date of Disposition
+
+Note:
+
+1. Do not consider deleted records.
+
+2. Include only the scenarios provided in supporting doc (Logic 1 – Scenario 1, Logic 2 – Scenario 2, Logic 3 – Scenario 3, Logic 4 – Scenario 4, Logic 5 – Scenario 5, Logic 6 – Scenario 6). If any of these scenarios is not listed in the supporting doc, the corresponding logic should not be included.
+
+Report Scenarios:
+A - Yes If AE.LLT <> Malignant Neoplasm Progression AND AE.The subject discontinued study participation due to this event is checked AND DS01.Select the Status of the Subject for the Study <> Options provided in supporting doc for Scenario 1
+
+B - Yes If AE.LLT <> Malignant Neoplasm Progression AND AE.The subject discontinued study participation due to this event is checked AND AE outcome <> Fatal.
+
+C - No If AE.LLT <> Malignant Neoplasm Progression AND AE.The subject discontinued study participation due to this event is checked AND DS01.Select the Status of the Subject for the Study = Options provided in supporting doc for Scenario 1
+
+D - No If AE.LLT <> Malignant Neoplasm Progression AND AE.The subject discontinued study participation due to this event is checked AND AE outcome = Fatal.
+
+E - Yes If AE.LLT = Malignant Neoplasm Progression AND AE.The subject discontinued study participation due to this event is checked AND DS01.Select the Status of the Subject for the Study <> Options provided in supporting doc for Scenario 2
+
+F - Yes If AE.LLT = Malignant Neoplasm Progression AND AE.The subject discontinued study participation due to this event is checked AND AE outcome <> Fatal.
+
+J - No If AE.LLT = Malignant Neoplasm Progression AND AE.The subject discontinued study participation due to this event is checked AND DS01.Select the Status of the Subject for the Study = Options provided in supporting doc for Scenario 2
+
+K - No If AE.LLT = Malignant Neoplasm Progression AND AE.The subject discontinued study participation due to this event is checked AND AE outcome = Fatal.
+
+L - Yes If AE.The subject discontinued study participation due to this event is checked AND AE.End Date and Time < DS01.Date of Disposition.
+
+M - No If AE.The subject discontinued study participation due to this event is checked AND AE.End Date and Time > OR = DS01.Date of Disposition.
+
+N - Yes If AE.LLT <> Malignant Neoplasm Progression AND AE. Overall Toxicity = 5 AND DS01.Select the Status of the Subject for the Study <> Options provided in supporting doc for Scenario 4
+
+O – No If AE.LLT <> Malignant Neoplasm Progression AND AE. Overall Toxicity = 5 AND DS01.Select the Status of the Subject for the Study = Options provided in supporting doc for Scenario 4
+
+P - Yes If AE.LLT = Malignant Neoplasm Progression AND AE. Overall Toxicity = 5 AND DS01.Select the Status of the Subject for the Study <> Options provided in supporting doc for Scenario 5
+
+Q - No If AE.LLT = Malignant Neoplasm Progression AND AE. Overall Toxicity = 5 AND DS01.Select the Status of the Subject for the Study = Options provided in supporting doc for Scenario 5
+
+R – Yes If AE.LLT = Malignant Neoplasm Progression AND AE. Overall Toxicity = 5 AND AE.End Date and Time < DS01.Date of Disposition
+
+S – No If AE.LLT = Malignant Neoplasm Progression AND AE. Overall Toxicity = 5 AND AE.End Date and Time > OR = DS01.Date of Disposition
+
+T - No If The records are deleted
+
+Sorting:
+Country, Site Number, Subject Number
+
+Parameter Selection:
+Country, First Site, Last Site, Randomized only, First Subject, Last Subject, List of Subjects, Supporting Doc Page (N/Y, Default as N)
+
+Form.Item Names:
+1. SA.Country
+
+2. SA.Site Mnemonic
+
+3. SA.Subject Number
+
+4. AE.Sequence Number
+
+5. AE.AE Term (For lab AE use the term increased or decreased)
+
+6. AE.LLT
+
+7. AE.End Date and Time
+
+8. AE.The subject discontinued study participation due to this event (Blank for scenario #5 and #6); Do not display item #8 if ‘The subject discontinued study participation due to this event’ does not exist in the trial
+
+9. AE. Overall Toxicity (Blank for scenarios #1-3)
+
+10. AE. Outcome of AE (Blank for scenarios #3-#6)
+
+11. DS01.Select the Status of the Subject for the Study
+
+12. DS01.Date of Disposition
+
+13. Error Message. If Logic 1 is meet, display "Scenario 1". If Logic 2 is meet, display "Scenario 2". If Logic 3 is meet, display "Scenario 3". If Logic 4 is meet, display "Scenario 4". If Logic 5 is meet, display "Scenario 5". If Logic 6 is meet, display "Scenario 6"

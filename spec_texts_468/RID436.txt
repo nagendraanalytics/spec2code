@@ -1,0 +1,149 @@
+Report ID: RID436
+
+Report Title:
+Reconciliation of the 'Reason for Dose Variation of Study Medication' records vs Reduced or Interrupted Actions Taken with Lenvatinib/Placebo
+
+Description:
+Output is produced when zero-dose record with reason for dose variation of Adverse Event or Toxicity was entered in SM form and there is no corresponding AE record with Action taken of Interrupted or Reduced.
+
+Column Heading:
+COLUMN HEADINGS:
+
+1. Country
+
+2. Site
+
+3. Subject Number
+
+4. SM Seq
+
+5. SM Start Date/Time
+
+6. AE Seq
+
+7. AE Term
+
+8. AE Onset Date
+
+9. AE End Date
+
+10. Scenario
+
+Logic:
+Logic 1:
+
+Output=YES
+
+Error message=Scenario 1
+
+Dose Amount = 0
+
+AND
+
+SM eCRF with Reason for Dose Variation = ‘Adverse Event’ or ‘Toxicity’
+
+AND
+
+there is no AE with Action taken with Lenvatinib/Placebo = ‘Interrupted’ when SM Start Date is from AE Start Date to AE end date (inclusive)
+
+Note: The Dose Amount = 0 record needs to be the last one in chronological order for that medication. OR there should not be higher entries after that.
+
+Logic 2
+
+Output=YES
+
+Error message=Scenario 2
+
+AE with Action taken with Lenvatinib/Placebo = ‘Reduced’
+
+AND
+
+There is no SM with Reason for Dose Variation = ‘Adverse Event’ or ‘Toxicity’ and SM Start Date is from AE Start Date to AE end date (inclusive)
+
+AND
+
+SM Dose Amount = one level less per supporting document allowed dosage. (ej. 20 mg to 14 mg)
+
+Note:
+
+1.	Please consider occurrence of dose reduction when the dosage item changes from one level to the next per supporting document. (e.g., from 20 to 14 mg)- Please do not consider zero-dose records as dose reduction.
+
+2.	Please do not consider deleted records in the programming.
+
+3.	Please display date in DD-MMM-YYYY format (e.g 01-Jan-2018).
+
+4.	 If AE End Date is ongoing, please display 'Ongoing'
+
+5.	Output should only be present for SM dates which are between AE dates for scenario 2. If no SM is within those dates, column 4 and 5 should be blank.
+
+6.	Requires supporting document to be named ONC_SM_008_supp_<xxxxxxx>.csv and will contain the following columns and associated content:
+
+1)	SM Form
+
+2)	Study Medication
+
+3)	SM Dosage: Provide item in eCRF including information for protocol dose amount
+
+4)	Protocol Expected dose Amount: List expected dose amount as per protocol guidelines
+
+5) 	Action Taken with Lenvatinib/Placebo or Action Taken with Lenvatinib
+
+e.g:
+
+SM Form,Study Medication,SM Dosage,Protocol Expected Dose Amount, AE Action taken
+
+SM,Lenvatinib,Dose Amount,20, Action taken with Lenvatinib
+
+SM,Lenvatinib,Dose Amount,14, Action taken with Lenvatinib
+
+SM,Lenvatinib,Dose Amount,10, Action taken with Lenvatinib
+
+SM,Lenvatinib,Dose Amount,8, Action taken with Lenvatinib
+
+SM,Lenvatinib,Dose Amount,4, Action taken with Lenvatinib
+
+Report Scenarios:
+Scenario 1. YES
+
+SM record of Lenvatinib/Placebo is entered with dose amount as zero dose and Reason for Dose Variation is Adverse Event or Toxicity but there is no AE entry with Action Taken with Lenvatinib/Placebo as Interrupted and this is the last dose in chronological order for that medication or there are no higher doses after the entry.
+
+Scenario 2. YES
+
+There is as AE with Action Taken with Lenvatinib/Placebo as Reduced and there is no reduced SM entry on SM form with Dose Amount one level less than in supporting document (e.g. from 20mg to 14mg) with Reason for Dose Variation as Adverse Event or Toxicity from the previous chronological entry.
+
+Scenario 3. NO
+
+SM record of Lenvatinib/Placebo is entered with dose amount as zero dose and Reason for Dose Variation is Adverse Event or Toxicity and there is AE entry with Action Taken with Lenvatinib as Interrupted and this is the last dose in chronological order for that medication or there is no higher doses after the entry.
+
+Scenario 4. NO
+
+There is as AE with Action Taken with Lenvatinib/Placebo as Reduced and there is reduced SM entry on SM form with Dose Amount one level less than in supporting document (e.g. from 20mg to 14mg) with Reason for Dose Variation as Adverse Event or Toxicity from the previous chronological entry
+
+Sorting:
+Country, Site, Subject Number, SM Seq, AE seq, Scenario
+
+Parameter Selection:
+Country(ies), Site(s), Subject(s), Randomized Only, List of Subjects
+
+Form.Item Names:
+FORMS.ITEMS:
+
+ 1. SA.Site Country
+
+2. SA.Site Mnemonic
+
+3. SA.Subject Number
+
+4. SM.Sequence
+
+5. SM.Start Date and Time
+
+6. AE.Sequence
+
+7. AE.AE Term (For lab AE use the term increased or decreased)
+
+8. AE.Onset Date and Time (Lab collection date if lab AE)
+
+9. AE.End Date and Time
+
+10. Scenario 1 OR Scenario 2

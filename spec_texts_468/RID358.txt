@@ -1,0 +1,121 @@
+Report ID: RID358
+
+Report Title:
+Incorrect  Sponsor ID Number
+
+Description:
+This report will list subjects that have prior treatment on the OPTS and the subject status is Relapsed, Refractory or Relapsed/Refractory and the associated sponsor ID from the ODB form does not contain the prior treatment indicated on the OPTS.
+
+Column Heading:
+1. Country
+
+2. Site
+
+3. Subject Number
+
+4. OPTS Visit
+
+5. OPTS Seq
+
+6. Prior Treatment Name
+
+7. Subject Status in Regards to the Above Treatment
+
+8. Associated Sponsor ID Number from ODB Form (1)
+
+9.Associated Sponsor ID Number from ODB Form (2)
+
+Logic:
+Output if OPTS record, which with:
+
+Logic1: ‘Prior Treatment Name’ is not null AND
+
+Logic2: ‘Subject Status in Regards to the Above Treatment’=Relapsed OR Refractory OR Relapsed/Refractory
+
+can’t find a ODB/ ODBFH/ODBFHN record satisfy below conditions:
+
+Logic3: ODB/ ODBFH/ODBFHN form, Regimen Entry part, item ‘Associated Sponsor ID Number’ =above OPTS record, item ‘Associated Sponsor ID Number from ODB Form’
+
+AND
+
+Logic4: ODB/ ODBFH/ODBFHN form, dictionary terms (user need to provide per study) = above OPTS record, ‘Prior Treatment Name’
+
+Note:
+
+1. Do not include deleted data/erroneous visit into programming.
+
+2. Item 'Associated Sponsor ID Number from ODB Form' of OPTS form have two text boxs, consider them as separate OPTS record, then find if have required ODB/ ODBFH/ODBFHN record.
+
+Requires supporting document to be named ONC_OPTS_001 _supp_<xxxxxxx>.csv and will contain the following columns and associated content:
+
+1) term_cd - sequence  number should be unique for each  odb_term.
+
+2) odb_term- dictionary terms of ODB/ODBH/ODBHN that should be check against each ‘Prior Treatment Name’
+
+3) odb_value- OPTS Prior Treatment Name
+
+e.g.
+
+term_cd,odb_term,odb_value
+
+1,Oncologic Drug or Biologic Name,Brentuximab Vedotin
+
+1,Oncologic Drug or Biologic Name,Bortezomib
+
+3,Encoded Oncologic Drug or Biologic,Lenalidomide
+
+4,Broader Term,Rituximab
+
+Report Scenarios:
+Output if OPTS record, which with:
+
+Logic1: ‘Prior Treatment Name’ is not null AND
+
+Logic2: ‘Subject Status in Regards to the Above Treatment’=Relapsed OR Refractory OR Relapsed/Refractory
+
+can’t find a ODB/ ODBFH/ODBFHN record satisfy below conditions:
+
+Logic3: ODB/ ODBFH/ODBFHN form, Regimen Entry part, item ‘Associated Sponsor ID Number’ =above OPTS record, item ‘Associated Sponsor ID Number from ODB Form’
+
+AND
+
+Logic4: ODB/ ODBFH/ODBFHN form, dictionary terms (user need to provide per study) = above OPTS record, ‘Prior Treatment Name’
+
+Note:
+
+1. Do not include deleted data/erroneous visit into programming.
+
+2. Item 'Associated Sponsor ID Number from ODB Form' of OPTS form have two text boxs, consider them as separate OPTS record, then find if have required ODB/ ODBFH/ODBFHN record.
+
+Sorting:
+Country,
+
+Site,
+
+Subject Number,
+
+OPTS Visit,
+
+OPTS Seq,
+
+Parameter Selection:
+Country, Site, Subject Number, List of Subjects, Randomized only,
+
+Form.Item Names:
+1. Subject Assignment.Site Country
+
+2. Subject Assignment.Site Mnemonic
+
+3. Subjects.Subject Number
+
+4. OPTS. Visit Mnemonic
+
+5. OPTS. Formidx.
+
+6. OPTS. Prior Treatment Name
+
+7. OPTS. Subject Status in Regards to the Above Treatment
+
+8.OPTS. Associated Sponsor ID Number from ODB Form (first box)
+
+9.OPTS. Associated Sponsor ID Number from ODB Form (second box)

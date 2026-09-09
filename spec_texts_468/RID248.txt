@@ -1,0 +1,187 @@
+Report ID: RID248
+
+Report Title:
+Brain metastases history/assessment reconciliation
+
+Description:
+This report lists the subjects that present inconsistencies between BMH/BMA and Disease Details forms.
+
+Column Heading:
+1.Country
+
+2.Site
+
+3.Subject Number
+
+4.Disease Details Form
+
+5.Metastases Location
+
+6.Brain Metastases?
+
+7.History of Brain Metastases?
+
+8.Current diagnosis of Brain Metastases?
+
+Logic:
+LOGIC 1
+
+(
+
+Logic 1.1
+
+Location of metastases from ITEM QUESTION LOCATION in the HISTORICAL DISEASE DETAIL FORM provided by supporting document = “Brain”
+
+AND
+
+Logic 1.2
+
+ITEM QUESTION BRAIN METASTASIS HISTORICAL INFORMATION provided by supporting document = NO OR  NULL.
+
+)
+
+OR
+
+(
+
+Logic 1.3
+
+Location of metastases from ITEM QUESTION LOCATION in the CURRENT DISEASE DETAIL FORM  provided by supporting document = “Brain”
+
+AND
+
+Logic 1.4
+
+ITEM QUESTION BRAIN METASTASIS CURRENT DIAGNOSIS INFORMATION provided by supporting document = NO OR NULL.
+
+)
+
+OR
+
+LOGIC 2
+
+(
+
+Logic 2.1
+
+ITEM QUESTION BRAIN METASTASIS HISTORICAL INFORMATION provided by supporting document = YES
+
+AND
+
+Logic 2.2
+
+There is no record for Location of metastases from ITEM QUESTION LOCATION in the HISTORICAL DISEASE DETAIL FORM provided by supporting document = “Brain”
+
+)
+
+OR
+
+(
+
+Logic 2.3
+
+ITEM QUESTION BRAIN METASTASIS CURRENT DIAGNOSIS INFORMATION provided by supporting document = YES
+
+AND
+
+Logic 2.4
+
+There is no record for Location of metastases from ITEM QUESTION LOCATION in the CURRENT DISEASE DETAIL FORM provided by supporting document = “Brain”
+
+)
+
+Notes:
+
+1.	For locations entered in free text items (including but not limited to: Other Metastases Location / Other Location of Metastases at Diagnosis / Location of Metastases) on Disease Details forms provided in the supporting doc equals (=) to Brain, no case sensitive for this comparison.
+
+2.	 If supporting doc is not provided, display the message as "ONC_BMH_001_JR_STD Supporting Document Not Present for This Trial".
+
+3.	For column Heading 6, display only if NA entered in both “ITEM QUESTION BRAIN METASTASES HISTORICAL INFORMATION” and “ITEM QUESTION BRAIN METASTASES CURRENT DIAGNOSIS INFORMATION” in the supporting document, otherwise display as blank
+
+4.	For column Heading 7, display only when ITEM QUESTION BRAIN METASTASES HISTORICAL INFORMATION in the supporting document is completed <>NA ; otherwise display as blank.
+
+5.	For column Heading 8, display only when ITEM QUESTION BRAIN METASTASES CURRENT DIAGNOSIS INFORMATION in the supporting document is completed <>NA ; otherwise display as blank.
+
+6.	Match the supporting document information as follows:
+
+a) HISTORICAL DISEASE DETAIL FORM with ITEM QUESTION BRAIN METASTASIS HISTORICAL INFORMATION.
+
+b) CURRENT DISEASE DETAIL FORM with ITEM QUESTION BRAIN METASTASIS CURRENT DIAGNOSIS INFORMATION.
+
+c) If NA in both ITEM QUESTION BRAIN METASTASIS HISTORICAL INFORMATION and ITEM QUESTION BRAIN METASTASIS CURRENT DIAGNOSIS INFORMATION (Columns E and F in supp doc), match with any of the Disease details forms (from columns B and C in the supp doc)
+
+7.	Requires supporting document to be named ONC_BMH_001_supp_<xxxxxxx>.csv and will contain the following columns and associated content:
+
+1 row for each group of BMH Brain Metastases Historical and current diagnosis information and Item Question for Location of Metastases in Disease Details Form.
+
+a.	HISTORICAL DISEASE DETAIL FORM
+
+b.	CURRENT DISEASE DETAIL FORM
+
+c.	ITEM QUESTION LOCATION
+
+d.	ITEM QUESTION BRAIN METASTASIS HISTORICAL INFORMATION (NA for old version of the form i.e BMH/BMA. Does the Subject Now have a Brain Metastasis(es) or Have a History of Brain Metastasis(es)?)
+
+ ITEM QUESTION BRAIN METASTASIS CURRENT DIAGNOSIS INFORMATION (NA for old version of the form i.e BMH/BMA. Does the Subject Now have a Brain Metastasis(es) or Have a History of Brain Metastasis(es)?)
+
+e.g.
+
+HISTORICAL DISEASE DETAIL FORM, CURRENT DISEASE DETAIL FORM, ITEM QUESTION LOCATION, ITEM QUESTION BRAIN METASTASIS HISTORICAL INFORMATION, ITEM QUESTION BRAIN METASTASIS CURRENT DIAGNOSIS INFORMATION
+
+HDDM, CDDM, Location of Metastases 1, Does the Subject Have a Previous History of Brain Metastasis(es)?, Does the Subject Have a Current Diagnosis of Brain Metastasis(es)?
+
+HDDM, Other Location at Diagnosis, Does the Subject Have a Previous History of Brain Metastasis(es)?, Does the Subject Have a Current Diagnosis of Brain Metastasis(es)?
+
+HDDM, CDDM, Location of Metastases at Diagnosis 1, NA, NA
+
+8.	For logic 1.2, 1.4, 2.1 and 2.3 please use the form present in the study (BMA/BMH)
+
+Report Scenarios:
+A Output = No
+
+All Location of Metastases in Disease Details forms provided by the supporting doc <> Brain AND
+
+item question brain metastasis historical information or item question brain metastasis current diagnosis information from supp document= NO.
+
+B Output = No
+
+Any of Location of Metastases in Disease Details forms provided by the supporting doc = Brain AND BMH/BMA. item question brain metastasis historical information or item question brain metastasis current diagnosis information from supp document =YES.
+
+C Output = No
+
+All Location of Metastases in Disease Details forms provided by the supporting doc <> Brain AND BMH/BMA. item question brain metastasis historical information or item question brain metastasis current diagnosis information from supp document = NULL.
+
+D Output = Yes
+
+Any Location of Metastases in Disease Details forms provided by the supporting doc = Brain AND BMH/BMA. item question brain metastasis historical information or item question brain metastasis current diagnosis information from supp document = NO.
+
+E Output = Yes
+
+Any Location of Metastases in Disease Details forms provided by the supporting doc = Brain AND BMH/BMA. item question brain metastasis historical information or item question brain metastasis current diagnosis information from supp document = NULL.
+
+F Output = Yes
+
+BMH/BMA. item question brain metastasis historical information or item question brain metastasis current diagnosis information from supp document = YES AND All Location of Metastases in Disease Details forms provided by the supporting doc <> Brain.
+
+Sorting:
+Country, Site, Subject Number
+
+Parameter Selection:
+Country, First Site, Last Site, First Subject, Last Subject, List of Subjects, Randomized Only (N/Y,default as N), Supporting Doc Page (N/Y, Default as N)
+
+Form.Item Names:
+1. Subject Assignment.Site Country
+
+2. Subject Assignment form.Site Mnemonic
+
+3. Subjects.Subject Number
+
+4. Disease Details form from supporting document
+
+5. Item Question location from supporting document
+
+6. BMH. Does the Subject Now have a Brain Metastasis(es) or Have a History of Brain Metastasis (es)?. /BMA. Does the Subject Have a History of Brain Metastases or Now Have a Brain Metastases? Display following guidance from note 5.
+
+7. BMH. Does the Subject Have a Previous History of Brain Metastasis (es)? /BMA. Does the Subject Have a History of Brain Metastases or Now Have a Brain Metastases?  Display following guidance from note 6.
+
+8. BMH. Does the Subject Have a Current Diagnosis of Brain Metastasis(es)?/ /BMA. Does the Subject Have a History of Brain Metastases or Now Have a Brain Metastases?  Display following guidance from note 7.

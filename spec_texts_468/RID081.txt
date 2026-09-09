@@ -1,0 +1,75 @@
+Report ID: RID081
+
+Report Title:
+Incremental Encoding of Medication Terms - Counts
+
+Description:
+This report displays distinct occurrences of the unique combination of Medication Name and Encoded Drug Name.  It also displays the frequency for each distinct occurrence.
+
+Column Heading:
+1. eCRF
+
+2. Medication Name
+
+3. Standardized Medication Name
+
+4. Encoded Drug Name
+
+5. Broader Term
+
+6. Medication Class
+
+7. Medication Class Code
+
+8. ATC1 Term
+
+9. ATC2 Term
+
+10. Frequency
+
+Logic:
+The report should display output for unique combinations of Medication Name and Encoded Drug Name with the frequency of occurrence.  Comparisons should be on non-null terms and should not be case-sensitive.
+
+Note 1: Incremental outputs can be run by last modified date on Standardized Medication Name.
+
+Note 2: Selection Criteria should be displayed on the first page of the entire report, above the output table, not within the header or footer. It should include Country, First Site, Last Site, First Subject, Last Subject, Randomized Only, Changed Data From, Changed Data To even when these items do not appear on the report output.
+
+Note 3: Display row count in footer.
+
+Note 4: Report should not display deleted records.
+
+Note 5: If "Randomized only" parameter selection checkbox  is checked, the report should only output subjects with Randomization number that is not null.
+
+Note 6: For prompt ‘eCRF’, enter ODB, ODBF, ODBH, ODBHN, ODBHF, ODBCS, ODBCF, FDGE, TACE, ODBNF separated by comma. If left empty the report will output for all the forms available in the study.
+
+Note 7: For prompt ‘Changed Data From’ , if left blank, then will be 01Jan1960;  ‘Changed Data To’, if left blank, then consider system date.
+
+Report Scenarios:
+The report should display output for unique combinations of Medication Name and Encoded Drug Name with the frequency of occurrence.  Comparisons should be on non-null terms and should not be case-sensitive.
+
+Sorting:
+eCRF, Medication Name, Encoded Drug Name, Standardized Medication Name, Frequency
+
+Parameter Selection:
+Country, First Site, Last Site, First Subject, Last Subject, List of Subjects, Randomized Only (Y/N set default to N), eCRF(free textbox, multiple values should be separated by comma), Changed Data From (free textbox, only dates in format DDMMMYYYY are allowed), Changed Data To (free textbox, only dates in format DDMMMYYYY are allowed)
+
+Form.Item Names:
+1. Forms.Formmnemonic
+
+2. Forms.Medication Name
+
+3. ODB Forms.Standardized Medication Name / FDGE.Contrast Agent / TACE.Chemotherapy
+
+4. Forms.Encoded Drug Name
+
+5. Forms.Broader Term
+
+6. Forms.Medication Class
+
+7. Forms.Medication Class Code
+
+8. Forms.ATC1 Term
+
+9. Forms.ATC2 Term
+
+10. Derived: count of unique combinations of Medication Name and Encoded Drug Name

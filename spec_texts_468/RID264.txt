@@ -1,0 +1,189 @@
+Report ID: RID264
+
+Report Title:
+Missing Efficacy Follow up visit or done out of window
+
+Description:
+This report displays subjects who have missing Efficacy Follow up visit to be performed within imaging window after discontinuation from treatment or the visit is performed out of window.
+
+Column Heading:
+1. Country
+
+2. Site
+
+3. Subject Number
+
+4. Form
+
+5. Form Date of Assessment
+
+6. Trial Segment Reference
+
+7. Next Trial Segment
+
+8. Lesion Evaluation form
+
+9. Date of Current lesion evaluation
+
+10. End of Efficacy form
+
+11. End of Efficacy form date
+
+12. Scenario
+
+Logic:
+Scenario 1.
+
+1.1 Form.Date of assessment <> NULL
+
+AND
+
+1.2 Form. Status of the Next Trial Segment = “Next Trial Segment” from the supporting document
+
+AND
+
+(1.3 LSNIR (Date of Current Lesion Evaluation (Scan/Image/Physical Exam) <> NULL
+
+AND
+
+1.4 LSNIR (Date of Current Lesion Evaluation (Scan/Image/Physical Exam) > Form.Date of assessment)
+
+AND
+
+1.5 (“Expected Visit” DOV = NULL OR “Expected Visit” visit DOV Erroneous Visit box is checked)
+
+AND
+
+{1.6 End of Efficacy form date = NULL
+
+OR
+
+[1.7 End of Efficacy form date <> NULL
+
+AND
+
+LSNIR (Date of Current Lesion Evaluation (Scan/Image/Physical Exam) > PMS1.Date of Assessment
+
+AND
+
+LSNIR (Date of Current Lesion Evaluation (Scan/Image/Physical Exam) <= End of Efficacy form date)]}
+
+Scenario 2.
+
+2.1 Form.Date of assessment <> NULL
+
+AND
+
+2.2 Form. Status of the Next Trial Segment = “Next Trial Segment” from the supporting document
+
+AND
+
+(2.3 LSNIR (Date of Current Lesion Evaluation (Scan/Image/Physical Exam) <> NULL
+
+AND
+
+2.4 LSNIR (Date of Current Lesion Evaluation (Scan/Image/Physical Exam) > Form.Date of assessment)
+
+AND
+
+{(2.5 "Expected Visit" DOV Date of visit – LSNIR (Date of Current Lesion Evaluation (Scan/Image/Physical Exam) < "Lower number of days"
+
+OR
+
+2.6 "Expected Visit" DOV Date of visit – LSNIR (Date of Current Lesion Evaluation (Scan/Image/Physical Exam)  > "Upper number of days")}
+
+AND
+
+{2.7 End of Efficacy form date = NULL
+
+OR
+
+[2.8 End of Efficacy form date <> NULL
+
+AND
+
+(LSNIR (Date of Current Lesion Evaluation (Scan/Image/Physical Exam) > PMS1.Date of Assessment
+
+AND
+
+LSNIR (Date of Current Lesion Evaluation (Scan/Image/Physical Exam) < End of Efficacy form date)]}
+
+Note 1: Form, Trial Segment Reference, Next Trial segment, Expected Visit, Upper number of days, Lower Number of days and End of Efficacy form date are values from supporting document
+
+Note 2: Only use date for calculation in this report, disregard time.
+
+Note 3: If supporting doc is not provided, display the message as "ONC_DOV_004_JR_STD Supporting Document Not Present for This Trial".
+
+Requires supporting document to be named ONC_DOV_004_supp_<xxxxxxx>.csv and will contain the following columns and associated content:
+
+One row for each group of Scenario to be reviewed according to protocol design
+
+1. Expected Visit - Enter Visit mnemonic
+
+2. Form - Required PMST/PMS1
+
+3. Trial Segment Reference - Enter value list of Trial Segment Reference of corresponding Form
+
+4. Next Trial segment - Enter value of Trial Segment Reference of corresponding Form.
+
+5. Lesion Evaluation Form– Required. Enter LSNIR/LSNLR
+
+6. Date of Evaluation- Enter date item name of LSN Form. e.g. Date of Currect Lesion evaluation
+
+7. Lower number of days - the amount of days when the Expected visit should occur before first lesion evaluation date post discontinuation of the treatment
+
+8. Upper number of days - the amount of days when the Expected visit should occur after first lesion evaluation date post discontinuation of the treatment
+
+9. End of Efficacy form – required. Enter the form required when efficacy assessments end (OEDRA/PMS1A)
+
+10. End of Efficacy form date – required. Enter the item with date of assessment
+
+e.g.
+
+Expected Visit, Form, Trial Segment Reference, Next Trial segment, Lesion Evaluation Form Form, Date of Evaluation, Lower number of days, Upper number of days, End of Efficacy form, End of Efficacy form date
+
+Follow up, PMS1, End of Treatment, Continuing into Follow-up Phase, LSNIR, Date of Current Lesion Evaluation (Scan/Image/Physical Exam, 7, 7, OEDRA, Date of Assessment
+
+The number of rows in the supporting document will be represented in the Report Header as "# of rows for customization".
+
+The actual information provided by the supporting doc can be outputted by selecting Y in the parameter "Supporting doc Page".
+
+Report Scenarios:
+Scenario 1. YES
+
+This report displays subjects who are missing an Efficacy Follow-up visit within imaging window after: Date of assessment in <PMS1/PMST> where Status of the Next Trial Segment is selected as <Continuing into Follow-up Phase/ Continuing Into Crossover Efficacy Follow-up Phase/Continuing Into Efficacy Follow-up Phase/Continuing Into Efficacy Follow-up Phase>
+
+Scenario 2. YES
+
+This report displays subjects who have an Efficacy Follow-up visit done out of imaging window after: Date of assessment in <PMS1/PMST> where Status of the Next Trial Segment is selected as <Continuing into Follow-up Phase/ Continuing Into Crossover Efficacy Follow-up Phase/Continuing Into Efficacy Follow-up Phase/Continuing Into Efficacy Follow-up Phase>
+
+Sorting:
+Country, Site, Subject Number
+
+Parameter Selection:
+Country, First Site, Last Site, First Subject, Last Subject, List of Subjects, Supporting Doc Page (N/Y, Default as N)
+
+Form.Item Names:
+1. SA. Site Country
+
+2. SA. Site Mnemonic
+
+3. SA. Subject Number
+
+4. Display the "Form" value as per supporting document.
+
+5. "Form".Date of assessment
+
+6. Display the "Trial Segment Reference" value as per supporting document.
+
+7. Display the "Next Trial segment" value as per supporting document.
+
+8. Display the Lesion Evaluation Form” value as per supporting document.
+
+9. LSNIR. Date of Current Lesion Evaluation (Scan/Image/Physical Exam)
+
+10. Display the “End of Efficacy form” value as per supporting document
+
+11. Display the “End of Efficacy form date” value as per supporting document
+
+12. Display as Scenario 1 or Scenario 2.

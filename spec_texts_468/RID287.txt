@@ -1,0 +1,641 @@
+Report ID: RID287
+
+Report Title:
+Imaging Date Mismatch with External Data
+
+Description:
+The report will output when there is an Imaging date with no matching record in the external vendor transfer file or when there is a record in the external vendor transfer file that has no matching  Imaging date.
+
+Column Heading:
+Table 1
+
+1. Country
+
+2. Site
+
+3. Screening Number
+
+4. Subject Number
+
+5. Form
+
+6. Seq
+
+7. Method of Assessment
+
+8. Form Date
+
+Table 2
+
+1. Country
+
+2. Site
+
+3. Screening Number
+
+4. Subject Number
+
+5. Form
+
+6. External Data Form
+
+7. Vendor Name
+
+8. Method of Assessment
+
+9. External Data Date
+
+Logic:
+Global Reads = N
+
+Logic 1A
+
+(Logic 1.1 There is not a ‘Form’ record with Select the Status of the Subject for the Next Trial Segment = ‘Next Trial Segment’
+
+AND
+
+Logic 1.2: There is not a OEDRA record with Status of Subject at End of This Trial Segment <> NULL)
+
+AND
+
+Logic 1.3: IMAGING_FORM = ‘Imaging Form’
+
+AND
+
+Logic 1.4: EXT_FORM = ‘External Form’
+
+AND
+
+Logic 1.5: EXT_FORM.Vendor Name = ‘Vendor’ = ‘Imaging Vendor’
+
+AND
+
+Logic 1.6: IMAGING_FORM.Scan Collection Status = Performed
+
+AND
+
+Logic 1.7: IMAGING_FORM.Date <> NULL
+
+AND
+
+Logic 1.8: IMAGING_FORM.Date =< ‘Cut-Off Date’
+
+AND
+
+Logic 1.9: IMAGING_FORM.Date belongs to the corresponding treatment phase according to the ‘Phase Order’ value provided in the ONC_GEFCF_001_supp_</Vxxxxxxx>.csv
+
+AND
+
+Logic 1.10: IMAGING_FORM.Date <> EXT_FORM.Date
+
+OR
+
+Logic 1B
+
+(Logic 1.11: There is a ‘Form’ record with Select the Status of the Subject for the Next Trial Segment = ‘Next Trial Segment’
+
+OR
+
+Logic 1.12 There is a OEDRA record with Status of Subject at End of This Trial Segment <> NULL)
+
+AND
+
+Logic 1.13: IMAGING_FORM = ‘Imaging Form’
+
+AND
+
+Logic 1.14: EXT_FORM = ‘External Form’
+
+AND
+
+Logic 1.15: EXT_FORM.Vendor Name = ‘Vendor’ = ‘Imaging Vendor’
+
+AND
+
+Logic 1.16: IMAGING_FORM.Scan Collection Status = Performed
+
+AND
+
+Logic 1.17: IMAGING_FORM.Date <> NULL
+
+AND
+
+Logic 1.18: IMAGING_FORM.Date =< ‘Cut-Off Date’
+
+AND
+
+Logic 1.19: IMAGING_FORM.Date belongs to the corresponding treatment phase according to the ‘Phase Order’ value provided in the ONC_GEFCF_001_supp_</Vxxxxxxx>.csv
+
+AND
+
+Logic 1.20: IMAGING_FORM.Date =< ‘Form’.Date of Assessment from record on Logic 1.11/Logic 1.12
+
+AND
+
+Logic 1.21: IMAGING_FORM.Date <> EXT_FORM.Date
+
+OR
+
+Logic 1C
+
+(Logic 1.22 There is not a ‘Form’ record with Select the Status of the Subject for the Next Trial Segment = ‘Next Trial Segment’
+
+AND
+
+Logic 1.23: There is not a OEDRA record with Status of Subject at End of This Trial Segment <> NULL)
+
+AND
+
+Logic 1.24: IMAGING_FORM = ‘Imaging Form’
+
+AND
+
+Logic 1.25: EXT_FORM = ‘External Form’
+
+AND
+
+Logic 1.26: EXT_FORM.Vendor Name = ‘Vendor’ = ‘Imaging Vendor’
+
+AND
+
+Logic 1.27: IMAGING_FORM.Scan Collection Status = Performed
+
+AND
+
+Logic 1.28: IMAGING_FORM.Date <> NULL
+
+AND
+
+Logic 1.29: IMAGING_FORM.Date =< ‘Cut-Off Date’
+
+AND
+
+Logic 1.30: IMAGING_FORM.Date belongs to the corresponding treatment phase according to the ‘Phase Order’ value provided in the ONC_GEFCF_001_supp_</Vxxxxxxx>.csv
+
+AND
+
+Logic 1.31: IMAGING_FORM.Date = EXT_FORM.Date
+
+AND
+
+Logic 1.32: EXT_FORM.Domain Abbreviation = [PR]
+
+AND
+
+Logic 1.33: EXT_FORM.Procedure <> OSCN.Method of Assessment/Type of Image
+
+Global Reads = Y
+
+Logic 1D = Logic 1B
+
+Logic 2A
+
+Logic 2.1: IMAGING_FORM = ‘Imaging Form’
+
+AND
+
+Logic 2.2: EXT_FORM = ‘External Form’
+
+AND
+
+Logic 2.3: EXT_FORM.Vendor Name = ‘Vendor’ = ‘Imaging Vendor’
+
+AND
+
+Logic 2.4: EXT_FORM.Date <> NULL
+
+AND
+
+Logic 2.5: EXT_FORM.Date belongs to the corresponding treatment phase according to the ‘Phase Order’ value provided in the ONC_GEFCF_001_supp_</Vxxxxxxx>.csv
+
+AND
+
+Logic 2.6: EXT_FORM.Date <> IMAGING_FORM.Date
+
+OR
+
+Logic 2B
+
+Logic 2.7: IMAGING_FORM = ‘Imaging Form’
+
+AND
+
+Logic 2.8: EXT_FORM = ‘External Form’
+
+AND
+
+Logic 2.9: EXT_FORM.Vendor Name = ‘Vendor’ = ‘Imaging Vendor’
+
+AND
+
+Logic 2.10: EXT_FORM.Date <> NULL
+
+AND
+
+Logic 2.11: EXT_FORM.Date belongs to the corresponding treatment phase according to the ‘Phase Order’ value provided in the ONC_GEFCF_001_supp_</Vxxxxxxx>.csv
+
+AND
+
+Logic 2.12: EXT_FORM.Date = IMAGING_FORM.Date
+
+AND
+
+Logic 2.13: EXT_FORM.Procedure <> OSCN.Method of Assessment/Type of Image
+
+Notes:
+
+Parameter:
+
+1- ‘Global Reads’, ‘Imaging Form’, ‘Vendor’, ‘Cut-Off Date’ are values from prompts
+
+2- For prompt ‘Imaging Form’, if left empty the report will output for all the forms available in the study. If multiple forms are provided, then the report will output for all the forms provided.
+
+3- For prompt ‘Vendor’, if left blank the report will output for all the vendors provided in the supporting document. If prompt is not left blank, the report will output for all vendor provided in the prompt
+
+4- For prompt ‘Cut-Off Date’, if left blank, then consider system date.
+
+5- ‘Form’, ‘Next Trial Segment’, ‘External Form’, ‘Imaging Vendor’ are values from ONC_GEFCF_001_supp_</Vxxxxxxx>.csv
+
+6- Global Reads prompt should only be used for Logic 1A/Logic 1B/Logic 1C/Logic 1D. Logics 2A and 2B is independent of this prompt.
+
+7- When prompt ‘Does this trial use PR domain?’ is answered ‘N’ then logics 1A, 1B, 1D, 2A are applicable. When prompt ‘Does this trial use PR domain?’ is answered ‘Y’, logics 1A/1B/1C/1D/2A/2B are applicable.
+
+Explanation for proper noun:
+
+8- IMAGING_FORM: LSRIR, LSNEV, HDA, LSNPC, OSCN, LSNBC
+
+9- EXT_FORM: GEFCF, CIMG
+
+10- EXT_FORM.Date = GEFCF.Date/Time of Measurement OR CIMG.Date of Imaging
+
+11- IMAGING_FORM.Date = OSCN.Scan Date OR LSRIR/LSNEV/LSNPC/LSNBC/HDA.Date of Lesion Evaluation OR LSRIR/LSNEV/LSNPC/LSNBC/HDA.Date of Current Lesion Evaluation
+
+12- IMAGING_FORM.Scan Collection Status = OSCN.Scan Collection Status
+
+13- EXT_FORM.Procedure = CIMG.Procedure
+
+14- EXT_FORM.Domain Abbreviation = CIMG.Domain Abbreviation
+
+Added Logic:
+
+15- OSCN.Scan Collection Status was not implemented for all trials; therefore, if the item is not available for a trial the report will ignore Logic 1.6, Logic 1.16, Logic 1.27
+
+16- For Logic 1A/1B/1C/1D: If OSCN.Type of Image = ‘Physical Examination’ then no output is produced.
+
+17- For Logic 1A/1B/1C/1D: If LSRIR/LSNEV/LSNPC/LSNBC/HDA.Method of Assessment = ‘Physical Exam’, ‘Physical Examination’, then no output is produced
+
+18- Logic 1.10, Logic 1.21, 1.28, Logic 2.6 will output when there is not at least one matching record between IMAGING_FORM.Date and EXT_Form.Date. If one is already matching, then no output is expected
+
+19 – Logic 1C and 2B are only applicable when prompt ‘Imaging Form’ is completed with ‘OSCN’ or contains ‘OSCN’ among all listed eCRFs or when prompt item is left blank AND OSCN form exists in the trial.
+
+If study do not have item EXT_FORM.Procedure output is expected for all Logics except 1C and 2B.
+
+20- Erroneous visits and deleted records will not be considered for programming.
+
+21- Compare only the date, disregard time.
+
+22- For Logic 1.1/Logic 1.2/Logic 1.11/Logic 1.12/Logic 1.22/Logic 1.23: Older trials use PMS1A while newer trials use OEDRA/OEFU and/or PMST. Please consider only the form that is available on each study. If multiple forms are available in the study and completed at the same time, consider only the ‘Form’ with the minimum Date of Assessment.
+
+23- For Logic 2A and 2B, when IMAGING_FORM = OSCN: If logic is worked and the only matching record between EXT.FORM.Date and IMAGING_FORM.Date is an OSCN record with Scan Collection Status <> Performed, then output should be produced. If multiple records are matching but one is an OSCN record with Scan Collection Status = Performed and the other is an OSCN record with Scan Collection Status <> Performed, then no output should be produced.
+
+24- The intention of Logic 1.9/Logic 1.19/Logic 1.30/Logic 2.5/Logic 2.11 is to include in the reconciliation only those scans that have a date that belongs to the treatment phase provided in the ONC_GEFCF_001_supp_</Vxxxxxxx>.csv. To do that, the report will identify first to which treatment phase the scan belongs to using the study phase supp doc and thereafter it will identify if the scan belongs to the treatment phase provided in the ONC_GEFCF_001_supp_</Vxxxxxxx>.csv using the ‘Phase Order’ as matching value between both. This will prevent fake output for those studies where only scans for certain treatment phases are being transferred/read by the vendor.
+
+25- If in ONC_GEFCF_001_supp_</Vxxxxxxx>.csv, 'Form' and 'Next Trial Segment' are all 'NA': Ignore Logic 1.1,Logic 1.11 and Logic 1.22. And in Logic 1.20, only have to compare against ‘Form’.Date of Assessment from record on Logic 1.12
+
+26 – In Logic 1.31 and Logic 2.13 EXT_FORM.Procedure value should be identifying a matching option using ONC_GEFCF_001_supp2_</Vxxxxxxx>.csv supporting document.
+
+If prompt ‘Does this trial use PR domain?’ is selected as ‘N’, then report should not require ONC_GEFCF_001_supp2_</Vxxxxxxx>.csv supporting document to work.
+
+When prompt ‘Does this trial use PR domain?’ is selected as ‘Y’ and trial does not have ONC_GEFCF_001_supp2_</Vxxxxxxx>.csv supporting document, and prompt ‘Imaging Form’ identifies that report should consider OSCN eCRF per Note 19, report should not execute.
+
+If prompt ‘Does this trial use PR domain?’ is selected as ‘Y’ and trial does not have ONC_GEFCF_001_supp2_</Vxxxxxxx>.csv supporting document, and prompt ‘Imaging Form’ identifies that report should NOT consider OSCN eCRF per Note 19, report should skip ONC_GEFCF_001_supp2_</Vxxxxxxx>.csv supporting document and execute.
+
+Display:
+
+27- If a date is displayed in the output, the report will show it in format ‘DDMMMYYYY’ e.g. 01JAN2020
+
+28- For Scenario 1 and Column 6, the report will show the formidx even if the date was reported in the ‘add-entry’ section of the eCRF e.g., 1(2)
+
+29- For Scenario 1 and Column 7, the report will show the method of assessment even if it was written on the ‘other’ textbox
+
+30- The purpose of Scenario 2A and 2B and Column 5 (‘Form’) is to show on the report output the IMAGING_FORM provided in prompt ‘Imaging Form’. If prompt is left blank, then display all the IMAGING_FORM (for example: LSRIR, LSNEV, HDA, LSNPC, OSCN, LSNBC) available in the study.
+
+31 – For Table 2 when prompt ‘Does this trial use PR domain?’ is answered ‘Y’ AND if prompt ‘Imaging Form’ is completed with ‘OSCN’ or contains ‘OSCN’ among all listed eCRFs or when prompt item is left blank and trial does use ‘OSCN’ display Column 8 (‘Method of Assessment’).
+
+If prompt ‘Does this trial use PR domain?’ is answered ‘N’ OR ‘Imaging Form’ is completed and does not contain ‘OSCN’ OR trial does not use OSCN form leave Column 8 (‘Method of Assessment’) blank.
+
+If study does not have EXT_FORM.Procedure item leave Column 8 (‘Method of Assessment’) blank.
+
+Supporting Document:
+
+32- The supporting document is required for all trials if treatment phase is applied to logic even if only one treatment phase is present.
+
+This supporting document is only required to be created once per trial. If it was already created and uploaded, there is no need to duplicate it.
+
+The supporting document should be named as study_phase_supp_</Vxxxxxxx>.csv and will contain the following columns and associated content:
+
+One row for each Treatment Phase
+
+1. Phase Order: required, the order on which phases will appear on protocol
+
+2. Treatment Phase: required, name of each study phase (Initial Treatment Phase, Neodjuvant Phase, Second Course Phase)
+
+3. First Visitmnemonic of Treatment Phase: required, the first visit on which treatment is expected to be administered on each phase.
+
+e.g.
+
+1, Initial Treatment Phase, Cycle 1
+
+2, Second Course Phase, Cycle 1 Course 2
+
+3, Crossover Phase, Crossover Cycle 1
+
+The actual information provided by the supporting doc can be outputted by selecting Y in the parameter ""Study Phase Page"".
+
+The report logic should be checked within the same treatment phase defined in the supporting document.
+
+For example, if user provides two Treatment Phases in supporting document like below:
+
+Phase Order, Treatment phase, First Visitmnemonic of Treatment Phase
+
+1,Initial Treatment Phase,Cycle 1
+
+2,Second Course Phase,Second Course Cycle 1
+
+The treatment phase will be identified as following:
+
+Initial Treatment Phase: Form.Date < Cycle 1 <= Form.Date < Second Course Cycle 1
+
+Second Course Phase: Second Course Cycle 1 <= Form.Date
+
+Form.Date include: IMAGING_FORM.Date, EXT_FORM.Date
+
+33- Requires supporting document to be named ONC_GEFCF_001_supp_</Vxxxxxxx>.csv and will contain the following columns and associated content
+
+1 row for each option available in PMS1A/OEFU/PMST ‘Select the Status of the Subject for the Next Trial Segment’ that indicates the end of efficacy assessments.
+
+1 – Phase Order – Required, The value provided should be an EXACT match of the Phase Order column used in the study_phase_supp_</Vxxxxxxx>.csv. For studies with multiple treatment phases do NOT provide a row in the supporting document if for a specific treatment phase the vendor should NOT read/transfer scans; this will avoid duplicated efforts when reviewing report ONC_EVD_012_JR_STD. Example: If the study has  ‘Initial Treatment Phase’ and ‘Second Course Phase’ but the vendor only read/transfer scans for the ‘Initial Treatment Phase’ then only enter ‘1’ in this column and do NOT provide a row to enter '2'. If a specific treatment phase order (e.g., phase order ""2"" equivalent to second course phase) is not provided in this column, then the report will not output scans that occurred during that treatment phase for both scenarios.
+
+2 – Imaging Vendor – Required, type in the name of the vendor according to the ‘Vendor Name’ column from report EVD013B_STD/EVD013E_STD according to the vendor(s) used in the study.
+
+3 – External Form – Required, type in GEFCF/CIMG according to the vendor used in the study.
+
+4 – Form  – Required, type in PMS1A/OEFU/PMST according to the eCRFs present in the study. Or enter NA, if due to your study design, the report should also output images after PMS1A/OEFU/PMST date.
+
+5 – Next Trial Segment – Required, type in the PMS1A/OEFU/PMST value from item ‘Select the Status of the Subject for the Next Trial Segment’ that indicates the end of efficacy assessments. Or enter NA, if due to your study design, the report should also output images after PMS1A/OEFU/PMST date.
+
+e.g.
+
+Headers:
+
+Phase Order,Imaging Vendor,External Form,Form,Next Trial Segment
+
+Content: Example from a study using PMST/OEFU
+
+1,BIOCLIN,CIMG,PMST,Continuing into survival follow-up
+
+1,BIOCLIN,CIMG,PMST,Continuing into second course phase
+
+1,BIOCLIN,CIMG,PMST,Not continuing into any trial phases
+
+1,BIOCLIN,CIMG,OEFU,Continuing into survival follow-up
+
+1,BIOCLIN,CIMG,OEFU,Continuing into second course phase
+
+1,BIOCLIN,CIMG,OEFU,Not continuing into any trial phases
+
+Content: Example from a study using PMS1A
+
+1,ICON,GEFCF,PMS1A,Continuing into survival follow-up
+
+1,ICON,GEFCF,PMS1A,Continuing into second course phase
+
+1,ICON,GEFCF,PMS1A,Not continuing into any trial phases
+
+1,PAREXEL,GEFCF,PMS1A,Continuing into survival follow-up
+
+1,PAREXEL,GEFCF,PMS1A,Continuing into second course phase
+
+1,PAREXEL,GEFCF,PMS1A,Not continuing into any trial phases
+
+Content: Example from a study that need output images after PMS1A/OEFU/PMST date
+
+1,ICON,GEFCF,NA,NA
+
+If supporting doc is not provided, display the message as ""ONC_GEFCF_001_JR_STD Supporting Document Not Present for This Trial"".
+
+The number of rows in the supporting document will be represented in the Report Header as ""# of rows for customization"".
+
+The actual information provided by the supporting doc can be outputted by selecting Y in the parameter ""Supporting doc Page"".
+
+34- Options provided in the supporting document ONC_GEFCF_001_supp_</Vxxxxxxx>.csv will be used by the report according to the following example:
+
+PMST=Continuing into survival follow-up OR
+
+PMST=Continuing into second course phase OR
+
+PMST=Not continuing into any trial phases OR
+
+OEFU=Continuing into survival follow-up OR
+
+OEFU=Continuing into second course phase OR
+
+OEFU=Not continuing into any trial phases
+
+35- The correct use of the prompts will guarantee the correct output
+
+- Global Reads: Required – Select as Y if vendor performs global read process during in-life of the study. Select N if vendor does not perform global read process at all OR during DBL.
+
+- Imaging Form: Optional – Type in the form mnemonic that captures scans in Inform e.g., OSCN. Multiple forms can be provided separated by comma e.g., OSCN,LSRIR. If left blank, the report will compare all forms available in the study.
+
+- Vendor: Optional – Type in the vendor name that transfers imaging scans data. This value should match with Vendor Name column from reports EVD013B_STD/EVD013E_STD. If prompt is left empty, the report will output for all vendors provided in the supporting document.
+
+- Cut-Off Date: Optional –  Value should be provided in format DDMMMYYYY. For each individual transfer contact the vendor POC and request the Cut-Off Date which is the last date when scans are considered for each transfer. E.g., If Cut-Off Date was on 15JUN2020 it means that only scans with a date on or before 15JUN2020 were transferred. The use of this prompt will avoid fake output for Scenario 1 when the scan date is after the Cut-Off Date.
+
+LCDM is responsible to provide protocol specific guidance about how to run the report for each vendor used in the study based on the standard guidance.
+
+36 - Requires supporting document to be named ONC_GEFCF_001_supp2_</Vxxxxxxx>.csv and will contain the following columns and associated content
+
+1 – Group – numeric value, cannot be NA, it will identify a group of matches. If 1:1 match is provided, match is required. If multiple matches are provided withing a group, report will be satisfied with finding one of them.
+
+2 – OSCN Type of Image – DB value options available on OSCN item ‘Type of Image’ or equivalent, one value per row. Cannot be NA.
+
+3 – CIMG Procedure – CDISC standardized values per PSA for nameless test mapping to PR domain, from item ‘Procedure’, one value per row. Cannot be NA.
+
+Eg.
+
+Headers:
+
+Group,OSCN Type of Image,CIMG Procedure
+
+Trial has all 1:1 matches
+
+Group,OSCN Type of Image,CIMG Procedure
+
+1,CT SCAN,CT SCAN
+
+2,MRI,MRI
+
+3,PET/CT SCAN,PET/CT SCAN
+
+4,PET/MRI,PET/MRI SCAN
+
+5,PET SCAN,FDGPET
+
+6,SCINTIGRAPHY,SCINTIGRAPHY
+
+7,X-RAY,X-RAY
+
+Trial with vendor loading PET/CT and PET/MRI, but OSCN requires 2 separate entries
+
+1,CT SCAN,PET/CT SCAN
+
+2,PET SCAN,PET/CT SCAN
+
+3,MRI,PET/MRI SCAN
+
+2,PET SCAN,PET/MRI SCAN
+
+4, SCINTIGRAPHY,SCINTIGRAPHY
+
+5,X-RAY,X-RAY
+
+Trial where vendor splits PET/CT into PET and CT, but OSCN requires only 1 entry
+
+1,PET/CT SCAN, PET SCAN
+
+2,PET/CT SCAN,CT SCAN
+
+3, SCINTIGRAPHY,SCINTIGRAPHY
+
+4,X-RAY,X-RAY
+
+Trial where OSCN has multiple options matching with vendor scan type
+
+1,CONTRAST ENHANCED CT SCAN,CT SCAN
+
+1,CT SCAN,CT SCAN
+
+1,CT SCAN WITHOUT CONTRAST,CT SCAN
+
+2,CONTRAST ENHANCED MRI,MRI SCAN
+
+2,MRI,MRI SCAN
+
+2,MRI WITHOUT CONTRAST,MRI SCAN
+
+Report Scenarios:
+Scenario 1 Output Yes:
+
+A. The IMAGING_FORM.Date record belongs to the treatment phase provided in the report-specific supporting document AND
+
+there is not PMS1A/OEDRA/OEFU/PMST with Select the Status of the Subject for the Next Trial Segment equal to the option provided in the supporting document
+
+AND IMAGING_FORM.Date is on or before Cut-Off Date prompt AND IMAGING_FORM.Date does not match with at least one record from EXT_FORM.Date
+
+B. The IMAGING_FORM.Date record belongs to the treatment phase provided in the report-specific supporting document AND
+
+there is PMS1A/OEDRA/OEFU/PMST with Select the Status of the Subject for the Next Trial Segment equal to the option provided in the supporting document AND IMAGING_FORM.Date is on or before that PMS1A/OEDRA/OEFU/PMST record AND IMAGING_FORM.Date is on or before Cut-Off Date prompt AND IMAGING_FORM.Date does not match with at least one record from EXT_FORM.Date
+
+C. The IMAGING_FORM.Date record belongs to the treatment phase provided in the report-specific supporting document AND
+
+there is not PMS1A/OEDRA/OEFU/PMST with Select the Status of the Subject for the Next Trial Segment equal to the option provided in the supporting document
+
+AND IMAGING_FORM.Date is on or before Cut-Off Date prompt AND IMAGING_FORM.Date does match with at least one record from EXT_FORM.Date AND EXT_FORM.Domain Abbreviation = [PR] AND EXT_FORM.Procedure does not match with OSCN.Type of Image
+
+D. Prompt ‘Does this trial use PR domain?’ is ‘N’ and the IMAGING_FORM.Date record belongs to the treatment phase provided in the report-specific supporting document AND
+
+Form, Next Trial segment are NA in supporting document
+
+AND
+
+IMAGING_FORM.Date is on or before Cut-Off Date prompt AND IMAGING_FORM.Date does not match with at least one record from EXT_FORM.Date
+
+E. Prompt ‘Does this trial use PR domain?’ is ‘Y’ and the IMAGING_FORM.Date record belongs to the treatment phase provided in the report-specific supporting document AND
+
+Form, Next Trial segment are NA in supporting document
+
+AND
+
+IMAGING_FORM.Date is on or before Cut-Off Date prompt AND IMAGING_FORM.Date does not match with at least one record from EXT_FORM.Date AND EXT_FORM.Domain Abbreviation = [PR] AND EXT_FORM.Procedure does not match with OSCN.Type of Image
+
+Scenario 1 Output No:
+
+A. The IMAGING_FORM record does not belong to the treatment phase provided in the report-specific supporting document
+
+B. IMAGING_FORM is after Cut-Off Date prompt
+
+C. IMAGING_FORM is after PMS1A/OEDRA/OEFU/PMST record with Select the Status of the Subject for the Next Trial Segment equal to the option provided in the supporting document
+
+D. IMAGING_FORM matches with at least one record from EXT_FORM
+
+E. IMAGING_FORM.Method of Assessment/Type of Image = Physical Examination, Physical Exam
+
+F. Prompt ‘Does this trial use PR domain?’ is ‘Y’ and the IMAGING_FORM.Date record belongs to the treatment phase provided in the report-specific supporting document AND
+
+Form, Next Trial segment are NA in supporting document
+
+AND
+
+IMAGING_FORM.Date is on or before Cut-Off Date prompt AND IMAGING_FORM.Date does match with at least one record from EXT_FORM.Date AND EXT_FORM.Domain Abbreviation = [PR] AND EXT_FORM.Procedure does match with OSCN.Type of Image
+
+Scenario 2 Output Yes:
+
+A. EXT_FORM.Date belongs to the treatment phase provided in the report-specific supporting document AND EXT_FORM.Date does not have a matching IMAGING_FORM.Date record
+
+B. EXT_FORM.Date belongs to the treatment phase provided in the report-specific supporting document AND EXT_FORM.Date has a matching IMAGING_FORM.Date record, but EXT_FORM.Date AND EXT_FORM.Procedure does not match with OSCN.Type of Image
+
+Scenario 2 Output No:
+
+A. EXT_FORM.Date does not belong to the treatment phase provided in the report-specific supporting document
+
+B. EXT_FORM.Date have a matching IMAGING_FORM.Date record
+
+C. Does this trial use PR domain? Is ‘Y’ and EXT_FORM.Date have a matching IMAGING_FORM.Date record where EXT_FORM.Procedure does match with OSCN.Type of Image
+
+Sorting:
+Table 1: Country, Site, Subject Number, Seq
+
+Table 2: Country, Site, Subject Number, External Data Date
+
+Parameter Selection:
+Country, First Site, Last Site, First Subject, Last Subject, List of Subjects, Randomized Only (Y/N, Default N), Global Reads (Y/N, default as N), Vendor (free textbox, multiple values should be separated by comma) , Imaging Form (free textbox, values should be separated by comma), Cut-Off Date (free textbox, only dates in format DDMMMYYYY are allowed), Does this trial use PR domain? (Y/N, default as Y), Scenario(Scenario 1/ Scenario 2)
+
+Form.Item Names:
+Table 1
+
+1. SA. Site Country
+
+2. SA. Site Mnemonic
+
+3. SA. Screening Number
+
+4. SA. Subject Number
+
+5. IMAGING_FORM.Form Mnemonic
+
+6. IMAGING_FORM.Formidx
+
+7. IMAGING_FORM.Method of Assessment/Type of Image
+
+8. IMAGING_FORM.Form Date
+
+Table 2
+
+1. EXT_FORM.Site Country
+
+2. EXT_FORM.Site Mnemonic
+
+3. EXT_FORM.Screening Number
+
+4. EXT_FORM.Subject Number
+
+5. IMAGING_FORM.Form Mnemonic
+
+6. EXT_FORM.Form Mnemonic
+
+7. EXT_FORM.Vendor Name
+
+8. EXT_FORM.Procedure
+
+9. EXT_FORM.Date

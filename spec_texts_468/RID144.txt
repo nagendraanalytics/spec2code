@@ -1,0 +1,83 @@
+Report ID: RID144
+
+Report Title:
+Incorrect Sum of Product of Diameter
+
+Description:
+Report will output incorrect Sum of Product of Diameter calculated based on measurements present at evaluation form.
+
+Column Heading:
+1. Country
+
+2. Site
+
+3. Subject Number
+
+4. Lesion Sequence Number
+
+5. Date of Lesion Evaluation
+
+6. Sum of Target Lesion Longest Diameter and Longest Perpendicular Diameter
+
+7. Sum of Product of Diameters - ORRN
+
+Logic:
+Logic
+
+Lesion Identification is Target
+
+and
+
+Sum of Product of Diameters in ORRN form is different than calculation of all Target Lesions Longest Diameter and Longest Perpendicular Diameter in LSNRN form in all records with the same Date of Lesion Evaluation
+
+And  ORRN.Date Response Determined =  LSNRN.Date of Lesion Evaluation
+
+. The Sum of Product of Diameters should be calculated as follows: (A1*B1+ A2*B2: Longest Diameter=A; Longest Perpendicular Diameter=B; 1=Target Lesion 1; 2= Target Lesion 2)
+
+Note: Deleted records should be disregarded.
+
+Note: If we have two or more target lesion evaluation in LSNRN form for the same ‘Date of Lesion Evaluation’ then please calculate the Sum of Product of Diameters for all records as below.
+
+A1*B1+ A2*B2+A3*B3: Longest Diameter=A; Longest Perpendicular Diameter=B; 1=Target Lesion 1; 2= Target Lesion 2; 3= Target Lesion 3
+
+For Example :
+
+1/Jan/2021: 20*10+14*2+13*2
+
+1/Feb/2021: 17*8+12*3+2*3
+
+20/Feb/2021: 14*5+9*5+1*4
+
+15/Mar/2021: 6*9+6*9+5*7
+
+14/Apr/2021: 4*3+5*9+6*12
+
+Report Scenarios:
+Output Yes:
+
+If both the dates(i.e. ‘Date of Lesion Evaluation‘ and ‘Date Response Determined’) are equal and the Sum of Product of Diameters is different than calculation of all Target Lesions Longest Diameter and Longest Perpendicular Diameter present in LSNRN.
+
+Output No:
+
+If both the dates(i.e. ‘Date of Lesion Evaluation‘ and ‘Date Response Determined’) are equal  and the Sum of Product of Diameters is equal to the calculation of all Target Lesions Longest Diameter and Longest Perpendicular Diameter present in LSNRN.
+
+Sorting:
+Country, Site, Subject Number, Date of Lesion Evaluation, Lesion Sequence Number
+
+Parameter Selection:
+Country, Site, Subject Number, List of Subjects, Randomized Only
+
+Form.Item Names:
+1. Subject Assignment.Site Country
+
+2. Subject Assignment.Site Mnemonic
+
+3. Subjects.Subject Number
+
+4. LSNRN. Associated Lesion Number (for all Target lesions).
+
+5. LSNRN. Date of Lesion Evaluation (for all Target lesions).
+
+6. Display the value of LSNRN Lesion Identification Target. That is calculated as (A1*B1+ A2*B2: Longest Diameter=A; Longest Perpendicular Diameter=B; 1=Target Lesion 1; 2= Target Lesion 2)
+
+7. ORRN. Sum of Product of Diameters

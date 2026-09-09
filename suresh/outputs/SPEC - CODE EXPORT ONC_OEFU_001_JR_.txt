@@ -1,0 +1,238 @@
+SPEC -> CODE EXPORT: ONC_OEFU_001_JR_STD
+Exported 8/31/2026, 10:54:01 AM | Tenant: default
+
+======================================================================
+1. SPEC
+======================================================================
+Report ID:
+ONC_OEFU_001_JR_STD
+
+EDC System / Language:
+veeva / CQL
+
+Description:
+Identifies subjects who had a Progressive Disease (or disease recurrence) result on an oncologic response assessment form during the follow-up phase of the trial, where the follow-up phase was confirmed to have started (via a PMS1/PMST "Status for Next Trial Segment" assessment occurring before the response date), but for whom no subsequent Follow-up (OEFU) or Disease Recurrence Assessment (OEDRA) form was completed on/after that response date, as required. The report surfaces two missing-form scenarios: subjects missing an OEFU follow-up form entirely after the PD/recurrence response, and subjects who have an OEFU form (indicating continuation into Survival Follow-up or discontinuation) but are missing the required OEDRA disease-recurrence assessment form after that response.
+
+Column Heading:
+Country | Site | Subject Number | Response Form | Seq ID | Date Response Determined | Overall Response | PMS Form | PMS Visit | PMS Date | Missing Form
+
+Logic:
+Source data: 
+- Subject/site demographics (subject registry joined to site/country reference data).
+- Visit-level date-of-visit (DOV) records used to exclude erroneous/deleted visits.
+- Oncologic Response Form(s) (RSP forms - study-specific, e.g. OTPRL, defined per protocol via an external "RSP_supp_doc.csv" master list) capturing Overall Response / Response / Hematologic Response / Overall iRECIST Response / Overall RECIST Response / Overall irRECIST Response / PET Response, plus an ORAJ form capturing Disease Recurrence Indicator and its own assessment date.
+- PMS1/PMST form(s) ("PMS Form") capturing "Status of the Subject for the Next Trial Segment" and its assessment date - used to establish when the subject entered the follow-up phase; which status values qualify as the trigger is study-specific and supplied via an external supporting document (per treatment-phase-order group).
+- OEFU form capturing a follow-up "Date of Assessment" and "Select the Status of the Subject for the Next Trial Segment" (used to check Continuing into Survival Follow-up Phase / Not Continuing into Any Trial Segments).
+- OEDRA form capturing a disease-recurrence-assessment "Date of Assessment".
+- A study-phase reference table (external supporting doc) mapping each treatment phase (in visit order) to its first visit, used to bound each phase's date window (from that phase's first-visit date up to, but excluding, the next phase's first-visit date) so that all comparisons are done within the same treatment phase.
+
+Record inclusion (per subject, per treatment-phase "seq" group as defined by the study-phase and ONC_OEFU_001 supporting documents):
+1. Response trigger: at least one on-form Response-form or ORAJ record within the phase window has a non-null response date AND (Overall Response/Response/Hematologic Response/Overall iRECIST Response/Overall RECIST Response/Overall irRECIST Response/PET Response = "Progressive Disease", "irProgressive Disease", or "iCPD" — OR ORAJ Disease Recurrence Indicator = "Yes").
+2. Follow-up-phase-start confirmation: at least one PMS1/PMST record within the same phase window has an assessment date strictly earlier than the response date above, AND its "Status of Subject for Next Trial Segment" matches one of the status values configured for that phase group in the ONC_OEFU_001 supporting document.
+3. Missing-OEFU scenario: no OEFU record within the phase window has a non-null assessment date on/after the response date -> flagged as "Missing = OEFU".
+   OR
+   Missing-OEDRA scenario: at least one OEFU record within the phase window has a non-null assessment date on/after the response date AND its next-trial-segment status is "Continuing into Survival Follow-up Phase" or "Not Continuing into Any Trial Segments", AND no OEDRA record within the phase window has a non-null assessment date on/after the response date -> flagged as "Missing = OEDRA".
+Records where the visit is flagged as erroneous or the form is marked deleted (form-level or item-level delete flags) are excluded entirely from consideration.
+When ORAJ Disease Recurrence Indicator = "Yes" is the trigger, the Overall Response output value is recoded/displayed as "RECURRENCE SEEN".
+After identifying qualifying subject/phase/form records, the result is joined back to subject demographics (country, site number, subject number) and de-duplicated, then optionally filtered further by a "subdataset" subject-level filter macro.
+If the multi-form (Response form) parameter selection is not blank, RSP data is restricted to the specified form mnemonic(s); otherwise all response forms defined in the external RSP master supporting document are used.
+
+Report Scenarios:
+Scenario A (Missing OEFU): PD/recurrence response identified, follow-up phase confirmed via qualifying PMS status prior to response date, but no OEFU assessment on/after the response date exists at all -> row output with Missing Form = "OEFU".
+Scenario B (Missing OEDRA): PD/recurrence response identified, follow-up phase confirmed via qualifying PMS status prior to response date, an OEFU assessment exists on/after the response date with status "Continuing into Survival Follow-up Phase" or "Not Continuing into Any Trial Segments", but no OEDRA assessment exists on/after the response date -> row output with Missing Form = "OEDRA".
+No-data scenario: if zero qualifying records are found, a placeholder "No records meet the test condition" message row is output instead of the report table.
+Supporting-document display scenarios: if the "Supporting doc Page" parameter = Y, an additional sheet reproduces the ONC_OEFU_001 supporting document (Treatment Phase Order / PMS Form / Status for Next Trial Segment) contents; if the "Study Phase Match Page" parameter = Y, another additional sheet reproduces the study-phase supporting document (Phase Order / Treatment Phase / First Visit Mnemonic) contents.
+Pre-check scenarios: if either required external supporting document (ONC_OEFU_001_supp_<protocol>.csv or study_phase_supp_<protocol>.csv) is not found for the trial, the report outputs an error/placeholder message instead of running the main logic.
+
+Sorting:
+Final output sorted (no duplicate keys) by: Country, Site Number, Subject Number, Response Form (formmnemonic), Seq ID (spid_rsp), Response Date, Overall Response, DOV, Missing Form. Intermediate treatment-phase derivation is sorted by Subject ID descending then ascending assessment date to compute prior/next phase boundaries per subject.
+
+======================================================================
+2. LOGIC UNDERSTANDING
+======================================================================
+This spec identifies, per subject and treatment-phase window, cases where a Progressive Disease/recurrence result was recorded on an RSP or ORAJ form after the follow-up phase was confirmed started (via a prior qualifying PMS1/PMST status), but a required subsequent form is missing: either no OEFU follow-up form at all on/after the response date (Scenario A, Missing='OEFU'), or an OEFU exists showing continuation/discontinuation status but no OEDRA disease-recurrence form follows it (Scenario B, Missing='OEDRA'). All date comparisons are scoped within phase windows derived from an external study-phase document, erroneous/deleted records are excluded, results are joined to demographics, de-duplicated, optionally filtered, and sorted by a defined key -- with explicit fallback messaging for zero-record and missing-supporting-document conditions.
+
+1. Establish the analysis universe per subject and per treatment-phase 'seq' group: the study-phase reference table (external supporting doc) maps each treatment phase, in visit order, to its first visit, and each phase's date window runs from that phase's first-visit date up to (but excluding) the next phase's first-visit date. All subsequent comparisons (response date, PMS date, OEFU date, OEDRA date) must fall within this same phase window.
+2. Before doing anything else, exclude any record where the visit is flagged erroneous or the form is marked deleted (form-level or item-level delete flags) -- this filtering applies across RSP/ORAJ, PMS1/PMST, OEFU, and OEDRA records.
+3. Identify the 'Response trigger' (Record inclusion #1): within the phase window, find at least one on-form Response-form (RSP, restricted to the specific mnemonics configured via the multi-form parameter if not blank, otherwise all forms in the RSP master supporting doc) or ORAJ record with a non-null response date, where either one of Overall Response/Response/Hematologic Response/Overall iRECIST Response/Overall RECIST Response/Overall irRECIST Response/PET Response equals 'Progressive Disease', 'irProgressive Disease', or 'iCPD', OR the ORAJ Disease Recurrence Indicator equals 'Yes'.
+4. If the trigger in step 3 came from ORAJ Disease Recurrence Indicator = 'Yes' rather than a numeric/text response value, the displayed 'Overall Response' output is recoded to show 'RECURRENCE SEEN' instead of the raw ORAJ value.
+5. Confirm the follow-up phase has actually started (Record inclusion #2): within the same phase window, find at least one PMS1/PMST record whose assessment date is strictly earlier than the response date identified in step 3, AND whose 'Status of Subject for Next Trial Segment' matches one of the status values configured for that phase group in the ONC_OEFU_001 supporting document. This PMS record's form/visit/date become the 'PMS Form'/'PMS Visit'/'PMS Date' output columns.
+6. If steps 3 and 5 both succeed (a qualifying PD/recurrence response exists AND a qualifying prior PMS status confirms follow-up phase start), check the two missing-form scenarios in order.
+7. Scenario A (Missing OEFU): if, within the phase window, there is NO OEFU record with a non-null assessment date on or after the response date, flag this subject/phase/form combination with Missing Form = 'OEFU'.
+8. Scenario B (Missing OEDRA): if instead there IS at least one OEFU record within the phase window with a non-null assessment date on/after the response date, and that OEFU's next-trial-segment status is 'Continuing into Survival Follow-up Phase' or 'Not Continuing into Any Trial Segments', then check whether any OEDRA record within the phase window has a non-null assessment date on/after the response date; if no such OEDRA record exists, flag Missing Form = 'OEDRA'.
+9. Note that Scenario A and Scenario B are mutually exclusive alternatives (the OR in Record inclusion #3) -- a given qualifying response/PMS combination produces at most one Missing Form flag, not both, since Scenario B only applies when an OEFU record IS present. (inferred)
+10. After identifying all qualifying subject/phase/form records across steps 3-8, join the results back to subject demographics (subject registry joined to site/country reference data) to populate Country, Site, Subject Number.
+11. De-duplicate the joined result set, then optionally apply a further subject-level 'subdataset' filter macro if configured.
+12. Sort the final output by Country, Site Number, Subject Number, Response Form (formmnemonic), Seq ID (spid_rsp), Response Date, Overall Response, DOV, Missing Form, ensuring no duplicate keys remain.
+13. Separately, note that intermediate treatment-phase derivation (used to build the phase windows in step 1) is computed by sorting by Subject ID descending then assessment date ascending, in order to compute prior/next phase boundaries per subject -- this is a data-prep step distinct from the final sort in step 12.
+14. Handle pre-check/error scenarios: if either required external supporting document (ONC_OEFU_001_supp_<protocol>.csv or study_phase_supp_<protocol>.csv) is not found for the trial, output an error/placeholder message instead of running the main logic described in steps 1-13.
+15. If zero qualifying records are found after running the full logic, output a placeholder 'No records meet the test condition' message row instead of the report table.
+16. Handle optional supporting-document display parameters: if 'Supporting doc Page' = Y, add a sheet reproducing the ONC_OEFU_001 supporting document (Treatment Phase Order / PMS Form / Status for Next Trial Segment); if 'Study Phase Match Page' = Y, add a sheet reproducing the study-phase supporting document (Phase Order / Treatment Phase / First Visit Mnemonic).
+
+======================================================================
+3. SPEC REVIEW
+======================================================================
+Readiness: Needs revision -- The spec is largely well-structured and internally consistent, but has one blocking-level testability gap (undefined outcome when an OEFU exists with a status other than the two named values) combined with several warnings around phase-window scoping, PMS Visit column derivation, and tie-breaking when multiple qualifying PMS/response records exist. These should be resolved before handing off to query generation.
+
+[WARNING] (completeness) The Column Heading list includes 'PMS Form', 'PMS Visit', and 'PMS Date', but the Logic only describes deriving a PMS assessment date and status value from the PMS1/PMST record used for phase-start confirmation. There is no mention of a 'PMS Visit' field/value anywhere in the Logic (e.g., visit mnemonic or visit label captured from the PMS record).
+  -> Add a line to the Logic explicitly stating which source field populates 'PMS Visit' (e.g., the visit mnemonic/label associated with the qualifying PMS1/PMST record) so the column can be reliably populated.
+[WARNING] (completeness) The Description and Logic describe response triggers as being detected on 'RSP forms' or 'ORAJ', but the spec does not address what happens if a subject has multiple qualifying PMS records within the phase window (e.g., multiple statuses before the response date) or multiple qualifying response records in the same phase - which one is used to populate 'PMS Date'/'Response Date' in the output row.
+  -> Specify a selection rule (e.g., earliest qualifying PMS record, or latest qualifying PMS record immediately preceding the response date; and earliest vs. all qualifying response records) for cases with multiple matches within a phase window.
+[WARNING] (ambiguity) Rule 2 says the PMS assessment date must be 'strictly earlier than the response date above,' but does not clarify how to handle a PMS assessment with the same date as the response date (edge case not addressed) or how ties across multiple PMS records with different qualifying statuses on different dates should be resolved.
+  -> State explicitly whether same-day PMS/response dates are excluded (per 'strictly earlier') and, if multiple qualifying PMS records exist, which one (earliest/latest) is reported as PMS Date/PMS Form/PMS Visit.
+[INFO] (completeness) The report explicitly excludes 'erroneous' visits and 'deleted' forms, but does not address the edge case of an OEFU or OEDRA form with a missing/null assessment date value that is otherwise present (not deleted) — the spec only says 'no OEFU record ... has a non-null assessment date on/after the response date,' implicitly treating null-dated OEFU/OEDRA as non-qualifying, but doesn't state whether such a form should be surfaced/logged differently or simply ignored.
+  -> Add a clarifying sentence that OEFU/OEDRA records with null assessment dates are treated as non-existent for purposes of satisfying the missing-form check (already implied) to remove any ambiguity for edge-case handling.
+[INFO] (consistency) The Description calls the missing-form flag scenarios 'Follow-up (OEFU)' and 'Disease Recurrence Assessment (OEDRA)' forms, while the Logic and Column Heading refer to the same output field simply as 'Missing Form' populated with values 'OEFU' or 'OEDRA'. This is consistent internally, but the Description's parenthetical form-name expansion is not repeated in Column Heading, which could cause a reader to think 'OEFU'/'OEDRA' abbreviations are unexplained tokens.
+  -> Optionally add a short legend/footnote near Column Heading defining Missing Form values 'OEFU' = Follow-up form, 'OEDRA' = Disease Recurrence Assessment form, for reader clarity.
+[WARNING] (testability) Scenario B requires an OEFU with status 'Continuing into Survival Follow-up Phase' or 'Not Continuing into Any Trial Segments' AND a missing OEDRA. But the spec does not state what should happen if an OEFU exists on/after the response date but with a *different* status value (neither of the two named, nor blank/null). In that case neither Scenario A (OEFU exists) nor Scenario B (status doesn't match) would fire, meaning some subjects with a qualifying response and confirmed follow-up phase would silently produce no row.
+  -> Add an explicit rule (or confirm as intentional) for OEFU records on/after the response date whose status is something other than the two listed values — state whether these subjects are excluded from the report entirely or should be flagged under a scenario.
+[WARNING] (ambiguity) The phase window is defined as 'from that phase's first-visit date up to, but excluding, the next phase's first-visit date,' but the report's core comparisons (response date vs PMS date vs OEFU/OEDRA date) are stated to occur 'within the same treatment phase window.' It's not explicit whether the OEFU/OEDRA assessment being checked for existence must also fall within the *same* phase window as the response, or if OEFU/OEDRA occurring in a later phase would still satisfy the 'on/after the response date' check.
+  -> Clarify explicitly whether the missing-OEFU/OEDRA check is restricted strictly to the same phase window as the triggering response, or whether OEFU/OEDRA forms in subsequent phases can also satisfy the check (this materially changes which subjects are flagged as 'missing').
+[INFO] (naming) The spec uses 'PMS1/PMST' interchangeably with 'PMS Form' and 'PMS1/PMST form(s)' without stating a naming convention for how these two distinct form mnemonics (PMS1 vs PMST) relate (e.g., are they the same logical form with two possible mnemonics depending on protocol version, or genuinely different forms both eligible as triggers?).
+  -> Add a one-line clarification that PMS1 and PMST are alternate/versioned mnemonics for the same logical 'Status for Next Trial Segment' form, to avoid ambiguity for anyone mapping form names in the target study database.
+
+======================================================================
+4. GENERATED CODE
+======================================================================
+CQL -- Guardrails: passed
+
+SELECT
+  RSP_D.Country AS `Country`,
+  RSP_D.Site AS `Site`,
+  RSP_D.SubjectNumber AS `Subject Number`,
+  RSP_D.ResponseForm AS `Response Form`,
+  RSP_D.SeqID AS `Seq ID`,
+  DATE_FORMAT(RSP_D.ResponseDateRaw, '%d%b%Y') AS `Date Response Determined`,
+  RSP_D.OverallResponseDisp AS `Overall Response`,
+  RSP_D.PmsForm AS `PMS Form`,
+  RSP_D.PmsVisit AS `PMS Visit`,
+  DATE_FORMAT(RSP_D.PmsDateRaw, '%d%b%Y') AS `PMS Date`,
+  RSP_D.MissingForm AS `Missing Form`
+FROM
+(
+
+-- Response trigger from OTPRL (RSP-type form, per RSP_supp_doc mnemonic list -- OTPRL used as illustrative RSP form)
+SELECT
+    `@HDR`.`Site`.`Country` AS Country,
+    `@HDR`.`Site`.`Number` AS Site,
+    `@HDR`.`Subject`.`Name` AS SubjectNumber,
+    `@HDR`.`Subject`.`ID` AS SubjectID,
+    `@Form`.`Name` AS ResponseForm,
+    OTPRLFM.OTPRLRSSPIDIT AS SeqID,
+    RAWDATE(OTPRLFM.OTPRLRSDTCIT) AS ResponseDateRaw,
+    OTPRLFM.OTPRLRSORRESORIT AS OverallResponseDisp,
+    PMS_M.PmsForm AS PmsForm,
+    PMS_M.PmsVisit AS PmsVisit,
+    PMS_M.PmsDateRaw AS PmsDateRaw,
+    CASE
+      WHEN NOT EXISTS (
+        SELECT 1 FROM `EDC`.`OEFUFM` OEFU
+        WHERE `@HDR`.`Subject`.`ID` = `@HDR`.`Subject`.`ID`
+          AND `@Form`.`Status` = 'submitted__v'
+          AND OEFU.OEFUDSDTCIT IS NOT NULL
+          AND RAWDATE(OEFU.OEFUDSDTCIT) >= RAWDATE(OTPRLFM.OTPRLRSDTCIT)
+      ) THEN 'OEFU'
+      WHEN EXISTS (
+        SELECT 1 FROM `EDC`.`OEFUFM` OEFU2
+        WHERE `@HDR`.`Subject`.`ID` = `@HDR`.`Subject`.`ID`
+          AND `@Form`.`Status` = 'submitted__v'
+          AND OEFU2.OEFUDSDTCIT IS NOT NULL
+          AND RAWDATE(OEFU2.OEFUDSDTCIT) >= RAWDATE(OTPRLFM.OTPRLRSDTCIT)
+          AND OEFU2.OEFUDSTERMNTSIT IN ('Continuing into Survival Follow-up Phase', 'Not Continuing into Any Trial Segments')
+        )
+        AND NOT EXISTS (
+          SELECT 1 FROM `EDC`.`OEDRAFM` OEDRA
+          WHERE `@HDR`.`Subject`.`ID` = `@HDR`.`Subject`.`ID`
+            AND `@Form`.`Status` = 'submitted__v'
+            AND OEDRA.OEDRADSDTCIT IS NOT NULL
+            AND RAWDATE(OEDRA.OEDRADSDTCIT) >= RAWDATE(OTPRLFM.OTPRLRSDTCIT)
+        )
+      THEN 'OEDRA'
+      ELSE NULL
+    END AS MissingForm
+  FROM `EDC`.`OTPRLFM` OTPRLFM
+  INNER JOIN
+  (
+    SELECT
+      `@HDR`.`Subject`.`ID` AS SubjectID,
+      `@Form`.`Name` AS PmsForm,
+      `@HDR`.`Event`.`Name` AS PmsVisit,
+      RAWDATE(PMS1FM.PMS1DSDTCIT) AS PmsDateRaw,
+      PMS1FM.PMS1DSTERMSTATIT AS PmsStatus
+    FROM `EDC`.`PMS1FM` PMS1FM
+    WHERE `@Form`.`Status` = 'submitted__v'
+  ) PMS_M
+    ON `@HDR`.`Subject`.`ID` = PMS_M.SubjectID
+  WHERE `@Form`.`Status` = 'submitted__v'
+    AND (OTPRLFM.DELETEDFM = 'N' OR OTPRLFM.DELETEDFM IS NULL)
+    AND OTPRLFM.OTPRLRSDTCIT IS NOT NULL
+    AND OTPRLFM.OTPRLRSORRESORIT IN ('Progressive Disease', 'irProgressive Disease', 'iCPD')
+    AND PMS_M.PmsDateRaw < RAWDATE(OTPRLFM.OTPRLRSDTCIT)
+
+-- PmsStatus qualifying values are study-specific per ONC_OEFU_001 supporting document; not enumerable without that doc
+
+  UNION ALL
+
+  -- Response trigger from ORAJ Disease Recurrence Indicator = 'Yes'; recoded display as RECURRENCE SEEN
+SELECT
+    `@HDR`.`Site`.`Country` AS Country,
+    `@HDR`.`Site`.`Number` AS Site,
+    `@HDR`.`Subject`.`Name` AS SubjectNumber,
+    `@HDR`.`Subject`.`ID` AS SubjectID,
+    `@Form`.`Name` AS ResponseForm,
+    OEDRAFM.OEDRADSREFIDIT AS SeqID,
+    RAWDATE(OEDRAFM.OEDRADSDTCIT) AS ResponseDateRaw,
+    'RECURRENCE SEEN' AS OverallResponseDisp,
+    PMS_M2.PmsForm AS PmsForm,
+    PMS_M2.PmsVisit AS PmsVisit,
+    PMS_M2.PmsDateRaw AS PmsDateRaw,
+    CASE
+      WHEN NOT EXISTS (
+        SELECT 1 FROM `EDC`.`OEFUFM` OEFU
+        WHERE `@HDR`.`Subject`.`ID` = `@HDR`.`Subject`.`ID`
+          AND `@Form`.`Status` = 'submitted__v'
+          AND OEFU.OEFUDSDTCIT IS NOT NULL
+          AND RAWDATE(OEFU.OEFUDSDTCIT) >= RAWDATE(OEDRAFM.OEDRADSDTCIT)
+      ) THEN 'OEFU'
+      WHEN EXISTS (
+        SELECT 1 FROM `EDC`.`OEFUFM` OEFU2
+        WHERE `@HDR`.`Subject`.`ID` = `@HDR`.`Subject`.`ID`
+          AND `@Form`.`Status` = 'submitted__v'
+          AND OEFU2.OEFUDSDTCIT IS NOT NULL
+          AND RAWDATE(OEFU2.OEFUDSDTCIT) >= RAWDATE(OEDRAFM.OEDRADSDTCIT)
+          AND OEFU2.OEFUDSTERMNTSIT IN ('Continuing into Survival Follow-up Phase', 'Not Continuing into Any Trial Segments')
+        )
+        AND NOT EXISTS (
+          SELECT 1 FROM `EDC`.`OEDRAFM` OEDRA2
+          WHERE `@HDR`.`Subject`.`ID` = `@HDR`.`Subject`.`ID`
+            AND `@Form`.`Status` = 'submitted__v'
+            AND OEDRA2.OEDRADSDTCIT IS NOT NULL
+            AND RAWDATE(OEDRA2.OEDRADSDTCIT) >= RAWDATE(OEDRAFM.OEDRADSDTCIT)
+        )
+      THEN 'OEDRA'
+      ELSE NULL
+    END AS MissingForm
+  FROM `EDC`.`OEDRAFM` OEDRAFM
+  INNER JOIN
+  (
+    SELECT
+      `@HDR`.`Subject`.`ID` AS SubjectID,
+      `@Form`.`Name` AS PmsForm,
+      `@HDR`.`Event`.`Name` AS PmsVisit,
+      RAWDATE(PMS1FM.PMS1DSDTCIT) AS PmsDateRaw,
+      PMS1FM.PMS1DSTERMSTATIT AS PmsStatus
+    FROM `EDC`.`PMS1FM` PMS1FM
+    WHERE `@Form`.`Status` = 'submitted__v'
+  ) PMS_M2
+    ON `@HDR`.`Subject`.`ID` = PMS_M2.SubjectID
+  WHERE `@Form`.`Status` = 'submitted__v'
+    AND OEDRAFM.OEDRACOVALIT = 'Yes'
+    AND OEDRAFM.OEDRADSDTCIT IS NOT NULL
+    AND PMS_M2.PmsDateRaw < RAWDATE(OEDRAFM.OEDRADSDTCIT)
+) RSP_D
+WHERE RSP_D.MissingForm IS NOT NULL
+ORDER BY
+  `Country`, `Site`, `Subject Number`, `Response Form`, `Seq ID`, `Date Response Determined`, `Overall Response`, `Missing Form`
+
+Explanation:
+Approach: I built two UNION ALL branches for the "response trigger" (OTPRL as a representative RSP-family form per the RSP_supp_doc concept, and ORAJ for the Disease Recurrence Indicator trigger, recoding to "RECURRENCE SEEN"), each inner-joined to PMS1FM (the "PMS Form") requiring the PMS assessment date to precede the response date, then a CASE expression uses correlated NOT EXISTS/EXISTS subqueries against OEFUFM and OEDRAFM to derive the "Missing Form" flag per the spec's two scenarios, with the outer query filtering to only rows where a missing-form condition was found. Key assumptions/flags: (1) Only OTPRLFM was available/plausible from the "Known Forms" list as a concrete RSP-family form (OTPRLRSORRESORIT used as "Overall Response"; other response-type items like Hematologic/iRECIST/RECIST/irRECIST/PET Response mentioned in the spec are not distinctly named in the metadata, so only the Overall Response item was used, and the RSP_supp_doc-driven multi-form logic, treatment-phase windowing via study_phase_supp doc, and PMS status qualifying-value list from the ONC_OEFU_001 supporting document could not be implemented since those external CSV documents' contents aren't available -- this is a significant simplification flagged explicitly); (2) DOV/erroneous-visit and DELETEDFM exclusions were only applied where a DELETEDFM item was confirmed for the form (OTPRLFM has DELETEDFM; PMS1FM and OEDRAFM/OEFUFM do not list a DELETEDFM item in metadata, so those exclusions were omitted per form availability); (3) the multi-treatment-phase "seq" grouping/windowing and the "subdataset" subject filter macro are not implemented since no concrete Form/Item or parameter grounding exists for them; recommend confirming exact RSP form list, PMS qualifying status values, and phase windowing via the actual supporting documents and DESCRIBE FORM before running.

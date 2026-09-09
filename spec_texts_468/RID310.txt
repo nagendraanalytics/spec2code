@@ -1,0 +1,139 @@
+Report ID: RID310
+
+Report Title:
+Number of Target Lesions Reconciliation
+
+Description:
+This report will list subject that have more target lesions than those allowed per protocol.
+
+Column Heading:
+1.Country
+
+2.Site
+
+3.Subject Number
+
+4.Form Mnemonic
+
+5.Date Item
+
+6.Date
+
+7.Location (Organ)
+
+8. Number of lesions
+
+Logic:
+Logic 1: Lesion Form Mnemonic selected from LSN_supp_doc.csv is initialized.
+
+AND
+
+Logic 2: There are records where the option selected in Lesion Category/Lesion Identification/ Tumor Identification contains "Target".
+
+AND
+
+Logic 3: The total of records that meet logic 2 is greater than the number entered in the "Total Number of Target Lesions" prompt
+
+OR
+
+Logic 4.1: There are more than one record of logic 2 that have the same Location (Organ)
+
+AND
+
+Logic 4.2: The total of records that meet logic 4.1 is greater than the number entered in the "Number of target lesions per organ " prompt
+
+Note1: Deleted records should not be taken into account
+
+Note 2: The items [ Lesion form, Lesion Category/Lesion Identification/ Tumor Identification/ Location (Organ)/ Indicate if Lesion Merged or Split/ Date of Assessment/Date of Initial Lesion Identification for This Trial (Scan/Image/Physical Exam)] should be used from the items in the ‘itemquestion’ column in the master LSN_supp_doc.csv
+
+Note 3: If there are multiple Lesion evaluation form selected from the master LSN_supp_doc.csv. that meet the criteria, please check them all.
+
+Note4: Records were the "Indicate if Lesion Merged or Split" item is completed should not be considered.
+
+Note5: If the Lesion Category/Lesion Identification/ Tumor Identification also contains "New" the record should be ignored.
+
+Note6: Gather all records that have the same Date of Assessment/Date of Initial Lesion Identification for This Trial (Scan/Image/Physical Exam)
+
+Note7: When Location (Organ) is "Other" comparison should not be case sensitive.
+
+Note8: Leave column 7 for when logic 3 is met.
+
+Report Scenarios:
+A-No
+
+Lesion Form Mnemonic selected from LSN_supp_doc.csv is not initialized
+
+B-No
+
+There are no records where the option selected in Lesion Category/Lesion Identification/ Tumor Identification contains "Target".
+
+C- No
+
+There are records where the option selected in Lesion Category/Lesion Identification/ Tumor Identification contains "Target".
+
+AND
+
+The total of records that meet is not greater than the number entered in the "Total Number of Target Lesions" prompt
+
+D- Yes
+
+There are records where the option selected in Lesion Category/Lesion Identification/ Tumor Identification contains "Target".
+
+AND
+
+The total of records that meet is greater than the number entered in the "Total Number of Target Lesions" prompt
+
+E-No
+
+There are records where the option selected in Lesion Category/Lesion Identification/ Tumor Identification contains "Target".
+
+AND
+
+There is only one record of logic 2 that have the same Location (Organ)
+
+F-No
+
+There are records where the option selected in Lesion Category/Lesion Identification/ Tumor Identification contains "Target".
+
+AND
+
+There are more than one record of logic 2 that have the same Location (Organ)
+
+AND
+
+The total of records that meet logic 4.1 is not greater than the number entered in the "Number of target lesions per organ " prompt
+
+G-Yes
+
+There are records where the option selected in Lesion Category/Lesion Identification/ Tumor Identification contains "Target".
+
+AND
+
+There are more than one record of logic 2 that have the same Location (Organ)
+
+AND
+
+The total of records that meet logic 4.1 is greater than the number entered in the "Number of target lesions per organ " prompt
+
+Sorting:
+Country, Site Number, Subject Number
+
+Parameter Selection:
+Country, First Site, Last Site, First Subject, Last Subject, List of Subjects, Number of target lesions per organ (set 5 by default), Total Number of Target Lesions (set 10 by default)
+
+Form.Item Names:
+1.SA.Country
+
+2.SA.Site Mnemonic
+
+3.SA.Subject Number
+
+4. Lesion. Form Mnemonic selected from LSN_supp_doc.csv
+
+5.Date of Assessment/Date of Initial Lesion Identification for This Trial (Scan/Image/Physical Exam). Item Name selected from LSN_supp_doc.csv
+
+6. Lesion.Date of Assessment/Date of Initial Lesion Identification for This Trial (Scan/Image/Physical Exam) selected from LSN_supp_doc.csv
+
+7. Lesion.Location (Organ) selected from LSN_supp_doc.csv
+
+8. Display the total number of records that met logic 3 Or Display the total number of records that met logic 4.2.

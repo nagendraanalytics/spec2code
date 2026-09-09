@@ -1,0 +1,144 @@
+Report ID: RID263
+
+Report Title:
+DOV reconciliation between Last cycle and treatment discontinuation visit of the same treatment phase
+
+Description:
+The report generates a listing of subjects with the last cycle initialized and treatment discontinuation visit of the same treatment phase does not have the same DOV or is not initialized.
+
+Column Heading:
+1. Country
+
+2. Site
+
+3. Subject Number
+
+4. Last Cycle Visit Mnemonic
+
+5. Last Cycle Date of Visit
+
+6. EOT Visit Mnemonic
+
+7. EOT Date of Visit
+
+8. Group
+
+9. Scenario
+
+Logic:
+Prior to processing the logic, apply condition(s) according to the supporting doc to check if subjects match the criterial or not.
+
+Logic 1: DOV.Date of Visit of Last Cycle Visitmnemonic according to supporting doc is <> NULL and DOV.Date of EOT Visitmnemonic according to supporting doc = NULL
+
+OR
+
+Logic 2: DOV.Date of Visit of Last Cycle Visitmnemonic according to supporting doc is <> DOV.Date of Visit of EOT Visitmnemonic according to supporting doc
+
+Note 1: Deleted records and erroneous visits will be excluded.
+
+Note 2: If criteria(s) are provided as 'NA' in the supp doc (columns 2-5), use the same visits for all subjects.
+
+Note 3: If supp doc is not provided, display the message as "ONC_DOV_003_JR_STD Supporting Document Not Present for This Trial".
+
+Note 4: If Logic 2 and 1 are fulfilled at the same time, only output for Logic 1.
+
+Requires supporting document to be named ONC_DOV_003_supp_<xxxxxxx>.csv and will contain the following columns and associated content:
+
+1 row for each expected Last Cycle Visit and corresponding EOT Visit.
+
+Definition of Criteria: value specified in 4th column entered in item specified in 3rd column on form specified in 2nd column. For NA in all three mentioned columns please ignore Criteria condition and display output for all subjects.
+
+1. Group
+
+2. Criteria Form
+
+3. Criteria Itemquestion
+
+4. Criteria Value
+
+5. Last Cycle Visitmnemonic
+
+6. EOT Visitmnemonic
+
+e.g.
+
+Group: 1
+
+Criteria Form: TRIGA
+
+Criteria Item question: Based on the criteria specified above, select the appropriate response for this subject
+
+Criteria Value: Cisplatin and Gemcitabine
+
+Last Cycle Visitmnemonic: Cycle 6
+
+EOT Visitmnemonic: Discontinuation Visit
+
+Group: 2
+
+Criteria Form: TRIGA
+
+Criteria Item question: Based on the criteria specified above, select the appropriate response for this subject
+
+Criteria Value: -3475
+
+Last Cycle Visitmnemonic: Cycle 35
+
+EOT Visitmnemonic: Discontinuation Visit
+
+OR
+
+Group: 1
+
+Criteria Form: NA
+
+Criteria Item question: NA
+
+Criteria Value: NA
+
+Last Cycle Visitmnemonic: Cycle 35
+
+EOT Visitmnemonic: Discontinuation Visit
+
+The number of rows in the supporting document will be represented in the Report Header as "# of rows for customization".
+
+The actual information provided by the supporting doc can be outputted by selecting Y in the parameter "Supporting doc Page".
+
+Report Scenarios:
+A – Yes
+
+DOV of Last Cycle Visit is present and DOV of EOT Visit is missing within the same group
+
+B – Yes
+
+DOV of Last Cycle Visit is different than DOV of EOT Visit within the same group
+
+C – No
+
+DOV of EOT Visit is present and DOV of Last Cycle Visit is missing within the same group
+
+D – No
+
+DOV of Last Cycle Visit is equal to DOV of EOT Visit within the same group
+
+Parameter Selection:
+Country, First Site, Last Site, First Subject, Last Subject, List of Subjects, Supporting Doc Page (N/Y, Default as N)
+
+Form.Item Names:
+1. SA.Country
+
+2. SA.Site
+
+3. SA.Subject number
+
+4. Last Cycle Visit mnemonic prompt
+
+5. DOV.Date of Visit of Last Cycle Visit mnemonic prompt
+
+6. EOT Visit mnemonic prompt
+
+7. DOV.Date of Visit of EOT Visit mnemonic prompt
+
+8. Group – Provided in the supp doc
+
+9. Display “Scenario 1” if Logic 1 is met or “Scenario 2” if Logic 2 is met

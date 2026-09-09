@@ -1,0 +1,181 @@
+Report ID: RID132
+
+Report Title:
+Missing Lab Test per Visit
+
+Description:
+The report displays subjects who have missing lab tests per visit
+
+Column Heading:
+1. Country
+
+2. Site
+
+3. Subject Number
+
+4. Visit
+
+5. DOV
+
+6. Form
+
+7. Scheduled Time
+
+8. Itemquestion
+
+9. Test Name
+
+10. Group
+
+Logic:
+This report displays the missing local lab tests per visit based on the customization done through the supporting document.
+
+According to the values in the “Supporting document”:
+
+<Criteria Form1>.<Criteria Itemquestion1> = <Criteria Value1>  AND
+
+<Criteria Form2>.<Criteria Itemquestion2> = <Criteria Value2> AND
+
+<Criteria Form3>.<Criteria Itemquestion3> = <Criteria Value3> AND
+
+<Form>.<Test> are all missing for the same group at same visit.
+
+Notes:
+
+1. The customization provides the expected tests per form. Outputs if system date – DOV > Data Entry Window.
+
+2. CLAB, HLAB, ULAB, CLB01, HLB01, ULB01, UA, OLB01 – only if the specified item is completely entered with the result, units, indicator, as applicable, will it be considered as complete.
+
+3. If item “Completed_Flag” from the Supporting document is completed as “0”, an output is expected ONLY when at least one of the forms in the same group is initialized
+
+4. If item “Completed_Flag” from the Supporting document is completed as “1”, if an output is expected even if NEITHER of the forms in the same group are initialized
+
+(Initialize form makes reference to a form “Date Itemquestion” per supporting document that is completed (<> NULL))
+
+5. OLAB- if the specified Test Name has been selected, then it will be considered as complete.
+
+6. The comparison should be made within forms entered on the same visit and the same group, according to the Supporting document.
+
+7. Report should not consider deleted records.
+
+8. Report should not consider records in erroneous visits.
+
+9. Report should not consider visits without Date of Visit.
+
+10. If Scheduled Time is not provided in supporting document, report only consider Visit. If Scheduled Time is provided in supporting document for specific form and visit, report should also consider Scheduled Time requirement for the corresponding form and visit.
+
+Requires Supporting Document to be named LLNR009_supp_<xxxxxxx>.csv and will contain the following columns and associated content:
+
+1. Group - numbers that identify the different groups of tests.
+
+Expected individual tests per form will appear with a unique Group number.
+
+If two or more tests could be done interchangeably, i.e. completing only one of them is enough, then all those rows need to have the same Group number.
+
+2. Criteria Form1 - Arm/Cohort/Stratification Form Mnemonic SR/SRIVRS/TRIG. If applies for all subjects regardless the Arm/Cohort/Stratification, enter NA
+
+3. Criteria Itemquestion1 - Arm/Cohort/Stratification Itemquestion1. If applies for all subjects regardless the Arm/Cohort/Stratification, enter NA OR if the Itemquestion1 is not applicable for the protocol, enter NA
+
+4. Criteria Value1 - Arm/Cohort/Stratification Value. If applies for all subjects regardless the Arm/Cohort/Stratification, enter NA OR if the itemValue1 is not applicable for the protocol, enter NA
+
+5. Criteria Form2 - Arm/Cohort/Stratification Form Mnemonic SR/SRIVRS/TRIG. If applies for all subjects regardless the Arm/Cohort/Stratification, or is not needed enter NA
+
+6. Criteria Itemquestion2 - Arm/Cohort/Stratification Itemquestion2. If applies for all subjects regardless the Arm/Cohort/Stratification, enter NA OR if the Itemquestion2 is not applicable for the protocol, or is not needed enter NA
+
+7. Criteria Value2 - Arm/Cohort/Stratification Value2. If applies for all subjects regardless the Arm/Cohort/Stratification, enter NA OR if the Value2 is not applicable for the protocol, enter NA
+
+8. Criteria Form3 - Arm/Cohort/Stratification Form Mnemonic SR/SRIVRS/TRIG. If applies for all subjects regardless the Arm/Cohort/Stratification, or is not needed enter NA
+
+9. Criteria Itemquestion3 - Arm/Cohort/Stratification Itemquestion3. If applies for all subjects regardless the Arm/Cohort/Stratification, enter NA OR if the Itemquestion3 is not applicable for the protocol, or is not needed enter NA
+
+10. Criteria Value3 - Arm/Cohort/Stratification Value3. If applies for all subjects regardless the Arm/Cohort/Stratification, enter NA OR if the Value3 is not applicable for the protocol, enter NA
+
+11. Visitmnemonic: corresponding to the visit where the tests are expected. Put NA if information should be reviewed in all visits
+
+12. Form – corresponding to the appropriate local lab eCRFs
+
+13. Scheduled Time – corresponding to the Scheduled time where the tests are expected. Put NA if not consider Scheduled Time.
+
+14. Date Itemquestion – corresponding Date question to the appropriate local lab eCRFs
+
+15. Itemquestion - corresponding to the items on the formmnemonic previously selected
+
+16. Test Name - display the itemname corresponding to the appropriate test. To be completed ONLY for OLAB form. For other local lab forms, complete with NA
+
+17. Completed_Flag: Enter “0” - if an output is expected only when at least one of the forms in the same group is initialized. Enter “1” - if an output is expected even if neither of the forms in the same group are initialized
+
+(Initialize form makes reference to a form Date Itemquestion that is completed (<> NULL))
+
+E.g.
+
+CLAB (Urea) and CLAB (Blood Urea Nitrogen) required only when CLAB form is already initialized – enter “0”
+
+OLAB (Carbon Dioxide) and CLAB (Bicarbonate) required only when either one of the forms (OLAB or CLAB) are already initialized – enter “0”
+
+CLAB (Urea) and CLAB (Blood Urea Nitrogen) required even if CLAB form is NOT initialized – enter “1”
+
+OLAB (Carbon Dioxide) and CLAB (Bicarbonate) required even when neither one of the forms (OLAB and CLAB) are already initialized – enter “1”
+
+e.g:
+
+Group,Criteria Form1,Criteria Itemquestion1,Criteria Value1,Criteria Form2,Criteria Itemquestion2,Criteria Value2, Criteria Form3,Criteria Itemquestion3,Criteria Value3, Visitmnemonic, Form, Scheduled Time,Itemquestion,Test Name, Form_Initialized_Flag
+
+1,SR, Arm, -1308A (-1308 -3475 25 mg 400 mg) Q6W + Lenvatinib 20 mg QD,NA,NA,NA, NA,NA,NA, Screening,CLAB,NA,Enter date specimen collected,
+
+Albumin,NA,0
+
+1,SR, Arm, -1308A (-1308 -3475 25 mg 400 mg) Q6W + Lenvatinib 20 mg QD,NA,NA,NA, NA,NA,NA, Screening, CLAB,NA, Enter date specimen collected, LDH (Lactate Dehydrogenase),NA,0
+
+2,TRIGA,Cohort,Cohort A,NA,NA,NA, NA,NA,NA, Cycle 1 Day1, CLAB,NA,Blood Urea Nitrogen,NA,0
+
+2,TRIGA,Cohort,Cohort A,NA,NA,NA,NA,NA,NA,Cycle 1 Day 1, CLAB,NA,Urea,NA,0
+
+3,SR,Cohort,PD-1 naive,NA,NA,NA,NA,NA,NA,NA,Screening,HLAB,NA,INR,NA,1
+
+3,SR,Cohort,PD-1 naive,NA,NA,NA,NA,NA,NA,NA,Screening,HLAB,NA,Activated Partial Thromboplastin Time,NA,1
+
+4,SR,Arm,Arm 1,NA,NA,NA,NA,NA,NA,NA,Cycle 1, OLAB,Day 22,Test Name,Beta-D-Glucan,0
+
+4,SR,Arm,Arm 1,NA,NA,NA,NA,NA,NA,NA,Cycle 1,OLAB,Day 22,Test Name,C-Reactive Protein,0
+
+The number of rows in the supporting document will be represented in the Report Header as "# of rows for customization".
+
+The actual information provided by the supporting doc can be outputted by selecting Y in the parameter "Supporting doc Page".
+
+Report Scenarios:
+1) Output=YES Visit has DOV and is not erroneous AND laboratory forms are initialized System date – DOV > Data Entry Window All of the tests in the group are missing, AND the item “Form_Initialized_Flag” in the Supporting document is completed as Y, then the whole group will be outputted.
+
+2) Output=YES Visit has DOV and is not erroneous AND laboratory forms are not initialized System date – DOV > Data Entry Window All of the tests in the group are missing, AND the item “Form_Initialized_Flag” in the Supporting document is completed as N, then the whole group will be outputted.
+
+3) Output=NO Visit has DOV and is not erroneous, but laboratory forms are NOT initialized Although all of the tests in the group are missing, and the item “Form_Initialized_Flag” in the Supporting document is completed as Y, then the whole group will not be outputted
+
+4) Output=NO Visit has DOV and is not erroneous At least one of the tests in the group is present with the complete information, so the whole group will not be outputted
+
+5) Output=NO Visit does not have DOV or it is marked as erroneous
+
+Sorting:
+Country, Site, Subject Number, Visitorder, Visit, Group, Form, Scheduled time, Itemquestion, Test Name
+
+Parameter Selection:
+Country, First Site, Last Site, First Subject Number, Last Subject Number, List of Subjects, Randomized Only, Data Entry Window, Supporting Doc Page (N/Y, Default as N)
+
+Form.Item Names:
+1. Subject Assignment.Site Country
+
+2. Subject Assignment.Site Mnemonic
+
+3. Subjects.Subject Number
+
+4. Visits.Visit Mnemonic
+
+5. Visits.DOV
+
+6. Supp doc.Form
+
+7. Supp doc.Scheduled Time - blank if NA provided in Supp doc
+
+8. Supp doc.Itemquestion
+
+9. Supp doc.Test Name
+
+10. Supp doc.Group - provided with the customization

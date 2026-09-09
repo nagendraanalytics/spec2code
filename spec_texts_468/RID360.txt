@@ -1,0 +1,22 @@
+Report ID: RID360
+
+Report Title:
+Study Medication First Dose Date vs Dates of Oncologic Radiation
+
+Description:
+This report lists subjects where the Dates of Oncologic Radiation are not prior to First Dose of Study Medication according to protocol specified window.
+
+Column Heading:
+1. Country 2. Site 3. Subject number 4. Form Name 5. SM Seq# 6. MIN First Dose of Study Medication 7. ORAD Seq# 8. ORAD Start date 9. ORAD Stop date
+
+Logic:
+On SM01/SMAU/SM/SMAB form 'Please Indicate if this is the First Dose for this Label Description' item checkbox is marked AND ( (Scenario=Scenario 1 AND Logic 1: (SM01/SMAU/SM/SMAB.MIN 'Start Date and Time') - (ORAD form.Start Date)<=Windows Day) OR (Scenario=Scenario 2 AND Logic 2: (SM01/SMAU/SM/SMAB.MIN 'Start Date and Time') - (ORAD form.Stop Date)<=Windows Day) ) Note 1: Please exclude deleted records and erroneous visits from programming; Note 2: Only use the forms available per study design Note 3: Scenarios should be selected as prompt Note 4: For UNK options at ORAD.Stop Date or ORAD.Start Date: When Day is UNK then compare Month and Year values. When Day and Month are UNK then compare Year value. Note 5: If Diference bewteen ORAD Start/Stop Date and MIN Start Date and Time are equal to windows days in prompt always output data for scenarios 1 and 2. Note 6: Prompt Window Default Date 28 Days.
+
+Report Scenarios:
+Scenario 1 Output = Yes Start date of radiation in ORAD form is less than protocol days window specified on prompt prior to the first dose of Study medication Scenario 2 Output = Yes Stop date of radiation in ORAD form is less than protocol days window specified on prompt to the first dose of Study medication Scenario 3 Output = No Start Date of Oncologic Radiation is greater than protocol window days specified on prompt prior to the first dose of Study medication Scenario 4 Output = No Stop date of radiation in ORAD is greater than protocol window days specified prior on prompt to the first dose of Study medication
+
+Parameter Selection:
+Country, Site, Subject Number, Scenario (Multiple selection: Scenario 1, Scenario 2), Windows Day, Randomization Only, List of Subjects
+
+Form.Item Names:
+1. SA form. Country 2. SA form. Site 3. SA form. Subject number 4. Display it as SM or SMAU or SMAB 5. SM or SMAU or SMAB form. Seq# 6. SM or SMAU or SMAB form. Start date and time 7. ORAD form. Seq# 8. ORAD form. Start Date 9. ORAD form. Stop Date

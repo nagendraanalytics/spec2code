@@ -1,0 +1,273 @@
+Report ID: RID207
+
+Report Title:
+Number of records per form per visit
+
+Description:
+Report lists patients that has not the correct number of records per form per visit or when the date of assessment does not match with the corresponded Visit Date.
+
+Column Heading:
+Scenario 1
+
+1. Country
+
+2. Site
+
+3. Subject Number
+
+4. Visit
+
+5. DOV
+
+6. Form name
+
+7. Date field name
+
+8. Condition within form
+
+9. Total number
+
+10. Acceptable number
+
+Scenario 2
+
+1. Country
+
+2. Site
+
+3. Subject Number
+
+4. Visit
+
+5. DOV
+
+6. Form name
+
+7. Seq#
+
+8. Date field Name
+
+9. Date
+
+10. Condition within form
+
+Logic:
+According to the values in the ““Supporting document””:
+
+<Criteria Form1>.<Criteria Itemquestion1> = <Criteria Value1>  AND
+
+<Criteria Form2>.<Criteria Itemquestion2> = <Criteria Value2> AND
+
+<Criteria Form3>.<Criteria Itemquestion3> = <Criteria Value3> AND
+
+Report output subjects who meet the following criteria.
+
+Scenario 1
+
+The number of records for the specified form per visit and any condition/restriction within the form as applicable<> specified acceptable number of records for specific groups.
+
+User provides information:
+
+Provide 1.) group information 2. ) the acceptable number of records per form per visit and any condition/restriction within the form as applicable for each specific group
+
+<Group><Form> <Date> <Condition within the form> <number of record allowed>
+
+Eg:
+
+SR- Cohort-Cohort A
+
+1-PK04A --Date and Time Samples Obtained- Scheduled Time-2
+
+1-HDA --Date of Assessment-Lesion Category-2
+
+2-SR- Cohort-Cohort B
+
+2-PK04A --Date and Time Samples Obtained-Scheduled Time-2
+
+2-VB --Date/Time of Assessment -1
+
+Scenario 2
+
+Date of Assessment (Date/Time of Assessment) on the specified form (only consider a date in programming)<> the current date of visit or out of acceptable days range from DOV (date margin is inclusive) for specific groups.
+
+User provides information:
+
+Provide the group information（it is not applicable to Scenario 2)
+
+Provide the acceptable days range from DOV
+
+Provide the repeating forms to include in the review with the specific Date to be included and the Condition if applicable
+
+<Form> <Date> <Condition within the form>
+
+Eg:
+
+SR- Cohort-Cohort A
+
+HDA --Date of Assessment - 3
+
+PK04A --Date and Time Samples Obtained
+
+SR- Cohort-Cohort B
+
+PK04A --Date and Time Samples Obtained-Scheduled Time
+
+VB --Date/Time of Assessment -3
+
+Deleted records and Erroneous visits will not be considered in programming and logic.
+
+Notes:
+
+Missing records should only be considered when the form has been initialized. The forms that have not been initialized should be removed, i.e. do not have at least one record at the given visit.
+
+Column ‘Condition within form’ for two tables should be masked as ‘xxx’ if the form is masked as a blinded table in the supp doc (forms Blinded Flag=Y)
+
+The form can be selected in the parameter, please enter form names with commas separated; If not any form name is provided in the prompt (i.e. leave blank), then it runs for all forms present in the supporting document.
+
+1 row for each group of the acceptable number of records per form per visit and any condition/restriction within the form as applicable.
+
+Condition is just used to check the duplicate scenario. If more than one condition is applied to duplicate scheduled time, i.e. Scheduled time is duplicated per the same study medication and study period, then all those rows for the same scheduled time for specific visits should have the same Group Number. Otherwise, each form and scenario for specific visits has a unique Group Number.
+
+For Scenario 1, take into account the number of records listed in the supporting document regardless of the DOV of the visit
+
+For Scenario 2, If the form Date of visit is within at least one of the windows listed in the supporting document no output is required. (Date not fulfill the ranges provided within the group, output is required)
+
+Requires supporting document to be named TQ015_supp_<xxxxxxx>.csv and will contain the following columns and associated content:
+
+1) Group - If more than 1 row could be considered as one group in supp doc, as long as meet one of them, it means it's satisfied with the logic and would not be outputted.  If two or more tests could be done within the same visit, i.e. complete test within -3 to 3 days of DOV and 10 to 16 days from DOV, then those rows need to have the same Group number.
+
+2. Criteria Form1 - Arm/Cohort/Stratification Form Mnemonic SR/SRIVRS/TRIG. If applies for all subjects regardless the Arm/Cohort/Stratification, enter NA
+
+3. Criteria Itemquestion1 - Arm/Cohort/Stratification Itemquestion1. If applies for all subjects regardless the Arm/Cohort/Stratification, enter NA OR if the Itemquestion1 is not applicable for the protocol, enter NA
+
+4. Criteria Value1 - Arm/Cohort/Stratification Value. If applies for all subjects regardless the Arm/Cohort/Stratification, enter NA OR if the itemValue1 is not applicable for the protocol, enter NA
+
+5. Criteria Form2 - Arm/Cohort/Stratification Form Mnemonic SR/SRIVRS/TRIG. If applies for all subjects regardless the Arm/Cohort/Stratification, or is not needed enter NA
+
+6. Criteria Itemquestion2 - Arm/Cohort/Stratification Itemquestion2. If applies for all subjects regardless the Arm/Cohort/Stratification, enter NA OR if the Itemquestion2 is not applicable for the protocol, or is not needed enter NA
+
+7. Criteria Value2 - Arm/Cohort/Stratification Value2. If applies for all subjects regardless the Arm/Cohort/Stratification, enter NA OR if the Value2 is not applicable for the protocol, enter NA
+
+8. Criteria Form3 - Arm/Cohort/Stratification Form Mnemonic SR/SRIVRS/TRIG. If applies for all subjects regardless the Arm/Cohort/Stratification, or is not needed enter NA
+
+9. Criteria Itemquestion3 - Arm/Cohort/Stratification Itemquestion3. If applies for all subjects regardless the Arm/Cohort/Stratification, enter NA OR if the Itemquestion3 is not applicable for the protocol, or is not needed enter NA
+
+10. Criteria Value3 - Arm/Cohort/Stratification Value3. If applies for all subjects regardless the Arm/Cohort/Stratification, enter NA OR if the Value3 is not applicable for the protocol, enter NA
+
+11) Form - Unique value in each group, if have other conditions use COND.
+
+12) Visit - Unique value in each group, For Scenario 1/2, specified as 'NA' if it is checked for all visits;
+
+13) Schedule time - "NA" check both scheduled and unscheduled; "Scheduled" only check the scheduled time, UNS will be excluded.
+
+14) Date - Select the item contains "date/time", which needs to be compared with DOV and check if out of windows
+
+15) Mindays - minimum acceptable days from DOV. "NA" if it is not checked for scenario 2
+
+16) Maxdays - maximum acceptable days from DOV. "NA" if it is not checked for scenario 2
+
+17) No of records- per form per visit. "NA" if it is not checked for scenario 1
+
+18) Blinded Flag:  enter as 'Y' for blinded forms, and enter as 'N' for unblinded forms.
+
+19) COND (if more than 1 adding a new batch in the same row):
+
+      1. If not applicable leave blank
+
+      2.CONDITEM1  + CONDSYMBOL1 (=, <, >, <>, etc) + CONDRESULT1 (Value)
+
+example:
+
+Group,  Criteria Form1,Criteria Itemquestion1,Criteria Value1,Criteria Form2,Criteria Itemquestion2,Criteria Value2,Criteria Form3,Criteria Itemquestion3,Criteria Value3, Form, Visit, schedule time, Date, Mindays, Maxdays, No of records, Blinded Flag, CONDITEM1, CONDSYMNBOL1, CONDRESULT1
+
+NA,SR,ARM,3475+Fluoracil,NA,NA,NA, NA,NA,NA,ECOG, Screening,Schedule, Date of Assessment , Scheduled, 0, 3, 2, N
+
+Group,  Criteria Form1,Criteria Itemquestion1,Criteria Value1,Criteria Form2,Criteria Itemquestion2,Criteria Value2,Criteria Form3,Criteria Itemquestion3,Criteria Value3 Form, Visit, schedule time, Date,  Mindays, Maxdays, No of records, Blinded Flag, CONDITEM1, CONDSYMNBOL1, CONDRESULT1
+
+ NA.SR,ARM,1225,NA,NA,NA, NA,NA,NA, SMAB, NA, NA, Start Date and Time , NA, NA, 1, Y, Study Medication = 3475
+
+3, SR,Arm,INDUCT: Lenvatinib + Pembrolizumab + CAPOX or mFOLFOX6 and CONSOL: Lenvatinib + Pembrolizumab,SR,Stratification,East Asia,COG=0, CAPOX,NA,NA,NA, VS02A, Cycle 1 Day 22, Schedule, Start Date and Time , NA, NA, 1, Y, Study Medication = 3475
+
+The number of rows in the supporting document will be represented in the Report Header as "# of rows for customization".
+
+The actual information provided by the supporting doc can be outputted by selecting Y in the parameter "Supporting doc Page".
+
+Report Scenarios:
+Scenario 1
+
+A-Yes
+
+The number of records for the specified form per visit and any condition/restriction within the form  <> specified an acceptable number of records for a specific group.
+
+B-No
+
+The number of records for the specified form per visit and any condition/restriction within the form = specified acceptable number of records for a specific group.
+
+Scenario 2
+
+C-Yes
+
+Date of Assessment ( Date/Time of Assessment) on the specified form ( only consider a date in programming)<> the current date of visit or out of acceptable days range from DOV (date margin is inclusive) for a specific group.
+
+D-No
+
+Date of Assessment ( Date/Time of Assessment) on the specified form ( only consider a date in programming)= the current date of visit or within acceptable days range from DOV (date margin is inclusive) for a specific group.
+
+Sorting:
+Country, Site, Subject Number, Visit, Form Name, Seq#
+
+Parameter Selection:
+Country, Site , Subject , Randomized Only, List of Subjects, Form, Supporting Doc Page (N/Y, Default as N)
+
+Form.Item Names:
+Scenario 1
+
+1. Subject Assignment. Site Country
+
+2. Subject Assignment. Site Mnemonic
+
+3. Subjects. Subject Number
+
+4. Date of Visit form.Visit Mnemonic( the current visit with repeating forms provided in logic)
+
+5. Date of Visit form. Date of Visit
+
+6. Repeating forms provided in logic. Form name
+
+7. Hardcode-(from the information provided by logic)
+
+    e.g. FBRC --Date FBRC Consent Withdrawn
+
+8. Condition provided by user(if more than one, concatenate each value with comma)
+
+9. Derived~ count the total number of records per form per visit
+
+10. Hardcode-from number in logic
+
+    e.g. FBRC(1 record) hardcode to '1'.
+
+Scenario 2
+
+1. Subject Assignment. Site Country
+
+2. Subject Assignment. Site Mnemonic
+
+3. Subjects. Subject Number
+
+4. Date of Visit form.Visit Mnemonic( the current visit with repeating forms provided in logic)
+
+5. Date of Visit form. Date of Visit
+
+6. Repeating forms provided in logic. Form name
+
+7.Repeating forms provided in logic. Formidx
+
+8. Hardcode-(from the information provided by logic)
+
+    e.g. FBRC --Date FBRC Consent Withdrawn
+
+9. Repeating forms provided in logic.
+
+    e.g. FBRC --Date FBRC Consent Withdrawn(only display Date)
+
+10. Condition provided by user(if more than one, concatenate each value with comma)

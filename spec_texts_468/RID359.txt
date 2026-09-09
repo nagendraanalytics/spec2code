@@ -1,0 +1,291 @@
+Report ID: RID359
+
+Report Title:
+Reconciliation of prior therapies against OPTS form
+
+Description:
+For each treatment  specified in ODB form there should be a corresponding record in OPTS form. This report will check if all prior therapies from ODB form have correctly associated record in OPTS form and vice versa.
+
+Column Heading:
+1. Country
+
+2. Site
+
+3. Subject Number
+
+4. OPTS Form
+
+5. OPTS Visit
+
+6. OPTS Seq
+
+7. OPTS Associated Sponsor ID Number from ODB Form
+
+8. OPTS Prior/Alternative Treatment Name
+
+9. ODB Form
+
+10. ODB Visit
+
+11. ODB Associated Sponsor ID Number
+
+12. ODB Encoded Oncologic Drug and Biologic Name
+
+13. Scenario
+
+Logic:
+Scenario 1
+
+Supporting doc provided:
+
+Logic 1.
+
+ODB. Associated Sponsor ID number<>Null
+
+AND
+
+ODB.Encoded Oncologic Drug or Biologic Name = 'Coding Name' in supporting doc
+
+AND
+
+Logic 2.
+
+There is no OPTS record where
+
+(OPTS/OPTSA. Associated Sponsor ID number in 'ODB form'=ODB. Associated Sponsor ID number
+
+AND
+
+OPTS/OPTSA.Prior/Alternative treatment name = 'Treatment Name' in supporting doc)
+
+Supporting doc not provided:
+
+Logic 3.
+
+ODB. Associated Sponsor ID number<>Null
+
+AND
+
+ODB.Encoded Oncologic Drug or Biologic Name <> null
+
+AND
+
+Logic 4.
+
+There is no OPTS record where
+
+(OPTS/OPTSA. Associated Sponsor ID number in 'ODB form'=ODB. Associated Sponsor ID number
+
+AND
+
+OPTS/OPTSA.Prior/Alternative treatment name = ODB.Encoded Oncologic Drug or Biologic Name)
+
+Error message: Scenario 1
+
+Scenario 2
+
+Supporting doc provided:
+
+Logic 5.
+
+OPTS/OPTSA. Associated Sponsor ID number in 'ODB form' <> Null
+
+AND
+
+OPTS/OPTSA.Prior/Alternative treatment name = 'Treatment Name' in supporting doc
+
+AND
+
+Logic 6.
+
+There is no ODB record where
+
+(ODB. Associated Sponsor ID number = OPTS/OPTSA. Associated Sponsor ID number in 'ODB form'
+
+AND
+
+ODB.Encoded Oncologic Drug or Biologic Name = 'Coding Name' in supporting doc)
+
+Supporting doc not provided:
+
+Logic 7.
+
+OPTS/OPTSA. Associated Sponsor ID number in 'ODB form' <> Null
+
+AND
+
+OPTS/OPTSA.Prior/Alternative treatment name <> Null
+
+AND
+
+Logic 8.
+
+There is no ODB record where
+
+(ODB. Associated Sponsor ID number = OPTS/OPTSA. Associated Sponsor ID number in 'ODB form'
+
+AND
+
+ODB.Encoded Oncologic Drug or Biologic Name = OPTS/OPTSA.Prior/Alternative treatment name)
+
+Error message: Scenario 2
+
+Scenario 3
+
+Supporting doc provided:
+
+(Logic 9. ODB.Encoded Oncologic Drug or Biologic Name <> null
+
+AND
+
+ODB.Encoded Oncologic Drug or Biologic Name = 'Coding Name' in supporting doc
+
+AND
+
+Logic 10.
+
+There is no OPTS/OPTSA.Prior/Alternative treatment name = 'Treatment Name' in supporting doc
+
+OR
+
+(Logic 11. OPTS/OPTSA.Prior/Alternative treatment name <> null
+
+AND
+
+OPTS/OPTSA.Prior/Alternative treatment name = 'Treatment Name' in supporting doc
+
+AND
+
+Logic 12.There is no ODB.Encoded Oncologic Drug or Biologic Name = 'Coding Name' in supporting doc)
+
+Supporting doc not provided:
+
+(Logic 13. ODB.Encoded Oncologic Drug or Biologic Name <> null
+
+AND
+
+Logic 14. There is no OPTS/OPTSA.Prior/Alternative treatment name = ODB.Encoded Oncologic Drug or Biologic Name)
+
+OR
+
+(Logic 15. OPTS/OPTSA.Prior/Alternative treatment name <> null
+
+AND
+
+Logic 16. There is no ODB.Encoded Oncologic Drug or Biologic Name = OPTS/OPTSA.Prior/Alternative treatment name)
+
+Error message: Scenario 3
+
+Note 1: Deleted records or erroneous visits will be excluded.
+
+Note 2: Please consider for ‘ODB form’ all forms from the master ODB_supp_doc.csv
+
+Note 3: The items ‘Encoded Oncologic Drug or Biologic Name’ should be used from the items in the ‘itemquestion’ column in the master ODB_supp_doc.csv according to the ‘ODB form’ selected from the master ODB_supp_doc.csv.
+
+Note 4: Check (if applicable for protocol) OPTS variation forms: OPTS, OPTSA according to the supporting doc.
+
+Note 5: ODB form.items should be displayed using “ITEMQUESTION” column on ODB_supp_doc.csv depending on the ODB Form selected.
+
+Note 6: For OPTS forms that don’t have Associated Sponsor ID Number from ODB Form item, please ignore Scenario 1&2, and consider Scenario 3 only；For OPTS forms that have Associated Sponsor ID Number from ODB Form item, please ignore Scenario 3, and consider Scenario 1&2 only
+
+Note 7: Supporting doc is optional. If Supp doc is provided by trial, we only check ODB forms that appears on the Supp Doc. And if supporting doc is not provided, check all ODB and OPTS forms on the trial when OPTS form with Prior/Alternative treatment name is exactly match with ‘ODB form’. Encoded Oncologic Drug or Biologic Name.
+
+Note8: For Scenario 1&2, consider 'There is no' logic at sequence level
+
+Optional supporting document to be named ONC_OPTS_002_supp_<xxxxxxx>.csv and will contain the following columns and associated content:
+
+1 row for each group of the Encoded Oncologic Drug or Biologic Name in ODB form and the Prior/ Alternative treatment name in OPTS/OPTSA eCRF:
+
+1. Group – Required
+
+2. ODB Form – Required
+
+3. Coding Name (Encoded Oncologic Drug or Biologic Name in ODB form) – Required
+
+4. Treatment Name (Prior/Alternative Treatment Name in OPTS/OPTSA form) – Required
+
+5. Preferred OPTS form (Provide the OPTS form) – Required, enter ‘NA’ if consider all OPTS form
+
+e.g.
+
+Group ODB Form Coding Name Treatment Name Preferred OPTS form
+
+1, ODB, Cisplatin, Cisplatin, OPTS
+
+2, ODBH, Brentuximab Vedotin, Brentuximab Vedotin, OPTSA
+
+The number of rows in the supporting document will be represented in the Report Header as "# of rows for Supporting doc".
+
+The actual information provided by the supporting doc will be outputted by selecting 'Y' in the parameter "Supporting doc Page".
+
+Report Scenarios:
+Scenario 1:
+
+Output= YES
+
+‘ODB form’ is completed with information on the Associated Sponsor ID number and ‘Encoded Oncologic Drug and Biologic Name’ AND OPTS/OPTSA form is completed but do not match with Associated Sponsor ID number or Prior/Alternative Treatment Name according to the supporting doc/Encoded Oncologic Drug and Biologic Name.
+
+Output=No
+
+‘ODB form’ is completed with information on the Associated Sponsor ID number and ‘Encoded Oncologic Drug and Biologic Name’ AND there is OPTS/OPTSA form match with Associated Sponsor ID number and Prior/Alternative Treatment Name according to the supporting doc/Encoded Oncologic Drug and Biologic Name.
+
+Scenario 2
+
+Output=YES
+
+‘OPTS/OPTSA form’ is completed with information on the Associated Sponsor ID number  from ODB Form and ‘Prior/Alternative Treatment’ AND ODB form is completed but do not match with  Associated Sponsor ID number from ODB Form or Encoded Oncologic Drug and Biologic Name according to the supporting doc/Prior/Alternative Treatment.
+
+Output=No
+
+‘OPTS/OPTSA form’ is completed with information on the Associated Sponsor ID number  from ODB Form and ‘Prior/Alternative Treatment’ AND there is ODB form match with  Associated Sponsor ID number from ODB Form and Encoded Oncologic Drug and Biologic Name according to the supporting doc/Prior/Alternative Treatment.
+
+Scenario 3
+
+Output=YES
+
+‘ODB form’ is completed with information on the ‘Encoded Oncologic Drug and Biologic Name’ AND OPTS/OPTSA form is completed but do not match with Prior/Alternative Treatment Name according to the supporting doc.
+
+OR
+
+‘OPTS/OPTSA form’ is completed  with information on 'Prior/Alternative Treatment Name' AND ODB form is completed but do not match with information on the ‘Encoded Oncologic Drug and Biologic Name’ according to the supporting doc.
+
+Output=No
+
+‘ODB form’ is completed with information on the ‘Encoded Oncologic Drug and Biologic Name’ AND OPTS/OPTSA form is completed and match with Prior/Alternative Treatment Name according to the supporting doc.
+
+AND
+
+‘OPTS/OPTSA form’ is completed  with information on 'Prior/Alternative Treatment Name' AND ODB form is completed and match with information on the ‘Encoded Oncologic Drug and Biologic Name’ according to the supporting doc.
+
+Sorting:
+Country, Site Number, Subject Number
+
+Parameter Selection:
+Country, First Site, Last Site, First Subject, Last Subject, List of Subjects, Supporting Doc Page (N/Y, Default as N)
+
+Form.Item Names:
+1. SA. Country
+
+2. SA. Site
+
+3. SA. Subject Number
+
+4. OPTS /OPTSA.Form Mnemonic
+
+5.OPTS/OPTSA. Visit Mnemonic
+
+6. OPTS/OPTSA. Seq
+
+7. OPTS/OPTSA. Associated Sponsor ID Number from ODB Form
+
+8. OPTS/OPTSA. Prior/Alternative Treatment Name
+
+9. ‘ODB form’. Form Mnemonic
+
+10. ‘ODB form’. Visit Mnemonic
+
+11. ‘ODB form’. Associated Sponsor ID Number
+
+12. ‘ODB form’. Encoded Oncologic Drug and Biologic Name
+
+13. Display scenario that is completed

@@ -1,0 +1,139 @@
+SPEC -> CODE EXPORT: RID166
+Exported 8/21/2026, 5:22:55 PM | Tenant: default
+
+======================================================================
+1. SPEC
+======================================================================
+Report ID:
+RID166
+
+EDC System / Language:
+veeva / CQL
+
+Description:
+This report will list subjects who, within a protocol, have duplicate Randomization numbers and/or Screening numbers.
+
+Column Heading:
+1. Country
+2. Site
+3. Subject Number
+4. Screening Number
+5. Randomization Number
+6. Duplicates
+
+Logic:
+The report should display output if subjects have identical Randomization Numbers. The report should also display output if subjects have identical Screening Numbers.
+
+Report should not display deleted records.
+
+Form.Item Names:
+1. Subject Assignment.Site Country
+2. Subject Assignment form.Site Mnemonic
+3. Subjects.Subject Number
+4. Subject Assignment form.Screening Number
+5. Subject Assignment form.Treatment Randomization Number
+6. Derive as follows:
+For duplicate Randimization  display "Randomization Number Duplicate"
+For duplicate Screening Number  display "Screening Number Duplicate"
+
+Report Scenarios:
+Refer to Test Case
+
+Sorting:
+For duplicate Randomization: Duplicates, Randomization Number, Subject NumberFor duplicate Screening: Duplicates, Screening Number, Subject Number
+
+======================================================================
+2. LOGIC UNDERSTANDING
+======================================================================
+This report scans non-deleted subject records within each protocol and independently flags any subjects sharing an identical Screening Number or an identical Randomization Number (via the Subject Assignment form). Each qualifying subject is output with Country, Site, Subject Number, Screening Number, and Randomization Number, plus a derived 'Duplicates' label identifying which type of match caused inclusion. Output is organized as two separate sorted groups -- one for Randomization Number duplicates sorted by Duplicates/Randomization Number/Subject Number, and one for Screening Number duplicates sorted by Duplicates/Screening Number/Subject Number.
+
+1. Establish the population: gather all non-deleted subject records (from Subjects and Subject Assignment forms) within a given protocol, since the spec explicitly states 'Report should not display deleted records.'
+2. Check 1 -- Randomization Number duplicates: compare the 'Treatment Randomization Number' value (from Subject Assignment form) across all subjects within the same protocol; if two or more subjects share an identical Randomization Number, those subjects' records qualify for output.
+3. Check 2 -- Screening Number duplicates: independently compare the 'Screening Number' value (from Subject Assignment form) across all subjects within the same protocol; if two or more subjects share an identical Screening Number, those subjects' records also qualify for output.
+4. The spec says the report displays output 'if subjects have identical Randomization Numbers' OR 'if subjects have identical Screening Numbers' -- these are two separate, independent triggers, meaning a subject could appear in the output for either or both reasons.
+5. For each qualifying row, derive the 'Duplicates' column: label it 'Randomization Number Duplicate' when the row was flagged due to a matching Randomization Number, or 'Screening Number Duplicate' when flagged due to a matching Screening Number.
+6. Populate the remaining output columns for each qualifying subject: Country and Site from Subject Assignment form (Site Country, Site Mnemonic), Subject Number from Subjects form, Screening Number and Randomization Number from Subject Assignment form.
+7. Apply sorting: for rows flagged as Randomization Number duplicates, sort by Duplicates, then Randomization Number, then Subject Number; for rows flagged as Screening Number duplicates, sort by Duplicates, then Screening Number, then Subject Number -- implying the two duplicate types are grouped/sorted as separate blocks in the final output.
+8. Infer that if a subject qualifies under both checks (has both a duplicate Randomization Number and a duplicate Screening Number), it would appear as two separate output rows, one under each duplicate-type grouping, since the two checks and sort orders are described independently and not merged into one combined flag. (inferred)
+
+======================================================================
+3. SPEC REVIEW
+======================================================================
+Readiness: Needs revision -- The spec has two blocking gaps -- Report Scenarios are not actually specified (just 'Refer to Test Case') and null/blank Randomization or Screening Number handling is undefined -- plus several naming inconsistencies and an unaddressed dual-duplicate case that should be resolved before query generation.
+
+[BLOCKING] (completeness) Report Scenarios field simply says 'Refer to Test Case' with no actual scenarios enumerated in the spec. There is no description of expected input/output examples (e.g., two subjects with same Randomization Number, or same Screening Number, or both) to validate against.
+  -> Add explicit Report Scenarios in the spec itself (not an external test case reference), covering at minimum: duplicate Randomization Numbers only, duplicate Screening Numbers only, a subject duplicated on both, and a subject with a blank/null Randomization or Screening Number (to clarify whether blanks/nulls count as duplicates).
+[BLOCKING] (completeness) Logic does not address how to handle blank or null Screening Number / Randomization Number values. If multiple subjects have no randomization number yet (common pre-randomization), a naive 'identical values' match could incorrectly flag them all as duplicates.
+  -> Explicitly state that null/blank Randomization Number or Screening Number values are excluded from duplicate comparison, or state how they should be handled.
+[WARNING] (completeness) The report should also list subjects who, within a protocol, have duplicates -- but the Logic and Column Headings don't mention scope of comparison (e.g., is duplication checked within a Site, within a Protocol/Study, or globally across all sites/countries?). The Description says 'within a protocol' but Logic never restates or enforces this scope.
+  -> State explicitly in the Logic section that duplicate checks are performed within the same protocol/study (and clarify whether this crosses sites/countries), matching the Description's 'within a protocol' language.
+[WARNING] (consistency) Column Heading item 6 is 'Duplicates' but the Form.Item Names section derives it as either 'Randomization Number Duplicate' or 'Screening Number Duplicate' -- the derived logic doesn't address the case where a single subject has both a duplicate Randomization Number and a duplicate Screening Number simultaneously.
+  -> Clarify what value the 'Duplicates' column should show when a subject has both types of duplicates at once (e.g., two rows, or a combined value like 'Randomization Number Duplicate, Screening Number Duplicate').
+[WARNING] (naming) Form/Item naming is inconsistent: item 1 uses 'Subject Assignment.Site Country' (no 'form' suffix) while items 2, 4, and 5 use 'Subject Assignment form.Site Mnemonic', 'Subject Assignment form.Screening Number', 'Subject Assignment form.Treatment Randomization Number' (with 'form' suffix). Item 3 references 'Subjects.Subject Number', a different form name entirely.
+  -> Standardize the form name reference (e.g., always 'Subject Assignment form.<Item>') and confirm whether 'Subjects' is truly a distinct form from 'Subject Assignment' or a typo.
+[INFO] (consistency) Column Heading 2 is labeled 'Site' but the corresponding Form.Item Name is 'Site Mnemonic', not simply 'Site'.
+  -> Align the Column Heading label with the underlying item name, or note that 'Site' displays the Site Mnemonic value, for clarity.
+[INFO] (ambiguity) There's a typo 'Randimization' in the Derive-as-follows logic ('For duplicate Randimization display...'), which is minor but could cause confusion when read alongside the correctly spelled 'Randomization Number' elsewhere.
+  -> Correct the typo to 'Randomization' for clarity and consistency.
+[WARNING] (testability) Without concrete Report Scenarios (only 'Refer to Test Case') and without clarification on same-subject-both-duplicate-types handling, there's no way to verify whether generated output correctly distinguishes the 'Randomization Number Duplicate' scenario from the 'Screening Number Duplicate' scenario in edge cases (e.g., overlapping duplicates).
+  -> Add explicit pass/fail scenarios in the spec that a query generator or tester can check against, rather than deferring entirely to an external, unreferenced test case document.
+
+======================================================================
+4. GENERATED CODE
+======================================================================
+CQL -- Guardrails: passed
+
+SELECT
+  d.SiteCountry AS `Country`,
+  d.SiteNumber AS `Site`,
+  d.SubjName AS `Subject Number`,
+  d.ScreeningNumber AS `Screening Number`,
+  d.RandomizationNumber AS `Randomization Number`,
+  d.DupFlag AS `Duplicates`
+FROM
+  (
+    SELECT
+      `@HDR`.`Site`.`Country` AS SiteCountry,
+      `@HDR`.`Site`.`Number` AS SiteNumber,
+      `@HDR`.`Subject`.`Name` AS SubjName,
+      SASCORRESSNUMIT AS ScreeningNumber,
+      ENRMSUBJNUMIT AS RandomizationNumber,
+      'Randomization Number Duplicate' AS DupFlag
+    FROM `EDC`.`SAFM`
+    WHERE `@Form`.`Status` = 'submitted__v'
+      AND ENRMSUBJNUMIT IS NOT NULL
+      AND ENRMSUBJNUMIT IN (
+        SELECT s2.ENRMSUBJNUMIT
+        FROM `EDC`.`SAFM` s2
+        WHERE s2.`@Form`.`Status` = 'submitted__v'
+          AND s2.ENRMSUBJNUMIT = ENRMSUBJNUMIT
+        GROUP BY s2.ENRMSUBJNUMIT
+        HAVING COUNT(DISTINCT s2.`@HDR`.`Subject`.`ID`) > 1
+      )
+    UNION ALL
+    SELECT
+      `@HDR`.`Site`.`Country` AS SiteCountry,
+      `@HDR`.`Site`.`Number` AS SiteNumber,
+      `@HDR`.`Subject`.`Name` AS SubjName,
+      SASCORRESSNUMIT AS ScreeningNumber,
+      ENRMSUBJNUMIT AS RandomizationNumber,
+      'Screening Number Duplicate' AS DupFlag
+    FROM `EDC`.`SAFM`
+    WHERE `@Form`.`Status` = 'submitted__v'
+      AND SASCORRESSNUMIT IS NOT NULL
+      AND SASCORRESSNUMIT IN (
+        SELECT s3.SASCORRESSNUMIT
+        FROM `EDC`.`SAFM` s3
+        WHERE s3.`@Form`.`Status` = 'submitted__v'
+          AND s3.SASCORRESSNUMIT = SASCORRESSNUMIT
+        GROUP BY s3.SASCORRESSNUMIT
+        HAVING COUNT(DISTINCT s3.`@HDR`.`Subject`.`ID`) > 1
+      )
+  ) d
+ORDER BY
+  d.DupFlag,
+  (CASE WHEN d.DupFlag = 'Randomization Number Duplicate' THEN d.RandomizationNumber ELSE d.ScreeningNumber END),
+  d.SubjName
+
+Explanation:
+The spec's "Subject Assignment form" and "Subjects" map most closely to the SAFM Form in the provided study metadata, which contains ENRMSUBJNUMIT (treated as the Randomization Number equivalent), SASCORRESSNUMIT (Screening Number), and SADMSUBJIDIT; I used ENRMSUBJNUMIT/SASCORRESSNUMIT as best-fit matches since no explicit "Randomization Number"/"Screening Number"-named items exist in SAFM -- this should be confirmed via DESCRIBE FORM against the study's actual Subject Assignment form mapping. Two UNION ALL branches independently find subjects sharing an identical Randomization Number or Screening Number (using a self-correlated subquery with GROUP BY/HAVING COUNT(DISTINCT Subject) > 1) and tag each row with the appropriate Duplicates label, then the outer query aliases/sorts per the spec (Duplicates, then the matching number field, then Subject Number). SAFM has no DELETEDFM item in the provided metadata, so no deleted-record filter was applied to this Form -- flagging this as a gap since the spec explicitly requires excluding deleted records; if Subject Assignment data actually lives in a different Form with a delete flag, that filter should be added once confirmed.

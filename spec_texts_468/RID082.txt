@@ -1,0 +1,175 @@
+Report ID: RID082
+
+Report Title:
+LABS Record with Missing Values
+
+Description:
+This report displays all LABS records with null values in required fields ( Test Name,  Test ID, Conventional Text Result, Conventional Numeric Result). If Blinding Flag is set to 'B', only  Lab Test Name,  Test Name,  Test ID will be checked for missing values.
+
+Column Heading:
+1. Country
+
+2. Site
+
+3. Screening Number
+
+4. Subject Number
+
+5. Vendor
+
+6. Visit ID or Number
+
+7. Blinding Flag
+
+8. Lab Collection Date/Time
+
+9. Lab Test ID
+
+10. Lab Test Name
+
+11.  Test ID
+
+12.  Test Name
+
+13. Conv Numeric Result
+
+14. Conv Text Result
+
+15. Accession ID or Number
+
+Logic:
+1. For Blinding Flag <> 'B',
+
+   A. Display as missing if following field is null:
+
+        Lab Test Name,  Test Name,  Test ID
+
+   B. Display as missing if following field is null and Test Status not in ('X', 'N'):
+
+        Conventional Text Result
+
+   C. Display as missing if following field is null and Test Status not in ('X', 'N'):and
+
+        Reported Result Type is "N":
+
+        Conventional Numeric Result
+
+2. For Blinding Flag = 'B',
+
+        Display as missing if following field is null:
+
+        Lab Test Name,  Test Name,  Test ID
+
+        Display "XXXX" in the following fields for all records:
+
+        Conventional Text Result, Conventional Numeric Result,
+
+Report should not display deleted records. If "Randomized only" parameter selection
+
+checkbox  is checked, the report should only output subjects with Randomization
+
+number that is not null.                                                                                                                                                                                                                                                                                                                • Reported Result Type values will follow the CDISC standards. They are the following:
+
+• N=Numeric
+
+• T=Text
+
+• C=Coded
+
+• G='Greater Than'
+
+• L='Less than'
+
+• R=Range
+
+• Collection Date and Time field is formatted according to the ISO standard. An example for 12-Jul-2007 at noon is: 2007-07-12T12:00:00 (yyyy-mm-ddThh:mm:ss). However, not all time parts are always present.
+
+• Visit numbers are formatted as a number without any leading zeros.
+
+Report Scenarios:
+1. For Blinding Flag <> 'B',
+
+   A. Display as missing if following field is null:
+
+        Lab Test Name,  Test Name,  Test ID
+
+   B. Display as missing if following field is null and Test Status not in ('X', 'N'):
+
+        Conventional Text Result
+
+   C. Display as missing if following field is null and Test Status not in ('X', 'N'):and
+
+        Reported Result Type is "N":
+
+        Conventional Numeric Result
+
+2. For Blinding Flag = 'B',
+
+        Display as missing if following field is null:
+
+        Lab Test Name,  Test Name,  Test ID
+
+        Display "XXXX" in the following fields for all records:
+
+        Conventional Text Result, Conventional Numeric Result,
+
+Report should not display deleted records. If "Randomized only" parameter selection
+
+checkbox  is checked, the report should only output subjects with Randomization
+
+number that is not null.                                                                                                                                                                                                                                                                                                                • Reported Result Type values will follow the CDISC standards. They are the following:
+
+• N=Numeric
+
+• T=Text
+
+• C=Coded
+
+• G='Greater Than'
+
+• L='Less than'
+
+• R=Range
+
+• Collection Date and Time field is formatted according to the ISO standard. An example for 12-Jul-2007 at noon is: 2007-07-12T12:00:00 (yyyy-mm-ddThh:mm:ss). However, not all time parts are always present.
+
+• Visit numbers are formatted as a number without any leading zeros.
+
+Sorting:
+Country, Site, Subject Number, Lab Collection Date/Time
+
+Parameter Selection:
+Country, Site, Subject Number, Blinding Flag, Vendor,  Test Name,
+
+Randomized Only
+
+Form.Item Names:
+1. Subject Assignment.Site Country
+
+2. Subject Assignment form.Site Mnemonic
+
+3. Subject Assignment form.Screening Number
+
+4. Subjects.Subject Number
+
+5.LABORATORY TESTS Form.Transmission Source ID
+
+6. LABORATORY TESTS Form.Visit Id or Number
+
+7. LABORATORY TESTS Form.Blinding Flag
+
+8. LABORATORY TESTS Form.Actual Collection Date and Time
+
+9. LABORATORY TESTS Form.Lab Test ID
+
+10. LABORATORY TESTS Form.Lab Test Name
+
+11.LABORATORY TESTS Form.Test Name
+
+12. LABORATORY TESTS Form.Test Name ID
+
+13. LABORATORY TESTS Form.Conventional Numeric Result
+
+14. LABORATORY TESTS Form.Conventional Text Result
+
+15. LABORATORY TESTS Form.Accession ID or Number

@@ -1,0 +1,139 @@
+Report ID: RID227
+
+Report Title:
+Closed query Originating Group versus Closing Group
+
+Description:
+This report will display queries closed incorrectly by other groups, showing inconsistencies between query Originating Group and Closing Group.
+
+Column Heading:
+1. Query Status
+
+2. Country
+
+3. Site
+
+4. Subject Number
+
+5. Visit Mnemonic
+
+6. Date of Visit
+
+7. eCRF Name
+
+8. Sequence #
+
+9. Deleted Y/N
+
+10. Item Name
+
+11. Originating User
+
+12. Originating Group
+
+13. Closing User
+
+14. Closing Group
+
+Logic:
+Logic 1:
+
+Query Status = "Closed" AND Originating Group = "AutoQuery RG" OR "GDMS" OR "Sponsor Data Entry"
+
+AND
+
+Closing Group <> "AutoQuery RG" OR "GDMS" OR "Sponsor Data Entry"
+
+Logic 2:
+
+Query Status = "Closed" AND Originating Group = "Safety Specialist"
+
+AND
+
+Closing Group <> "Safety Specialist"
+
+Logic 3:
+
+Query Status = "Closed" AND Originating Group = "CRA"
+
+AND
+
+Closing Group <> "CRA"
+
+Logic 4:
+
+Query Status = "Closed" AND Originating Group = "Encoding"
+
+AND
+
+Closing Group <> "Encoding"
+
+Logic 5:
+
+Query Status = "Closed" AND Originating Group = "MEDICAL MONITOR"
+
+AND
+
+Closing Group <> "MEDICAL MONITOR"
+
+Notes:
+
+1 - Column 9 will display “Yes” when query is present in a deleted record and “No” when query is present in a non-deleted record
+
+Report Scenarios:
+Output should be present ONLY if Query Status = "Closed"
+
+Scenario 1) Output = Yes
+
+Originating Group = "AutoQuery RG" or "GDMS" or "Sponsor Data Entry" AND Closing Group <> "AutoQuery RG" or "GDMS" or "Sponsor Data Entry".
+
+Scenario 2) Output = Yes
+
+Originating Group = "Safety Specialist" AND Closing Group <> "Safety Specialist".
+
+Scenario 3) Output = Yes
+
+Originating Group = "CRA" AND Closing Group <> "CRA".
+
+Scenario 4) Output = Yes
+
+Originating Group = "Encoding" AND Closing Group <> "Encoding".
+
+Scenario 5) Output = Yes
+
+Originating Group = "MEDICAL MONITOR" AND Closing Group <> "MEDICAL MONITOR".
+
+Sorting:
+Query Status, Country, Site, Subject Number, Visit Mnemonic, Date of Visit/Reference Date, eCRF Name, Item Name
+
+Parameter Selection:
+Originating Group, Originating User, Closing User, Closing Group, Site, Country, Subject, eCRF Name, DOV, Visit, List of Subjects
+
+Form.Item Names:
+1. irv_cur_query.querystate (Display as Closed)
+
+2. cv_safm.sitecountry
+
+3. cv_safm.sitemnemonic
+
+4. irv_cur_subject.subjectnumberstr
+
+5. irm_studyversion_visits.visitmnemonic
+
+6. cv_dovfm.dt_dov
+
+7. irm_studyversion_forms.formmnemonic
+
+8. Derived - irv_ic_formitems/irv_form_items.formindex and itemsetindex
+
+9. Display 'Yes' when query is present in a deleted record or 'No' when query is present in a non-deleted record
+
+10. irv_item_revs.itemquestion
+
+11. irv_cur_user.username of irv_cur_query.qoriguser
+
+12. irv_cur_user.rightsgroup of irv_cur_query.qoriguser
+
+13. irv_cur_user.username of irv_cur_query.queryuserid
+
+14. irv_cur_user.rightsgroup of irv_cur_query.queryuserid

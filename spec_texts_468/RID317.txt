@@ -1,0 +1,237 @@
+Report ID: RID317
+
+Report Title:
+LOEL/LSNCL/LSNWM reconciliation of missing and incorrect fields
+
+Description:
+LOEL, LSNCL, LSNWM, LSNHM reconciliation of missing and incorrect fields as per Lugano, iwCLL or  IWWM criteria
+
+Column Heading:
+1. Country
+
+2. Site
+
+3. Subject Number
+
+4. Lesion seq#
+
+5. Scheduled Time
+
+6. Method of Assessment
+
+7. Lesion Identification
+
+8. Organ or System Assessment Location
+
+9. Missing/Extra item (i.e: When Scenario 3 is met because Spleen vertical length measurement is missing column shouls show: 'Spleen Vertical Length Measurement')
+
+10. Error Message (show if it is Missing Item or Incorrect Item according to the logic met)
+
+Logic:
+Logic:
+
+Scenario 1:  Missing items
+
+Logic 1 -  Target Nodal OR Target Extra Nodal:
+
+LSN.TUMOR IDENTIFICATION = "Target Nodal" OR "Target Extra Nodal"
+
+AND
+
+LSN.LOCATION/LSN.LONGEST DIAMETER/LSN.SHORT AXIS is = Null
+
+Logic 2 - Non-Target Nodal OR Non-Target Extra Nodal:
+
+LSN.LESION IDENTIFICATION = "Non-Target Nodal" OR "Non-Target Extra Nodal"
+
+AND
+
+LSN.LOCATION/LSN.NON-TARGET OR NEW LESION STATUS = Null
+
+Logic 3 - Spleen:
+
+LSN.LESION IDENTIFICATION = "Organ or System Assessment" AND LSN.Organ or System Assessment Location = "Spleen"
+
+AND
+
+LSN.Spleen vertical length measurement = Null
+
+Logic 4 - Liver:
+
+LSN.Lesion Identification = "Organ or System Assessment" AND LSN.Organ or System Assessment Location = "Liver"
+
+AND
+
+LSN.Organ Status = Null
+
+Logic 5 - Whole Body Assessment by FDG-PET:
+
+LSN.Lesion Identification = "Organ or System Assessment" AND LSN.Organ or System Assessment Location = "Whole Body Assessment by FDG-PET"
+
+AND LSN.5PS Score = Null
+
+OR LSN.Lesion Identification = "Organ or System Assessment" AND LSN.Organ or System Assessment Location = "Whole Body Assessment by FDG-PET"
+
+AND LSN. Location of Greatest FDG Uptake = Null
+
+AND LSN.5PS Score >= 2
+
+OR LSN.Lesion Identification = "Organ or System Assessment" AND LSN.Organ or System Assessment Location = "Whole Body Assessment by FDG-PET"
+
+AND LSN.Date of Current Lesion/Organ Evaluation (Scan/Image/Physical Exam) > Cut-off Visit Date from parameter
+
+AND LSN.Are there any new uptake areas unlikely to be related to lymphoma/LSN.Overall FDG Uptake Compared to Baseline/LSN.Overall FDG Uptake Compared to Nadir = Null
+
+Logic 6 – Bone Marrow FDG Uptake:
+
+LSN.Lesion Identification = "Organ or System Assessment" AND LSN.Organ or System Assessment Location = "Bone Marrow Assessment by FDG-PET"
+
+AND
+
+LSN.Bone Marrow FDG Uptake = Null
+
+Scenario 2: Incorrect items
+
+Logic 7 - Target Nodal" OR "Target Extra Nodal:
+
+LSN.Lesion Identification = "Target Nodal" OR "Target Extra Nodal"
+
+AND
+
+LSN.Organ or System Assessment Location/LSN.Non-Target or New Lesion Status/LSN.Spleen vertical length measurement/LSN.Organ status/LSN.5PS score/
+
+LSN.Are There Any New Uptake Areas Unlikely to Be Related to Lymphoma?/LSN.Location of Greatest FDG Uptake/LSN.Overall FDG Uptake Compared to Baseline/
+
+LSN.Overall FDG Uptake Compared to Nadir/LSN.Bone Marrow FDG Uptake <> Null
+
+Logic 8 - Non-Target Nodal OR Non-Target Extra Nodal:
+
+LSN.Lesion Identification = "Non-Target Nodal" OR "Non-Target Extra Nodal"
+
+AND
+
+LSN.Organ or System Assessment Location/LSN.Longest Diameter/LSN. Short Axis/LSN.Spleen vertical length measurement/LSN.Organ status/LSN.5PS score/
+
+LSN.Are There Any New Uptake Areas Unlikely to Be Related to Lymphoma?/LSN.Location of Greatest FDG Uptake/LSN.Overall FDG Uptake Compared to Baseline/
+
+LSN.Overall FDG Uptake Compared to Nadir/LSN.Bone Marrow FDG Uptake <> Null
+
+Logic 9 - Spleen:
+
+LSN.Lesion Identification = "Organ or System Assessment" AND LSN.Organ or System Assessment Location = "Spleen"
+
+AND
+
+LSN.Non-Target or New Lesion Status/LSN.Longest Diameter/LSN.Short Axis/LSN.Organ status/LSN.5PS score/LSN.Are There Any New Uptake Areas Unlikely to Be Related to Lymphoma?/
+
+LSN.Location of Greatest FDG Uptake/LSN.Overall FDG Uptake Compared to Baseline/LSN.Overall FDG Uptake Compared to Nadir/LSN.Bone Marrow FDG Uptake <> Null
+
+Logic 10 - Liver:
+
+LSN.Lesion Identification = "Organ or System Assessment" AND LSN.Organ or System Assessment Location = "Liver"
+
+AND
+
+LSN.Non-Target or New Lesion Status/LSN.Longest Diameter/LSN. Short Axis/LSN.Spleen vertical length measurement/LSN.5PS score/
+
+LSN.Are There Any New Uptake Areas Unlikely to Be Related to Lymphoma?/LSN.Location of Greatest FDG Uptake/LSN.Overall FDG Uptake Compared to Baseline/
+
+LSN.Overall FDG Uptake Compared to Nadir/LSN.Bone Marrow FDG Uptake <> Null
+
+Logic 11 - Whole Body Assessment by FDG-PET:
+
+LSN.Lesion Identification = "Organ or System Assessment" AND LSN.Organ or System Assessment Location = "Whole Body Assessment by FDG-PET"
+
+AND
+
+LSN.Non-Target or New Lesion Status/LSN.Longest Diameter/LSN. Short Axis/LSN.Organ status/LSN.Spleen vertical length measurement/LSN.Bone Marrow FDG Uptake <> Null
+
+OR LSN.Lesion Identification = "Organ or System Assessment" AND LSN.Organ or System Assessment Location = "Whole Body Assessment by FDG-PET"
+
+AND LSN.Date of Current Lesion/Organ Evaluation (Scan/Image/Physical Exam) < Cut-off Visit Date from parameter
+
+AND LSN.Are there any new uptake areas unlikely to be related to lymphoma?/LSN.Overall FDG Uptake Compared to Baseline/LSN.Overall FDG Uptake Compared to Nadir <> Null
+
+OR LSN.Lesion Identification = "Organ or System Assessment" AND LSN.Organ or System Assessment Location = "Whole Body Assessment by FDG-PET"
+
+AND LSN.5PS Score < 2
+
+AND LSN.Location of Greatest FDG Uptake <> Null
+
+Logic 12 - Bone Marrow Assessment by FDG-PET:
+
+LSN.Lesion Identification = "Organ or System Assessment"
+
+AND LSN.Organ or System Assessment Location = "Bone Marrow Assessment by FDG-PET"
+
+AND
+
+LSN.Non-Target or New Lesion Status/LSN.Longest Diameter/LSN. Short Axis/LSN.Organ status/LSN.Spleen vertical length measurement/LSN.5PS score/
+
+LSN.Are There Any New Uptake Areas Unlikely to Be Related to Lymphoma?/LSN.Location of Greatest FDG Uptake/LSN.Overall FDG Uptake Compared to Baseline/
+
+LSN.Overall FDG Uptake Compared to Nadir <> Null
+
+Notes:
+
+1. Error Message should be shown according to the Logic met:
+
+If Logic 1 to 6 is met, error message should be 'Missing Item'.
+
+If Logic 7 to 12 is met, error message should be 'Incorrect Item'.
+
+If any logic from Scenario 1 AND any from Scenario 2 are met, it should be in separated rows one row for the first scenario and a second row for the second scenario. For example: Logic 1 AND Logic 7 are both met for a record, one row should show the missing items met for Logic 1 AND in a separated row there should be the Incorrect Items met for Logic 7.
+
+2. For Logic 5 and 11: Cut-off Visit must be provided otherwise output message to user indicating that it is missing. The prompt should be the name of the visit where the images are expected to start.
+
+3. When LSN.Was the Lesion, Organ, or System Evaluable at this Visit? is completed as ‘No’, no output for Scenario 1- Missing Item should appear since no item is expected to be completed when lesion was not evaluable.
+
+4. Report will work using LSN_Supp_Doc (Global Supporting Document) relating the forms: LOEL, LSNCL and LSNWM
+
+5. If item does not exist for the form (LOEL, LSNCL, LSNWM), ignore it from the logic.
+
+6. For form: LSNWM ignore logics: 4, 5, 6, 10, 11 and 12.
+
+7. For form LSNCL ignore logics: 5, 6, 11 and 12.
+
+8. For form LOEL all logics are applicable.
+
+9. Ignore deleted or non-initialized sequences.
+
+10.For Logic 3 and 9 if form is LSNWM ignore item LSN.Organ or System Assessment Location = "Spleen".
+
+Report Scenarios:
+Scenario 1: Missing Items
+
+<Spleen, Liver, Whole Body Assessment by FDG-PET or Bone marrow by FDG-PET, target nodal lesion, extra target nodal lesion, non-target, non-target extra nodal>  item field <Missing Item> should be completed. Please complete or explain.
+
+Scenario 2: Incorrect items
+
+<Spleen, Liver, Whole Body Assessment by FDG-PET or Bone marrow by FDG-PET, target nodal lesion, extra target nodal lesion, non-target, non-target extra nodal>  item field <Additional Item> is not expected to be completed. Please leave blank or explain
+
+Sorting:
+Country, Site, Subject Number, Lesion Form, Lesion Seq#
+
+Parameter Selection:
+Country, First Site, Last Site, First Subject, Last Subject, List of Subjects, Randomized only (N/Y, Default as N), SR Visit (Required, Visit Name of the Cut-off Visit)
+
+Form.Item Names:
+1. SA.Country
+
+2. SA.Site
+
+3. SA.Subject Number
+
+4. LSN.LESION NUMBER
+
+5. LSN.SCHEDULED TIME
+
+6. LSN.METHOD OF ASSESSMENT
+
+7. LSN.TUMOR IDENTIFICATION
+
+8. LSN.ORGAN OR SYSTEM ASSESSMENT
+
+9. LSN. Obtained for the logics depending on the scenario
+
+10. Error message (Please refer to logic error messages)

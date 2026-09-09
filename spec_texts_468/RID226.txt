@@ -1,0 +1,85 @@
+Report ID: RID226
+
+Report Title:
+Missing IRT Items
+
+Description:
+This report lists when IRT forms (eg. DM, SA, SR) were initialized, but IRT data is missing.
+
+Column Heading:
+1. Country
+
+2. Site
+
+3. Subject Number
+
+4. Visit
+
+5. eCRF Name
+
+6. Missing Item
+
+7. Error Message
+
+Logic:
+Logic: Form from Supporting document is initialized and Item mentioned in supporting document is missing.
+
+<Form> <> NULL AND
+
+<Form>.<itemrefname> = NULL
+
+Note:
+
+- Visits with Erroneous visit box checked should not be outputted in the report.
+
+- Output should not be displayed for missing SA."Treatment/Randomization Number" if SA is initialized and SA."Did subject meet all eligibility criteria?" = No.
+
+- Output should not be displayed for missing SA."Treatment/Randomization Number" if SA is initialized and Screening(VISIT1).DOV + Window of days from Supporting document has not occurred yet.
+
+- Output should not be displayed for missing SA."Treatment/Randomization Number" if Screening(VISIT1).DOV is null.
+
+- Requires supporting document to be named TQ044_supp_<xxxxxxx> and will contain the following columns and associated content:
+
+1.          Form - Formmnemonic
+
+2.          Item - Itemquestion
+
+3.          Itemrefname -  Corresponds to the item on the formmnemonic previously entered
+
+4.          Window of days - Timeframe expected for the Screening supposed to be performed- Value is inclusive.
+
+Example:
+
+Form,Item,itemrefname,Window of days
+
+DM,Date of Birth,DMBRTHDTCIT,28
+
+Report Scenarios:
+Scenario 1: Yes
+
+This report lists when IRT forms (from Supporting document) were initialized, but IRT data is missing.
+
+Scenario 2: No
+
+IRT forms (from Supporting document) were initialized and IRT data is completed.
+
+Sorting:
+Country, Site, Subject Number, Visit, eCRF Name
+
+Parameter Selection:
+Country, First Site, Last Site, First Subject, Last Subject, List of Subjects, Randomized Only (Y/N, Default as N)
+
+Form.Item Names:
+1. Subject Assignment.Site Country
+
+2. Subject Assignment.Site Mnemonic
+
+3. Subjects.Subject Number
+
+4. Form.Visit Mnemonic
+
+5. Form.Form Mnemonic. Display the form,  according to the supporting document TQ044_supp_<xxxxxxx>.csv,  which has the missing item and display one row per form.
+
+6. Item. Itemquestion. Display the  missing item according to the supporting document TQ044_supp_<xxxxxxx>.csv and display one row per item.
+
+7. Error message. Display "Missing IRT item"

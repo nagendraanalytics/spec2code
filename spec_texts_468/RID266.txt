@@ -1,0 +1,315 @@
+Report ID: RID266
+
+Report Title:
+Zero dose reconciliation between STR and SME for Radiation
+
+Description:
+This report will output subjects with a zero dose recorded in STR that do not have a matching record in SME within the window of interruption.
+
+Column Heading:
+1. Country
+
+2. Site
+
+3. Subject Number
+
+4. STR Visit mnemonic
+
+5. STR seq#
+
+6. STR Start Date/Time
+
+7. STR Day of the week for start date
+
+8. STR Stop Date/time
+
+9. STR Day of the week for stop date
+
+10. STR Dose Amount
+
+11. SME Number of Units Taken
+
+12. SME First Dose date
+
+13. SME Last Dose date
+
+14. SME Treatment Stop Date
+
+15. SME Treatment Resume Date
+
+16 SME Number of Days of Treatment Interruption
+
+17. STR zero dose records
+
+18. Scenario
+
+Logic:
+Scenario 1: Output = No
+
+Logic 1: There is NO an STR record with STR. Dose Amount = 0 record
+
+AND
+
+Logic 2: There is NO an SME record with SME. Number of Units taken = 0
+
+OR
+
+Logic 3: There is an STR record with STR.Dose Amount = 0 record
+
+AND
+
+Logic 4: There is an SME record with SME.Number of Units taken = 0
+
+AND
+
+Logic 5:
+
+(Logic 5.1: STR. Start Date/Time is WITHIN SME.Treatment Stop Date and SME. Treatment Resume Date reported in any of the records on SME
+
+AND
+
+Logic 5.2: STR. Stop Date/Time is NOT WITHIN SME.Treatment Stop Date and SME. Treatment Resume Date reported in any of the records on SME
+
+Scenario 1: Output = Yes
+
+Logic 6: There is an STR record with STR. Dose Amount = 0 record
+
+AND
+
+Logic 7: There is NO a SME record with SME. Number of Units taken = 0
+
+OR
+
+Logic 8: There is an STR record with STR.Dose Amount = 0 record
+
+AND
+
+Logic 9: There is an SME record with SME.Number of Units taken = 0
+
+AND
+
+Logic 10:
+
+(Logic 10.1: STR. Start Date/Time is NOT WITHIN SME.Treatment Stop Date and SME. Treatment Resume Date reported in none of the records on SME
+
+OR
+
+Logic 10.2: STR. Stop Date/Time is NOT WITHIN SME.Treatment Stop Date and SME. Treatment Resume Date reported in none of the records on SME)
+
+Scenario 2: Output = No
+
+Logic 11: There is an STR record with STR.Dose Amount = 0 record
+
+AND
+
+Logic 12: There is an SME record with SME.Number of Units taken = 0
+
+AND
+
+Logic 13: STR. Start Date/Time AND STR.Stop Date/Time are WITHIN SME.Treatment Stop Date and SME. Treatment Resume Date reported in any of the records on SME
+
+AND
+
+Logic 14:
+
+(
+
+Logic 14.1: Data Entry Method “Daily” is selected in the Parameter Selection
+
+AND
+
+SME. Number of Days of Treatment Interruption is EQUAL to Number of STR records with STR.Dose Amount = 0 that are entered WITHIN the SME.Treatment Stop Date and SME. Treatment Resume Date reported
+
+OR
+
+Logic 14.2 Data Entry Method “Timeframe” is selected in the Parameter Selection
+
+AND
+
+STR. Start Date/Time AND STR. Stop Date/Time record with STR. Dose Amount = 0 is within SME.Treatment Stop Date and SME.Treatment Resume Date AND SME.Number of Units taken = 0
+
+AND
+
+ (STR. Stop date – STR. Start Date) + 1 is EQUAL to SME. Number of Days of Treatment Interruption.  – PULIR
+
+)
+
+Scenario 2: Output = Yes
+
+Logic 15: There is an STR record with STR.Dose Amount = 0 record
+
+AND
+
+Logic 16: There is an SME record with SME.Number of Units taken = 0
+
+AND
+
+Logic 17: STR. Start Date/Time AND STR.Stop Date/Time are WITHIN SME.Treatment Stop Date and SME. Treatment Resume Date reported in any of the records on SME
+
+AND
+
+Logic 18:
+
+(
+
+Logic 18.1: Data Entry Method “Daily” is selected in the Parameter Selection
+
+AND
+
+SME.Number of Days of Treatment Interruption is <> to Number of STR records with STR.Dose Amount = 0 that are entered WITHIN the SME.Treatment Stop Date and SME. Treatment Resume Date reported
+
+OR
+
+Logic 18.2 Data Entry Method “Timeframe” is selected in the Parameter Selection
+
+AND
+
+STR. Start Date/Time AND STR. Stop Date/Time records with STR. Dose Amount = 0 are within SME. Treatment Stop Date and SME. Treatment Resume Date AND SME. Number of Units taken = 0
+
+AND
+
+ (STR. Stop date – STR. Start Date) + 1 is <> to SME. Number of Days of Treatment Interruption.  –
+
+)
+
+Scenario 3: Output = No
+
+Logic 19: There is a SME record with SME. Number of units taken = 0
+
+AND
+
+Logic 20: There is an STR record with STR. Dose Amount = 0
+
+AND
+
+Logic 21: STR. Start Date/Time AND STR. Stop Date/Time are within SME. Treatment Stop Date and SME. Treatment Resume Date
+
+Scenario 3: Output = Yes
+
+Logic 22: There is a SME record with SME. Number of units taken = 0
+
+AND
+
+Logic 23: There is NO an STR record with STR. Dose Amount = 0
+
+OR
+
+Logic 24: There is a SME record with SME. Number of units taken = 0
+
+AND
+
+Logic 25: There is NO STR record where (STR.Dose Amount = 0 AND STR. Start Date/Time that is within SME.Treatment Stop Date and SME. Treatment Resume Date for SME record from Logic 24)
+
+Notes:
+
+Note 1: For STR. Start Date/Time, SME. Treatment Stop Date and SME. Treatment Resume Date ONLY check the date and not the time
+
+Note 2: For all Scenarios, Report should review ALL records entered in STR and each row in STR should be compared with ALL records entered in SME. An output should be present ONLY for the STR row in which discrepancy is found against all SME data.
+
+Note 3. For scenario 1 and 2, day of the week should be listed in the column “Day of the week”.
+
+Note 4: Do not output for deleted records
+
+Note 5: For logics 5, 10, 13, 14, 17, 18 and 21 in Scenarios 1, 2 and 3, WITHIN means that data in SME.Treatmet Stop Date < STR.Start date < SME.Treatment Resume Date
+
+Note 5. For Scenario 1, leave columns (SME Number of Units Taken, SME First Dose date, SME Last Dose date, SME Treatment Stop Date, SME Treatment Resume Date, SME Number of Days of Treatment Interruption ) blank.
+
+Note 6. For Scenario 3, leave columns (STR Visit mnemonic, STR seq#, STR Start Date/Time, STR Day of the week for start date, STR Stop Date/time, STR Day of the week for stop date,  STR Dose Amount and STR zero dose records ) blank.
+
+Note 7. For column 16: If Data Entry Method “Daily” is selected in the Parameter Selection, populate the amount of zero dose records in STR that have a start date as: SME.Treatmet Stop Date < STR.Start date < SME.Treatment Resume Date AND with SME.Number of Units taken =0. Should be a numeric value
+
+e.g.:
+
+SME: Treatment Stop Date: 6-Nov-2018 - Treatment Resume Date: 11-Nov-2018  -Number of units taken: 0
+
+STR: row#1 Start date: 7-Nov-2018, Stop date: 7-Nov-2018 Dose Amount: 0
+
+STR: row#2 Start date: 8-Nov-2018, Stop date: 8-Nov-2018 Dose Amount: 0
+
+STR: row#3 Start date: 9-Nov-2018, Stop date: 9-Nov-2018 Dose Amount: 0
+
+STR: row#4 Start date: 10-Nov-2018 Stop date: 10-Nov-2018 Dose Amount: 0
+
+STR: row#5 Start date: 11-Nov-2018, Stop date: 11-Nov-2018 Dose Amount: 5
+
+Column 15 (STR zero dose records) = 4.
+
+Note 8. For column 16: If Data Entry Method “Timeframe” is selected in the Parameter Selection, populate the difference between (STR. Stop date – STR. Start Date) + 1 for zero dose records in STR that have a start date as: SME.Treatmet Stop Date < STR.Start date AND  STR.Stop date < SME.Treatment Resume Date AND with SME.Number of Units taken =0. Should be a numeric value
+
+e.g.:
+
+SME: Treatment Stop Date: 6-Nov-2018 - Treatment Resume Date: 11-Nov-2018 - Number of units taken: 0
+
+STR: row#1 Start date: 1-Nov-2018, Stop date: 5-Nov-2018 Dose Amount: 0
+
+STR: row#2 Start date: 7-Nov-2018, Stop date: 10-Nov-2018 Dose Amount: 0
+
+STR: row#3 Start date: 9-Nov-2018, Stop date: 12-Nov-2018 Dose Amount: 0
+
+Only row#2 meets logic, hence (10Nov18 – 7Nov19) + 1 = 4
+
+Column 16 (STR zero dose records) = 4
+
+Report Scenarios:
+Scenario 1:
+
+Output – Yes: There is a Zero dose record in STR but NO corresponding External Vendor entry is on SME.
+
+Output – No: There is a Zero dose record in STR and there is a corresponding External Vendor entry on SME.
+
+Scenario 2:
+
+Output – Yes: Days of dose interruption in STR DO NOT MATCH with Number of Interruption Days recorded in SME
+
+Output – No: Days of dose interruption in STR MATCH with Number of Interruption Days recorded in SME
+
+Scenario 3:
+
+Output – Yes: There is a Zero dose record in the External Data SME but NO corresponding STR entry.
+
+Output – No: There is a Zero dose record in the External Data SME and there is their corresponding STR entry.
+
+Output – No: Deleted records in STR
+
+Sorting:
+Country, Site, Subject Number, STR seq#
+
+Parameter Selection:
+Country, First Site, Last Site, First Subject, Last Subject, List of Subjects, Data Entry Method (Radio button: Daily, Timeframe)
+
+Form.Item Names:
+1. SA. Country
+
+2. SA. Site mnemonic
+
+3. Subject Number
+
+4. STR. Visitmnemonic
+
+5. STR. Sponsor ID Number
+
+6. STR. Start Date/time
+
+7. STR Day of the week for start date
+
+8. STR. Stop Date/time
+
+9. STR Day of the week for stop date
+
+10. STR. Dose Amount
+
+11. SME. Number of Units Taken
+
+12. SME. Start Date/Time
+
+13. SME. Stop Date/Time
+
+14. SME. Treatment Stop Date
+
+15. SME. Treatment Resume Date
+
+16. SME. Number of Days of Treatment Interruption
+
+17. Display number explained in Note 4
+
+18. Display “Scenario 1”, “Scenario 2” or “Scenario 3” according to logic

@@ -1,0 +1,65 @@
+Report ID: RID346
+
+Report Title:
+Missing last line of therapy entered at ODB with reason of discontinuation specified per protocol.
+
+Description:
+This report lists subjects whose last Line of therapy entered on the oncologic drugs and biologics form (ODB/ODBH), is not the one specified per protocol.
+
+Column Heading:
+1. Country
+
+2. Site
+
+3. Subject Number
+
+4. ODB Start Date
+
+5. ODB Stop Date
+
+6. Reason for Discontinuation
+
+Logic:
+Logic 1: ODB.STOP DATE OF MEDICATION /STOP DATE OF REGIMEN  = ODB. Max STOP DATE OF MEDICATION /STOP DATE OF REGIMEN AND Logic 2: ODB.Reason <> Value selected in "Reason for Discontinuation" parameter
+
+Note 1: ODB.STOP DATE OF MEDICATION /STOP DATE OF REGIMEN: use Imputed Stop Date of Regimen/ Maximum Imputed Stop Date of Medication
+
+Note 2: ODB.Max Stop Date: Maximum of ODB.Stop Date (clarified in Note 2) prior Date of Randomization in SR/SRIVR. If the study does not have SR/SRIVR form then the report will not consider the date of randomization.
+
+Note 3: Using system date if ODB.Stop Date is blank
+
+Note 4: ODB.Reason: REASON FOR DISCONTINUATION FROM THIS REGIMEN
+
+Note 5: For "Reason for Discontinuation" parameter: if All is selected: if PD nested radio button is available we do not expect an output when ODB.Reason = Progression of Disease By Imaging OR Toxicity, if PD nested radio button is not available we do not expect an output when ODB.Reason = Progressive Disease OR Toxicity. if one of the other option is selected then we do not expect an output only when ODB.Reason = option selected.
+
+Note 6: Progression of Disease By Imaging is considered when radio button of Progression of Disease is selected and also nested radio button By Imaging is selected.
+
+Note 7: For trials that use both Stop Date of Regimen and Stop Date of Medication items in ODB use imputed Stop date of regimen                                                                                                                                                                                   Note 8: This report is using the Global Supp Doc, items STOP DATE OF MEDICATION /STOP DATE OF REGIMEN and REASON FOR DISCONTINUATION FROM THIS REGIMEN  are from ODB global Supp Doc.
+
+Report Scenarios:
+Scenario 1: Yes
+
+ODB. Reason for discontinuation from most recent course/Reason for Discontinuation from This Regimen <> Progression of Disease By Imaging OR Toxicity OR Progressive Disease. AND Max date ODB.Start Date of Medication/ODB.Start Date of Regimen or Stop Date of Medication.
+
+Scenario 2: No
+
+ODB.Reason for discontinuation from most recent course/Reason for Discontinuation from This Regimen = Progression of Disease By Imaging OR Toxicity OR Progressive Disease. AND Max date ODB.Start Date of Medication/ODB.Start Date of Regimen or ODB.Stop Date of Regimen.
+
+Sorting:
+Country, Site, Subject Number
+
+Parameter Selection:
+Country, First Site, Last Site, First subject, Last Subject, List of Subjects, Randomized only (N/Y, default as N)
+
+Form.Item Names:
+1. SA.Country
+
+2. SA.Site
+
+3. SA.Subject Number
+
+4. ODB.START DATE OF MEDICATION/ODB.START DATE OF REGIMEN
+
+5. ODB.STOP DATE OF MEDICATION /ODB.STOP DATE OF REGIMEN
+
+6. ODB.REASON FOR DISCONTINUATION FROM THIS REGIMEN. display the reason for discontinuation for the max ODB date.

@@ -1,0 +1,249 @@
+Report ID: RID410
+
+Report Title:
+Risk Evaluation consistency
+
+Description:
+The report output will allow identify those patients whom do not meet the criteria (assessments) defined in Risk Factor Form.
+
+Column Heading:
+1. Country
+
+2. Site
+
+3. Subject Number
+
+4. Prognostic Factors
+
+5. Form sequence number
+
+6. Test
+
+7. Baseline result
+
+8. Normal range
+
+9. Cycle Level Form
+
+10. Subject Level Form
+
+11. Scenario
+
+Logic:
+Scenario 1
+
+Logic 1 (for results with normal ranges):
+
+<Prognostic Factors> from supporting document = NO in RSK form AND
+
+There is <Test name> in <Cycle Level Form> at Baseline visit which is <condition symbol> than <condition> in <subject level form>
+
+Logic 2 (for results with normal ranges):
+
+<Prognostic Factors> from supporting document = YES in RSK form AND
+
+There is NO <Test name> in <Cycle Level Form> at Baseline visit which is <condition symbol> than <condition> in <subject level form>
+
+Logic 3 (for results without normal ranges):
+
+<Prognostic Factors> from supporting document = NO in RSK form AND
+
+There is <Test name> in <Cycle Level Form> at Baseline visit which is <condition symbol> than <condition> <Comparator>
+
+Logic 4 (for results without normal ranges):
+
+<Prognostic Factors> from supporting document = YES in RSK form AND
+
+There is NO <Test name> in <Cycle Level Form> at Baseline visit which is <condition symbol> than <condition> <Comparator>
+
+Scenario 2
+
+Logic 5 (for results without normal ranges):
+
+Item ‘Does the subject have any Known Prognostic Factors?’ in RSK form = NO AND
+
+<Prognostic Factors> from supporting document = NULL in RSK form AND
+
+There is <Test name> in <Cycle Level Form> at Baseline visit which is <condition symbol> than <condition> <Comparator>
+
+Logic 6 (for results with normal ranges):
+
+Item ‘Does the subject have any Known Prognostic Factors?’ in RSK form = NO AND
+
+<Prognostic Factors> from supporting document = NULL in RSK form AND
+
+There is <Test name> in <Cycle Level Form> at Baseline visit which is <condition symbol> than <condition> in <subject level form>
+
+Note:
+
+1. Deleted records should not be included
+
+2. <Test name>, <Cycle Level Form>, <condition symbol>, <condition>, and <subject level form> are from supporting document
+
+3. Baseline visit is visit selected in the "Baseline visit" prompt
+
+4. If there are multiple HLAB and OLAB entries at visit selected in the "Baseline visit" prompt, please output for each row that met the logic, with the Cycle level Form sequence number.
+
+5. For logic 1 apply Scenario A, B, E, F;
+
+for logic 2 apply Scenario C, D, G, H;
+
+for logic 3 apply Scenario I, J;
+
+for logic 4 apply Scenario K, L;
+
+for logic 5 apply Scenario R, S;
+
+for logic 6 apply Scenario M, N, O, P;
+
+6. Requires Supporting document to be named ONC_RSK_001 _supp_<xxxxxxx>.csv and will contain the following columns and associated content:
+
+I. Prognostic Factors: Required, Prognostic Factors from RSK form.
+
+II. Test Name: Required, Name of the test/assessment present on RSK form
+
+III. Cycle Level Form: Required, Name of the form containing the test
+
+IV. Subject Level Form: (Optional, Name of the form where the normal ranges per subject are present, enter NA if not needed.)
+
+V. Condition symbol: Logical connector include >, <, not equal, ne, <>, =, >=, <=.  (not equal, ne, <> are all means not equal).
+
+VI. Comparator (Required, please input “Value” or “Item”)
+
+VII. Condition (Required, please input exact value for compare or item which contains the normal ranges)
+
+e.g.
+
+Prognostic Factors,Test Name,Cycle level Form,Subject Level Form, Condition symbol, Comparator, Condition
+
+Baseline Hemoglobin Less than Lower Limit of Normal, HLAB,HNR,<,item,Test Lower Limit of Normal
+
+Report Scenarios:
+Scenario 1
+
+Test with normal ranges, ‘less than lower’ in RSK
+
+Scenario A/Yes:
+
+Baseline Hemoglobin risk factor is selected as NO at Risk Factor Form and there is Hemoglobin test result at Baseline visit in HLAB is less than Lower Limit of Normal in HNR/ or Hemoglobin test result is missing at Baseline visit in HLAB.
+
+Scenario B/No:
+
+Baseline Hemoglobin risk factor is selected as NO at Risk Factor Form and there is NO Hemoglobin test result at Baseline visit in HLAB which is less than Lower Limit of Normal in HNR.
+
+Scenario C/Yes:
+
+Baseline Hemoglobin risk factor is selected as YES at Risk Factor Form and there is NO Hemoglobin test result at Baseline visit in HLAB which is less than Lower Limit of Normal in HNR/ or Hemoglobin test result is missing at Baseline visit in HLAB.
+
+Scenario D/No:
+
+Baseline Hemoglobin risk factor is selected as YES at Risk Factor Form and there is Hemoglobin test result at Baseline visit in HLAB is less than Lower Limit of Normal in HNR.
+
+Test with normal ranges, ‘Greater than upper’ in RSK
+
+Scenario E/Yes:
+
+Baseline Platelet count risk factor is selected as NO at Risk Factor Form and Platelet count test result at Baseline visit in HLAB is greater than Upper Limit of Normal in HNR/ or Baseline Platelet count test result is missing at Baseline visit in HLAB.
+
+Scenario F/No:
+
+Baseline Platelet count risk factor is selected as NO at Risk Factor Form and there is NO Platelet count test result at Baseline visit in HLAB which is greater than Upper Limit of Normal in HNR.
+
+Scenario G/YES:
+
+Baseline Platelet count risk factor is selected as YES at Risk Factor Form and there is NO Platelet count test result at Baseline visit in HLAB which is greater than Upper Limit of Normal in HNR/ or Baseline Platelet count test result is missing at Baseline visit in HLAB.
+
+Scenario H/No:
+
+Baseline Platelet count risk factor is selected as YES at Risk Factor Form and there is Platelet count test result at Baseline visit in HLAB which is greater than Upper Limit of Normal in HNR.
+
+Test without normal ranges in RSK (less than 80)
+
+Scenario I/YES:
+
+Baseline Karnofsky Performance Scale Score risk factor is selected as NO at Risk Factor Form and there is Karnofsky Performance Scale Score result at Baseline visit in KPS which is lower than 80 'condition' value, as specified in supporting document/ or Karnofsky Performance Scale Score result is missing at Baseline visit in KPS.
+
+Scenario J/ No:
+
+Baseline Karnofsky Performance Scale Score risk factor is selected as NO at Risk Factor Form and there is NO Karnofsky Performance Scale Score result at Baseline visit in KPS which is lower than 80 'condition' value, as specified in supporting document.
+
+Scenario K/YES:
+
+Baseline Karnofsky Performance Scale Score risk factor is selected as YES at Risk Factor Form and there is NO Karnofsky Performance Scale Score result at Baseline visit in KPS which is lower than 80 'condition' value, as specified in supporting document/ or Karnofsky Performance Scale Score result is missing at Baseline visit in KPS.
+
+Scenario L/No:
+
+Baseline Karnofsky Performance Scale Score risk factor is selected as YES at Risk Factor Form and there is Karnofsky Performance Scale Score result at Baseline visit in KPS which is lower than 80 'condition' value, as specified in supporting document.
+
+Scenario 2
+
+Test with normal ranges, ‘Greater than upper’ in RSK
+
+Scenario M/Yes:
+
+Does the subject have any Known Prognostic Factors? is selected as NO in RSK form AND
+
+Baseline Platelet count risk factor is NULL at Risk Factor Form and Platelet count test result at Baseline visit in HLAB is greater than Upper Limit of Normal in HNR.
+
+Scenario N/No:
+
+Does the subject have any Known Prognostic Factors? is selected as NO in RSK form AND
+
+Baseline Platelet count risk factor is NULL at Risk Factor Form and there is NO Platelet count test result at Baseline visit in HLAB which is greater than Upper Limit of Normal in HNR.
+
+Test with normal ranges, ‘less than lower’ in RSK
+
+Scenario O/Yes:
+
+Does the subject have any Known Prognostic Factors? is selected as NO in RSK form AND
+
+Baseline Hemoglobin risk factor is NULL at Risk Factor Form and there is Hemoglobin test result at Baseline visit in HLAB which is less than Lower Limit of Normal in HNR.
+
+Scenario P/No:
+
+Does the subject have any Known Prognostic Factors? is selected as NO in RSK form AND
+
+Baseline Hemoglobin risk factor is NULL at Risk Factor Form and there is NO Hemoglobin test result at Baseline visit in HLAB which is less than Lower Limit of Normal in HNR.
+
+Test without normal ranges
+
+Scenario R/ Yes:
+
+Does the subject have any Known Prognostic Factors? is selected as NO in RSK form AND
+
+Baseline Karnofsky Performance Scale Score risk factor is NULL at Risk Factor Form and there is Karnofsky Performance Scale Score result at Baseline visit in KPS which is lower than 80 'condition' value, as specified in supporting document.
+
+Scenario S/ No:
+
+Does the subject have any Known Prognostic Factors? is selected as NO in RSK form AND
+
+Baseline Karnofsky Performance Scale Score risk factor is NULL at Risk Factor Form and there is NO Karnofsky Performance Scale Score result at Baseline visit in KPS which is lower than 80 'condition' value, as specified in supporting document.
+
+Sorting:
+default
+
+Parameter Selection:
+Baseline visit
+
+Form.Item Names:
+1. Subject Assignment.Site Country
+
+2. Subject Assignment form.Site Mnemonic
+
+3. Subjects.Subject Number
+
+4. RSK. Baseline Corrected Calcium Greater than Upper Limit of Normal, Baseline Karnofsky Performance Status Less than 80%, Baseline Hemoglobin Less than Lower Limit of Normal, Baseline Neutrophil Greater than Upper Limit of Normal, Baseline Platelet Count Greater than Upper Limit of Normal
+
+5. Form sequence number.Sequence number of Cycle level Form at Baseline visit (corresponding to Baseline test result from Cycle level Form)
+
+6. Test entered by user.Test Name
+
+7. Baseline test result from Cycle level Form
+
+8. Baseline test Normal range from subject level form (lower limit of normal- upper limit of normal)
+
+9.  Cycle Level Form entered by user.Form Name
+
+10. Subject Level Form entered by user.Form Name
+
+11. Scenario

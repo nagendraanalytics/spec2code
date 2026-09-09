@@ -1,0 +1,179 @@
+Report ID: AE001EDMR_STD
+
+Report Title:
+Adverse Events with Relative Days to Period
+
+Description:
+The report generates a listing of Adverse Events with relative days to period.  Last visit is the final visit where there is a date of visit recorded.  Time Since Last Dose is is the amount of days, hours, and minutes that have elapsed since the last dose begin date where the dose amount is greater than 0.  Days Relative to Start of Trial are the number of days from the first visit date to the onset date of the AE.  Days Relative to Start of Period are the number of days from the date of visit of the period in which the AE occurred to the onset date of the AE.  PLEASE NOTE:  The phase and period in which the AE occurred is based upon the AE Onset Date in relation to the Date of Visit.  The timing of any study medication administration at that period is not considered.  The AE will fall into the phase and period where the AE onset date is equal to or after the date of visit for that visit, and prior to the date of visit of the next visit.
+
+Column Heading:
+1. Country
+
+2. Site
+
+3. Subject Number
+
+4. Gender
+
+5. Race
+
+6. Age
+
+7. Visit
+
+8. Phase
+
+9. Period
+
+10. Last Visit
+
+11. AE Term {LLT}{Pref Term}
+
+12. AE Onset Dt
+
+13. AE Onset Time
+
+14. AE End Dt
+
+15. AE End Time
+
+16. Duration (d-hr:mn)
+
+17. AE Severity
+
+18. Serious
+
+19. Discontinued due to this event
+
+20. Event of Clinical Interest
+
+21. AE Action-Overall
+
+22. AE Relationship-Overall
+
+23. AE Action - Study Med 1 (if applicable)
+
+24. AE Relationship-Study Med 1  (if applicable)
+
+25. AE Action - Study Med 2  (if applicable)
+
+26. AE Relationship-Study Med 2  (if applicable)
+
+27. AE Action - Study Med 3  (if applicable)
+
+28. AE Relationship-Study Med 3  (if applicable)
+
+29. AE Outcome
+
+30. Worsening  (if applicable)
+
+31. Worsening - Study Med 1  (if applicable)
+
+32. Worsening - Study Med 2  (if applicable)
+
+33. Worsening - Study Med 3  (if applicable)
+
+34. Worsening - Study Med 4  (if applicable)
+
+35. Worsening - Study Med 5  (if applicable)
+
+36. Worsening - Study Med 6  (if applicable)
+
+37.Time Since Last Dose (d-hr:mn)
+
+38. Days Rel to Start of Trial
+
+39. Days Rel to Start of Period
+
+Logic:
+Listing of AEs incl Tx group, rel days, duration. This report calculates time since last dose based on study medication records that have a dose amount>0. Last visit is the final visit where there is a date of visit recorded. Time Since Last Dose is the amount of days, hours, and minutes that have elapsed since the last dose begin date where the dose amount is greater than 0. Days Relative to Start of Trial are the number of days from the first visit date to the onset date of the AE. Days Relative to Start of Period are the number of days from the date of visit of the period in which the AE occurred to the onset date of the AE. The AE Term {LLT}{Pref Term} column is highlighted in yellow.  Grouped by Country, Site, Subject Number, Gender, Race, Age Deleted items should not be considered
+
+Note! The AE onset date should take the entire date into account when sorting ascending within a visit.
+
+Report Scenarios:
+Listing/Data Dump
+
+Sorting:
+Country, Site, Subject, AE Onset Date, AE Onset Time
+
+Parameter Selection:
+Country,Site,Subject Number, Randomized Only
+
+Form.Item Names:
+1. Subject Assignment.Site Country
+
+2. Subject Assignment.Site Mnemonic
+
+3. Subject Assignment.Subject Number
+
+4. DEMOGRAPHICS Form.Gender
+
+5. DEMOGRAPHICS Form.Race
+
+6. DEMOGRAPHICS Form.Age
+
+7. DOV.Visit
+
+8. DOV.Phase
+
+9. DOV.Period
+
+10. Derived: Max visit mnemonic
+
+11 ADVERSE EVENTS Form.AE erm.LLT.PT
+
+12.ADVERSE EVENTS Form.Onset Date and Time
+
+13. ADVERSE EVENTS Form.Onset Date and Time
+
+14. ADVERSE EVENTS Form.End Date and Time
+
+15. ADVERSE EVENTS Form.End Time and Time
+
+16. Derived: Stop date/time - start date/time
+
+17. ADVERSE EVENTS Form.Severity/Intensity
+
+18. ADVERSE EVENTS Form.Serious Criteria
+
+19. ADVERSE EVENTS Form.The subject discontinued study participation due to this event
+
+20. ADVERSE EVENTS Form.Event of Clinical Interest
+
+21. ADVERSE EVENT Form.Overall Action taken with Study Medication
+
+22. ADVERSE EVENT Form.Overall Relationship to Study Medication
+
+23. ADVERSE EVENT Form.Action taken with Study Medication 1 (if applicable)
+
+24. ADVERSE EVENT Form.Relationship to Study Medication 1 (if applicable)
+
+25. ADVERSE EVENT Form.Action taken with Study Medication 2 (if applicable)
+
+26. ADVERSE EVENT Form.Relationship to Study Medication 2 (if applicable)
+
+27. ADVERSE EVENT Form.Action taken with Study Medication 3 (if applicable)
+
+28. ADVERSE EVENT Form.Relationship to Study Medication 3 (if applicable)
+
+29. ADVERSE EVENT Form.Outcome of AE
+
+30. ADVERSE EVENTS Form.Worsening (if applicable)
+
+31. ADVERSE EVENTS Form.Worsening - Study Med 1  (if applicable)
+
+32. ADVERSE EVENTS Form.Worsening - Study Med 2   (if applicable)
+
+33. ADVERSE EVENTS Form.Worsening - Study Med 3   (if applicable)
+
+34. ADVERSE EVENTS Form.Worsening - Study Med 4   (if applicable)
+
+35. ADVERSE EVENTS Form.Worsening - Study Med 5   (if applicable)
+
+36. ADVERSE EVENTS Form.Worsening - Study Med 6   (if applicable)
+
+37.Derived:AE Start Date/time - last dose date start date/time prior to AE
+
+38.Derived: AE start date time - First visit date
+
+39.Derived: AE start date and time - date of visit of period in which AE occurred

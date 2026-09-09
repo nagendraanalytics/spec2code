@@ -1,0 +1,69 @@
+Report ID: RID255
+
+Report Title:
+Medication Categoy Reconciliation
+
+Description:
+Report will output subjects with CM entries that have Medication Category as Oncologic, but ATC1 term is not consistent.
+
+Column Heading:
+1. Country
+
+2. Site
+
+3. Subject number
+
+4. Seq
+
+5. Medication Name
+
+6. ATC1 Term
+
+7. Medication Category
+
+Logic:
+Logic 1
+
+CM.ATC1 Term <> antineoplastic and immunomodulating agents AND CM.Medication Category = Oncologic
+
+Note 1: Do not consider deleted recods for programming
+
+Note 2: The comparision of the ATC1 Term should not be case sensitive
+
+Report Scenarios:
+Scenario 1 Output Yes
+
+ATC1 Term <> antineoplastic and immunomodulating agents AND Medication Category = Oncologic
+
+Scenario 2 Output No
+
+ATC1 Term = antineoplastic and immunomodulating agents AND Medication Category = Oncologic
+
+Scenario 3 Output No
+
+ATC1 Term <> antineoplastic and immunomodulating agents AND Medication Category <> Oncologic
+
+Scenario 4 Output No
+
+ATC1 Term = antineoplastic and immunomodulating agents AND Medication Category <> Oncologic
+
+Sorting:
+Country, Site, Subject Number
+
+Parameter Selection:
+Country, First Site, Last Site, First Subject, Last Subject, List of Subjects,Randomized Only (Y/N set default to N)
+
+Form.Item Names:
+1. SA.Country
+
+2. SA.Site
+
+3. SA.Subject number
+
+4. CM.Sequence Number
+
+5. CM. Medication Name
+
+6. CM.ATC1 Term
+
+7. CM.Medication Category

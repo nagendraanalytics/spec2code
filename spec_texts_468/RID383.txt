@@ -1,0 +1,167 @@
+Report ID: RID383
+
+Report Title:
+Overall Response vs Lesion Evaluation measurements
+
+Description:
+This listing contains details about the type of lesions reported under Lesion Category item on LSNEV/LSNEI (Target/Index, Non-target/Non-Index, and New) and the corresponding Overall Response recorded in ORST.
+
+- For the Target/Index lesions, the listing will show the Target/Index Lesion
+
+Measurement for each lesion and the Summatory of the diameters (SOD) for the all the lesions evaluated on the same date. If the item "Was the Lesion Evaluable?" is selected as No, the lesion will appears as Not evaluable.
+
+- For the Non-target/Non-index lesions, the listing will show the total number of lesions for each Non-Target/Non-index lesion status  (Baseline/Present, Absent, Worsening/Increasing, Not evaluable)  evaluated on the same date.
+
+- For the New lesions, the listing will show the total number on each evaluation.
+
+Note: SOD = sum of longest diameters (extra nodal/Dimension 1) or short axis (nodal/Dimension 2) of all Target/Index lesions
+
+Column Heading:
+1. Country
+
+2. Site
+
+3. Subject Number
+
+4. ORST Seq
+
+5. Date Response Determined
+
+6. Target Response
+
+7. Non-Target Response
+
+8. New lesions
+
+9. Overall Response
+
+10. Associated Lesion Number
+
+11. Lesion Category
+
+12. Date of Lesion Evaluation
+
+13. SOD of Target/Index Lesion
+
+14. % Change from Baseline
+
+15. % Change from Nadir
+
+16. Non-Target/Non-Index Lesion Status/Total number
+
+17. New Lesion/Total Number
+
+18. Was the Lesion Evaluable?
+
+19. Expected Target Response
+
+20. Error Message
+
+Logic:
+Report will output the subjects who meet following criteria.
+
+(Logic 1: ORST RSP. “DATE RESPONSE DETERMINED” AND ORST RSP. “OVERALL RESPONSE is not Null
+
+AND
+
+Logic 2: LSN. “TUMOR IDENTIFICATION” =Target/Index or Non-Target/Non-index or Target Nodal or Target Extra Nodal or Non-Target Nodal or Non-Target Extra Nodal or New AND
+
+Logic 3: LSNEV, Evaluation Entry with LSN.“DATE OF LESION EVALUATION”Date of Lesion Evaluation  is within ORST RSP. “OVERALL RESPONSE” Date Response Determined of ORST  minus 0~3 days)
+
+OR
+
+(Logic 4: RSP. “DATE RESPONSE DETERMINED”ORST, Date Response Determined AND ORST RSP. “OVERALL RESPONSE” Overall Response  is not Null
+
+AND
+
+Logic 5: No LSN record which LSN. “TUMOR IDENTIFICATION” =Target/Index or Non-Target/Non-index or Target Nodal or Target Extra Nodal or Non-Target Nodal or Non-Target Extra Nodal or New AND LSN.“DATE OF LESION EVALUATION” Date of Lesion Evaluation is within RSP. “DATE RESPONSE DETERMINED”Date Response Determined  in ORST minus 0~ 3 days in Evaluation Entry)
+
+OR
+
+Logic 6: LSN. “TUMOR IDENTIFICATION” =Target/Index or Non-Target/Non-index or Target Nodal or Target Extra Nodal or Non-Target Nodal or Non-Target Extra Nodal or New AND LSN.“DATE OF LESION EVALUATION” Date of Lesion Evaluation is out of any RSP. “DATE RESPONSE DETERMINED”Date Response Determined  minus 0~ 3 days in ORST form
+
+ OR
+
+Logic 7: LSN. “WAS THE LESION EVALUABLE?” =No
+
+Note1: Deleted data should be excluded from programming
+
+Note2: Lesion Type field should only be considered if present in the study.
+
+Note3: ORST RSP. “DATE RESPONSE DETERMINED”, ORST RSP. “OVERALL RESPONSE” are going to be retrieved from the ‘RSP_supp_doc’ global supporting document column C for ORST.
+
+Note4: LSN.“DATE OF LESION EVALUATION” LSN.” DATE OF INITIAL IDENTIFICATION”, LSN. “TUMOR IDENTIFICATION”, LSN. “WAS THE LESION EVALUABLE?”, LSN.”IS THE LESION FDG-AVID ON THE PET SCAN” are going to be retrieved from the ‘LSNRSP_supp_doc’ global supporting document column C for LSNEV and LSNEI.
+
+Report Scenarios:
+A-Yes
+
+List ORST RSP. “OVERALL RESPONSE” and its corresponding LSN. “TUMOR IDENTIFICATION” (target/index, non-target/non-index, and new lesion)
+
+B- Yes
+
+List ORST RSP. “OVERALL RESPONSE” which has no corresponding LSN or LSN which have no corresponding ORST
+
+C- Yes
+
+LSN cannot evaluate
+
+D-No
+
+Deleted record
+
+Sorting:
+Country, Site, Subject Number, ORST RSP. “DATE RESPONSE DETERMINED” OR LSN.“DATE OF LESION EVALUATION”
+
+If some rows of output have both ORST date and LSN date, consider sort by LSN date first then ORST date
+
+Parameter Selection:
+Country, First Site, Last Site, First Subject, Last Subject, List of Subjects, Randomized Only (N/Y, default as N)
+
+Form.Item Names:
+1. SA Form. Site Country
+
+2. SA Form. Site Mnemonic
+
+3. SA Form. Subject Number
+
+4. ORST RSP Form. “Sponsor ID Number”
+
+5. ORST RSP Form. “DATE RESPONSE DETERMINED”
+
+6. ORST RSP Form. “TARGET LESION RESPONSE”
+
+7. ORST RSP Form. “NON-TARGET LESION RESPONSE”
+
+8. ORST RSP Form. “NEW LESIONS SINCE LAST EVALUATION”
+
+9. ORST RSP Form. “OVERALL RESPONSE”
+
+10. LSN Form. “ASSOCIATED LESION NUMBER” (if there are more than one Lesion number for each Lesion Category, display them all and joined by semicolon)
+
+11. Display “Target/Index”, “Non-Target/Non-index” or “New” correspondingly if item9~1212-17 have data.
+
+12. LSN Form. Evaluation Entry section. “DATE OF LESION EVALUATION”
+
+13. SOD is calculated as Sum of ‘Target Lesion Measurement’ /Index Lesion Measurement, Longest Diameter/Dimension 1 and Short Axis/Dimension 2 depending on what is in the trial and of all records of Evaluation Entry of LSN. “TUMOR IDENTIFICATION” =’Target /Index’ or Target Nodal or Target Extra Nodal and LSN. “LESION TYPE”= ‘Nodal’ or ‘Extra-Nodal’ (Only consider if present) and have same Date of Evaluation. SOD should only display for logic 3 and 6 when Lesion Category is “Target/Index”.
+
+Display the whole addition expression like “1.5+2.5=4.0”, not only “4.0”.
+
+14. % Change from Baseline is calculated as [(SOD from current Timepoint - SOD from Baseline)/SOD from Baseline] *100%. Baseline SOD corresponds to the SOD of the Baseline assessment, i.e., evaluation done prior first Dose. If SOD from Baseline is equal to 0, ignore calculation and display "Baseline is zero".
+
+15. % Change from Nadir is Calculated as [(SOD from current Timepoint - SOD from Nadir)/SOD from Nadir] *100%. Nadir SOD corresponds to the smallest SOD of all prior lesion evaluations of current Timepoint. If SOD from Nadir is equal to 0, ignore calculation and display "Nadir is zero".
+
+16. Non-Target/Non-index Lesion Status/Total number should display as below format:
+
+ “N/A(baseline) =<total number>”, “Absent=<total number>”, “Present=<total number>”, “Worsening/Increasing =<total number>”, “Not Evaluable=<total number>” in sequence. If there are multiple status, display them all in this column and joined by semicolon.
+
+Total number is calculated as the total record number of Evaluation Entry of LSN form which “TUMOR IDENTIFICATION” =’Non-Target/Non-index’ and have same LSN.“DATE OF LESION EVALUATION”.  This column should only display for logic 3 and 6 when LSN.“TUMOR IDENTIFICATION” is “Non-Target/Non-index” or Non-Target Nodal or Non-Target Extra Nodal.
+
+17. New Lesion/Total Number is calculated as the total record number of LSN which “TUMOR IDENTIFICATION” is ‘New’. This column should only display for logic 3 and 6 when which “TUMOR IDENTIFICATION” is “New”.
+
+Note: If the protocol has the LSN.”IS THE LESION FDG-AVID ON THE PET SCAN” item, consider as ‘New’ if the item value passes from NO in one timepoint and YES in the following. If the item LSN.”IS THE LESION FDG-AVID ON THE PET SCAN” is not present or if the Lesion Evaluation Form is different the report, please simply ignore this note.
+
+18. LSN form, Evaluation Entry section. “WAS THE LESION EVALUABLE?”  This column should only display when logic7 is met and meanwhile keep item 10~1213-15 # as blank.
+
+19. If ORST RSP Form. “OVERALL RESPONSE” <> Null display "Progressive Disease" if calculated % Change from Nadir in column 15 is >= 20% AND difference in SOD column 13 and SOD of  Nadir is >=5. Display "Partial Response" if calculated  % Change from Baseline in column 14 is <=-30% AND >-100% . Display "Complete Response" if calculated  % Change from Baseline in column 14 is =-100%. Otherwise display "Stable Disease".
+
+20. Display "Mismatch in Target Response" if Column 6 is Different than Column 19. Display "Number of lesions is different" if for the number of lesions listed in column 10 is not the same as the number of lesions listed at the baseline assessment when Lesion Identification is Target/Index or Non-Target/Non-index as per column 11 or if for the number of lesions listed in column 10 is not the same as the number of lesions listed at the previous evaluation assessment based on Dates when Lesion Identification Identification on column is New as per column 11 . If both conditions are meet display both error messages separated by a comma. If non left the column blank.

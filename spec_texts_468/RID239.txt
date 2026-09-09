@@ -1,0 +1,85 @@
+Report ID: RID239
+
+Report Title:
+Immune related AE
+
+Description:
+This report will display subjects with incorrectly reported "Is the AE Immune related" question.
+
+Column Heading:
+1. Country
+
+2. Site
+
+3. Subject number
+
+4. AE Seq
+
+5. AE Start date
+
+6. Label Description or Dose Number
+
+7. Study Medication Start Date
+
+8. Is the AE Immune related?
+
+9. Scenario
+
+Logic:
+Logic 1: SMAU/SMAB/SM/ SM01 Dose number / SM Label Description = Dose number / Label Description entered AND
+
+AE Onset date and time > or = than SMAU/SMAB/SM/SM01 First Dose AND
+
+AE Onset date and time < or = than SMAU/SMAB/SM/SM04 Last Dose
+
+AND "Is the AE Immune related" = Not Applicable
+
+Logic 2: SMAU/SMAB/SM/ SM01 Dose number / SM Label Description = Dose number / Label Description entered AND AE Onset date and time < than SMAU/SMAB/SM/SM01 First Dose AND "Is the AE Immune related" <> Not Applicable
+
+Logic 3: SMAU/SMAB/SM/ SM01 Dose number / SM Label Description <> Dose number / Label Description entered AND "Is the AE Immune related" <> Not Applicable
+
+Note 1: Please exclude deleted records from programming
+
+Note 2: SMAU/SMAB/SM First Dose is an entry with  “Please Indicate if this is the First Dose for this Label Description” (SMAU/SMAB/SM/SM01) checked or any SM01 entry.
+
+SMAU/SMAB/SM Last Dose is an entry with “Please Indicate if this is the Last Dose for this Label Description” checked or any SM04 entry.
+
+Note 3: For Logic 3, left blank column 6
+
+Report Scenarios:
+Scenario A/Yes:
+
+Subject is receiving -3475 AND AE Onset date is on or after first dose of Study Medication selected  AND "Is the AE Immune related" is "Not Applicable"
+
+Scenario B/Yes
+
+Subject is receiving -3475 AND AE Onset date is before first dose of Study Medication selected  AND "Is the AE Immune related" is not "Not Applicable"
+
+Scenario C/NO
+
+Subject is NOT receiving -3475 selected AND "Is the AE Immune related" is "Not Applicable"
+
+Sorting:
+Country, Site, Subject Number
+
+Parameter Selection:
+Country, First Site, Last Site, First Subject, Last Subject, List of Subjects, Label Description / Dose number (free text, multiple value separated by comma),  Randomized Only
+
+Form.Item Names:
+1. SR. Country
+
+2. SR. Site
+
+3. SR. Subject number
+
+4. AE. Sequence number
+
+5. AE. Onset Date and Time
+
+6. Display  Label Description / Dose number entered
+
+7. SMAU/SMAB/SM/SM01. Start date/Time
+
+8. AE. Is the AE Immune related?
+
+9. Display “Scenario 1” if Logic 1 is met, “Scenario 2” is Logic 2 is met, “Scenario 3” is Logic 3 is met

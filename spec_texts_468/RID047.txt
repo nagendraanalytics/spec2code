@@ -1,0 +1,189 @@
+Report ID: RID047
+
+Report Title:
+Missing premedication
+
+Description:
+This report will list subjects who are receiving Study medication  and are missing the required premedication
+
+Column Heading:
+1. Country
+
+2. Site
+
+3. Subject Number
+
+4. SM Visit
+
+5. Study Medication
+
+6. SM Seq
+
+7. SM Start Date/Time
+
+Logic:
+Prior to processing the logic, apply condition(s) according to the supporting doc to check if subjects match the criterial or not.
+
+Logic 1: "SM Form".Study Medication = "Study Medication"
+
+AND
+
+Logic 2: "SM Form".Start Date is not null
+
+AND
+
+Logic 3: There is no CM record meets:
+
+Logic 3.1: CM."Premedication Itemquestion" in ("Premedication Value" in the same "Premedication Group")
+
+AND
+
+Logic 3.2: CM.Imputed Start Date and Time <= "SM Form".Start Date - "Window Days"
+
+AND
+
+Logic 3.3: CM.Imputed Stop Date and Time + "Window" <= "SM Form".Start Date
+
+Note:
+
+1. Please exclude deleted record and erroneous visit from programming
+
+2. "SM Form","Study Medication","Premedication Itemquestion","Premedication Value","Premedication Group","Window Days" are from supporting document
+
+3. "Date Only" is from supporting document, if set as 'Yes' then will only consider date when comparing date, if set as 'No', then will consider both date and time
+
+4. Time UNK will consider UNK/UNK=23:59
+
+5. "SM Form".Start Date is calculated based on "Scenario" which is from supporting document
+
+-if "Scenario"=1 then will calculate minimum sm start date
+
+-if "Scenario"=2 then will calculate minimum sm start date within the same sm form, study medication
+
+-if "Scenario"=3 then will consider each sm start date
+
+6. When Window is null per supporting document, logic 3.3 will not be checked
+
+Requires supporting document to be named CM017_supp_<xxxxxxx>.csv and will contain the following columns and associated content.
+
+If Criteria is needed, for example, there are 2 Arms in study,then all stratifications should be listed in both DRP and spec.
+
+Definition of Criteria: value specified in Criteria Value column entered in item specified in Criteria Itemquestion column on form specified in Criteria Form column.
+
+For NA in all three mentioned columns please ignore Criteria condition and display output for all subjects.
+
+1)Scenario - Required, enter 1/2/3
+
+2)Criteria Form - Optional, enter 'NA' if logic is checked for all subjects
+
+3)Criteria Itemquestion - Optional, enter 'NA' if logic is checked for all subjects
+
+4)Criteria Value - Optional, enter 'NA' if logic is checked for all subjects
+
+5)SM Form - Required for scenario 2, enter SM/SMAB/SMAU. For scenario 1 and 3, enter 'NA'
+
+6)Study Medication - Required for scenario 2. For scenario 1 and 3, enter 'NA'
+
+7)Premedication Itemquestion - Required, enter Standardized Medication Name/Medication Class Code/Medication Category
+
+8)Premedication Value - Required, enter corresponding value of Premedication Itemquestion
+
+9)Premedication Group - Required, if more than one Premedication is acceptable, please put them in the same group.
+
+10)Date Only - Required, enter Yes/No, if speified as 'Yes' then will only consider date when comparing date, if specified as 'No', then will consider both date and time
+
+11)Window Days - Required.
+
+12)Window - Optional, leave blank if this window is not applicable for verification of CM before the SM first dose.
+
+e.g
+
+Scenario,Criteria Form,Criteria Itemquestion,Criteria Value,SM Form,Study Medication,Premedication Itemquestion,Premedication Value,Premedication Group,Date Only,Window Days, Window
+
+1,NA,NA,NA,NA,NA,Medication Category,voglibose,6,No,4
+
+1,NA,NA,NA,NA,NA,Medication Category,acarbose,6,No,4
+
+2,NA,NA,NA,SMAB,-3475 OR PLACEBO,Standardized Medication Name,efavirenz (+) emtricitabine (+) tenofovir disoproxil fumarate,1,Yes,120,1
+
+2,SR,Arm,Use of other AHAs within 8 weeks of Visit 1,SM,-3475,Standardized Medication Name,dexamethasone,2,Yes,7,1
+
+2,SR,Arm,Assignment 1,SMAU,LABEL 3,Standardized Medication Name,dexamethasone,3,Yes,7,1
+
+2,NA,NA,NA,SM,-3475,Medication Class Code,acarbose,4,Yes,7,1
+
+3,SR,Arm,Assignment 1,NA,NA,Standardized Medication Name,dexamethasone,5,No,7
+
+The number of rows in the supporting document will be represented in the Report Header as "# of rows for customization".
+
+The actual information provided by the supporting doc can be outputted by selecting Y in the parameter "Supporting doc Page".
+
+Optional supporting document should be named as study_med_match_supp_<xxxxxxx>.csv and will contain the following columns and associated content:
+
+supporting document study_med_match_supp_<XXXXXXX>.csv must be created if:
+
+- Your trial has at least one study medication that is given in different doses/bags (e.g. 5-FU given in 4 different bags with different Dose numbers)
+
+- SMA study medication is populated via edit check by SMP form. Because it is prefer to use dose number/label description, since, it is not always the same as study medication.
+
+1 row for each Label Description or Dose Number present in SM/SMAU/SMAB eCRFs.
+
+1. eCRF – SM/SMAU/SMAB
+
+2. Study Medication – Value of Study Medication
+
+3. Matching Item – SM Label Description or SMAU/SMAB Dose Number
+
+4. Matching Value – Value of SM Label Description or SMAU/SMAB Dose Number
+
+e.g.
+
+eCRF,Study Medication,Matching Item,Matching Value
+
+SM,-1439,Label Description,-1439 100 mg
+
+SM,Methadone,Label Description,Methadone Tablet 5 mg
+
+SM,Methadone,Label Description,Methadone Tablet 10 mg
+
+SMAB,3475/Placebo,Dose Number,3475/Placebo
+
+SMAU,Carboplatin,Dose Number,Carboplatin
+
+SMAU,Carboplatin,Dose Number,Carboplatin - Dose 1
+
+SMAU,Carboplatin,Dose Number,Carboplatin - Dose 2
+
+SMAU,Carboplatin,Dose Number,Carboplatin - Dose 3
+
+The actual information provided by the optional supporting doc can be outputted by selecting Y in the parameter "Study Med Match Page".
+
+Report Scenarios:
+Scenario A, Output: Yes
+
+<Study Medication> start date is present. And <Premedication> is missing with matched <expected range> in CM form.
+
+Scenario B, Output: No
+
+<Study Medication> is present. And <Premedication> is present with matched <expected range> in CM form.
+
+Sorting:
+Country, Site, Subject Number, Study Medication
+
+Parameter Selection:
+Country, First Site, Last Site, First Subject, Last Subject, List of Subjects, Randomized Only(N/Y, default as N), Supporting Doc Page (N/Y, Default as N), Study Med Match Page (N/Y, default as N)
+
+Form.Item Names:
+1. SA Form. Site Country
+
+2. SA Form. Site Mnemonic
+
+3. SA Form. Subject Number
+
+4. SM_Table. Visit Mnemonic
+
+5. SM_Table. Study Medication
+
+6. SM_Table. Formidx
+
+7. SM_Table. Start Date/Time

@@ -1,0 +1,107 @@
+Report ID: RID258
+
+Report Title:
+IMDC Risk Evaluation
+
+Description:
+The report output will allow identify those patients whom do not meet the criteria (assessments) defined in IMDC Risk Evaluation form.
+
+Column Heading:
+1. Country
+
+2. Site
+
+3. Subject Number
+
+4. Prognostic Factors
+
+5. Test
+
+6. Baseline result
+
+7. Normal range
+
+Logic:
+Logic 1.1: IF DDRCC.Prognostic Factors.Baseline Hemoglobin < Lower Limit of Normal <> Null
+
+AND
+
+Logic 1.2: HLAB.Hemoglobin At visit selected in the "Baseline visit" prompt > HNR.Lower Limit of Normal: for Hemoglobin
+
+AND
+
+Logic1.3: HNR.Sequence Number for HNR entry in Logic 1.2 = HLAB.Associated HLAB Normal Sequence Number for HLAB entry in Logic 1.2
+
+OR
+
+Logic 2.1: IF DDRCC.Prognostic Factors.Baseline Platelet Count > Upper Limit of Normal <> Null
+
+AND
+
+Logic 2.2: HLAB.Platelet Count At visit selected in the "Baseline visit" prompt < HNR.Upper Limit of Normal: for Platelet Count
+
+AND
+
+Logic 2.3: HNR.Sequence Number for HNR entry in Logic 2.2 = HLAB.Associated HLAB Normal Sequence Number for HLAB entry in Logic 2.2
+
+OR
+
+Logic 3.1: IF DDRCC.Prognostic Factors.Baseline Corrected Calcium > Upper Limit of Normal <> Null
+
+AND
+
+Logic 3.2: OLAB.Corrected Calcium  At visit selected in the "Baseline visit" prompt  < ONR.Upper Limit of Normal: for Corrected Calcium
+
+AND
+
+Logic 3.3: ONR.Sequence Number for ONR entry in Logic 3.2 = OLAB.Associated OLAB Normal Sequence Number for OLAB entry in Logic 3.2
+
+OR
+
+Logic 4.1: IF DDRCC.Prognostic Factors.Baseline Neutrophil > Upper Limit of Normal <> Null
+
+AND
+
+Logic 4.2: HLAB.Absolute Neutrophil At visit selected in the "Baseline visit" prompt < HNR.Upper Limit of Normal: for Absolute Neutrophil
+
+AND
+
+Logic 4.3: HNR.Sequence Number for HNR entry in Logic 4.2 = HLAB.Associated HLAB Normal Sequence Number for HLAB entry in Logic 4.2
+
+Note:
+
+Deleted records should not be included
+
+If there are multiple HLAB entries at visit selected in the "Baseline visit" prompt , please output for each row that met the logic.
+
+Report Scenarios:
+A output = No
+
+Prognostic Factors in DDRCC = None OR Prognostic Factors in DDRCC = Baseline Karnofsky Performance Status < 80%
+
+ OR Prognostic Factors in DDRCC = Interval Between the Date of Initial Diagnosis of RCC to Date of Randomization In This Study < 1year
+
+B output = Yes
+
+Prognostic Factors in DDRCC = Baseline Hemoglobin < Lower Limit of Normal OR Prognostic Factors in DDRCC = Baseline Platelet Count > Upper Limit of Normal OR Prognostic Factors in DDRCC = Baseline Corrected Calcium > Upper Limit of Normal OR Prognostic Factors in DDRCC = Baseline Neutrophil > Upper Limit of Normal
+
+Sorting:
+Country, Site Number, Subject Number, Prognostic Factors
+
+Parameter Selection:
+Country, Site, Subject Number, List of Subjects, Randomized only, Baseline Visit Mnemonic
+
+Form.Item Names:
+1. Subject Assignment.Site Country
+
+2. Subject Assignment form.Site Mnemonic
+
+3. Subjects.Subject Number
+
+4. Display "Baseline Hemoglobin < Lower Limit of Normal"  if Baseline Hemoglobin < Lower Limit of Normal is <> NULL; Display "Baseline Platelet Count > Upper Limit of Normal" if Baseline Platelet Count > Upper Limit of Normal <> NULL; Display " Baseline Corrected Calcium > Upper Limit of Normal " if Baseline Corrected Calcium > Upper Limit of Normal <> NULL; Display "Baseline Neutrophil > Upper Limit of Normal" if Baseline Neutrophil > Upper Limit of Normal<> NULL
+
+5. Display "Hemoglobin" if Baseline Hemoglobin < Lower Limit of Normal is <> Null; Display "Platelet count" if Baseline Platelet count > Upper Limit of Normal is <> Null; Display "Corrected Calcium" if Baseline Corrected Calcium > Upper Limit of Normal is <> Null; Display "Absolute Neutrophil" if Baseline Neutrophil > Upper Limit of Normal is <> Null
+
+6. HLAB.Hemoglobin if Logic 1 is met; HLAB. Platelet count if Logic 2 is met; OLAB.Corrected Calcium if Logic 3 is met; HLAB.Absolute Neutrophil if Logic 4 is met
+
+7.HNR.Lower Limit of Normal: for Hemoglobin if Logic 1 is met; HNR.Upper Limit of Normal: for Platelet Count if Logic 2 is met; ONR.Upper Limit of Normal: for Corrected Calcium if Logic 3 is met; HNR.Upper Limit of Normal: for Absolute Neutrophil if Logic 4 is met

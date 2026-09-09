@@ -1,0 +1,117 @@
+Report ID: RID276
+
+Report Title:
+Missing Discontinuation ePRO according to PMS1 or PMST
+
+Description:
+This report will output subjects with missing discontinuation eCOA record at load but PMS1 or PMST was completed in a different visit than Discontinuation
+
+Column Heading:
+1. Country
+
+2. Site
+
+3. Screening Number
+
+4. Subject Number
+
+5. Visit Mnemonic
+
+6. Date of Visit
+
+7. PMS form
+
+8. PMS form Date
+
+9. Category
+
+Logic:
+PMS1/PMST.Date of Assessment <> NULL
+
+AND
+
+DOV on which PMS1/PMST was completed <> NULL
+
+AND
+
+Visit mnemonic on which PMS1/PMST was completed <> Discontinuation Visit in supp document
+
+AND
+
+there is no GEFCF meet below conditions
+
+(GEFCF. Category = Category in supp document
+
+AND
+
+ GEFCF. VISIT = VISIT ID in supp document
+
+AND
+
+PMS1/PMST.Date of Assessment + Min Days from supp doc <= GEFCF. Date/Time of Measurement <=  PMS1/PMST.Date of Assessment + Max Days from supp doc)
+
+Note 1: Please disregard erroneous visit
+
+Note 2: Requires supporting document to be named ONC_EVD_013_supp_<xxxxxxx>.csv and will contain the following columns and associated content:
+
+1) Category – Please provide the category of the diaries that are required when PMS1 and PMST is completed
+
+2) Discontinuation Visit – Please list the Discontinuation visits on which PMS1 and PMST are normally completed (etc. Discontinuation Visit/End of treatment second course)
+
+3) Visit ID: please provide visit ID per PSA for discontinuation visits
+
+4) Min Days - lower limit for allowed window
+
+5) Max Days - upper limit for allowed window
+
+e.g.
+
+Category, Discontinuation Visit, Visit ID, Min Days, Max Days
+
+EQ-5D-5L, Discontinuation visit, 37, -7, 7
+
+EORTC QLQ-C30, Discontinuation visit, 37, -14, 14
+
+If supporting doc is not provided, display the message as "ONC_EVD_013_JR_STD Supporting Document Not Present for This Trial".
+
+The number of rows in the supporting document will be represented in the Report Header as "# of rows for customization".
+
+The actual information provided by the supporting doc can be outputted by selecting Y in the parameter "Supporting doc Page".
+
+Report Scenarios:
+A – Yes
+
+Diary of the Category in Supporting Document is still missing within allowed window AND PMS1 OR PMST is completed on visit other than Discontinuation AND DOV for visit on which PMS1 or PMST was entered <> NULL
+
+B – NO
+
+Diary of the Category in Supporting Document was provided within allowed window AND PMS1 OR PMST was completed on visit other than Discontinuation AND DOV for visit on which PMS1 or PMST was entered <> NULL
+
+C-NO
+
+Disregard erroneous visits
+
+Sorting:
+Country, Site, Subject Number, PMS form Date, Seq#
+
+Parameter Selection:
+Country, First Site, Last Site, First Subject, Last Subject, List of Subjects, Randomized Only (Y/N set default to N), Supporting Doc Page (N/Y, Default as N)
+
+Form.Item Names:
+1. Subject Assessment.Country
+
+2. Subject Assessment.Site Mnemonic
+
+3. Subject Assessment. Screening Number
+
+4. Subject Assessment.Subject Number
+
+5. Display visit mnemonic
+
+6. Display Visit Mnemonic Date of visit
+
+7. PMS1/PMST according to logic
+
+8. PMS1/PMST. Date of Assessment
+
+9. Supporting Document. Category

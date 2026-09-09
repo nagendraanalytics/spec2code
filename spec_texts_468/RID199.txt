@@ -1,0 +1,121 @@
+Report ID: RID199
+
+Report Title:
+Visits initialized after Last doses Date
+
+Description:
+This report displays subjects who have DOV after date of Last Dose (for all study medications). The purpose of the report is to ensure that there are no dates of visits after Last Dose is checked for all SM, SMAU, SMAB, SM01,SM02,SM04
+
+Column Heading:
+1. Country
+
+2. Site
+
+3. Subject Number
+
+4. Study Medication
+
+5. SM form
+
+6. SM Visit
+
+7. Date of Visit
+
+8. Visit Mnemonic
+
+9. Last Dose Date
+
+10. SM sequence
+
+Logic:
+Logic 1: Current visit DOV.Date of Visit <> NULL
+
+AND
+
+Logic 2: SM_Form.Study Medication = Study Medication on supporting doc
+
+AND
+
+Logic 3: DOV.Visit Mnemonic <> All excluded Visit on supporting doc in the same group
+
+AND
+
+Logic 4: ALL SM.Last Dose <> NULL
+
+AND
+
+Logic 5: Current visit DOV.Date of Visit > Maximum SM_Form.Stop Date/Time in the same group
+
+NOTES:
+
+1 Across the forms group wise If at least one last dose is not entered for a study medication, output should not appear
+
+2 Output appear when Across the forms in same group, all study medications in supp doc Last Dose be checked AND Current visit Date of Visit greater than Maximum Stop Date/Time in the same group.
+
+3 Logic 3 should exclude the visits as per supp doc column Group wise only. and if same group have different SM forms(eg SM and SMAB in the same group), their excluded visits should be the same in supporting doc.
+
+4 Erroneous visits should not be considered
+
+5 Deleted records should not be considered
+
+6 Group wise means all study medications and All forms in the same group in supp doc
+
+7 Output should not appear for the following scenario: Study medication have null value(Study medication was entered NA in supp doc), last dose checked but no stop date provided.
+
+Requires supporting document to be named XXX_supp_<xxxxxxx>.csv and will contain the
+
+following columns and associated content:
+
+1) Group - if study use different SM form at the same time, eg SM and SMAB. the max last dose date will be compared from SMs of the same group.
+
+2) SM Form - SM/SMAU/SMAB
+
+3) Study Medication - Value for SM/SMAU/SMAB/SM01/SM02/SM04 Study Medication, specified as 'NA' if the verification of Last Dose entries is checked for all study medications on SM form.
+
+4) Study Period - Value for SM/SMAU/SMAB/SM01/SM02/SM04 Study Period, specified as 'NA' if the verification of missing entries is checked globally
+
+5) Excluded Visits - Visits allowed after SM is discontinued
+
+Report Scenarios:
+“Use the supporting document to get the study medications use on the
+
+study."
+
+A- Output Yes
+
+All Study medications have last dose  indicated on
+
+SM/SMAU/SMAB, and date of vist DOV is after the maximum Last Dose checked.
+
+B- Output No
+
+C- Deleted record is not be considered
+
+D- Erroneous Visit should not be considered
+
+Sorting:
+Country, Site Number, Subject Number, SM Form, SM Seq
+
+Parameter Selection:
+Protocol Number (Lower Case - No Spaces or Dashes), Country, First Site No. (or leave blank for all) (eg. 1), Last Site No. (or leave blank for all) (eg. 2), First Subject No. (or leave blank for all) (eg. 000001), Last Subject No. (or leave blank for all) (eg. 000002), Randomized Only
+
+Form.Item Names:
+1. Subject Assigment. Country
+
+2. Subject Assigment. Site Mnemonic
+
+3. Subject Assigment. Subject Number
+
+4. Study Medication Form. Study Medication
+
+5. Study Medication Form.FORMMNEMONIC
+
+6. Study Medication Form.Visit Mnemonic (display as 'CCRF' for SM)
+
+7. Date of Visit Form.DOV
+
+8. Date of Visit Form.Visit Mnemonic
+
+9. Study Medication Form. Stop Date for Max Last Dose
+
+10. Study Medication Form. Formidx

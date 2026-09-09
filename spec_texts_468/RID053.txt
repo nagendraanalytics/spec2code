@@ -1,0 +1,177 @@
+Report ID: RID053
+
+Report Title:
+Days Since Current Visit
+
+Description:
+This report generates a listing of subject's where calculated days + data entry window days have passed since a Current Visit and the Next Expected Visit has not been completed. The report excludes subjects that are not expected to have further visits according to a Discontinuation point defined by protocol, as well as randomized but nor treated subjects
+
+Column Heading:
+1. Country
+
+2. Site
+
+3. Subject Number
+
+4. Current Visitmnemonic
+
+5. Current Visitmnemonic DOV
+
+6. Next Expected Visitmnemonic
+
+7. Expected # days since Current Visit
+
+8. Days elapsed since Current Visit
+
+Logic:
+<Criteria Form1>.<Criteria Itemquestion1> = <Criteria Value1>  AND
+
+<Criteria Form2>.<Criteria Itemquestion2> = <Criteria Value2> AND
+
+<Criteria Form3>.<Criteria Itemquestion3> = <Criteria Value3> AND
+
+<Discontinuation Point Visit Mnemonic>.<Discontinuation Point Form>.< Discontinuation Point Item> = NULL AND
+
+<Current Visitmnemonic>.DOV <> NULL AND
+
+<Next Expected Visitmnemonic>.DOV = NULL AND
+
+(System Date - <Current Visitmnemonic>.DOV) > (greater than) (<Day window> + “Data entry window”)
+
+Example for an output that SHOULD NOT be shown:
+
+Current Visitmnemonic DOV = 1Jan2023
+
+Next Expected Visitmnemonic = NULL
+
+Day Window = 15
+
+Data entry window = 3
+
+System Date = 10Jan2023
+
+System Date -  Current Visitmnemonic DOV  = (10Jan23 – 1Jan23) = 9
+
+Day window + Data entry window = 15 + 3 = 18
+
+System Date -  Current Visitmnemonic DOV  < Day window + Data entry window  (9 < 18)
+
+Hence No output is expected
+
+Example for an output that SHOULD be shown:
+
+Current Visitmnemonic DOV = 1Jan2023
+
+Next Expected Visitmnemonic = NULL
+
+Day Window = 15
+
+Data entry window = 3
+
+System Date = 20Jan2023
+
+System Date -  Current Visitmnemonic DOV  = (20Jan23 – 1Jan23) = 19
+
+Day window + Data entry window = 15 + 3 = 18
+
+System Date -  Current Visitmnemonic DOV  > Day window + Data entry window  (19 > 18)
+
+Hence Output is expected
+
+*Notes:
+
+- Do NOT display output deleted records
+
+- Do NOT display outputs for “Current Visitmnemonic” with Erroneous Visit checkbox
+
+- Display an output when the “Next Expected Visitmnemonic” visit is checked as Erroneous Visit (Erroneous visit means that the next expected visit was not performed and needs to be entered)
+
+- Display an output when the “Discontinuation Point Visit Mnemonic” visit is checked as Erroneous Visit (Erroneous visit means that the discontinuation point has not been performed)
+
+- Values entered within <> brackets, are values that will be provided in the supporting document of the report
+
+- “Data entry window” is an enterable parameter that the user will provide. This prompt should be set by default as 14
+
+- If “Hide Days elapsed since Current Visit” is set as N: Display Column #8 “Days elapsed since Current Visit” in the output of the report.
+
+If “Hide Days elapsed since Current Visit” is set as Y: Do NOT display Column #8 “Days elapsed since Current Visit” in the output of the report (Hide that column).
+
+- System date is the date when the report is executed
+
+- For trials that have the RNT form available, Do NOT display any output if RNT. Date of Assessment <> NULL
+
+This report requires supporting document to be named: DOV002_supp_xxxxxxx.csv and will contain the following columns and associated content:
+
+1. Criteria Form1 - Arm/Cohort/Stratification Form Mnemonic SR/SRIVRS/TRIG. If applies for all subjects regardless the Arm/Cohort/Stratification, enter NA
+
+2. Criteria Itemquestion1 - Arm/Cohort/Stratification Itemquestion1. If applies for all subjects regardless the Arm/Cohort/Stratification, enter NA OR if the Itemquestion1 is not applicable for the protocol, enter NA
+
+3. Criteria Value1 - Arm/Cohort/Stratification Value. If applies for all subjects regardless the Arm/Cohort/Stratification, enter NA OR if the itemValue1 is not applicable for the protocol, enter NA
+
+4. Criteria Form2 - Arm/Cohort/Stratification Form Mnemonic SR/SRIVRS/TRIG. If applies for all subjects regardless the Arm/Cohort/Stratification, or is not needed enter NA
+
+5. Criteria Itemquestion2 - Arm/Cohort/Stratification Itemquestion2. If applies for all subjects regardless the Arm/Cohort/Stratification, enter NA OR if the Itemquestion2 is not applicable for the protocol, or is not needed enter NA
+
+6. Criteria Value2 - Arm/Cohort/Stratification Value2. If applies for all subjects regardless the Arm/Cohort/Stratification, enter NA OR if the Value2 is not applicable for the protocol, enter NA
+
+7. Criteria Form3 - Arm/Cohort/Stratification Form Mnemonic SR/SRIVRS/TRIG. If applies for all subjects regardless the Arm/Cohort/Stratification, or is not needed enter NA
+
+8. Criteria Itemquestion3 - Arm/Cohort/Stratification Itemquestion3. If applies for all subjects regardless the Arm/Cohort/Stratification, enter NA OR if the Itemquestion3 is not applicable for the protocol, or is not needed enter NA
+
+9. Criteria Value3 - Arm/Cohort/Stratification Value3. If applies for all subjects regardless the Arm/Cohort/Stratification, enter NA OR if the Value3 is not applicable for the protocol, enter NA
+
+10. Current Visitmnemonic: Visit mnemonics from DOV form, not null.
+
+11. Next Expected Visitmnemonic: Next expected Visit mnemonic (DOV null).
+
+12. Day Window: Number of days that should pass since the Curent Visitmnemonic to the Next Expected Visitmnemonic
+
+13. Discontinuation Point Visit Mnemonic: Enter the visit mnemonic where the "discontinuation point" is located
+
+14. Discontinuation Point Form: eCRF used in the user's study that indicates that the patient will not receive any more study medication ex. PMS1/PMS1A/PMS1B/PMS1C/PMS1D/PMS1E/PMS1F/PMST/OEDRA/DS01
+
+15. Discontinuation Point Item: eCRF Item from the Discontinuation Point Form that should be completed to determine the discontinuation
+
+E.g.:
+
+Criteria Form1,Criteria Itemquestion1,Criteria Value1,Criteria Form2,Criteria Itemquestion2,Criteria Value2, Criteria Form3,Criteria Itemquestion3,Criteria Value3, Current Visitmnemonic, Next Expected Visitmnemonic, Day Window, Discontinuation Point Visit Mnemonic, Discontinuation Point Form, Discontinuation Point Item
+
+SR, Arm, INDUCT, SR, Stratification, CAPOX, NA, NA,NA, Screening, Cycle 1 Day 1, 42, Discontinuation Visit, PMS1, Date of Assessment
+
+TRIGA,Cohort,Cohort A, Startification, Strat1, NA,NA,NA, Cycle 1, Cycle 1 Day 15, 17, Discontinuation Visit, DOV, Date of Visit
+
+SR, Arm, -1308A (-1308 -3475 25 mg 400 mg) Q6W + Lenvatinib 20 mg QD,NA,NA,NA, NA,NA,NA, Cycle 2, Surgery, 50, Discontinuation Visit, DOV, Date of Visit
+
+The number or rows in the supporting document will be represented in the report header as ‘#of rows for supporting doc’.
+
+The actual information provided by the supporting doc can be outputted by selecting Y in the parameter “Supporting doc Page”.
+
+If supporting doc is not provided, display the message as "DOV002_JR_STD Supporting Document Not Present for This Trial".
+
+Report Scenarios:
+Output – Yes: When Logic is met
+
+Output – Yes: When Logic is not met
+
+Sorting:
+Country, Site, Subject Number
+
+Parameter Selection:
+Country, Site, Subject, List of Subjects, Randomized Only, Hide Days elapsed since Current Visit (N/Y, default as N), Supporting Doc Page (Y/N, default as N), Data entry window (default as 14)
+
+Form.Item Names:
+1. Subject Assignment.Site Country
+
+2. Subject Assignment.Site Mnemonic
+
+3. Subjects.Subject Number
+
+4. Current Visitmnemonic from Supporting Document
+
+5. Current Visitmnemonic.DOV
+
+6. Next Expected Visitmnemonic from Supporting Document
+
+7. Day Window from Supporting Document
+
+8. Derived: System date - Current Visitmnemonic.DOV

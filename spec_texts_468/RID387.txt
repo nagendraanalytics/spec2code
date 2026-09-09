@@ -1,0 +1,119 @@
+Report ID: RID387
+
+Report Title:
+Surgery Date and Associated AE Onset Date Reconciliation
+
+Description:
+This report will list subjects with Onset Date after Date of Surgery for an Associated AE recorded in OS and Oncology Surgery Follow-up Forms
+
+Column Heading:
+1. Country
+
+2. Site Mnemonic
+
+3. Subject Number
+
+4. AE Sequence
+
+5. AE Onset Date and Time
+
+6. Form Mnemonic
+
+7. Surgery eCRF Sequence Number
+
+8. Date and Time Performed
+
+Logic:
+Scenario 1
+
+For SURGERY eCRF <> STOS please follow logic bellow:
+
+Logic 1.1: IF SURGERY eCRF.Associated AE Sequence Number (from AE form) <> NULL
+
+AND
+
+Logic 1.2: AE.Sequence Number = SURGERY eCRF.Associated AE Sequence Number (from AE form)
+
+AND
+
+Logic 1.3: AE.ONSET DATE AND TIME (LAB COLLECTION DATE IF LAB AE) > SURGERY eCRF.Date of Surgery
+
+For SURGERY eCRF = STOS please follow logic bellow:
+
+Logic 2.1: IF STOS. IF YES, REASON FOR DELAY = ‘Adverse Experience’
+
+AND
+
+Logic 2.2: AE.Sequence Number = STOS. Associated AE Sequence Number (from AE form)
+
+AND
+
+Logic 2.3: AE.ONSET DATE AND TIME (LAB COLLECTION DATE IF LAB AE) > STOS.Date of Surgery
+
+Note:
+
+1. Do not produce output for deleted records and erroneous visits.
+
+2. If the day in SURGERY eCRF. DATE OF SURGERY is entered as UNK, please use the first day of the month; if the month in OS eCRF is entered as UNK please use January.
+
+3. The report will use master supporting document OSOF_supp_doc. These supporting documents should be uploaded only once at TA level per the GDO Oncology TAST authorized members and will be used to facilitate programming of the report. Report builder will use all the columns provided in the excel spreadsheet to create the programming code. OSOF refers to the forms included in the OSOF_supp_doc.
+
+4. The report will use below itemquestions in OS eCRF and OSOF_supp_doc: 'DATE OF SURGERY', ‘ASSOCIATED AE SEQUENCE NUMBER (FROM AE FORM)’.
+
+5. SURGERY eCRF refers to the OS eCRF and all the eCRFs in OSOF_supp_doc.
+
+Report Scenarios:
+Scenario 1 - Yes
+
+OS/[Oncology Surgery Follow-up Forms] is completed with Associated AE Sequence Number completed
+
+AND
+
+The Onset Date of the sequence is after the Date of Surgery in OS/[Oncology Surgery Follow-up Forms]
+
+Scenario 2 - No
+
+OS/[Oncology Surgery Follow-up Forms] form is completed with Associated AE Sequence Number completed
+
+AND
+
+The Onset Date of the sequence is equal to the Date of Surgery in OS/[Oncology Surgery Follow-up Forms]
+
+Scenario 3 - No
+
+OS/[Oncology Surgery Follow-up Forms] is completed with Associated AE Sequence Number completed
+
+AND
+
+The Onset Date of the sequence is before the Date of Surgery in OS/[Oncology Surgery Follow-up Forms]
+
+Scenario 4 – No
+
+OS/[Oncology Surgery Follow-up Forms] form is completed with Associated AE Sequence Number completed
+
+AND
+
+The Associated AE Sequence Number is deleted
+
+Sorting:
+Country, Site Number, Subject Number
+
+Parameter Selection:
+Country, First Site, Last Site, First Subject, Last Subject, List of Subjects, Randomized Only (Y/N set default to N), SURGERY Form(Text Box, default as ‘ALL’, separate each eCRF by comma)
+
+Form.Item Names:
+1. SA.Country
+
+2. SA.Site
+
+3. SA.Subject Number
+
+4. AE.Sequence Number
+
+5. AE.Onset Date and Time
+
+6. SURGERY eCRF. Form mnemonic
+
+7. SURGERY eCRF. SPONSOR ID NUMBER
+
+8. SURGERY eCRF. DATE OF SURGERY

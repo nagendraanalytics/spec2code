@@ -1,0 +1,67 @@
+Report ID: RID238
+
+Report Title:
+CM vs Immune related AE reconciliation report
+
+Description:
+This report will display subjects with an irAE (immune related AE) with Toxicity 2 or greater and no corticosteriod CM related
+
+Column Heading:
+1. Country
+
+2. Site
+
+3. Subject Number
+
+4. AE Seq #
+
+5. AE Term
+
+6. AE Toxicity Grade
+
+Logic:
+Logic 1: AE form. Is the AE immune related? = Yes AND
+
+Logic 2: AE Toxicity Grade is equal to or greater than 2 AND
+
+Logic 3: There is no CM of corticosteroid taken for the same period of time.
+
+Note 1: CM of corticosteroid: encoded drug name/ATC2 term/ medication class/ Standardized medication name contains 'Corticosteroids' Note: Only associated AE and CM will be checked. Please exclude deleted record from programming.
+
+Note 2: For logic 3 The overlaps to consider that CM was given for a particular AE should be:
+
+1. CM dates (Start /Stop date) within AE range dates
+
+2. CM start date < AE start date and CM stop date > AE stop date
+
+Report Scenarios:
+Scenario A, Output: Yes Subjects with an Immunorelated AE and AE toxicity grade is 2 or greater than 2 who have no CM of corticosteroid taken for the same period of time
+
+Scenario B, Output: No Subjects with an Immunorelated AE and AE toxicity grade is 2 or greater than 2 who have CM of corticosteroid taken for the same period of time
+
+Scenario C, Output: No Is the AE immune related? <> Yes
+
+Scenario D, Output: No AE toxicity grade is less than 2
+
+Scenario E, Output: No CM and AE are not association
+
+Scenario F, Output: No Deleted record
+
+Sorting:
+Country, Site, Subject Number, AE seq#
+
+Parameter Selection:
+Country, First Site, Last Site, First Subject, Last Subject, List of Subjects
+
+Form.Item Names:
+1. Subject Assignment.Site Country
+
+2. Subject Assignment form.Site Mnemonic
+
+3. Subjects. Subject Number
+
+4. Adverse Event. AE Sequence Number
+
+5. Adverse Event. AE Term
+
+6. Adverse EVent. Toxicity Grade

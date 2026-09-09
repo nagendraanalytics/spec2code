@@ -1,0 +1,363 @@
+Report ID: RID184
+
+Report Title:
+Study Medication administration mismatch based on BSA
+
+Description:
+This report outputs subjects with mismatches between administered dose and assigned dose based on BSA.
+
+Column Heading:
+Table 1
+
+1.      Country
+
+2.      Site
+
+3.      Subject Number
+
+4.      SM Visit
+
+5.      SM eCRF
+
+6.      SM Seq
+
+7.      Study Period
+
+8.      Scheduled Time (if applicable, else blank)
+
+9.      Study Medication
+
+10.     SM Start Date
+
+11.     SM Stop Date
+
+12.     SM Dose item question
+
+13.     SM Dose Item question Value
+
+14.     SM Administration itemquestion
+
+15.     SM Administration itemquestion Value
+
+16.     Minimum SM Expected Amount (mg)
+
+17.     Maximum SM Expected Amount (mg)
+
+18.     SM Reason for Dose Variation
+
+19.     BSA Visit
+
+20.     BSA seq
+
+21.     BSA Start Date
+
+22.     BSA Value
+
+23.     Error message (see Logic)
+
+24.     Condition met
+
+Table 2
+
+1.      Country
+
+2.      Site
+
+3.      Subject Number
+
+4.      AE seq
+
+5.     AE Term
+
+6.     AE Start Date
+
+7.     AE Stop date
+
+8.     AE Serious Criteria
+
+9.     Error message (see Logic)
+
+Logic:
+Table 1
+
+Logic 1: Error Message “Overdose”
+
+“Criteria Form1”.” Criteria Itemquestion1” = “Criteria Value1” AND
+
+“Criteria Form2”.” Criteria Itemquestion2” = “Criteria Value2” AND
+
+“Criteria Form3”.” Criteria Itemquestion3” = “Criteria Value3” AND
+
+“SM Form”.Study Medication = “Study Medication” AND
+
+“SM Form”.”Administration itemquestion” > *Maximum SM Expected Amount*
+
+Logic 2: Error Message “Reduction”
+
+“Criteria Form1”.” Criteria Itemquestion1” = “Criteria Value1” AND
+
+“Criteria Form2”.” Criteria Itemquestion2” = “Criteria Value2” AND
+
+“Criteria Form3”.” Criteria Itemquestion3” = “Criteria Value3” AND
+
+“SM Form”. Study Medication = “Study Medication” AND
+
+“SM Form”.”Administration itemquestion”< *Minimum SM Expected Amount*
+
+Table 2
+
+Logic 3: Error Message “AE Overdose missing in SM”
+
+“Criteria Form1”.” Criteria Itemquestion1” = “Criteria Value1” AND
+
+“Criteria Form2”.” Criteria Itemquestion2” = “Criteria Value2” AND
+
+“Criteria Form3”.” Criteria Itemquestion3” = “Criteria Value3” AND
+
+(
+
+There is an AE.AE Term that includes the wording of ‘Overdose’ OR
+
+There is an AE.Serious Criteria = Overdose
+
+) AND
+
+There is NO a “SM Form”.”Administration itemquestion” > *Maximum SM Expected Amount* that has the “SM Form”. Start Date/Time within or equal the AE.Onset Date and Time AND AE.End Date and Time
+
+(AE.Onset Date and Time  <= “SM Form”. Start Date/Time <= AND AE.End Date and Time)
+
+Notes:
+
+1.  All items entered between quotation marks (“”) refer to items from the supporting document.
+
+2. For Logic 1 and 3 *Maximum SM Expected Amount* is calculated according to the following:
+
+a. Subject Baseline and Fixed dose:
+
+If “BSA Reference Logic” = Subject Baseline AND “Fixed dosing” = Yes AND
+
+“BSA Reference Visit” <> NULL AND ”BSA Reference Form”.Body Surface Area <> NULL THEN
+
+Maximum SM Expected Amount = ”BSA Reference Form”.Body Surface Area * “Dosing” *(1+“Allowed difference”/100)
+
+b. Subject Baseline and No Fixed dose:
+
+If “BSA Reference Logic” = Subject Baseline AND “Fixed dosing” = No AND
+
+“BSA Reference Visit” <> NULL AND ”BSA Reference Form”.Body Surface Area <> NULL THEN
+
+Maximum SM Expected Amount = “BSA Reference Visit”.”BSA Reference Form”. Body Surface Area * “SM Form”.”Dose itemquestion” *(1+“Allowed difference”/100)
+
+c. Latest BSA and Fixed dose:
+
+If “BSA Reference Logic” = Latest BSA AND “Fixed dosing” = Yes THEN
+
+Maximum SM Expected Amount = Closest BSA * “Dosing” *(1+“Allowed difference”/100)
+
+d. Latest BSA and No Fixed dose:
+
+If “BSA Reference Logic” = Latest BSA AND “Fixed dosing” = No THEN
+
+Maximum SM Expected Amount = Closest BSA * “SM Form”.”Dose itemquestion” *(1+“Allowed difference”/100)
+
+**Closest BSA is the VS01/VS02. Body Surface Area value provided in the VS01/VS02 sequence with the CLOSEST VS01/VS02. Date/Time of Assessment that is <= “SM Form”. Start Date/Time
+
+3. For Logic 2 * Minimum SM Expected Amount* is calculated according to the following:
+
+a. Subject Baseline and Fixed dose:
+
+If “BSA Reference Logic” = Subject Baseline AND “Fixed dosing” = Yes AND
+
+“BSA Reference Visit” <> NULL AND ”BSA Reference Form”. Body Surface Area <> NULL THEN
+
+Minimum SM Expected Amount = “BSA Reference Visit”.”BSA Reference Form”. Body Surface Area * “Dosing” *(1 - “Allowed difference”/100)
+
+b. Subject Baseline and No Fixed dose:
+
+If “BSA Reference Logic” = Subject Baseline AND “Fixed dosing” = No AND
+
+“BSA Reference Visit” <> NULL AND ”BSA Reference Form”.Body Surface Area <> NULL THEN
+
+Minimum SM Expected Amount = “BSA Reference Visit”.”BSA Reference Form”. Body Surface Area * “SM Form”.”Dose itemquestion” *(1 - “Allowed difference”/100)
+
+c. Latest BSA and Fixed dose:
+
+If “BSA Reference Logic” = Latest BSA AND “Fixed dosing” = Yes THEN
+
+Minimum SM Expected Amount = Closest BSA * “Dosing” *(1 - “Allowed difference”/100)
+
+d. Latest BSA and No Fixed dose:
+
+If “BSA Reference Logic” = Latest BSA AND “Fixed dosing” = No THEN
+
+Minimum SM Expected Amount = Closest BSA * “SM Form”.”Dose itemquestion” *(1 - “Allowed difference”/100)
+
+**Closest BSA is the VS01/VS02. Body Surface Area value provided in the VS01/VS02 sequence with the CLOSEST VS01/VS02. Date/Time of Assessment that is <= “SM Form”.Start Date/Time
+
+4.  Show BOTH Minimum and Maximum SM expected amount for Error Message: Overdose and Reduction
+
+5. Time is not used for any calculation.
+
+6. Deleted records or Erroneous visits should not be considered for programming
+
+7. Logic 1 and 2 should be shown in Table 1, Logic 3 should be shown in Table 2
+
+8. Requires supporting document to be named SM015A_supp_<xxxxxxx>.csv and will contain the following columns and associated content:
+
+1.	Criteria Form1 - Arm/Cohort/Stratification Form Mnemonic (E.g. SR/SRIVRS/TRIG). If applies for all subjects regardless the Arm/Cohort/Stratification, enter NA
+
+2.	Criteria Itemquestion1 - Arm/Cohort/Stratification Itemquestion1. If applies for all subjects regardless the Arm/Cohort/Stratification, enter NA OR if the Itemquestion1 is not applicable for the protocol, enter NA
+
+3.	Criteria Value1 - Arm/Cohort/Stratification Value. If applies for all subjects regardless the Arm/Cohort/Stratification, enter NA OR if the itemValue1 is not applicable for the protocol, enter NA
+
+4.	Criteria Form2 - Arm/Cohort/Stratification Form Mnemonic (E.g. SR/SRIVRS/TRIG). If applies for all subjects regardless the Arm/Cohort/Stratification, or is not needed enter NA
+
+5.	Criteria Itemquestion2 - Arm/Cohort/Stratification Itemquestion2. If applies for all subjects regardless the Arm/Cohort/Stratification, enter NA OR if the Itemquestion2 is not applicable for the protocol, or is not needed enter NA
+
+6.	Criteria Value2 - Arm/Cohort/Stratification Value2. If applies for all subjects regardless the Arm/Cohort/Stratification, enter NA OR if the Value2 is not applicable for the protocol, enter NA
+
+7.	Criteria Form3 - Arm/Cohort/Stratification Form Mnemonic (E.g. SR/SRIVRS/TRIG). If applies for all subjects regardless the Arm/Cohort/Stratification, or is not needed enter NA
+
+8.	Criteria Itemquestion3 - Arm/Cohort/Stratification Itemquestion3. If applies for all subjects regardless the Arm/Cohort/Stratification, enter NA OR if the Itemquestion3 is not applicable for the protocol, or is not needed enter NA
+
+9.	Criteria Value3 - Arm/Cohort/Stratification Value3. If applies for all subjects regardless the Arm/Cohort/Stratification, enter NA OR if the Value3 is not applicable for the protocol, enter NA
+
+10.	BSA Reference Logic – enter one of the following options according to description below: Subject Baseline or Latest BSA, an option should be provided.
+
+“Subject Baseline” - logic will only work with the value specified on “BSA Reference Visit” and “BSA Reference Form”.
+
+“Latest BSA” – logic will work with the closest BSA value entered before the administration date. If this option is entered “BSA Reference Visit” and “BSA Reference Form” should be entered as NA
+
+11.	BSA Reference Visit - Visitmnemonic for BSA reference when BSA Reference Logic is ‘Subject Baseline’, specified as 'NA' when BSA Reference Logic is ‘Latest BSA’
+
+12.	BSA Reference Form - Formmnemonic for BSA reference when BSA Reference Logic is ‘Subject Baseline’, specified as 'NA' when BSA Reference Logic is ‘Latest BSA’
+
+13.	SM Form - SM/SMAU/SM01/SM02/SM04
+
+14.	Study Medication - Value for Study Medication
+
+15.	Fixed dosing – “Yes” or “No”.
+
+If Yes: complete the “Dosing” column with the assigned dose value per protocol and complete the “Dose itemquestion” as NA
+
+If “No”: complete the “Dosing” column as NA and complete the “Dose itemquestion” with the Study Medication itemname that should be considered for dose calculation (E.g. Protocol Dose Level)
+
+16.	Dosing - Assigned dose value per protocol (E.g 200 mg). Leave as NA if “Fixed dosing” is entered as “No”
+
+17.	Dose itemquestion – Item in SM Form that is used to calculate the dose assigned along with the BSA (E.g. Protocol Dose Level). Leave as NA if “Fixed dosing” is entered as “Yes”
+
+18.	Administration itemquestion – Study Medication itemname that will be used for comparison (determine if value is correct or not according to BSA calculation)
+
+19.	Allowed difference – Allowed dose margin from the exact dose assigned calculation in percentage
+
+e.g.
+
+Criteria Form1,Criteria Itemquestion1,Criteria Value1, Criteria Form2,Criteria Itemquestion2,Criteria Value2, Criteria Form3,Criteria Itemquestion3,Criteria Value3, BSA Reference Logic, BSA Reference Visit,BSA Reference Form, SM Form, Study Medication, Fixed dosing, Dosing, Dose itemquestion, Administration itemquestion, Allowed difference
+
+SR, Arm, Arm 1, SR, Stratification, Strat1, NA, NA, NA, Latest BSA, NA, NA, SM, Oxaliplatin, No, NA, Protocol Dose Level, Intended Dose, 10
+
+SR,Arm,Arm 1,NA,NA,NA,NA,NA,NA, Subject Baseline,Screening,VS01,SM, Leucovorin,Yes,200, NA, Intended Dose, 15
+
+NA,NA,NA,NA,NA,NA,NA,NA,NA, Subject Baseline, Cycle 1 Day 1, VS02,SM, 5-FU,No,NA, NA, Protocol Dose Level, Intended Dose, 10
+
+Report Scenarios:
+Output: No – Deleted records and erroneous visits
+
+1.    Error Message: Overdose
+
+Output: No - “SM Form”.”Administration itemquestion”= Maximum SM Expected Amount (see Logic for calculation)
+
+Output: Yes - “SM Form”.”Administration itemquestion”> Maximum SM Expected Amount (see Logic for calculation)
+
+2.      Error Message: Reduction
+
+Output: No - “SM Form”.”Administration itemquestion”= Minimum SM Expected Amount (see Logic for calculation)
+
+Output: Yes - “SM Form”.”Administration itemquestion”< Minimum SM Expected Amount (see Logic for calculation)
+
+3.      Error Message: AE Overdose missing in SM
+
+Output: No - There are AEs reported for the patient, but none with the AE Term including the word Overdose or has the Serious Criteria section selected as 'Overdose’
+
+Output: No - There is an AE with AE Term including the word Overdose OR with Overdose selected on the Serious Criteria section AND There is an “SM Form”.”Administration itemquestion”> Maximum SM Expected Amount within the time of the AE
+
+Output: Yes - There is an AE with AE Term including the word Overdose OR with Overdose selected on the Serious Criteria section AND There is NO “SM Form”.”Administration itemquestion”> Maximum SM Expected Amount within the time of the AE
+
+Sorting:
+Table 1: Country, Site, Subject Number, SM Visit, SM eCRF, SM Seq, Study Period, Scheduled Time (if applicable, else blank), Study Medication, SM Start Date, SM Stop Date, SM Protocol Dose, SM Administration itemquestion, SM Administered Amount (mg), Minimum SM Expected Amount (mg), Maximum SM Expected Amount (mg), SM Reason for Dose Variation, BSA Visit, BSA seq, BSA Value,   Error message (see Logic),  Condition met
+
+Table 2: AE seq, AE Term, AE Start Date, AE Stop date, AE Serious Criteria, Error message (see Logic)
+
+Parameter Selection:
+Country, Site, Subject, Randomized Only, List of Subjects, Supporting Document (Y/N)
+
+Form.Item Names:
+Table 1
+
+1.      Subject Assignment.Site Country
+
+2.      Subject Assignment.Site Mnemonic
+
+3.      Subject.Subject Number
+
+4.      SM Form.Visitmnemonic
+
+5.      SM Form.Formmnemonic
+
+6.      SM Form.Form Index
+
+7.      SM Form.Study Period
+
+8.      SM Form.Scheduled Time (if applicable, else blank)
+
+9.      SM Form.Study Medication
+
+10.     SM Form.Start Date/Time – Display the date in “dd-Mmm-yyyy” format. Do not display the hour portion
+
+11.     SM Form.Stop Date/Time – Display the date in “dd-Mmm-yyyy” format. Do not display the hour portion
+
+12.     If “Fixed dosing” = No, Display “Dose itemquestion” item name per Supporting Document. If “Fixed dosing” = Yes, Display “Fixed Dose” wording
+
+13.     If “Fixed dosing” = No, Display “Dose itemquestion” item value. If “Fixed dosing” = Yes, Display “Dosing” value per Supporting Document
+
+14.  Display “Administration itemquestion” item name per supporting document
+
+15.    Display ”Administration itemquestion” item value per supporting document
+
+16.     Minimum SM Expected Amount (mg) (see Logic for calculation)
+
+17.     Maximum SM Expected Amount (mg) (see Logic for calculation)
+
+18.     SM Form.Reason for Dose Variation
+
+19.     VS Form.Visitmnemonic
+
+20.     VS Form.Form index
+
+21.     VS Form. Date/Time of Assessment
+
+22.     VS Form.BSA
+
+23.     Error message per Logic
+
+24.     For Scenario “Overdose” or “Reduction” Display: “a. Subject Baseline and Fixed dose”, “b. Subject Baseline and No Fixed dose”, “c. Latest BSA and Fixed dose” or “d. Latest BSA and No Fixed dose” according to condition met
+
+Table 2
+
+1.      Subject Assignment.Site Country
+
+2.      Subject Assignment.Site Mnemonic
+
+3.      Subject.Subject Number
+
+4.      AE.Form index
+
+5.     AE. AE Term
+
+6.     AE.Onset Date and Time
+
+7.     AE.End Date and Time
+
+8.     AE. Serious Criteria (check all that apply) – If there is more than 1 checkbox selected, display de different values separated by commas
+
+9.     Error message per Logic

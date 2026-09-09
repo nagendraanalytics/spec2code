@@ -1,0 +1,109 @@
+Report ID: RID046
+
+Report Title:
+CM Imputed Stop Date prior to Imputed Start Date
+
+Description:
+This report generates a list of subjects where Imputed Start Date on the CM form is greater than the Imputed Stop date.
+
+Column Heading:
+1. Country
+
+2. Site
+
+3. Subject Number
+
+4. Seq
+
+5. Medication Name
+
+6. Prior to SM?
+
+7. Start Date
+
+8. Stop Date
+
+9. Imputed Start Date
+
+10. Imputed Stop Date
+
+11. Min Dose Date
+
+Logic:
+This report lists the CM records with Imputed Start Date and Time greater than Imputed Stop Date and Time.
+
+The following will also be considered:
+
+Start and Stop Dates: they will be outputted with or without time, depending on the existence of the time components.
+
+Imputed Start/Stop Dates: they will show the time component or 00:00 if they were not set up for the Start and Stop Dates.
+
+Min Dose Date: minimum first start dose date for reference
+
+Deleted items should not be included.
+
+Report Scenarios:
+1- Output=YES
+
+Prior to SM? = NO/YES
+
+Start date = UNK/Mar/2014
+
+Imputed Start date = 01/Mar/2014 or 31/Mar/2014
+
+Stop date = 08 or UNK/Jan/1990
+
+Imputed Stop date = 08 or 31/Jan/1990
+
+2- Output=YES
+
+Prior to SM? = NO
+
+Start date = UNK/Mar/2014
+
+Imputed Start date = 31/Mar/2014
+
+Stop date = 08/Mar/2014
+
+Imputed Stop date = 08/Mar/2014
+
+3- Output=NO
+
+Prior to SM? = YES
+
+Start date = UNK/Mar/2014
+
+Imputed Start date = 01/Mar/2014
+
+Stop date = 01/Mar/2014 or UNK/Mar/2014
+
+Imputed Stop date = 01/Mar/2014 or 31/Mar/2014
+
+Sorting:
+Country, Site, Subject Number, Seq
+
+Parameter Selection:
+Country, Site, Subject, Randomized Only, List of Subjects
+
+Form.Item Names:
+1. Subject Assignment.Site Country
+
+2. Subject Assignment.Site Mnemonic
+
+3. Subjects.Subject Number
+
+4. PRIOR AND CONCOMITANT MEDICATIONS Form.Formidx
+
+5. PRIOR AND CONCOMITANT MEDICATIONS Form.Medication Name
+
+6. PRIOR AND CONCOMITANT MEDICATIONS Form.Was medication taken prior to the first dose of study medication?/ Did Medication Start Prior to the First Dose of Study Medication?
+
+7. PRIOR AND CONCOMITANT MEDICATIONS Form.Start Date and Time
+
+8. PRIOR AND CONCOMITANT MEDICATIONS Form.Stop Date and Time
+
+9. PRIOR AND CONCOMITANT MEDICATIONS Form.Imputed Start Date and Time
+
+10. PRIOR AND CONCOMITANT MEDICATIONS Form.Imputed Stop Date and Time
+
+11. Dosing.Minimum First Start Date and Time

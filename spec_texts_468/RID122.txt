@@ -1,0 +1,127 @@
+Report ID: RID122
+
+Report Title:
+Lot Id mismatch between IRT and Inform
+
+Description:
+This report provides Lot Id missmatch between IRT and Inform
+
+Column Heading:
+Column Headings:
+
+1.Country
+
+2.Site
+
+3.Screening #
+
+4.Randomization #
+
+5.Visit
+
+6.Mismatch Type
+
+Logic:
+Report shall compare IRT Lot ID with Inform/DMARC Lot ID using the Key fields:
+
+o	Study ID
+
+o	Site Number
+
+o	Screening Number
+
+o	Visit Description
+
+o	Lot Trace ID
+
+Logic 1: Output="Yes"
+
+•Verify that if Lot ID exists in IRT file supporting document , not present in Inform(SMPU/SMPB/DISP).
+
+Display the message as  "Lot ID Exists in IRT, but not in EDC"
+
+Logic 2: Output="Yes"
+
+•Verify that if Lot ID exists in IRT file supporting document , do not match the lot id present in Inform(SMPU/SMPB/DISP).
+
+Display the message as "Lot ID in IRT does not equal Lot ID in EDC"
+
+Logic 3: Output="No"
+
+•	Lot ID exists in Inform but not in IRT (Ignore these mismatches, Could represent Placebo and we do not want to flag as it will cause unblinding)
+
+•	Skip Records where Lot IDs match.
+
+Logic 4: Display message “No Mismatches Identified” when report did not meet both criteria Logic 1&2.
+
+This report uses a supporting document.
+
+Almac File name: IRT001_supp_almac<xxxx>.csv
+
+Oracle File name: IRT001_supp_oracle<xxxx>.csv
+
+Oracle Visit mapping:oraclevisitmap_<xxxx>.csv
+
+Note1: Visit mapping supporting file is mandatory for Oracle IRT file comparison.
+
+Note2: Erroneous visit records shouldn’t be considered
+
+Note3: Consider SMPB/SMPU/DISP form for IRT Lot id comparison.
+
+Note 4: Consider PEMBRO records from IRT file for verification
+
+Note 5: In case of SMPB/SMPU form , apply the following logic
+
+IRT file. Component_id_description = ( -3475 OR PEMBRO)
+
+compare IRT file. LOTID against SMPB.LOTID1
+
+Note 6: Display List of eCRFs verified in the header
+
+Report Scenarios:
+Scenario 1: Output=Yes
+
+Lot ID Exists in IRT not in Inform/DMARC
+
+Scenario 2: Output=Yes
+
+Mismatch – The Lot ID does not match and is present in both
+
+Scenario 3: Output=No
+
+Lot ID exists in Inform/DMARC but not in IRT (Ignore these mismatches, Could represent Placebo and we do not want to flag as it will cause unblinding)
+
+Scenario 3: Output=No
+
+Skip Records where Lot IDs match.
+
+Note 1 : PEBRO(-3475)  from IRT File will be considered
+
+Note 2:  Incase of SMPB/SMPU form, if both LOTID1 and  LOTID2 are present in in Inform ,Only  LOTID1 is applicable for verification.
+
+Sorting:
+Country, Site, Subject
+
+Parameter Selection:
+Protocol
+
+Form.Item Names:
+1.IRT File.Country
+
+2.IRT File.Site
+
+3.IRT File.Screening Number
+
+4.SA.Randomization Number
+
+5.IRT.Visit Description
+
+6.Display the following Mismatch type message based on logic:
+
+  a.Lot ID exists in IRT, but not in EDC
+
+  b.Lot ID in IRT does not equal Lot ID in EDC
+
+Note: Display the Report run date in GMT Date format in the title as below:
+
+Run Date & Time Coordinated Universal Time (UTC) :<GMT Time>

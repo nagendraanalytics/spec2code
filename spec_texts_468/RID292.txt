@@ -1,0 +1,147 @@
+Report ID: RID292
+
+Report Title:
+Reconciliation between GVHD eCRFs and AE
+
+Description:
+This Report will reconcile when HyperAcute or Acute or Chronic events are entered in AE form and the corresponding GVHD eCRFs (OAGHD, AOGVH, CGVHD) are missing and that once initialized the seq number is provided in the correct eCRF. This report will also reconcile when  GVHD eCRFs are completed and there is no corresponding AE completed.
+
+Column Heading:
+1. Country
+
+2. Site
+
+3. Subject Number
+
+4. AE Seq#
+
+5. AE LLT
+
+6. GVHD eCRF
+
+7. GVHD Seq#
+
+8. Associated AE Seq#
+
+9. Scenario
+
+Logic:
+Logic1.1: There is an AE with LLT = "Acute graft versus host disease" or "Hyperacute graft versus host disease"
+
+AND
+
+Logic1.2: AOGVH or OAGVH eCRFs are missing.
+
+OR
+
+Logic 2.1: There is an AE with LLT = " Chronic graft versus host disease"
+
+AND
+
+Logic 2.2: CGVHD eCRF is missing.
+
+OR
+
+Logic3.1: There is an AE with LLT = "Acute graft versus host disease" or "Hyperacute graft versus host disease"
+
+AND
+
+Logic3.2: AOGVH or OAGVH eCRFs are completed.
+
+AND
+
+Logic3.3.1: The Seq # of the AE of Logic 3.1 is not present in any of the Associated AE Sequence Number (From AE Form) of AOGVH
+
+OR
+
+Logic3.3.2: The Seq # of the AE of Logic 3.1 is not present in any of the Associated AE Sequence Number (From AE Form) of the Associated AE Sequence Number (From AE Form) OAGVH.
+
+OR
+
+Logic4.1: There is an AE with LLT = " Chronic graft versus host disease"
+
+AND
+
+Logic4.2: CGVHD eCRF is completed.
+
+AND
+
+Logic4.3: The Seq # of the AE of Logic 4.1 is not present in the Associated AE Sequence Number (From AE Form) of CGVDH
+
+OR
+
+Logic5.1: AOGVH or OAGVH eCRF is completed
+
+AND
+
+Logic5.2:There is no AE with LLT = "Acute graft versus host disease" or "Hyperacute graft versus host disease"
+
+OR
+
+Logic6.1: CGVHD eCRF is completed
+
+AND
+
+Logic6.2:There is no AE with LLT = " Chronic graft versus host disease
+
+Note: For Logics 1 and 2 leave blank GVHD columns. For Logics 5 and 6 leave blank AE columns.
+
+Note: Do not include include deleted records.
+
+Report Scenarios:
+A-No
+
+There is no AE AE for Acute, Hyperacute or Chronic GVHD.
+
+B-No
+
+There is a AE AE for Acute, Hyperacute or Chronic GVHD, the corresponding GVHD eCRF is completed and the AE Seq# is present.
+
+C-Yes
+
+There is an AE for Acute or Hyperacute GVHD AND AOGVH or OAGVH eCRFs are missing.
+
+D-Yes
+
+There is an AE for Chronic GVHD and CGVHD eCRF is missing.
+
+E-Yes
+
+There is an AE for Acute or Hyperacute GVHD AND AOGVH or OAGVH eCRFs, but the AE Seq# is not provided in the AOGVH or OAGVH eCRFs.
+
+F-Yes
+
+There is an AE for Chronic GVHD and CGVHD eCRF is completed, but the AE Seq# is not provided in the CGVHD.
+
+G-Yes
+
+AOGVH or OAGVH eCRF is completed and there is no AE for Acute or Hyperacute GVHD.
+
+H-Yes
+
+CGVHD eCRF is completed and there is no AE for Chronic GVHD.
+
+Sorting:
+Country, Site Number, Subject Number
+
+Parameter Selection:
+Country, Site Number, Subject Number, List of Subjects
+
+Form.Item Names:
+1. SA.Country
+
+2. SA.Site
+
+3. SA.Subject Number
+
+4. AE.Sequence Number
+
+5. AE.LLT
+
+6. AOGHV/OAGVH/CGVHD.Form Mnemonic
+
+7. AOGHV/OAGVH/CGVHD.Form index
+
+8. AOGHV/OAGVH/CGVHD.Associated AE Sequence Number (From AE Form) If more than one is provided at one GVHD entry, please display all separeted by a comma.
+
+9. Display "Scenario 1a" If logic 1 is met.Display "Scenario 1b" If logic 2 is met.Display "Scenario 1c" If logic 3 is met.Display "Scenario 1d" If logic 4 is met.Display "Scenario 2a" If logic 5 is met.Display "Scenario 2b" If logic 6 is met.

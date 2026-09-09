@@ -1,0 +1,74 @@
+Report ID: RID363
+
+Report Title:
+ORAJ entries with Disease Recurrence Indicator as "No" after recurrence
+
+Description:
+This report will show the ORAJ entries with Disease Recurrence Indicator of "No" after a previous recurrence.
+
+Column Heading:
+1. Country
+
+2. Site
+
+3. Subject Number
+
+4. Sequence
+
+5. Date of Assessment
+
+6. Disease Recurrence Indicator
+
+Logic:
+Output is produced when:
+
+ORAJ.Date of Assessment (Scan/Image/Physical Exam) > MIN [ORAJ. Date of Assessment (Scan/Image/Physical Exam) with Disease Recurrence Indicator = [Y]]
+
+AND
+
+ORAJ.Disease Recurrence Indicator = [N]
+
+Note: please disregard the deleted entries
+
+For example:
+
+•	ORAJ sequence 1, Disease Recurrence Indicator = Yes, Date of Assessment = 25MAY2024
+
+•	ORAJ sequence 2, Disease Recurrence Indicator = No, Date of Assessment = 25JUL2024
+
+The report should output the ORAJ sequence 2, because once the subject has disease recurrence, it is considered to have recurrence in the following time points of evaluation.
+
+Note 2: the dates should be displayed in the format "dd-Mmm-yyyy" (i.e. 01-May-2025).
+
+Report Scenarios:
+Output = Yes
+
+ORAJ entries that have disease recurrence indicator as "No" after a previous evaluation completed as "Yes".
+
+Output = No
+
+ORAJ entries that have disease recurrence indicator as "Yes" after a previous evaluation completed as "Yes".
+
+Deleted entries.
+
+Sorting:
+1. Country
+
+2. Site
+
+3. Subject number
+
+4. Date of Assessment
+
+Form.Item Names:
+1. SA.Site Country
+
+2. SA.Site Mnemonic
+
+3. SA.Subject Number
+
+4. ORAJ.Form Sequence
+
+5. ORAJ.Date of Assessment (Scan/Image/Physical Exam)
+
+6. ORAJ.Disease Recurrence Indicator

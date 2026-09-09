@@ -1,0 +1,107 @@
+Report ID: RID382
+
+Report Title:
+PET Response vs FDG-PET assessment
+
+Description:
+This report will list subjects who have PET Response completed however FDG-PET was not used to assess disease on LFLG form and vice versa.
+
+Column Heading:
+1. Country
+
+2. Site
+
+3. Subject Number
+
+4. ORSLG Seq
+
+5. ORSLG Date Response Determined
+
+6. LFLG Seq
+
+7. LFLG Date of Assessment
+
+8. Scenario
+
+Logic:
+Scenario 1:
+
+Logic 1: ORSLG Date Response Determined <> Null
+
+AND
+
+Logic 2: There is a LFLG record with Date of assessment = ORSLG Date Response Determined of logic 1
+
+AND
+
+Logic 3: ORSLG of logic 1, item PET Response is completed
+
+AND
+
+Logic 4: LFLG of logic 2, item Method of Assessment is not selected as FDG-PET
+
+Scenario 2:
+
+Logic 5: ORSLG Date Response Determined <> Null
+
+AND
+
+Logic 6: There is a LFLG record with Date of assessment = ORSLG Date Response Determined of logic 5
+
+AND
+
+Logic 7: ORSLG of logic 5, item PET Response is NULL
+
+AND
+
+Logic 8: LFLG of logic 6, item Method of Assessment is selected as FDG-PET
+
+Note: Please exclude deleted records and arroneous visits from programming
+
+Report Scenarios:
+Scenario 1,
+
+Output: Yes
+
+ORSLG item PET Response is completed and LFLG of the same date, item Method of Assessment is not selected as FDGPET
+
+Scenario 2,
+
+Output. Yes
+
+ORSLG item PET Response is null and LFLG of the same date, item Method of Assessment is selected as FDGPET
+
+Scenario 3,
+
+Output: No
+
+ORSLG item PET Response is completed and LFLG of the same date, item Method of Assessment is  selected as FDGPET
+
+Scenario 4,
+
+Output: No
+
+ORSLG item PET Response is null and LFLG of the same date, item Method of Assessment is not selected as FDGPET
+
+Sorting:
+Country, Site, Subject Number
+
+Parameter Selection:
+Country, Site, Subject Number, Randomized Only
+
+Form.Item Names:
+1. SA. Country
+
+2. SA. Site
+
+3. SA. Subject Number
+
+4. ORSLG. Formidx
+
+5. ORSLG. Date Response Determined
+
+6. LFLG.Formidx
+
+7. LFLG. Date of Assessment
+
+8. Display "Scenario 1" or "Scenario 2" according to Scenario that is met

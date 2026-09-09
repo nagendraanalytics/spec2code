@@ -1,0 +1,67 @@
+Report ID: RID250
+
+Report Title:
+Duplicate entries in Locations
+
+Description:
+This report will output duplicate entries within Historical Oncologic Disease Details/Current Oncologic Disease Details forms.
+
+Column Heading:
+1.Country
+
+2.Site
+
+3.Subject
+
+4.Form Name
+
+5.Seq
+
+6. Location Type
+
+7. Location
+
+8.Location site details
+
+Logic:
+There are two or more records in the HDD eCRFS with the same "Location type" and "Location".
+
+Or
+
+There are two or more records in the CDD eCRFS with the same "Location type" and "Location".
+
+Note 1: Report uses Global Supporting Document HDD_Supp_Doc, it contains the SAS names for the items used across reports in the Historic Oncologic Disease Details eCRFs.
+
+Note 2: Report uses Global Supporting Document CDD_Supp_Doc, it contains the SAS names for the items used across reports in the Current Oncologic Disease Details eCRFs.
+
+Note 3: "Location type" refers to 'IS THIS A PRIMARY OR METASTATIC LOCATION?','IS THIS A PRIMARY OR METASTATIC LOCATION','IS THIS A METASTATIC LOCATION?','WERE THERE ANY PRIMARY LESIONS PRESENT?','IS THE PRIMARY MELANOMA PRESENT?' in the ITEMQUESTION column of the HDD_Supp_Doc and CDD_Supp_Doc.
+
+Note 4: "Location" refers to 'TUMOR LOCATION','LOCATION OF METASTASES AT DIAGNOSIS','LOCATION OF METASTASIS','LOCATION OF METASTASES','LOCATION','PRIMARY LOCATION AT DIAGNOSIS' in the ITEMQUESTION column of the HDD_Supp_Doc and CDD_Supp_Doc.
+
+Note 5: If the value of "Location" = 'Other', please compare the value from 'OTHER LOCATION OF METASTASES','OTHER TUMOR LOCATION','OTHER LOCATION AT DIAGNOSIS','PRIMARY LOCATION AT DIAGNOSIS OTHER','METASTASIS LOCATION OTHER AT DIAGNOSIS'.
+
+Report Scenarios:
+The report will produce output if duplicates on the Is this a primary or Metastatic location and Location within on form HDD/CDD for a subject are identified.
+
+Sorting:
+Country, Site, Subject, Seq
+
+Parameter Selection:
+Country, First Site, Last Site, First Subject, Last Subject, List of Subjects, Randomized Only (N/Y,default as N)
+
+Form.Item Names:
+1. HDD/CDD.SITECOUNTRY
+
+2. HDD/CDD.SITEMNEMONIC
+
+3. HDD/CDD.SUBJECTID
+
+4. HDD/CDD.GRPID
+
+5. HDD/CDD.TUSPID
+
+6. 'IS THIS A PRIMARY OR METASTATIC LOCATION?','IS THIS A PRIMARY OR METASTATIC LOCATION','IS THIS A METASTATIC LOCATION?','WERE THERE ANY PRIMARY LESIONS PRESENT?', “IS THE PRIMARY MELANOMA PRESENT?” in the ITEMQUESTION column of the HDD_Supp_Doc and CDD_Supp_Doc.
+
+7. 'TUMOR LOCATION','LOCATION OF METASTASES AT DIAGNOSIS','LOCATION OF METASTASIS','LOCATION OF METASTASES','LOCATION','PRIMARY LOCATION AT DIAGNOSIS' in the ITEMQUESTION column of the HDD_Supp_Doc and CDD_Supp_Doc.
+
+8. "Location Site Details" in the ITEMQUESTION column of the HDD_Supp_Doc/"Location Site Details" in the ITEMQUESTION column of the CDD_Supp_Doc

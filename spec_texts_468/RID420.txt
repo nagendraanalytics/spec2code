@@ -1,0 +1,287 @@
+Report ID: RID420
+
+Report Title:
+Response for multiple Scans performed within specific timepoint
+
+Description:
+This report will list subjects who have multiple response dates reported in Oncologic Response eCRF within specific timepoint that can be merged, or the date selected for the response is not correct.
+
+Column Heading:
+1. Country
+
+2. Site
+
+3. Subject Number
+
+4. Response form
+
+5. Response form Seq
+
+6. Response form Date
+
+7. Response form Scheduled time
+
+8. Overall response
+
+9. Overall irrecist response
+
+10. OSCN Min or Max Date
+
+11. Scenario
+
+Logic:
+Scenario 1:
+
+Logic 1.1: A Response form. Date <> Null and Scheduled Time = “scheduled”
+
+And
+
+Logic 1.2: There are is least one different Response. Date with a difference in Dates <= 2*X days according to parameter.
+
+OR
+
+Logic 1.3: There is a Response form. Date <> Null and Scheduled Time = “unscheduled”
+
+And
+
+Logic 1.4: There are is least one different Response. Date with a difference in Dates <= X days according to parameter.
+
+Scenario 2:
+
+(
+
+Logic 2.1: A Response form. Date <> Null and Scheduled Time = “scheduled”
+
+AND
+
+Logic 2.2: There is OSCN. Scan Date between Response form. Date from Logic 2.1 +/- 2*X ‘Window of Days’ according to parameter
+
+AND
+
+(
+
+Logic 2.3: Response form. Overall Response contain “PROGRESSIVE” OR “RELAPSE”.
+
+AND
+
+Logic 2.4:
+
+Response form. Date from Logic 2.1 <> the first date in OSCN records within +-2*X ‘Window of Days’ according to parameter
+
+OR
+
+Logic 2.5: Response form. Overall Response does NOT contain “PROGRESSIVE” or “RELAPSE”.
+
+AND
+
+Logic 2.6:
+
+Response form. Date from Logic 2.1 <> the last date in OSCN records within +-2*X ‘Window of Days’ according to parameter
+
+)
+
+)
+
+OR
+
+(
+
+Logic 2.7: A Response form. Date <> Null and Scheduled Time = “unscheduled”
+
+AND
+
+Logic 2.8: There is OSCN. Date between Response form. Date from Logic 2.1 +/- X ‘Window of Days’ according to parameter
+
+AND
+
+(
+
+Logic 2.9: Response form. Overall Response contains “PROGRESSIVE” or “RELAPSE”.
+
+AND
+
+Logic 2.10:
+
+Response form. Date from Logic 2.1 <> the first date in OSCN records within +/- X ‘Window of Days’ according to parameter
+
+OR
+
+Logic 2.11: Response form. Overall Response does NOT contain “PROGRESSIVE” or “RELAPSE”.
+
+AND
+
+Logic 2.12:
+
+Response form. Date from Logic 2.1 <> the last date in OSCN records within +/- X ‘Window of Days’ according to parameter
+
+)
+
+)
+
+Note 1: For OSCN use Date of Assessment or Scan Date
+
+Note 2: Window is inclusive, for example if user enters 7 days, then report would check for records with a date difference 7 days or less.
+
+Note 3: For scenario 1, display on columns 5 and 6 information for a pair of response forms that meet the logic separated by commas. If there are more than two records that satisfy the logic display each pair in chronological order in separate records. Display column 7 and 8 blank. if there is more than one record within window display as pair only the closest one. Do not duplicate outputs for responses with more than one response within the window, for example if responses 1, 2, 3, 4, in chronological order, are all within window then display output for (1,2), (2,3), (3,4).
+
+For scenario 2, display on columns 5 and 6 information for the response record. display on column 7 the overall response corresponding for each form, if the two overall response items are completed then display them separated by commas.
+
+Note 4: if both overall response items are completed prioritize PD over other responses.
+
+Note 5: if more than one form is selected in Response form prompt, then do the check for each form independently.
+
+Note 6: Response forms - Date - overall response 1 (Progressive disease option)- overall response 2 (Progressive disease option):
+
+ORLR -  Date of Procedure for Overall Response (Scan/Image/Physical Exam) – Overall Response (Progressive Disease)
+
+ORRN – Date Response Determined - Overall Response (Progressive Disease)
+
+ORAML - Date Response Determined - Overall Response (Relapse)
+
+ORCLL - Date Response Determined – Response (Progressive Disease)
+
+ORIR - Date of Procedure for Overall Response (Scan/Image/Physical Exam) - Overall RECIST Response (Progressive Disease) - Overall iRECIST Response (iUPD or iCPD)
+
+ORL - Date Response Determined - Overall Response (Progressive Disease)
+
+ORLLG - Date Response Determined - Overall Response (includes Target, Non Target, New, Spleen, Liver, PET and BM Assessments) (Progressive Disease)
+
+ORPC - Date Response Determined - Overall Response (Progressive Disease or Progressive Disease Unconfirmed)
+
+ORPI - Date Response Determined - Overall Response (PCWG-Modified RECIST) (Progressive Disease)- Overall Response (PCWG-Modified irRECIST) (Progressive Disease or Progressive Disease Unconfirmed)
+
+ORSLG - Date Response Determined - PET Response (Progressive Metabolic Disease)
+
+ORST - Date Response Determined - Overall Response (Progressive Disease)
+
+ORTCL - Date Response Determined - Overall Response (Progressive Disease)
+
+RRIR - Date Response Determined - Overall RECIST Response (Progressive Disease)- Overall IRRECIST Response (irProgressive Disease)
+
+OREXT - Date of Procedure for Overall Response - Overall Response (Progressive Disease)
+
+ORAJ - Date of Assessment (Scan/Image/Physical Exam) - Disease Recurrence Indicator (YES)
+
+Note 7: please exclude deleted records and erroneous visits from programming
+
+Note 8: For Scenario 1, allow to multiple RSP records have different Scheduled time , it means  that one Scheduled assessment can be merged with another assessment completed as unscheduled: as its completed on the next example
+
+Example 1 of Note 8
+
+eCRF: ORAJ
+
+Seq: 1
+
+Date of Assessment ( Scan Image Physical Exam): 31/Aug/2022
+
+Scheduled Time: Scheduled
+
+eCRF: ORAJ
+
+Seq: 2
+
+Date of Assessment ( Scan Image Physical Exam): 05/Sep/2022
+
+Scheduled Time: Unscheduled
+
+Explanation of Example 1 : we should get an output on the report since Assessment completed as Scheduled is within 7 days of the assessment completed as Unscheduled.
+
+Example 2 of Note 8
+
+eCRF: ORAJ
+
+Seq: 1
+
+Date of Assessment ( Scan Image Physical Exam): 31/Aug/2022
+
+Scheduled Time: Scheduled
+
+eCRF: ORAJ
+
+Seq: 2
+
+Date of Assessment ( Scan Image Physical Exam): 25/Sep/2022
+
+Scheduled Time: Unscheduled
+
+Explanation of Example 2 : we should NOT get an output on the report since Assesment completed as Scheduled is NOT  within 7 days of the assesment completed as Unescheduled.
+
+Report Scenarios:
+Scenario 1
+
+1.1 Output Yes:
+
+There are two or more response forms with date difference 2*X or less than the Window of Days entered in prompt and scheduled time as Scheduled.
+
+1.2 Output Yes:
+
+There are two or more response forms with date difference X or less than the Window of Days entered in prompt and scheduled time as Unscheduled.
+
+Scenario 2 .
+
+2.1 Output Yes:
+
+There is a response form record as scheduled and overall response as PD and there are OSCN records with date difference 2*X or less than the Window of Days entered in prompt and the response form date is not the minimum date of the OSCN records.
+
+2.2 Output Yes:
+
+There is a response form record as unscheduled and overall response as PD and there are OSCN records with date difference X or less than the Window of Days entered in prompt and the response form date is not the minimum date of the OSCN records.
+
+2.3 Output Yes:
+
+There is a response form record as scheduled and overall response different than PD and there are OSCN records with date difference 2*X or less than the Window of Days entered in prompt and the response form date is not the maximum date of the OSCN records.
+
+2.4 Output Yes:
+
+There is a response form record as unscheduled and overall response different than PD and there are OSCN records with date difference X or less than the Window of Days entered in prompt and the response form date is not the minimum date of the OSCN records.
+
+Scenario 3
+
+3.1 Output No:
+
+There are no response form records with date difference 2*X or less than the Window of Days entered in prompt and scheduled time as Scheduled.
+
+3.2 Output No:
+
+There are no response form records with date difference X or less than the Window of Days entered in prompt and scheduled time as Unscheduled.
+
+Scenario 4
+
+4.1 Output No:
+
+There is a response form record as scheduled and overall response as PD and there are OSCN records with date difference 2*X or less than the Window of Days entered in prompt and the response form date is the minimum date of the OSCN records.
+
+4.2 Output No:
+
+There is a response form record as unscheduled and overall response as PD and there are OSCN records with date difference X or less than the Window of Days entered in prompt and the response form date is the minimum date of the OSCN records.
+
+4.3 Output Yes:
+
+There is a response form record as scheduled and overall response different than PD and there are OSCN records with date difference 2*X or less than the Window of Days entered in prompt and the response form date is the maximum date of the OSCN records.
+
+4.4 Output Yes:
+
+There is a response form record as unscheduled and overall response different than PD and there are OSCN records with date difference X or less than the Window of Days entered in prompt and the response form date is the minimum date of the OSCN records.
+
+Form.Item Names:
+1. SA Form. Site Country
+
+2. SA Form. Site Mnemonic
+
+3. SA Form. Subject Number
+
+4. Response form. Form mnemonic
+
+5. Response form. Seq (display each pair of forms separated by commas)
+
+6. Response form. DATE RESPONSE DETERMINED/DATE OF ASSESSMENT /DATE RESPONSE DETERMINED /(SCAN/IMAGE/PHYSICAL EXAM) / DATE OF PROCEDURE FOR OVERALL RESPONSE (SCAN/IMAGE/PHYSICAL EXAM)    (display each pair of forms separated by commas)
+
+7. Response form. Scheduled time
+
+8. Response form. Overall response (display the overall response selected according to note 6)
+
+9. Response form. Overall irrecist response
+
+10. OSCN. Date of assessment (display the min date if overall response is PD, display max date if overall response is different than PD
+
+11. Display Scenario 1 or Scenario 2

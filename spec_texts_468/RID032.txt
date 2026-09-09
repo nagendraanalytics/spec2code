@@ -1,0 +1,43 @@
+Report ID: RID032
+
+Report Title:
+Missing Consent Date of Associated Person
+
+Description:
+This report will display subjects with missing Consent Date of Associated Person.
+
+Column Heading:
+1. Country
+
+2. Site
+
+3. Subject Number
+
+4. Visit
+
+5. Date of Visit
+
+Logic:
+Item Description of Associated Person is entered on APDM form AND Consent Date of Associated Person item is missing
+
+Notes:
+
+1) Erroneous visits should not be included.
+
+2) Display blank for DOV if it is not provided
+
+Report Scenarios:
+Yes: Display output that satisfy the logic
+
+No: Do not display output that do not satisfy the logic
+
+Form.Item Names:
+1. Subject Assignment.Site Country
+
+2. Subject Assignment.Site Mnemonic
+
+3. Subjects.Subject Number
+
+4. APDM.Visit Mnemonic
+
+5. Visits. Date of Visit

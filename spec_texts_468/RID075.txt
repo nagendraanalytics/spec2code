@@ -1,0 +1,55 @@
+Report ID: RID075
+
+Report Title:
+Incremental Encoding of MedDRA Terms - Counts
+
+Description:
+This report displays distinct occurrences of the unique combination of verbatim term, LLT, PT and SOC. It also displays the frequency with which they occurred.
+
+Column Heading:
+1. eCRF
+
+2. Verbatim Term
+
+3. LLT
+
+4. PT
+
+5. SOC
+
+6. Frequency
+
+Logic:
+The report should display output for unique combinations of verbatim term, LLT, PT and SOC from Adverse Events (AE), Medical History (MH),  Procedures (PROC), Primary Diagnosis (PDIAG), Death (DEATH) and Death Autopsy Results (DAR), MHA, Associated Persons Adverse Events (APAE), Associated Persons Medical History (APMH), Associated Persons Procedures (APPRC), Serious Adverse Events - Infant (SAEI), Serious Adverse Events - Partner (SAEP) with the frequency of occurrence.  Comparisons should be on non-null terms, should not be case-sensitive, and report should not compare terms across forms.
+
+Incremental outputs can be run by last modified date on LLT.
+
+Selection Criteria should be displayed on the first page of the entire report, above the output table, not within the header or footer. It should include Country, Site, Subject and Randomized Only, even when these items do not appear on the report output.
+
+Display row count in footer.
+
+Report should not display deleted records.
+
+If "Randomized only" parameter selection checkbox  is checked, the report should only output subjects with Randomization number that is not null.
+
+Report Scenarios:
+This report displays distinct occurrences of the unique combination of verbatim term, LLT, PT and SOC. It also displays the frequency with which they occurred.
+
+Sorting:
+eCRF, Verbatim Term, LLT, PT, SOC, Frequency
+
+Parameter Selection:
+eCRF, Country, Site, Subject, Randomized Only, Changed Data From, Changed Data To, List of Subjects
+
+Form.Item Names:
+1. Forms.Form Mnemonic
+
+2. Forms.Term
+
+3. Forms.LLT
+
+4. Forms.PT
+
+5. Forms.SOC
+
+6. Derived: count of combinations of eCRF, verbatim term, LLT, PT and SOC

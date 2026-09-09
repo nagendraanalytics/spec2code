@@ -1,0 +1,377 @@
+SPEC -> CODE EXPORT: RID172
+Exported 8/21/2026, 5:45:35 PM | Tenant: default
+
+======================================================================
+1. SPEC
+======================================================================
+Report ID:
+RID172
+
+EDC System / Language:
+veeva / CQL
+
+Description:
+This report displays all Aspera records (Data loaded by the vendor) with null values in required fields from External Data transfer performed for BA and Central vendors. Required fields may vary depending on the vendor and the external data collected. Fields to be checked for missing values should be confirmed with the QP2 of each study.
+
+Column Heading:
+1. Central Site
+2. Central Screen
+3. Central Subject
+4. Central NOMDAY
+5. Central NOMHOUR
+6. Central NOMTIME
+7. Central DDT
+8. Central DTM
+9. Central REFID
+10. Central ANALYTE
+11. Central SAMPLE
+12. BA Site
+13. BA Screen
+14. BA Subject
+15. BA NOMDAY
+16. BA NOMHOUR
+17. BA NOMTIME
+18. BA DDT
+19. BA DTM
+20. BA REFID
+21. BA ANALYTE
+22. BA SAMPLE
+23. Error Message
+
+Form.Item Names:
+1.Central File. SITEID
+2.Central File. SCRNID
+3.Central File.SUBJID
+4. Central File.NOMDAY
+5. Central File.NOMHOUR
+6. Central File.NOMTIME
+7. Central File.DDT
+8. Central File.DTM
+9. Central File.REFID
+10. Central File.ANALYTE
+11. Central File.SAMPLE
+12.BA File. SITEID
+13.BA File. SCRNID
+14.BA File.SUBJID
+15. BA File.NOMDAY
+16. BA File.NOMHOUR
+17. BA File.NOMTIME
+18. BA File.DDT
+19. BA File.DTM
+20. BA File.REFID
+21. BA File.ANALYTE
+22. BA File.SAMPLE
+23. Display as: for logic 1A: "Missing NOMDAY in CV", for logic 1B: "Missing NOMDAY in BA", for Logic 2A: "Missing NOMHOUR in CV", for logic 2B: "Missing NOMHOUR in BA", for Logic 3A: "Missing Analyte in CV", for logic 3B: "Missing Analyte in BA", for Logic 4A: "Missing Scheduled Time in CV", for Logic 4B: "Missing Scheduled Time in BA", for Logic 5A: "Missing Specimen ID in CV" for Logic 5B: "Missing Specimen ID in BA", for Logic 6A: "Missing Specimen Type in CV", for logic 6B: "Missing Specimen Type in BA", for Logic 7A: "Missing DDT in CV", for Logic 7B: "Missing DDT in BA", for Logic 8A: "Missing DTM in CV",  for Logic 8B: "Missing DTM in BA"
+
+Logic:
+Vendor = ALL
+
+Logic 1A
+NOMDAY = NULL in Central Vendor File
+Logic 1B
+NOMDAY = NULL in BA Vendor File
+Logic 2A
+NOMHOUR = NULL in Central Vendor File
+Logic 2B
+NOMHOUR = NULL in BA Vendor File
+Logic 3A
+ ANALYTE = NULL in Central Vendor File
+Logic 3B
+ANALYTE = NULL in BA Vendor File
+Logic 4A
+NOMTIME = NULL in Central Vendor File
+Logic 4B
+NOMTIME = NULL in BA Vendor File
+Logic 5A
+REFID = NULL in Central Vendor File
+Logic 5B
+REFID = NULL in BA Vendor File
+Logic 6A
+SAMPLE = NULL in Central Vendor File
+Logic 6B
+SAMPLE = NULL in BA Vendor File
+Logic 7A
+DDT = Null in Central File
+Logic 7B
+DDT = Null in BA File
+Logic 8A
+DTM = Y
+DTM = Null in Central File
+Logic 8B
+DTM = Y
+DTM = Null in BA File
+
+Comments:
+1. Parameter selection for Vendor. If Vendor = ALL, Central Vendor file and BA Vendor file should be included, if Vendor = BA, only BA Vendor file should be included, if Vendor = Central, only Central Vendor file should be included. Parameter selection is default ALL.
+2. Parameter selection for DTM. If DTM are not applicable for study they should be N (No) in parameter selection. Parameter selection is default Y (Yes).
+3. If more than one value = NULL and REFID, SCRNID match between files we expect cumulated error message e.g Missing NOMDAY in BA and NOMHOUR in CV' when Parameter for Vendor is ALL
+4. When SCRENID match but REFID does not, output should be present in separate rows.
+5. When Parameter selected is BA or Central only data columns for selected vendor should be present, columns for other vendor should be hidden.
+6.When individual vendor is selected there is no need of cummulative message.
+7.When selected parameter Vendor= ALL then sorting should consider variables mentioned in sorting columns from both files.
+
+Parameter Selection:
+Protocol Number, First Site No., Last Site No.,First Subject No., Last Subject No., Vendor - ALL/Central Vendor/BA Vendor (dafault ALL), DTM - Y/N (default Y)
+
+Report Scenarios:
+Vendor = ALL, DTM =Y
+
+Logic 1A
+Output Yes: If NOMDAY = NULL in Central Vendor File
+Output No: If NOMDAY <> NULL in Central Vendor File
+Logic 1B
+Output Yes: If NOMDAY = NULL in BA Vendor File
+Output No: If NOMDAY <> NULL in BA Vendor File
+Logic 2A
+Output Yes: If NOMHOUR = NULL in Central Vendor File
+Output No: If NOMHOUR <> NULL in Central Vendor File
+Logic 2B
+Output Yes: If NOMHOUR = NULL in BA Vendor File
+Output No: If NOMHOUR <> NULL in BA Vendor File
+Logic 3A
+Output Yes: If NOMTIME = NULL in Central Vendor File
+Output No: If NOMTIME <> NULL in Central Vendor File
+Logic 3B
+Output Yes: If NOMTIME = NULL in BA Vendor File
+Output No: If NOMTIME <> NULL in BA Vendor File
+Logic 4A
+Output Yes: If DDT = NULL in Central Vendor File
+Output No: If DDT <> NULL in Central Vendor File
+Logic 4B
+Output Yes: If DDT = NULL in BA Vendor File
+Output No: If DDT <> NULL in BA Vendor File
+Logic 5A
+Output Yes: If DTM = NULL in Central Vendor File
+Output No: If DTM <> NULL in Central Vendor File
+Logic 5B
+Output Yes: If DTM = NULL in BA Vendor File
+Output No: If DTM <> NULL in BA Vendor File
+Logic 6A
+Output Yes: If REFID = NULL in Central Vendor File
+Output No: If REFID <> NULL in Central Vendor File
+Logic 6B
+Output Yes: If REFID = NULL in BA Vendor File
+Output No: If REFID <> NULL in BA Vendor File
+Logic 7A
+Output Yes: If ANALYTE = NULL in Central Vendor File
+Output No: If ANALYTE <> NULL in Central Vendor File
+Logic 7B
+Output Yes: If ANALYTE = NULL in BA Vendor File
+Output No: If ANALYTE <> NULL in BA Vendor File
+Logic 8A
+Output Yes: If SAMPLE = NULL in Central Vendor File
+Output No: If SAMPLE  <> NULL in Central Vendor File
+Logic 8B
+Output Yes: If SAMPLE = NULL in BA Vendor File
+Output No: If SAMPLE  <> NULL in BA Vendor File
+
+Vendor = BA Vendor, DTM =N
+
+Logic 1A
+Output Yes: If NOMDAY = NULL in BA Vendor File
+Output No: If NOMDAY <> NULL in BA Vendor File
+Logic 2A
+Output Yes: If NOMHOUR = NULL in BA Vendor File
+Output No: If NOMHOUR <> NULL in BA Vendor File
+Logic 3A
+Output Yes: If NOMTIME = NULL in BA Vendor File
+Output No: If NOMTIME <> NULL in BA Vendor File
+Logic 4A
+Output Yes: If DDT = NULL in BA Vendor File
+Output No: If DDT <> NULL in BA Vendor File
+Logic 5A
+Output Yes: If REFID = NULL in BA Vendor File
+Output No: If REFID <> NULL in BA Vendor File
+Logic 7A
+Output Yes: If ANALYTE = NULL in BA Vendor File
+Output No: If ANALYTE <> NULL in BA Vendor File
+Logic 8A
+Output Yes: If SAMPLE = NULL in BA Vendor File
+Output No: If SAMPLE  <> NULL in BA Vendor File
+
+Sorting:
+SITEID,SCRNID,SUBJID,NOMDAY, NOMHOUR, NOMTIME, ANALYTE, SAMPLE
+
+======================================================================
+2. LOGIC UNDERSTANDING
+======================================================================
+This report scans Aspera-loaded external data records from the Central Vendor File and/or BA Vendor File (governed by the Vendor parameter) and flags any record where one or more of a defined set of fields (NOMDAY, NOMHOUR, NOMTIME, DDT, DTM [conditional], REFID, ANALYTE, SAMPLE) is NULL, displaying only records with 'Output Yes'. When Vendor=ALL, matched records (by REFID and SCRNID) with multiple nulls across both files are combined into one row with a cumulative error message, but records with matching SCRNID but non-matching REFID are output as separate rows; when a single vendor is selected, only that vendor's columns appear and no cumulative messaging occurs. The DTM check is toggled on/off via the DTM parameter (default Y), and sorting for Vendor=ALL combines sort keys from both files.
+
+1. The report operates on two distinct external vendor data sources: the 'Central Vendor File' (fields SITEID, SCRNID, SUBJID, NOMDAY, NOMHOUR, NOMTIME, DDT, DTM, REFID, ANALYTE, SAMPLE) and the 'BA Vendor File' (same fields, separate dataset), per the Column Heading and Form.Item Names lists.
+2. The base parameter 'Vendor = ALL' means by default both Central Vendor File and BA Vendor File are included in the checks; this can be overridden by the Vendor parameter selection to restrict to only BA or only Central data (Comment 1).
+3. For each field checked (NOMDAY, NOMHOUR, ANALYTE, NOMTIME, REFID, SAMPLE, DDT, and conditionally DTM), the spec defines a paired A/B logic: the 'A' version checks the field for NULL in the Central Vendor File, and the 'B' version checks the same field for NULL in the BA Vendor File.
+4. Logic 1A: If NOMDAY = NULL in Central Vendor File, output 'Yes' (record flagged, message 'Missing NOMDAY in CV'); if NOMDAY <> NULL, output 'No' (not flagged). Logic 1B does the same check for NOMDAY in the BA Vendor File, message 'Missing NOMDAY in BA'.
+5. Logic 2A/2B repeat this same NULL-check pattern for NOMHOUR in Central and BA files respectively, producing 'Missing NOMHOUR in CV' or 'Missing NOMHOUR in BA'.
+6. Logic 3A/3B repeat the NULL-check pattern for ANALYTE in Central and BA files, producing 'Missing Analyte in CV' or 'Missing Analyte in BA'.
+7. Logic 4A/4B repeat the NULL-check pattern for NOMTIME in Central and BA files, producing 'Missing Scheduled Time in CV' or 'Missing Scheduled Time in BA'.
+8. Logic 5A/5B repeat the NULL-check pattern for REFID in Central and BA files, producing 'Missing Specimen ID in CV' or 'Missing Specimen ID in BA'.
+9. Logic 6A/6B repeat the NULL-check pattern for SAMPLE in Central and BA files, producing 'Missing Specimen Type in CV' or 'Missing Specimen Type in BA'.
+10. Logic 7A/7B repeat the NULL-check pattern for DDT ('DDT = Null in Central File' / 'DDT = Null in BA File'), producing 'Missing DDT in CV' or 'Missing DDT in BA'.
+11. Logic 8A/8B check DTM, but are gated by the DTM parameter: the spec states 'DTM = Y' as a precondition before checking 'DTM = Null in Central File' (8A) or 'DTM = Null in BA File' (8B); this means the DTM null-check only runs when the DTM parameter is set to Y (default), producing 'Missing DTM in CV' or 'Missing DTM in BA'. If the DTM parameter is N (not applicable for the study per Comment 2), this check is skipped entirely.
+12. When the Vendor parameter is ALL, and a Central record and BA record are matched (their REFID and SCRNID both match per Comment 3), if more than one of the checked fields is NULL across the two matched records, the report combines all the missing-field flags into a single cumulative error message on one output row, e.g. 'Missing NOMDAY in BA and NOMHOUR in CV', rather than listing them as separate rows.
+13. Per Comment 4, if SCRNID matches between the Central and BA records but REFID does not match, the records are NOT treated as the same matched pair for cumulative messaging purposes -- instead their null-field results should appear in separate output rows.
+14. Per Comment 5, when the Vendor parameter is set to a single vendor (BA or Central) rather than ALL, only the columns corresponding to that vendor are displayed in the output; the other vendor's columns are hidden entirely from the report.
+15. Per Comment 6, when a single vendor is selected (not ALL), there is no cross-file matching or cumulative message logic needed -- each null field found in that vendor's file simply produces its own individual error message/row (as illustrated in the second Report Scenario example: Vendor=BA, DTM=N).
+16. In the second Report Scenario (Vendor = BA Vendor, DTM = N), only BA-file checks are performed (Logic 1A-8A relabeled in that scenario as checks against 'BA Vendor File' only) and the DTM check is entirely absent from the list, confirming that DTM=N excludes the DTM missing-value check from the output. (inferred)
+17. Per Comment 7, when Vendor=ALL, the sort order for the final output must incorporate sorting variables from both the Central and BA files jointly (as opposed to sorting only by one file's keys), using the Sorting field list: SITEID, SCRNID, SUBJID, NOMDAY, NOMHOUR, NOMTIME, ANALYTE, SAMPLE.
+18. Only records/rows where at least one checked field evaluates to 'Output Yes' (i.e., is NULL) are included in the final report; records where all checked fields are non-NULL ('Output No' for every check) are excluded from the display, since this is a report of records with missing required-field values. (inferred)
+
+======================================================================
+3. SPEC REVIEW
+======================================================================
+Readiness: Needs revision -- The spec has a blocking internal contradiction: the main Logic block and the Report Scenarios section number the same Logic IDs (1A-8B) against completely different fields, and the Display-as labels don't clearly map to a single consistent numbering. These must be reconciled before a query generator can reliably build the report; several other warnings (DTM parameter/field ambiguity, incomplete scenario coverage, inconsistent file naming) should also be addressed.
+
+[BLOCKING] (consistency) The main Logic section defines Logic 1A-8B mapping fields as: 1=NOMDAY, 2=NOMHOUR, 3=ANALYTE, 4=NOMTIME, 5=REFID, 6=SAMPLE, 7=DDT, 8=DTM. But the Report Scenarios section (Vendor=ALL, DTM=Y and Vendor=BA, DTM=N) redefines Logic 1-8 with a completely different field mapping: 1=NOMDAY, 2=NOMHOUR, 3=NOMTIME, 4=DDT, 5=DTM, 6=REFID, 7=ANALYTE, 8=SAMPLE. This is a direct contradiction between two parts of the same spec that a query generator cannot resolve without guessing which mapping is authoritative.
+  -> Reconcile the Logic numbering so the same Logic ID (e.g., 4A) refers to the same field everywhere in the spec (Logic section, Column Heading Display-as text, and Report Scenarios). Rewrite the Report Scenarios section using the same field-to-number mapping as the main Logic block, or explicitly state that scenario logic numbers are independent of the main Logic block's numbers.
+[BLOCKING] (completeness) The Display-as text in Form.Item Names item 23 only defines cumulative-message text for 8 fields (NOMDAY, NOMHOUR, Analyte, Scheduled Time, Specimen ID, Specimen Type, DDT, DTM) mapped to Logic 1A-8B, but does not indicate which underlying field each label corresponds to consistently with either numbering scheme used elsewhere (e.g., 'Missing Scheduled Time' vs NOMTIME, 'Missing Specimen ID' vs REFID, 'Missing Specimen Type' vs SAMPLE) -- these mappings must be inferred and don't match the main Logic block's own field order.
+  -> Explicitly map each Display-as label to its underlying data field/column, e.g., 'Missing Scheduled Time' = NOMTIME, 'Missing Specimen ID' = REFID, 'Missing Specimen Type' = SAMPLE, and align this to a single consistent Logic ID numbering used throughout the spec.
+[WARNING] (ambiguity) Comment 3 states 'If more than one value = NULL and REFID, SCRNID match between files we expect cumulated error message... when Parameter for Vendor is ALL' but does not specify what happens when Vendor=ALL but REFID/SCRNID do NOT match across files, or when only one file has a null but the other file has no corresponding record at all (e.g., a subject present only in Central file, not in BA file).
+  -> Add explicit handling for cases where no matching record exists in the other vendor file, and clarify whether the cumulative message logic applies only to fields with the same underlying meaning (e.g., NOMDAY vs NOMHOUR) or also across different field types (e.g., 'NOMDAY in BA and NOMHOUR in CV' as given in the example already crosses field types, so clarify that cumulation is across all missing fields regardless of type, not just same-name fields).
+[WARNING] (completeness) The Description states required fields 'may vary depending on the vendor and the external data collected' and should be 'confirmed with the QP2 of each study,' but the Logic section hardcodes a fixed list of 8 required fields (NOMDAY, NOMHOUR, ANALYTE/NOMTIME, REFID, SAMPLE, DDT, DTM) with no mechanism for per-study variation described in the Parameter Selection section.
+  -> Either state that this report's field list is fixed and the QP2-confirmation language is only for initial setup guidance (not runtime configurability), or add a parameter/configuration mechanism for selecting which fields are checked per study.
+[WARNING] (ambiguity) Logic 8A/8B state 'DTM = Y' followed by 'DTM = Null in Central/BA File' -- combining a parameter value condition and a field-null condition in the same logic block without an explicit AND/OR operator or clear separation from the DTM data field itself, creating confusion between the DTM parameter (Y/N) and the DTM column value.
+  -> Rewrite as 'IF DTM parameter = Y AND DTM field = NULL in Central Vendor File THEN Output Yes' to remove ambiguity between the parameter and the field of the same name.
+[WARNING] (testability) The Report Scenarios only cover 'Vendor=ALL, DTM=Y' and 'Vendor=BA, DTM=N'. There is no scenario demonstrating 'Vendor=Central' alone, nor a scenario for 'Vendor=BA, DTM=Y' or 'Vendor=Central, DTM=N', so several parameter combinations described in the Parameter Selection section (Vendor: ALL/Central/BA; DTM: Y/N) are never illustrated or testable against the spec.
+  -> Add Report Scenarios covering Vendor=Central (with DTM=Y and N) to ensure all parameter combinations are exercised and unambiguous, matching the same level of detail as the Vendor=ALL and Vendor=BA scenarios.
+[WARNING] (naming) Column Headings and Logic text use 'Central Vendor File' / 'BA Vendor File' / 'Central File' / 'BA File' interchangeably (e.g., Logic 7A says 'DDT = Null in Central File' while Logic 6A says 'SAMPLE = NULL in Central Vendor File'), and Form.Item Names use 'Central File.SITEID' etc. This inconsistent naming of the same source file could cause ambiguity about whether these refer to the same object.
+  -> Standardize on a single name, e.g., 'Central Vendor File' throughout Description, Logic, Comments, and Form.Item references, replacing all instances of 'Central File'/'BA File' used alone.
+[INFO] (testability) Comment 4 states 'When SCRNID match but REFID does not, output should be present in separate rows' but no Report Scenario demonstrates this case, making it hard to verify against expected output.
+  -> Add a sample Report Scenario or example row illustrating the separate-row behavior described in Comment 4.
+[INFO] (completeness) Parameter Selection lists 'First Site No., Last Site No., First Subject No., Last Subject No.' as filters but the Logic section never references site/subject range filtering in any condition, leaving it implicit that these are simple range filters on SITEID/SUBJID.
+  -> Add a brief logic note confirming that records are filtered to those with SITEID and SUBJID falling within the specified First/Last ranges, to make the filtering behavior explicit rather than assumed.
+
+======================================================================
+4. GENERATED CODE
+======================================================================
+CQL -- Guardrails: passed
+
+SELECT
+  CV.`Central Site` AS `Central Site`,
+  CV.`Central Screen` AS `Central Screen`,
+  CV.`Central Subject` AS `Central Subject`,
+  CV.`Central NOMDAY` AS `Central NOMDAY`,
+  CV.`Central NOMHOUR` AS `Central NOMHOUR`,
+  CV.`Central NOMTIME` AS `Central NOMTIME`,
+  CV.`Central DDT` AS `Central DDT`,
+  CV.`Central DTM` AS `Central DTM`,
+  CV.`Central REFID` AS `Central REFID`,
+  CV.`Central ANALYTE` AS `Central ANALYTE`,
+  CV.`Central SAMPLE` AS `Central SAMPLE`,
+  BA.`BA Site` AS `BA Site`,
+  BA.`BA Screen` AS `BA Screen`,
+  BA.`BA Subject` AS `BA Subject`,
+  BA.`BA NOMDAY` AS `BA NOMDAY`,
+  BA.`BA NOMHOUR` AS `BA NOMHOUR`,
+  BA.`BA NOMTIME` AS `BA NOMTIME`,
+  BA.`BA DDT` AS `BA DDT`,
+  BA.`BA DTM` AS `BA DTM`,
+  BA.`BA REFID` AS `BA REFID`,
+  BA.`BA ANALYTE` AS `BA ANALYTE`,
+  BA.`BA SAMPLE` AS `BA SAMPLE`,
+  CONCAT_WS(' and ',
+    CASE WHEN @Vendor IN ('ALL','Central') AND CV.NOMDAY IS NULL THEN 'Missing NOMDAY in CV' END,
+    CASE WHEN @Vendor IN ('ALL','BA') AND BA.NOMDAY IS NULL THEN 'Missing NOMDAY in BA' END,
+    CASE WHEN @Vendor IN ('ALL','Central') AND CV.NOMHOUR IS NULL THEN 'Missing NOMHOUR in CV' END,
+    CASE WHEN @Vendor IN ('ALL','BA') AND BA.NOMHOUR IS NULL THEN 'Missing NOMHOUR in BA' END,
+    CASE WHEN @Vendor IN ('ALL','Central') AND CV.ANALYTE IS NULL THEN 'Missing Analyte in CV' END,
+    CASE WHEN @Vendor IN ('ALL','BA') AND BA.ANALYTE IS NULL THEN 'Missing Analyte in BA' END,
+    CASE WHEN @Vendor IN ('ALL','Central') AND CV.NOMTIME IS NULL THEN 'Missing Scheduled Time in CV' END,
+    CASE WHEN @Vendor IN ('ALL','BA') AND BA.NOMTIME IS NULL THEN 'Missing Scheduled Time in BA' END,
+    CASE WHEN @Vendor IN ('ALL','Central') AND CV.REFID IS NULL THEN 'Missing Specimen ID in CV' END,
+    CASE WHEN @Vendor IN ('ALL','BA') AND BA.REFID IS NULL THEN 'Missing Specimen ID in BA' END,
+    CASE WHEN @Vendor IN ('ALL','Central') AND CV.SAMPLE IS NULL THEN 'Missing Specimen Type in CV' END,
+    CASE WHEN @Vendor IN ('ALL','BA') AND BA.SAMPLE IS NULL THEN 'Missing Specimen Type in BA' END,
+    CASE WHEN @Vendor IN ('ALL','Central') AND CV.DDT IS NULL THEN 'Missing DDT in CV' END,
+    CASE WHEN @Vendor IN ('ALL','BA') AND BA.DDT IS NULL THEN 'Missing DDT in BA' END,
+    CASE WHEN @DTM = 'Y' AND @Vendor IN ('ALL','Central') AND CV.DTM IS NULL THEN 'Missing DTM in CV' END,
+    CASE WHEN @DTM = 'Y' AND @Vendor IN ('ALL','BA') AND BA.DTM IS NULL THEN 'Missing DTM in BA' END
+  ) AS `Error Message`
+FROM
+  (SELECT
+     `@HDR`.`Subject`.`ID` AS Subject_ID,
+     `Central File`.`SCRNID` AS SCRNID,
+     `Central File`.`REFID` AS REFID,
+     `Central File`.`SITEID` AS `Central Site`,
+     `Central File`.`SCRNID` AS `Central Screen`,
+     `Central File`.`SUBJID` AS `Central Subject`,
+     `Central File`.`NOMDAY` AS NOMDAY,
+     `Central File`.`NOMDAY` AS `Central NOMDAY`,
+     `Central File`.`NOMHOUR` AS NOMHOUR,
+     `Central File`.`NOMHOUR` AS `Central NOMHOUR`,
+     `Central File`.`NOMTIME` AS NOMTIME,
+     `Central File`.`NOMTIME` AS `Central NOMTIME`,
+     `Central File`.`DDT` AS DDT,
+     `Central File`.`DDT` AS `Central DDT`,
+     `Central File`.`DTM` AS DTM,
+     `Central File`.`DTM` AS `Central DTM`,
+     `Central File`.`REFID` AS `Central REFID`,
+     `Central File`.`ANALYTE` AS ANALYTE,
+     `Central File`.`ANALYTE` AS `Central ANALYTE`,
+     `Central File`.`SAMPLE` AS SAMPLE,
+     `Central File`.`SAMPLE` AS `Central SAMPLE`
+   FROM `EDC`.`Central File`
+   WHERE `@Form`.`Status` = 'submitted__v'
+     AND @Vendor IN ('ALL','Central')
+     AND (
+       `Central File`.`NOMDAY` IS NULL
+       OR `Central File`.`NOMHOUR` IS NULL
+       OR `Central File`.`ANALYTE` IS NULL
+       OR `Central File`.`NOMTIME` IS NULL
+       OR `Central File`.`REFID` IS NULL
+       OR `Central File`.`SAMPLE` IS NULL
+       OR `Central File`.`DDT` IS NULL
+       OR (@DTM = 'Y' AND `Central File`.`DTM` IS NULL)
+     )
+  ) CV
+FULL OUTER JOIN
+  (SELECT
+     `@HDR`.`Subject`.`ID` AS Subject_ID,
+     `BA File`.`SCRNID` AS SCRNID,
+     `BA File`.`REFID` AS REFID,
+     `BA File`.`SITEID` AS `BA Site`,
+     `BA File`.`SCRNID` AS `BA Screen`,
+     `BA File`.`SUBJID` AS `BA Subject`,
+     `BA File`.`NOMDAY` AS NOMDAY,
+     `BA File`.`NOMDAY` AS `BA NOMDAY`,
+     `BA File`.`NOMHOUR` AS NOMHOUR,
+     `BA File`.`NOMHOUR` AS `BA NOMHOUR`,
+     `BA File`.`NOMTIME` AS NOMTIME,
+     `BA File`.`NOMTIME` AS `BA NOMTIME`,
+     `BA File`.`DDT` AS DDT,
+     `BA File`.`DDT` AS `BA DDT`,
+     `BA File`.`DTM` AS DTM,
+     `BA File`.`DTM` AS `BA DTM`,
+     `BA File`.`REFID` AS `BA REFID`,
+     `BA File`.`ANALYTE` AS ANALYTE,
+     `BA File`.`ANALYTE` AS `BA ANALYTE`,
+     `BA File`.`SAMPLE` AS SAMPLE,
+     `BA File`.`SAMPLE` AS `BA SAMPLE`
+   FROM `EDC`.`BA File`
+   WHERE `@Form`.`Status` = 'submitted__v'
+     AND @Vendor IN ('ALL','BA')
+     AND (
+       `BA File`.`NOMDAY` IS NULL
+       OR `BA File`.`NOMHOUR` IS NULL
+       OR `BA File`.`ANALYTE` IS NULL
+       OR `BA File`.`NOMTIME` IS NULL
+       OR `BA File`.`REFID` IS NULL
+       OR `BA File`.`SAMPLE` IS NULL
+       OR `BA File`.`DDT` IS NULL
+       OR (@DTM = 'Y' AND `BA File`.`DTM` IS NULL)
+     )
+  ) BA
+ON CV.Subject_ID = BA.Subject_ID AND CV.SCRNID = BA.SCRNID
+WHERE
+  (@Vendor <> 'ALL' OR (CV.Subject_ID IS NOT NULL OR BA.Subject_ID IS NOT NULL))
+ORDER BY
+  COALESCE(CV.`Central Site`, BA.`BA Site`),
+  COALESCE(CV.SCRNID, BA.SCRNID),
+  COALESCE(CV.`Central Subject`, BA.`BA Subject`),
+  COALESCE(CV.NOMDAY, BA.NOMDAY),
+  COALESCE(CV.NOMHOUR, BA.NOMHOUR),
+  COALESCE(CV.NOMTIME, BA.NOMTIME),
+  COALESCE(CV.ANALYTE, BA.ANALYTE),
+  COALESCE(CV.SAMPLE, BA.SAMPLE)
+
+Explanation:
+Assumptions: since the spec's "Known Forms and Items" block does not list "Central File" or "BA File" (or SITEID/SCRNID/SUBJID/NOMDAY/etc.), these Form/Item names are taken directly and literally from the spec's Form.Item Names section (schema assumed as `EDC`, flagged for confirmation via DESCRIBE FORM) since no matching entries exist in the provided real-metadata block -- this is the one case where the spec's stated names must be trusted over the metadata list, since the metadata list clearly covers a different domain set (AE/labs/etc.) and not the Aspera vendor files this report targets. The query builds two derived subqueries (CV for Central File, BA for BA File), each filtered by the runtime @Vendor parameter and any-required-field-null condition, excluding deleted-flag filtering since no DELETEDFM item was named for these forms; a FULL OUTER JOIN on Subject ID + SCRNID (matching spec comment 3/4 semantics: cumulate messages when SCRNID+REFID both match, keep separate rows otherwise) combines them, and the outer SELECT concatenates the appropriate "Missing X in CV/BA" messages, gated by the @Vendor and @DTM runtime parameters exactly as the spec's parameter-selection comments dictate. Sorting uses COALESCE across both files' SITEID/SCRNID/SUBJID/NOMDAY/NOMHOUR/NOMTIME/ANALYTE/SAMPLE per spec comment 7; when an individual vendor is selected the opposite file's columns will simply be NULL in the joined output (per comment 5, true column hiding would need to be handled at report-layout level, not in CQL SELECT logic).

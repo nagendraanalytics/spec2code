@@ -1,0 +1,197 @@
+Report ID: RID188
+
+Report Title:
+Mismatch between Study Period-Scheduled Time and visit or duplicate Study Period for the same medication
+
+Description:
+This report will list subjects where Study Period/Scheduled Time/Start date/ Stop date in Study med does not match with the corresponding visit or there is a duplicate Study Period for the same medication.
+
+Column Heading:
+1. Country
+
+2. Site
+
+3. Subject Number
+
+4. Visit
+
+5. eCRF
+
+6. Seq
+
+7. Study Period & Scheduled Time
+
+8. Expected Study Period
+
+9. Expected Scheduled Time
+
+10.  Study Medication
+
+11. Error Message
+
+Logic:
+<Criteria Form1>.<Criteria Itemquestion1> = <Criteria Value1>  AND
+
+<Criteria Form2>.<Criteria Itemquestion2> = <Criteria Value2> AND
+
+<Criteria Form3>.<Criteria Itemquestion3> = <Criteria Value3> AND
+
+This report lists SMAU/SMAB/SM/SM01/SM02/SM04/TACE records where Study Period does not match the corresponding visit per Study Medication and Criteria Value1/2/3 or when there is a duplicate study period for the same medication
+
+Logic 1:
+
+Scenario 1:
+
+Study Period on SMAU/SMAB record <> expected Study Period as per supporting document per Visit, Study Medication and Criteria Value1/2/3
+
+OR
+
+Study Period on SM/SM01/SM04/TACE record is not present in the supporting document per Visit, Study Medication and Criteria Value1/2/3
+
+Logic 2:
+
+Study Period and Scheduled Time on Common log records - eg. SM/SM02, report should consider both Start Date and Stop Date of SM record.
+
+Study Period on TACE form, report should consider Date of TACE of the record.
+
+Scenario 2:
+
+Start Date of Common log records or Date of TACE will be slotted in the immediately prior non-erroneous initialized visit that is present in the supporting document per Visit, Study Medication and Criteria Value1/2/3
+
+AND
+
+If (visit mnemonic (as slotted per Start Date)= sup.visitmnemonic and (sm/TACE.Study Period <> sup.study period OR SM/TACE.Scheduled time on <> sup.Scheduled time)), report should display output
+
+Scenario 3:
+
+Stop Date of Common log records will be slotted in the immediately prior non-erroneous initialized visit that is present in the supporting document per Visit, Study Medication and Criteria Value1/2/3
+
+AND
+
+If (visit mnemonic (as slotted per Stop Date)= sup.visitmnemonic and (sm/TACE.Study Period <> sup.study period OR SM/TACE.Scheduled time on <> sup.Scheduled time)), report should display output
+
+If both scenario 2 and 3 are fulfilled, report should display only output for Scenario 2
+
+Logic 3
+
+Scenario 4
+
+report should display output, when two seq of same Study Medication has the same Study Period of SMAU/SMAB/SM/SM01/SM02/SM04/TACE for the same visit.
+
+Notes:
+
+1.	Deleted records should not be considered.
+
+2.	Records in erroneous visits should not be considered.
+
+3.	Do not output for Logic 3 if there is an output for logic 1 and logic 2.
+
+4.	Do not output for logic 3 if the parameter “Exclude scenario 4 (YES/NO)” is entered as YES
+
+5.	Do not consider erroneous visits to calculate expected study period for logic 2
+
+6.	Do not consider the scheduled time on the logic 2 if column 13 in the supporting document is entered as NA.
+
+7.	If the parameter “Exclude Study Period blank (YES/NO)” is entered as YES, do not show output for SM.Study Period = NULL.  If the parameter “Exclude Study Period blank (YES/NO)” is entered as NO, show output for SM.Study Period = NULL.
+
+The user needs to provide a spreadsheet with 14 columns (the values should exactly match what appears in InForm):
+
+Requires Supporting Document to be named SM020_supp_<xxxxxxx>.csv and will contain the following columns and associated content:
+
+1. Criteria Form1 - Arm/Cohort/Stratification Form Mnemonic SR/SRIVRS/TRIG. If applies for all subjects regardless the Arm/Cohort/Stratification, enter NA
+
+2. Criteria Itemquestion1 - Arm/Cohort/Stratification Itemquestion1. If applies for all subjects regardless the Arm/Cohort/Stratification, enter NA OR if the Itemquestion1 is not applicable for the protocol, enter NA
+
+3. Criteria Value1 - Arm/Cohort/Stratification Value. If applies for all subjects regardless the Arm/Cohort/Stratification, enter NA OR if the itemValue1 is not applicable for the protocol, enter NA
+
+4. Criteria Form2 - Arm/Cohort/Stratification Form Mnemonic SR/SRIVRS/TRIG. If applies for all subjects regardless the Arm/Cohort/Stratification, or is not needed enter NA
+
+5. Criteria Itemquestion2 - Arm/Cohort/Stratification Itemquestion2. If applies for all subjects regardless the Arm/Cohort/Stratification, enter NA OR if the Itemquestion2 is not applicable for the protocol, or is not needed enter NA
+
+6. Criteria Value2 - Arm/Cohort/Stratification Value2. If applies for all subjects regardless the Arm/Cohort/Stratification, enter NA OR if the Value2 is not applicable for the protocol, enter NA
+
+7. Criteria Form3 - Arm/Cohort/Stratification Form Mnemonic SR/SRIVRS/TRIG. If applies for all subjects regardless the Arm/Cohort/Stratification, or is not needed enter NA
+
+8. Criteria Itemquestion3 - Arm/Cohort/Stratification Itemquestion3. If applies for all subjects regardless the Arm/Cohort/Stratification, enter NA OR if the Itemquestion3 is not applicable for the protocol, or is not needed enter NA
+
+9. Criteria Value3 - Arm/Cohort/Stratification Value3. If applies for all subjects regardless the Arm/Cohort/Stratification, enter NA OR if the Value3 is not applicable for the protocol, enter NA
+
+10. Visitmnemonic (should be as per T&E, enter the visit ruler/mnemonic)
+
+11. Formmnemonic
+
+12. Expected Study Period
+
+13. Expected Scheduled Time. If the Scheduled Time is not applicable for the protocol OR options are different to Day X, enter NA.
+
+14. Study Medication
+
+e.g
+
+Criteria Form1,Criteria Itemquestion1,Criteria Value1,Criteria Form2,Criteria Itemquestion2,Criteria Value2,Criteria Form3,Criteria Itemquestion3,Criteria Value3,Visitmnemonic,Formmnemonic,Expected Study Period, Expected Scheduled Time,Study Medication
+
+SR,Arm,-3475 400 mg Q6W + Lenvatinib 20 mg QD,NA,NA,NA,NA,NA,NA,Cycle 1 Day 1,SM,Cycle 1 Day 1,NA,-3475
+
+SR,Arm,-3475 400 mg Q6W + Lenvatinib 20 mg QD,NA,NA,NA,NA,NA,NA,Cycle 2 Day 1,SM,Cycle 2 Day 1,NA,-3475
+
+SR,Arm,-3475 400 mg Q6W + Lenvatinib 20 mg QD,NA,NA,NA,NA,NA,NA,Cycle 1 Day 1,SM,Cycle 1,Day 1,Lenvatinib
+
+SR,Arm,-3475 400 mg Q6W + Lenvatinib 20 mg QD,NA,NA,NA,NA,NA,NA,Cycle 1 Day 8,SM,Cycle 1,Day 1,Lenvatinib
+
+SR,Arm,-4280A (-4280 -3475 800mg 200mg) Q3W + Lenvatinib 20 mg QD,SR,Cohort,L,NA,NA,NA,Cycle 1 Day 1,SM,Cycle 1 Day 1,Day 8,-4820A
+
+SR,Arm,-4280A (-4280 -3475 800mg 200mg) Q3W + Lenvatinib 20 mg QD, SR,Cohort,L,NA,NA,NA,Cycle 1 Day 22,SM,Cycle 1 Day 22,Day 8,-4820A
+
+The number of rows in the supporting document will be represented in the Report Header as ""# of rows for customization"".
+
+The actual information provided by the supporting doc can be outputted by selecting Y in the parameter ""Supporting doc Page"".
+
+Report Scenarios:
+1) Output = NO
+
+Combination of Arm, Visit, eCRF, Study Medication and Study Period-Scheduled Time according to the spreadsheet provided by the user.
+
+2) Output = YES
+
+Combination of Arm, Visit, eCRF and Study Medication not according to Study Period-Scheduled Time from spreadsheet provided by the user.
+
+3)Output = YES
+
+Combination of Arm, eCRF, Study period and Study Medication is duplicated on SMAU/SMAB/SM/SM01/SM02/SM04/TACE
+
+4)Output = NO
+
+Combination of Arm,  eCRF, Study period and Study Medication is NOT duplicated on SMAU/SMAB/SM/SM01/SM02/SM04/TACE
+
+5) Output = NO
+
+Deleted study medication records or records in erroneous visits
+
+Sorting:
+Country, Site, Subject Number
+
+Parameter Selection:
+Protocol Number (Lower Case - No Spaces or Dashes), Country, First Site, Last Site, First Subject Number, Last Subject Number, List of Subjects, Randomized Only,  Exclude scenario 4 (YES/NO), Exclude Study Period blank (YES/NO) ,Supporting Doc Page (N/Y, Default as N)
+
+Form.Item Names:
+1. Subject Assignment.Site Country
+
+2. Subject Assignment.Site Mnemonic
+
+3. Subjects.Subject Number
+
+4. Date of Visit Form.Visit Mnemonic
+
+5. Study Medication Administration Forms/Transarterial Chemoembolization.Formmnemonic
+
+6. Study Medication Administration Forms/ Transarterial Chemoembolization.Formidx
+
+7. Concatenate: Study Medication Administration Forms/ Transarterial Chemoembolization.Study Period & Study Medication Administration Forms/ Transarterial Chemoembolization.Scheduled Time (If scheduled time parameter as NA only show study period)
+
+8. Expected Study Period hardocoded from user provided information
+
+9. Expected Scheduled Time hardocoded from user provided information
+
+10. SM/SMAU/SMAB Forms.Study Medication/TACE Forms. Chemotherapy
+
+11. For Scenario 1 - display "Study Period Incorrect", for Scenario 2 - display "Mismatch with Start Date" for Scenario 3 - display "Mismatch with Stop Date". For Scenario 4 display “Duplicated Study Period”.

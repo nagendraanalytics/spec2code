@@ -1,0 +1,101 @@
+Report ID: RID372
+
+Report Title:
+Worsening/Additional New Lesions vs Response reconciliation
+
+Description:
+This report will output if there is a mismatch between the worsening/additional new lesions, and the overall iRECIST response.
+
+Column Heading:
+1. Country
+
+2. Site
+
+3. Subject Number
+
+4. Sequence
+
+5. Date of Procedure
+
+6. Target Lesions Worsening
+
+7. Non-Target Lesions Worsening
+
+8. New Lesion (Target) Worsening
+
+9. New Lesion (Non-Target) Worsening
+
+10. Additional New Lesions Since Last Evaluation
+
+11. ORIR Actual Overall iRECIST Response
+
+Logic:
+There is an Overall iRECIST Response = iUPD in ORIR form in the previous record in ORIR
+
+AND
+
+(
+
+in the current record there is a worsening item in ORIR form = Yes
+
+OR
+
+in the current record Additional New Lesions Since Last Evaluation = Yes
+
+)
+
+AND
+
+Overall iRECIST Response in the current record is not entered as iCPD
+
+Note 1: For previous record in ORIR please refer to the immediately previous (less than current date) “Date of Procedure for Overall Response” .
+
+Note 2: Worsening items please refer to: “Target Lesions Worsening From the Nadir Since Most Recent Onset of iUPD” if present in the study, “Non-Target Lesions Worsening”, “New Lesion (Target) Worsening from Nadir”, “New Lesion (Non-Target) Worsening”.
+
+Note 3: Please exclude deleted records and erroneous visits form programming
+
+Report Scenarios:
+Scenario Output Yes:
+
+If in the immediately previous record Overall iRECIST Response is entered as iUPD and in the current record any of the worsening items is completed as "Yes" but the Overall iRECIST Response of the current record is no entered as iCPD
+
+Scenario Output Yes:
+
+If in the immediately previous record Overall iRECIST Response is entered as iUPD and in the current record Additional new lesions is completed as "Yes" but the Overall iRECIST Response of the current record is no entered as iCPD
+
+Scenario Output No:
+
+If in the immediately previous record Overall iRECIST Response is entered as iUPD and in the current record any of the worsening items is completed as "Yes" and the Overall iRECIST Response of the current record is entered as iCPD
+
+Scenario Output No:
+
+If in the immediately previous record Overall iRECIST Response is entered as iUPD and in the current record Additional new lesions is completed as "Yes" and the Overall iRECIST Response of the current record is entered as iCPD
+
+Sorting:
+Default
+
+Parameter Selection:
+Country, First Site, Last Site, First Subject, Last Subject, List of Subjects, Randomized Only (Y/N set default to N)
+
+Form.Item Names:
+1. Country
+
+2. Site
+
+3. Subject Number
+
+4. ORIR Sponsor ID Number
+
+5. ORIR Date of Procedure for Overall Response
+
+6. ORIR Target Lesions Worsening From the Nadir Since Most Recent Onset of iUPD (leave blank if item is not present in the study)
+
+7. ORIR Non-Target Lesions Worsening
+
+8. ORIR New Lesion (Target) Worsening from Nadir
+
+9. ORIR New Lesion (Non-Target) Worsening
+
+10. ORIR Additional New Lesions Since Last Evaluation
+
+11. ORIR Overall iRECIST Response

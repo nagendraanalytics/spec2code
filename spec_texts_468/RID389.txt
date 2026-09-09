@@ -1,0 +1,77 @@
+Report ID: RID389
+
+Report Title:
+Reconciliation between Lesion Evaluation and Scan forms
+
+Description:
+The report will display Subjects who have a Lesion recorded in Lesion Evaluation Form with a Date of Lesion Evaluation and Method of Assessment not matching the Date of Scan and Type of Image in the OSCN form.
+
+Column Heading:
+1. Country
+
+2. Site
+
+3. Subject
+
+4. Lesion Evaluation Form
+
+5. Lesion Evaluation Seq#
+
+6. Date Item
+
+7. Lesion Evaluation Date
+
+8. Method of Assessment
+
+Logic:
+Logic 1.1: There is a record in 'Lesion Evaluation Form'. 'Date of Lesion Evaluation' and 'Lesion Evaluation Form'. Method of Assessment <> NULL
+
+AND
+
+Logic 1.2: There is no record in OSCN that has the OSCN.Scan Date = 'Lesion Evaluation Form'.'Date of Lesion Evaluation' and OSCN.Type of Image = 'Lesion Evaluation Form'.Method of Assessment of the lesion evaluation record in Logic 1.1
+
+Note 1. Do not take into account deleted records and erroneous visit.
+
+Note 2: Use the global supporting document OSCN_Method_Supp_Doc for the mapping the methods in Lesion Evaluation eCRF and OSCN.
+
+Note 3: If Physical Exam or Other is selected as the Method of Assessment, please do not output.
+
+Note 4: For Column #5 display Sequence numbers separated by commas (,) for those outputs that share the same date (#7) and method of assessment (#8).
+
+Note 5: Lesion Evaluation Form: LSRIR/LSNEV/LSNEI/LSNPC/LSNHM/LSNLG/HDA/LSNPI/LSNIR/LSNAJ/LOEL/LSNRN/NTSAC/LSNWM/LSNCL.
+
+Note 6: Date of Lesion Evaluation: Date of Lesion Evaluation/Date of Current Lesion Evaluation (Scan/Image/Physical Exam)/Date of Procedure for Overall Response (Scan/Image/Physical Exam)/Date Response Determined/Date of Lesion/Organ Evaluation.
+
+Report Scenarios:
+Scenario A- Yes:
+
+There is no record in OSCN that has the OSCN. Scan Date = LSRIR/LSNEV/LSNEI/LSNPC/LSNHM/LSNLG/HDA/LSNPI/LSNIR/LSNAJ/LSNWM/LOEL/LSNCL.Date of Lesion Evaluation/Date of Current Lesion Evaluation (Scan/Image/Physical Exam)/Date of Lesion/Organ Evaluation of the lesion evaluation record on L1 and OSCN.Type of Image = LSRIR/LSNEV/LSNEI/LSNPC/LSNHM/LSNLG/HDA/LSNPI/LSNIR/LSNAJ/LSNWM/LOEL/LSNCL. Method of Assessment of the lesion evaluation record on L1
+
+Scenario B - No:
+
+There is a record in OSCN that has the OSCN. Scan Date = LSRIR/LSNEV/LSNEI/LSNPC/LSNHM/LSNLG/HDA/LSNPI/LSNIR/LSNAJ/LSNWM/LOEL/LSNCL.Date of Lesion Evaluation/Date of Current Lesion Evaluation (Scan/Image/Physical Exam) /Date of Lesion/Organ Evaluation of the lesion evaluation record on L1 and OSCN.Type of Image = LSRIR/LSNEV/LSNEI/LSNPC/LSNHM/LSNLG/HDA/LSNPI/LSNIR/LSNAJ/LSNWM/LOEL/LSNCL. Method of Assessment of the lesion evaluation record on L1
+
+Scenario C - No: Deleted records in Lesion Evaluation form.
+
+Sorting:
+Country, Site Number, Subject Number
+
+Parameter Selection:
+Country, First Site, Last Site, First Subject, Last Subject, List of Subjects
+
+Form.Item Names:
+1. SA. Country
+
+2. SA. Site
+
+3. SA. Subject
+
+4. LSRIR/LSNEV/LSNEI/LSNPC/LSNHM/LSNLG/HDA/LSNPI/LSNIR/LSNAJ/LOEL/LSNRN/NTSAC/LSNWM/LSNCL. Form Mnemonic
+
+5.LSRIR/LSNEV/LSNEI/LSNPC/LSNHM/LSNLG/HDA/LSNPI/LSNIR/LSNAJ/LOEL/LSNRN/NTSAC/LSNWM/LSNCL. Lesion Number or Sponsor ID number if present
+
+6. LSRIR/LSNEV/LSNEI/LSNPC/LSNHM/LSNLG/HDA/LSNPI/LSNIR/LSNAJ/LOEL/LSNRN/NTSAC/LSNWM/LSNCL. Date of Lesion Evaluation/Date of Current Lesion Evaluation (Scan/Image/Physical Exam)/Date of Procedure for Overall Response (Scan/Image/Physical Exam)/Date Response Determined/Date of Lesion/Organ Evaluation
+
+7. LSRIR/LSNEV/LSNEI/LSNPC/LSNHM/LSNLG/HDA/LSNPI/LSNIR/LSNAJ/LOEL/LSNRN/NTSAC/LSNWM/LSNCL. Date of Lesion Evaluation/Date of Current Lesion Evaluation (Scan/Image/Physical Exam)/Date of Procedure for Overall Response (Scan/Image/Physical Exam)/Date Response Determined/Date of Lesion/Organ Evaluation
+
+8. LSRIR/LSNEV/LSNEI/LSNPC/LSNHM/LSNLG/HDA/LSNPI/LSNIR/LSNAJ/LOEL/LSNRN/NTSAC/LSNWM/LSNCL. Method of Assessment

@@ -1,0 +1,144 @@
+Report ID: RID392
+
+Report Title:
+OSCN vs ORPC reconciliation
+
+Description:
+This report will list scenarios were information in OSCN mismatches or needs additional information in ORPC form
+
+Column Heading:
+1.	Country
+
+2.	Site
+
+3.	Subject Number
+
+4.	OSCN Seq
+
+5.	OSCN Scan Date
+
+6.	OSCN Scan Collection Status
+
+7.           OSCN Type of Image
+
+8.	ORPC Seq
+
+9.           ORPC Date Response Determined
+
+10.	ORPC Soft Tissue Response
+
+11.	ORPC Bone Lesion Response
+
+12.         Scenario
+
+Logic:
+Scenario 1:
+
+Logic 1.1
+
+(
+
+OSCN. Scan Date <> Null
+
+AND
+
+OSCN. Scan Date > SR.Date of Assessment
+
+AND
+
+There is not at least one ORPC.Date Response Determined within (OSCN.Scan Date +/- Window days)
+
+)
+
+OR
+
+Logic 1.2
+
+(
+
+OSCN. Scan Date <> Null
+
+AND
+
+OSCN. Scan Date > SR.Date of Assessment
+
+AND
+
+There is at least one ORPC.Date Response Determined within (OSCN.Scan Date +/- Window days)
+
+AND
+
+The ORPC. Date Response Determined found in previous step <> any of the OSCN.Scan Date
+
+Scenario 2:
+
+Logic 2.1
+
+ORPC.Date Response Determined within (OSCN.Scan Date +/- Window days)
+
+AND
+
+OSCN.Scan Collection Status ='Not Performed'  AND OSCN.Type Of Image = ‘CT Scan’
+
+AND
+
+ORPC.Soft Tissue Response <> ‘Not Evaluable’ or is in blank
+
+OR
+
+Logic 2.2
+
+ORPC.Date Response Determined within (OSCN.Scan Date +/- Window days)
+
+AND
+
+OSCN.Scan Collection Status ='Not Performed'  AND OSCN.Type Of Image = ‘Scintigraphy’ or ‘Bone scan’
+
+AND
+
+ORPC.Bone Lesion Response <> ‘Not Evaluable’ or is in blank
+
+Notes:
+
+1. Deleted records should not be considered for programming
+
+2. ORPC. Date Response Determined are going to be retrieved from the ‘RSP_supp_doc’ global supporting document column C.
+
+3. ORPC.Date Response Determined within (OSCN.Scan Date +/- 14 days) includes ORPC.Date Response Determined = OSCN.Scan Date +/- Window days
+
+Report Scenarios:
+Output = Yes
+
+Which satisfies logic
+
+Output = No
+
+Which doesn't satisfies logic
+
+Parameter Selection:
+Country, First Site, Last Site, First Subject, Last Subject, List of Subjects, Randomized Only (Y/N), Window of days (Number, default as 14)
+
+Form.Item Names:
+1.	SA. Site Country
+
+2.	SA. Site Mnemonic
+
+3.	SA. Subject Number
+
+4.	OSCN Sequence
+
+5.           OSCN.Scan Date
+
+6.	OSCN.Scan Collection Status
+
+7.           OSCN.Type of Image
+
+8.	ORPC Sequence
+
+9.           ORPC.Date Response Determined
+
+10.	ORPC.Soft Tissue Response
+
+11.	ORPC.Bone Lesion Response
+
+12.         Scenario  (Show scenario 1 if logic of scenario 1 is met, show scenario 2 if logic of scenario 2 is met)

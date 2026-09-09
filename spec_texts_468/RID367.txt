@@ -1,0 +1,121 @@
+Report ID: RID367
+
+Report Title:
+Target Worsening reconciliation
+
+Description:
+This report will output if worsening of Target lesions is entered incorrectly.
+
+Column Heading:
+1. Country
+
+2. Site
+
+3. Subject Number
+
+4. Study Period
+
+5. ORIR Seq #
+
+6. Date of Procedure for Overall Response (Scan/Image/Physical Exam)
+
+7. Difference between SOD and Nadir
+
+8. Target Lesions Worsening From the Nadir Since Most Recent Onset of iUPD
+
+9. Target Lesion (Identified at Baseline) iRECIST Response
+
+10. Scenario
+
+Logic:
+LOGIC 1
+
+Output is produced for subjects with ORIR entries that are assigned to the same Study Period AND the “Target Lesions Worsening From the Nadir Since Most Recent Onset of iUPD” is completed AND “Target Lesion (Identified at Baseline) iRECIST Response” is different than “iUPD” at immediate preceding time point for ORIR eCRF according to “Date of Procedure for Overall Response (Scan/Image/Physical Exam)”.
+
+LOGIC 2
+
+Output is produced for subjects with ORIR entries that are assigned to the same Study Period  AND “Target Lesions Worsening From the Nadir Since Most Recent Onset of iUPD” is equal to “Yes” AND “Target Lesion Sum of Diameters - Current (For lesions Identified at Baseline)” is not >= 5 mm from the nadir.
+
+LOGIC 3
+
+Output is produced for subjects with ORIR entries that are assigned to the same Study Period AND “Target Lesions Worsening From the Nadir Since Most Recent Onset of iUPD” is equal to “No” AND “Target Lesion Sum of Diameters - Current (For lesions Identified at Baseline)” is >= 5 mm from the nadir.
+
+LOGIC 4
+
+Output is produced for subjects with ORIR entries that are assigned to the same Study Period AND “Target Lesion (Identified at Baseline) iRECIST Response” is “iUPD” at immediate preceding time point for ORIR eCRF according to “Date of Procedure for Overall Response (Scan/Image/Physical Exam)” AND for current ORIR record “Target Lesions Worsening From the Nadir Since Most Recent Onset of iUPD” is not completed.
+
+Notes:
+
+Note 1: Nadir is defined as the smallest value entered in “Target Lesion Sum of Diameters - Current (For lesions Identified at Baseline)” within the same study period from all prior uninterrupted records where “Target Lesion (Identified at Baseline) iRECIST Response” is equal to iUPD.
+
+Note 2: Report should not display deleted records.
+
+Note 3: For logic 1, if there is not immediate record. Output should be present.
+
+Note 4. Logic 1, 2, 3, 4 should be considered separately for each study period present in trial (for example: separately for Initial Treatment Phase, separately for Crossover Phase)
+
+Note 5. Difference between the value at “SOD of Target Lesion” and “Nadir” should be counted separately for each study period present in trial (for example: separately for Initial Treatment Phase, separately for Crossover Phase)
+
+Report Scenarios:
+A=Yes
+
+“Study Period” <> NULL and “Target Lesions Worsening From the Nadir Since Most Recent Onset of iUPD” <> null AND “Target Lesion (Identified at Baseline) iRECIST Response” <> iUPD at immediate preceding time point for ORIR eCRF according to “Date of Procedure for Overall Response (Scan/Image/Physical Exam)”.
+
+B=No
+
+“Study Period” <> NULL and “Target Lesions Worsening From the Nadir Since Most Recent Onset of iUPD” = null
+
+C= No
+
+“Study Period” <> NULL and “Target Lesions Worsening From the Nadir Since Most Recent Onset of iUPD” <> null AND “Target Lesion (Identified at Baseline) iRECIST Response” = iUPD at immediate preceding time point for ORIR eCRF according to “Date of Procedure for Overall Response (Scan/Image/Physical Exam)”.
+
+D= Yes
+
+“Study Period” <> NULL and “Target Lesions Worsening From the Nadir Since Most Recent Onset of iUPD” = Yes AND “Target Lesion Sum of Diameters - Current (For lesions Identified at Baseline)” <= 5 mm from the nadir.
+
+E= No
+
+“Study Period” <> NULL and “Target Lesions Worsening From the Nadir Since Most Recent Onset of iUPD” = No AND “Target Lesion Sum of Diameters - Current (For lesions Identified at Baseline)” <= 5 mm from the nadir.
+
+F= No
+
+“Study Period” <> NULL and “Target Lesions Worsening From the Nadir Since Most Recent Onset of iUPD” = Yes AND “Target Lesion Sum of Diameters - Current (For lesions Identified at Baseline)” >= 5 mm from the nadir.
+
+G=Yes
+
+“Study Period” <> NULL and “Target Lesions Worsening From the Nadir Since Most Recent Onset of iUPD” = No AND “Target Lesion Sum of Diameters - Current (For lesions Identified at Baseline)” >= 5 mm from the nadir.
+
+H = No
+
+“Study Period” <> NULL and “Target Lesion (Identified at Baseline) iRECIST Response” is not “iUPD” at immediate preceding time point for ORIR eCRF according to “Date of Procedure for Overall Response (Scan/Image/Physical Exam)”  AND for current ORIR record “Target Lesions Worsening From the Nadir Since Most Recent Onset of iUPD” is not completed.
+
+I = Yes
+
+“Study Period” <> NULL and “Target Lesion (Identified at Baseline) iRECIST Response” is “iUPD” at immediate preceding time point for ORIR eCRF according to “Date of Procedure for Overall Response (Scan/Image/Physical Exam)”  AND for current ORIR record “Target Lesions Worsening From the Nadir Since Most Recent Onset of iUPD” is not completed.
+
+Sorting:
+Country, Site Number and Subject Number if not specified):Country, Site, Subject Number, Study Period, ORIR Seq #
+
+Parameter Selection:
+Country, First Site, Last Site, First Subject, Last Subject, List of Subjects, Randomized Only
+
+Form.Item Names:
+1. Subject Assessment.Country
+
+2. Subject Assessment.Site Mnemonic
+
+3. Subject Assessment.Subject Number
+
+4. Oncologic Response - Solid Tumor - RECIST/iRECIST.Study Period
+
+5. Oncologic Response - Solid Tumor - RECIST/iRECIST. Sponsor ID Number
+
+6. Oncologic Response - Solid Tumor - RECIST/iRECIST.Date of Procedure for Overall Response (Scan/Image/Physical Exam)
+
+7. Show the difference between the value at “SOD of Target Lesion” and “Nadir”. Example:  130-100=30.
+
+8. Oncologic Response - Solid Tumor - RECIST/iRECIST.Target Lesions Worsening From the Nadir Since Most Recent Onset of iUPD
+
+9. Oncologic Response - Solid Tumor - RECIST/iRECIST.Target Lesion (Identified at Baseline) iRECIST Response
+
+10. Show “Scenario 1” if output meets LOGIC 1, show “Scenario 2” if output meets LOGIC 2, show “Scenario 3” if output meets LOGIC 3, show “Scenario 4” if output meets LOGIC 4

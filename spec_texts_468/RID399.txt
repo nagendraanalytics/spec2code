@@ -1,0 +1,77 @@
+Report ID: RID399
+
+Report Title:
+PK Listing Report
+
+Description:
+This report is a Listing provided to Quantitative Pharmacology/Pharmacometrics (QPP) for PK reconciliation (PK04) with an external file.
+
+Column Heading:
+1. Country
+
+2.Site
+
+3.Randomization Number
+
+4. Subject Number
+
+5. Visit Mnemonic
+
+6. Visit DOV
+
+7. PK Seq#
+
+8. Scheduled Time
+
+9. Analyte
+
+10. Date and Time Sample Obtained
+
+11. Specimen ID
+
+12. Specimen Type
+
+13. Sample Status (just list from InForm)
+
+Logic:
+Note 1: Please exclude all deleted records and erroneous visits from programming.
+
+Note 2: This is a listing report to display PK04 data per Col Heading once relative data is entered at PK04
+
+Note 3: Display Col 10 by format 'Day-Mon-Year_HH:MM (24-hour clock)', such as 01-Jul-2014_21:10.
+
+Report Scenarios:
+Listing report.
+
+Sorting:
+Country, Site, Subject number,  Visit Mnemonic, PK Seq#
+
+Parameter Selection:
+Country, Site, Subject number, Randomization Only
+
+Form.Item Names:
+1. SA form. Country
+
+2. SA form. Site
+
+3. SA form. Randomization Number
+
+4. SA form. Subject Number
+
+5. DOV form. Visit Mnemonic
+
+6. DOV form. Date of Visit
+
+7. PK04. Sponsor ID Number
+
+8. PK04 . Scheduled Time
+
+9. PK04 . Analyte
+
+10. PK04. Date and Time Sample Obtained
+
+11.  PK04.Specimen ID
+
+12. PK04. Specimen Type
+
+13.  PK04. Sample Status

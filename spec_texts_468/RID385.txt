@@ -1,0 +1,143 @@
+Report ID: RID385
+
+Report Title:
+Status of the subject for the next trial segment vs Oncologic Surgery
+
+Description:
+Scenario 1: This report displays subjects who are continuing into surgical visit according to the PMS1/PMS1A/OEFU however there is no entry at Oncologic surgery form.
+
+Scenario 2: This report displays subjects who have surgery information entered at OSOF/STOS however date and time performed does not match with date of surgery reported in pathological assessment/surgery form.
+
+Column Heading:
+1. Country
+
+2. Site
+
+3. Subject Number
+
+4. If protocol has PMS1 then display ‘PMS1 Date of Assessment’ OR if protocol has PMS1A then display ‘PMS1A Date of Assessment’ OR if protocol has OEFU then display ‘OEFU Date of Assessment’
+
+5. Next Trial Segment
+
+6. Surgery/Pathological Assessment Sequence Number
+
+7. Date of Surgery/Biopsy
+
+8. Scenario
+
+Logic:
+Logic 1
+
+System date – OEFU/PMS1A/PMS1.Date of Assessment > ('Window of days' in supporting doc)
+
+AND
+
+OEFU/PMS1A/PMS1. Select the Status of the Subject for the Next Trial Segment IN ('Select the Status of the Subject for the Next Trial Segment' in supporting doc)
+
+AND
+
+There is no OSOF/STOS record meet below criteria:
+
+OSOF.Date of Surgery <> NULL or
+
+STOS.Date of Surgery <> NULL
+
+Logic 2
+
+OSOF or STOS and Surgery/Biopsy form specified in supporting doc are initialized
+
+AND
+
+There is no OSOF. Date of Surgery = Date of Surgery/Biopsy item name specified in supporting doc or there is no STOS.Date of Surgery = Date of Surgery/Biopsy item name specified in supporting doc
+
+Notes:
+
+- Output should not be produced if PMS1, PMS1A or OEFU is entered on an erroneous visit
+
+- Deleted records should be excluded from programming
+
+- Records completed with radio button comment as "Not Done"/ "Unknown" / "Not Applicable" should be excluded
+
+Requires supporting document to be named ONC_OS_002_supp_<xxxxxxx>.csv and will contain the following columns and associated content:
+
+1. Form - OEFU/PMS1/PMS1A form should be selected for the surgery performed after discontinuation. For protocols when surgery is performed during or as a part of treatment the applicable eCRF should be selected that is used for the purpose of going into Surgery Phase.
+
+2. Select the Status of the Subject for the Next Trial Segment - depending on column 1 selected please complete with the status of the subject for the next trial segment that expects Oncologic Surgery form to be completed.
+
+3. Window of days - this should be completed as number of days when surgery is expected to be performed after OEFU/PMS1/PMS1A was completed.
+
+4. Oncologic Surgery form – complete as OSOF for follow-up surgeries or STOS for surgeries performed during treatment phase.
+
+5. Surgery/Biopsy form - complete as PAB/PTHA/OSRG depending on the type of surgery performed
+
+6. Date of Surgery/Biopsy item name - complete with matching item represents the date of procedure performed based on the eCRF selected in column 5.
+
+e.g.
+
+Form,Select the Status of the Subject for the Next Trial Segment, Window of Days,Surgery/Biopsy form,Date of Surgery/Biopsy item name
+
+PMS1A,Continuing into the Surgical Visit,42,STOS,PAB, Date of Surgery
+
+The number of rows in the supporting document will be represented in the Report Header as "# of rows for customization".
+
+The actual information provided by the supporting doc can be outputted by selecting Y in the parameter "Supporting doc Page".
+
+Report Scenarios:
+Scenario 1 – logic 1, Output: YES
+
+Window of days selected in supporting doc has passed since OEFU/PMS1A/PMS1 Date of Assessment with Next Trial Segment selected in supporting doc and there is no OSOF form with any information in the Date of Surgery item.
+
+Scenario 2 – logic 1, Output: NO
+
+Window of days selected in supporting doc has not passed since OEFU/PMS1A/PMS1 Date of Assessment with Next Trial Segment selected in supporting doc and there is no OSOF form with any information in the Date of Surgery item.
+
+Scenario 3 – logic 1, Output: NO
+
+There is OEFU/PMS1A/PMS1 with Next Trial Segment selected in supporting doc and there is an OSOF form with any information in the Da Date of Surgery item.
+
+Scenario 4 – logic 1, Output:  NO
+
+There is no OEFU/PMS1A/PMS1 with Next Trial Segment selected in supporting doc
+
+Scenario 5 – logic 2, Output:  YES
+
+There is no OSOF with Date of Surgery or STOS with Date of Surgery equal to Date of Surgery/Date of Biopsy/other item specified in the supporting doc in PAB/PTHA/OSRG
+
+Scenario 6 – logic 2, Output: NO
+
+The OSOF or STOS are initiated and PAB/PTHA/OSRG form is not initiated
+
+Scenario 7 – logic 2 Output: NO
+
+The PAB/PTHA form is initiated and neither OSOF nor STOS forms are initiated
+
+Scenario 8 – logic 2, Output: NO
+
+There is any OSOF with Date of Surgery or STOS with Date of Surgery equal to of Surgery/Date of Biopsy/other item specified in the supporting doc in PAB/PTHA/OSRG
+
+Scenario 9 – logic 2, Output:  NO
+
+Date of Surgery in OSOF or STOS is blank and Date of Surgery/Date of Biopsy/other item specified in the supporting doc in PAB/PTHA/OSRG is blank
+
+Sorting:
+Country, Site Number, Subject Number
+
+Parameter Selection:
+Country, Site, First Site, Last Site, First Subject, Last Subject, List of subjects, Supporting Doc Page (N/Y, Default as N)
+
+Form.Item Names:
+1. SA.Site Country
+
+2. SA.Site Mnemonic
+
+3. SA.Subject Number
+
+4. PMS1.Date of Assessment or PMS1A.Date of Assessment or OEFU.Date of Assessment
+
+5. PMS1. Select the Status of the Subject for the Next Trial Segment or PMS1A.Select the Status of the Subject for the Next Trial Segment or OEFU.Select the Status of the Subject for the Next Trial Segment
+
+6. PAB/PTHA/OSRG.Sequence Number
+
+7. Date of Surgery/Biopsy item name specified in supporting doc (leave blank for Scenario 1)
+
+8. Scenario 1 (for logic 1.1 and 1.2) or Scenario 2 (for logic 2)

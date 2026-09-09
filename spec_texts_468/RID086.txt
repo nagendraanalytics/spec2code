@@ -1,0 +1,363 @@
+Report ID: RID086
+
+Report Title:
+Duplicate GEFCF Records
+
+Description:
+This report lists all patients with duplicate GEFCF records based on the parameters selected from the GEFCF items.
+
+LCDM should provide the appropriate prompts to be selected for each Vendor based on protocol team agreement
+
+Column Heading:
+Table 1:
+
+1. Country
+
+2. Site
+
+3. Screening Number
+
+4. Subject Number
+
+5. Vendor
+
+6. Visit Name
+
+7. Specimen ID
+
+8. Kit ID
+
+9. Category
+
+10. Date/Time of Measurement
+
+11. Test
+
+12. Form Index
+
+13. Seq
+
+Table 2:
+
+1. Country
+
+2. Site
+
+3. Screening Number
+
+4. Subject Number
+
+5. Vendor
+
+6. Visit Name
+
+7. Specimen ID
+
+8. Kit ID
+
+9. Category
+
+10. Date/Time of Measurement
+
+11. Test
+
+12. Form Index
+
+13. Seq
+
+Table 3:
+
+1. Country
+
+2. Site
+
+3. Screening Number
+
+4. Subject Number
+
+5. Vendor
+
+6. Visit Name
+
+7. Specimen ID
+
+8. Kit ID
+
+9. Category
+
+10. Date/Time of Measurement
+
+11. Test
+
+12. Form Index
+
+13. Seq
+
+Logic:
+Table 1: The report should output GEFCF records where GEFCF.Site ID or Number, GEFCF.Subject ID or Number, Test and all bellow listed GEFCF items excluding “Sequence Number” are equal.
+
+Table 2: The report should output GEFCF records where GEFCF.Site ID or Number, GEFCF.Subject ID or Number “Category”, “Date/Time of Measurement” and “Result or Finding in Original Units“ are equal for tests “Overall Response” and “Best Overall Response”
+
+Table 3: The report should output GEFCF records where GEFCF.Site ID or Number, GEFCF.Subject ID or Number, Test and all below listed GEFCF items excluding “Sequence Number” and "Specimen ID" are equal.
+
+Note 1) The GEFCF items to be consider are the following:
+
+Baseline Flag
+
+Blinding Flag
+
+Body System or Organ Class
+
+Category
+
+Character Result/Finding in Std Format
+
+Completion Status
+
+Date/Time of Measurement
+
+Derived Flag
+
+Directionality
+
+Domain Abbreviation
+
+Electrode
+
+End Date/Time of Collection
+
+Evaluation Interval
+
+Evaluation Interval Text
+
+Evaluator
+
+Evaluator Identifier
+
+External Filename
+
+Fasting Status
+
+Kit ID
+
+Laterality
+
+Location of Measurement
+
+LOINC Code
+
+Measurement Range
+
+Method of Test or Examination
+
+Modified Term
+
+Normal Range Lower Limit- Original Units
+
+Normal Range Lower Limit- Standard Units
+
+Normal Range Upper Limit- Original Units
+
+Normal Range Upper Limit- Standard Units
+
+Normal/Reference Range Indicator
+
+Numeric Result/Finding in Standard Units
+
+Object of the Observation
+
+Original Units
+
+Planned Study Day of Visit
+
+Planned Time Point Name
+
+Planned Time Point Number
+
+Position of Subject
+
+Reason Not Performed
+
+Reference Range for Char Rslt-Std Units
+
+Relationship to Death
+
+Result Category
+
+Result or Finding in Original Units
+
+Sequence Number
+
+Severity
+
+Specimen Condition
+
+Specimen ID
+
+Specimen Type
+
+Sponsor ID
+
+Standard Units
+
+Start Date/Time of Observation
+
+Stimulus Type
+
+Subcategory
+
+Supqual1
+
+Supqual10
+
+Supqual11
+
+Supqual12
+
+Supqual13
+
+Supqual14
+
+Supqual15
+
+Supqual2
+
+Supqual3
+
+Supqual4
+
+Supqual5
+
+Supqual6
+
+Supqual7
+
+Supqual8
+
+Supqual9
+
+Time Point Reference
+
+Toxicity
+
+Toxicity Grade
+
+Visit Name
+
+Visit Number
+
+Visit Type
+
+Note 2) use eCRF version GEFCF 20190822
+
+Note 3) Report should not display deleted records.
+
+Note 4) Collection Date and Time field is formatted according to the ISO standard. An example for 12-Jul-2007 at noon is: 2007-07-12T12:00:00 (yyyy-mm-ddThh:mm:ss). However, not all time parts are always present.
+
+Report Scenarios:
+A) Output=Yes
+
+Table 1: GEFCF.Site ID or Number, GEFCF.Subject ID or Number, Test and all listed GEFCF items excluding “Sequence Number” are equal.
+
+Table 2: GEFCF.Site ID or Number, GEFCF.Subject ID or Number “Category”, “Date/Time of Measurement” and “Result or Finding in Original Units“ are equal for tests “Overall Response” and “Best Overall Response”
+
+Table 3: GEFCF.Site ID or Number, GEFCF.Subject ID or Number, Test and all bellow listed GEFCF items excluding “Sequence Number” and "Specimen ID" are equal.
+
+B) Output= No
+
+Table 1: GEFCF.Site ID or Number, GEFCF.Subject ID or Number, Test and all listed GEFCF items excluding “Sequence Number” are different.
+
+Table 2: GEFCF.Site ID or Number, GEFCF.Subject ID or Number “Category”, “Date/Time of Measurement” and “Result or Finding in Original Units“ are different for tests “Overall Response” and “Best Overall Response”
+
+Table 3: GEFCF.Site ID or Number, GEFCF.Subject ID or Number, Test and all bellow listed GEFCF items excluding “Sequence Number” and "Specimen ID" are different
+
+Sorting:
+Country, Site, Subject Number, Vendor, Test, Date/Time of Measurement, Form Index
+
+Parameter Selection:
+Country, Site, Subject Number, Vendor, Randomized Only, Table to be run (Tab1, Tab2, Tab 3), list of subjects
+
+Form.Item Names:
+Table 1:
+
+1. Subject Assignment.Site Country
+
+2. Subject Assignment form.Site Mnemonic
+
+3. Subject Assignment form.Screening Number
+
+4. Subjects.Subject Number
+
+5. GENERIC EXTERNAL FINDINGS Form.Vendor Name
+
+6. GENERIC EXTERNAL FINDINGS Form.Visit Name
+
+7. GENERIC EXTERNAL FINDINGS Form.Specimen ID
+
+8. GENERIC EXTERNAL FINDINGS Form.Kit ID
+
+9. GENERIC EXTERNAL FINDINGS Form.Category
+
+10. GENERIC EXTERNAL FINDINGS Form.Date/Time of Measurement
+
+11. GENERIC EXTERNAL FINDINGS Form.Test
+
+12. GENERIC EXTERNAL FINDINGS Form.InForm Formindex (long)
+
+13. GENERIC EXTERNAL FINDINGS Form.Formidx
+
+Table 2:
+
+1. Subject Assignment.Site Country
+
+2. Subject Assignment form.Site Mnemonic
+
+3. Subject Assignment form.Screening Number
+
+4. Subjects.Subject Number
+
+5. GENERIC EXTERNAL FINDINGS Form.Vendor Name
+
+6. GENERIC EXTERNAL FINDINGS Form.Visit Name
+
+7. GENERIC EXTERNAL FINDINGS Form.Specimen ID
+
+8. GENERIC EXTERNAL FINDINGS Form.Kit ID
+
+9. GENERIC EXTERNAL FINDINGS Form.Category
+
+10. GENERIC EXTERNAL FINDINGS Form.Date/Time of Measurement
+
+11. GENERIC EXTERNAL FINDINGS Form.Test
+
+12. GENERIC EXTERNAL FINDINGS Form.InForm Formindex (long)
+
+13. GENERIC EXTERNAL FINDINGS Form.Formidx
+
+Table 3:
+
+1. Subject Assignment.Site Country
+
+2. Subject Assignment form.Site Mnemonic
+
+3. Subject Assignment form.Screening Number
+
+4. Subjects.Subject Number
+
+5. GENERIC EXTERNAL FINDINGS Form.Vendor Name
+
+6. GENERIC EXTERNAL FINDINGS Form.Visit Name
+
+7. GENERIC EXTERNAL FINDINGS Form.Specimen ID
+
+8. GENERIC EXTERNAL FINDINGS Form.Kit ID
+
+9. GENERIC EXTERNAL FINDINGS Form.Category
+
+10. GENERIC EXTERNAL FINDINGS Form.Date/Time of Measurement
+
+11. GENERIC EXTERNAL FINDINGS Form.Test
+
+12. GENERIC EXTERNAL FINDINGS Form.InForm Formindex (long)
+
+13. GENERIC EXTERNAL FINDINGS Form.Formidx

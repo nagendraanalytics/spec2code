@@ -1,0 +1,455 @@
+Report ID: RID148
+
+Report Title:
+Blood PK Invoice Scheduled vs Actual Times Report
+
+Description:
+This report generates a listing of blood PK Invoice records from the PK04 forms  where the elapsed time is not within a window of scheduled time expected.
+
+Column Heading:
+1. Country
+
+2. Site
+
+3. Subject Number
+
+4. PK04 Visit
+
+5. PK04 Form
+
+6. PK04 Seq
+
+7. Scheduled Time
+
+8. Analyte
+
+9. Date and Time of Sample Collection
+
+10. Last Dose Date and Time Prior to Sample Collected
+
+11. The reason why sample collection and processing details vary from the protocol
+
+12. SM Form
+
+13. SM Visit
+
+14. SM Seq
+
+15. Study Medication
+
+16. Study Period
+
+17. SM Scheduled Time
+
+18. Start Date/Time
+
+19. Stop Date/Time
+
+20. Last Dose
+
+21. Elapsed Time (mins)
+
+22. Expected Lower Window Limit (mins)
+
+23. Expected Upper Window Limit (mins)
+
+24. Group
+
+25. Scenario (Display “Scenario 1 - Pre Dose”, “Scenario 2 - Post Dose” or “Scenario 3 - No Compare Dose” according to logic)
+
+Logic:
+<Criteria Form1><Criteria Itemquestion1> <Criteria Value1>  AND
+
+<Criteria Form2><Criteria Itemquestion2><Criteria Value2> AND
+
+<Criteria Form3><Criteria Itemquestion3><Criteria Value3> AND
+
+Logic 1 - Pre Dose (Refer to Note9)
+
+Logic 1.1: PK04.Form Mnemonic = PK04 Form from supp doc
+
+AND
+
+Logic 1.2: PK04.Scheduled Time = Scheduled Time Point from supp doc
+
+AND
+
+Logic 1.3: PK04.Visit Mnemonic = Visit from supp doc
+
+AND
+
+Logic 1.4: Post_Pre Dose from supp doc = "Pre Dose"
+
+AND
+
+Logic 1.5: PK04.Analyte = PK04 from supp doc
+
+AND
+
+Logic 1.6: SM.Form Mnemonic = SM Form from supp doc
+
+AND
+
+Logic 1.7: SM.Item Question = SM Date from supp doc
+
+AND
+
+Logic 1.8: SM.Study Period = Study Period from supp doc
+
+AND
+
+Logic 1.9: SM.SM Scheduled Time = SM Scheduled time from supp doc
+
+AND
+
+Logic 1.10: SM.Study Medication = Study Medication from supp doc
+
+AND
+
+Logic 1.11: SM.Last Dose = Last Dose from supp doc
+
+AND
+
+Logic 1.12: PK04 “Sample Date” < “Compare Date”
+
+AND
+
+(Logic 1.13: PK04 “Sample Date”- “Compare Date” < Lower Window Limit
+
+OR
+
+Logic 1.14: PK04 “Sample Date”- “Compare Date” > Upper Window Limit)
+
+Logic 2 - Post Dose (Refer to Note10)
+
+Logic 2.1: PK04.Form Mnemonic = PK04 Form from supp doc
+
+AND
+
+Logic 2.2: PK04.Scheduled Time = Scheduled Time Point from supp doc
+
+AND
+
+Logic 2.3: PK04.Visit Mnemonic = Visit from supp doc
+
+AND
+
+Logic 2.4: Post_Pre Dose from supp doc =  "Post Dose"
+
+AND
+
+Logic 2.5: PK04.Analyte = PK04 from supp doc
+
+AND
+
+Logic 2.6: SM.Form Mnemonic = SM Form from supp doc
+
+AND
+
+Logic 2.7: SM.Item Question = SM Date from supp doc
+
+AND
+
+Logic 2.8: SM.Study Period = Study Period from supp doc
+
+AND
+
+Logic 2.9: SM.SM Scheduled Time = SM Scheduled time from supp doc
+
+AND
+
+Logic 2.10: SM.Study Medication = Study Medication from supp doc
+
+AND
+
+Logic 2.11: SM.Last Dose = Last Dose from supp doc
+
+AND
+
+Logic 2.12: PK04 “Sample Date” > “Compare Date”
+
+AND
+
+(Logic 2.13: PK04 “Sample Date” - “Compare Date” < Lower Window Limit
+
+OR
+
+Logic 2.14: PK04 “Sample Date” - “Compare Date” > Upper Window Limit)
+
+Logic 3 - No Compare Dose
+
+Logic 3.1: PK04.Form Mnemonic = PK04 Form from supp doc
+
+AND
+
+Logic 3.2: PK04.Scheduled Time = Scheduled Time Point from supp doc
+
+AND
+
+Logic 3.3: PK04.Visit Mnemonic = Visit from supp doc
+
+AND
+
+Logic 3.4: PK04.Analyte = PK04 from supp doc
+
+AND
+
+Logic 3.5: SM.Form Mnemonic = SM Form from supp doc
+
+AND
+
+Logic 3.6: SM.Item Question = SM Date from supp doc
+
+AND
+
+Logic 3.7: SM.Study Period = Study Period from supp doc
+
+AND
+
+Logic 3.8: SM.SM Scheduled Time = SM Scheduled time from supp doc
+
+AND
+
+Logic 3.9: SM.Study Medication = Study Medication from supp doc
+
+AND
+
+Logic 3.10: SM.Last Dose = Last Dose from supp doc
+
+AND
+
+Logic 3.11: PK04.Date and Time Sample Obtained is not null
+
+AND
+
+There is no record that meets below criteria:
+
+(Logic 3.12: No corresponding Compare Date find in scenario 1
+
+AND
+
+Logic 3.13: No corresponding Compare Date find in scenario 2)
+
+Note 1: This report should not display deleted records and erroneous visits.
+
+Note 2: Zero dose records should be excluded from the Study medication forms.
+
+Note 3: If on PK04/SM time is collected and it is UNK - the report should display output.
+
+Note 4: SM Dosing date/time will be either Start Date/Time or Stop Date/Time based on supporting document provided.
+
+Note 5: For SM/SMAU/SMAB Study Medication, use SM.Label Description/SMAU.Dose Number/SMAB.Dose Number directly. If SM Label Description and SMAU/SMAB Dose Number are not exactly matched with Study Medication, using the optional supporting doc study_med_match_supp_<xxxxxxx>.csv to define the mapping.
+
+Note 6: If Criteria(s) are provided as 'NA' in the supporting doc (columns 15-23), check the logic for all subjects.
+
+Note 7: PK04 “Sample Date” refers to: DATE AND TIME SAMPLE OBTAINED, DATE AND TIME OF SAMPLE COLLECTION.
+
+Note 8: PK04 "Last Dose Date" refers to: LAST DOSE DATE AND TIME PRIOR TO SAMPLE, LAST DOSE DATE AND TIME PRIOR TO SAMPLE COLLECTED, LAST DOSE DATE AND TIME PRIOR TO PK SAMPLE OBTAINED.
+
+Note 9: If Compare Form use PK04, (1) for Pre-dose, use PK04 "Last Dose Date" in the first PK post record in same PK04 form. (2) for Post-dose, just use the corresponding PK04 "Last Dose Date".
+
+Requires supporting document to be named PK001_supp_<xxxxxxx>.csv and will contain the following columns and associated content:
+
+1 row for each group of PK04 records based on Scheduled Time Point, Lower or Upper Window Limit and the corresponding SM information that are required per protocol.
+
+1) Group – Required. Unique key for each Scheduled Time Point in PK04 Form for each Criteria.
+
+2) PK04 Form – Required. PK04 Form Mnemonic.
+
+3) Scheduled Time Point  - Required. Unique value in each group.
+
+4) Visit – Required. PK04 Visit Mnemonic as per T&E. Put NA if window timeframe for each PK Scheduled Time Point is the same in all Visits. Unique value in each group.
+
+5) Post_Pre Dose – Required. Post Dose or Pre Dose. Unique value in each group.
+
+6) Analyte – Required. PK04. Analyte. Unique value in each group.
+
+7) Lower Window Limit – Required. Number in minutes. Unique value in each group.
+
+8) Upper Window Limit – Required. Number in minutes. Unique value in each group.
+
+9) Compare Form – 9) Compare Form – Optional. Put PK04/SM01/SM02/SM03/SM04/SM/SMAB/SMAU/NA. Please pay attention that if put NA means use SM Date as Compare Date (all SM related eCRFs in this study will be checked).
+
+10) Compare Date – Required. If Compare Form use PK04, then put ‘Last Dose Date’. If Compare Form use SM01/SM02/SM03/SM04/SM/SMAB/SMAU then put ‘Start Date’ or ‘Stop Date’.
+
+11) SM Study Period – Optional. If Compare Form use PK04, then put ‘NA’. If Compare Form use SM01/SM02/SM03/SM04/SM/SMAB/SMAU/NA, put the column value of Study Period, or put ‘NA’ if all SM records (Study Period) are checked.
+
+12) SM Scheduled Time – Optional. If Compare Form use PK04, then put ‘NA’. If Compare Form use SM01/SM02/SM03/SM04/SM/SMAB/SMAU/NA, put the column value of SM Scheduled Time, or put ‘NA’ if all SM records (Scheduled Time) are checked.
+
+13) SM Study Medication – Optional. If Compare Form use PK04, then put ‘NA’. If Compare Form use SM01/SM02/SM03/SM04/SM/SMAB/SMAU/NA, put the column value of Study Medication, or put ‘NA’ if all SM records (Study Medication) are checked.
+
+14) 14) SM Last Dose - Optional. If Compare Form use PK04, then put ‘NA’.  If Compare Form use SM01/SM02/SM03/SM04/SM/SMAB/SMAU/NA, put ‘Last Dose’ if only want to check the SM recorded with item ‘Please Indicate if this is the Last Dose for this Study Medication’ checked, or put ‘NA’ if all SM records are checked.
+
+15) Criteria Form1 - Arm/Cohort/Stratification Form Mnemonic SR/SRIVRS/TRIG. If applies for all subjects regardless the Arm/Cohort/Stratification, enter NA.
+
+16) Criteria Itemquestion1 - Arm/Cohort/Stratification Itemquestion1. If applies for all subjects regardless the Arm/Cohort/Stratification, enter NA OR if the Itemquestion1 is not applicable for the protocol, enter NA.
+
+17) Criteria Value1 - Arm/Cohort/Stratification Value. If applies for all subjects regardless the Arm/Cohort/Stratification, enter NA OR if the itemValue1 is not applicable for the protocol, enter NA.
+
+18) Criteria Form2 - Arm/Cohort/Stratification Form Mnemonic SR/SRIVRS/TRIG. If applies for all subjects regardless the Arm/Cohort/Stratification, or is not needed enter NA.
+
+19) Criteria Itemquestion2 - Arm/Cohort/Stratification Itemquestion2. If applies for all subjects regardless the Arm/Cohort/Stratification, enter NA OR if the Itemquestion2 is not applicable for the protocol, or is not needed enter NA.
+
+20) Criteria Value2 - Arm/Cohort/Stratification Value2. If applies for all subjects regardless the Arm/Cohort/Stratification, enter NA OR if the Value2 is not applicable for the protocol, enter NA.
+
+21) Criteria Form3 - Arm/Cohort/Stratification Form Mnemonic SR/SRIVRS/TRIG. If applies for all subjects regardless the Arm/Cohort/Stratification, or is not needed enter NA.
+
+22) Criteria Itemquestion3 - Arm/Cohort/Stratification Itemquestion3. If applies for all subjects regardless the Arm/Cohort/Stratification, enter NA OR if the Itemquestion3 is not applicable for the protocol, or is not needed enter NA.
+
+23) Criteria Value3 - Arm/Cohort/Stratification Value3. If applies for all subjects regardless the Arm/Cohort/Stratification, enter NA OR if the Value3 is not applicable for the protocol, enter NA.
+
+e.g.
+
+Group,PK04 Form,Scheduled Time Point,Visit,Post_Pre Dose,Analyte,Lower Window Limit,Upper Window Limit, Compare Form, Compare Date, SM Study Period, SM Scheduled Time, SM Study Medication, SM Last Dose, Criteria Form1,  Criteria Itemquestion1, Criteria Value1, Criteria Form2,  Criteria Itemquestion2, Criteria Value2, Criteria Form3,  Criteria Itemquestion3, Criteria Value3
+
+1,PK04,Pre-Infusion,Pre Dose,NA,Paclitaxel,-60,0,SMAU,Day 1,Start Date,NA,Paclitaxel,,SR,Arm,Arm 1,SR,Cohort,Cohort1,SR,Stratification,Stratification1
+
+2,PK04,Pre-Infusion,Pre Dose,Day 1,-3475/Placebo,-2880,0,SMAB,NAStart Date,NA,NA,,SR,Arm,Arm 1,SR,Cohort,Cohort1,SR,Stratification,Stratification1
+
+3,PK04,End of -3475 Infusion,Post Dose,NA,-3475,0,10,SMAU,Day1,Start Date,Cycle 2 Day 1,-3475,,SR,Arm,Arm 1,SR,Cohort,Cohort1,SR,Stratification,Stratification1
+
+4,PK04,Safety Follow-Up,Post Dose,NA,-3475,43200,53280,SMAU,Day 1,Stop Date,NA,-3475,Last Dose,SR,Arm,Arm 1,SR,Cohort,Cohort1,SR,Stratification,Stratification1
+
+The number of rows in the supporting document will be represented in the Report Header as ""# of rows for customization"".
+
+The actual information provided by the supporting doc can be outputted by selecting Y in the parameter ""Supporting doc Page"".
+
+The optional supporting document is only required in the following cases:
+
+- SM Label Description and SMAU/SMAB Dose Number are not exactly matched with Study Medication.
+
+This supporting document is only required to be created once per trial. If it was already created and uploaded, there is no need to duplicate it.
+
+Optional supporting document should be named as study_med_match_supp_<xxxxxxx>.csv and will contain the following columns and associated content:
+
+1 row for each Label Description or Dose Number present in SM/SMAU/SMAB eCRFs.
+
+1. eCRF – SM/SMAU/SMAB
+
+2. Study Medication – Value of Study Medication
+
+3. Matching Item – SM Label Description or SMAU/SMAB Dose Number
+
+4. Matching Value – Value of SM Label Description or SMAU/SMAB Dose Number
+
+e.g.
+
+eCRF,Study Medication,Matching Item,Matching Value
+
+SM,-1439,Label Description,-1439 100 mg
+
+SM,Methadone,Label Description,Methadone Tablet 5 mg
+
+SM,Methadone,Label Description,Methadone Tablet 10 mg
+
+SMAB,3475/Placebo,Dose Number,3475/Placebo
+
+SMAU,Carboplatin,Dose Number,Carboplatin
+
+SMAU,Carboplatin,Dose Number,Carboplatin - Dose 1
+
+SMAU,Carboplatin,Dose Number,Carboplatin - Dose 2
+
+SMAU,Carboplatin,Dose Number,Carboplatin - Dose 3
+
+The actual information provided by the optional supporting doc can be outputted by selecting Y in the parameter ""Study Med Match Page"".
+
+The number of rows in the supporting document will be represented in the Report Header as "# of rows for customization".
+
+The actual information provided by the supporting doc can be outputted by selecting Y in the parameter "Supporting doc Page".
+
+Report Scenarios:
+Scenario 1:
+
+A output = No
+
+if the elapsed time between the sample date/time and the next dosing date/time from SM eCRF is within the window for predose
+
+B output = Yes
+
+if the elapsed time between the sample date/time and the next dosing date/time from SM eCRF is outside of window for predose
+
+Scenario 2:
+
+A output = No
+
+when PK04 "Last Dose Date" exist, if the elapsed time between the sample date/time and the PK04 "Last Dose Date" is within the window for postdose
+
+B output = Yes
+
+when PK04 "Last Dose Date" exist, if the elapsed time between the sample date/time and the PK04 "Last Dose Date" is outside of window for postdose
+
+C output = No
+
+when PK04 "Last Dose Date" does not exist, if the elapsed time between the sample date/time and the maximum SM Date from supp doc is within the window for postdose
+
+D output = Yes
+
+when PK04 "Last Dose Date" does not exist, if the elapsed time between the sample date/time and the maximum SM Date from supp doc is outside of window for postdose
+
+Scenario 3:
+
+A output = No
+
+if there is dosing date/time from PK04/SM eCRF to be compared with PK04 sample date/time for Postdose or Predose record, and not meet scenario 1 and scenario 2 logic
+
+B output = Yes
+
+if there is no dosing date/time from PK04/SM eCRF to be compared with PK04 sample date/time for Postdose or Predose record
+
+Sorting:
+Country, Site, Subject Number
+
+Parameter Selection:
+Country, First Site, Last Site, First Subject Number, Last Subject Number, List of Subjects, Randomized Only, Supporting Doc Page (N/Y, Default as N)
+
+Form.Item Names:
+1. SA. Site Country
+
+2. SA. Site Mnemonic
+
+3. SA. Subject Number
+
+4. PK04. Visit Mnemonic
+
+5. PK04. Form Mnemonic
+
+6. PK04. Seq
+
+7. PK04. Scheduled Time
+
+8. PK04. Analyte
+
+9. PK04. Date and Time of Sample Collection
+
+10. PK04. Last Dose Date and Time Prior to Sample Collected
+
+11. PK04. If sample collection and processing details vary from the protocol, please specify
+
+12. STUDY MEDICATION. Formmnemonic (If PK04 Last Dose Date and Time Prior to Sample Collected is not present)
+
+13. STUDY MEDICATION. Visitmnemonic (If PK04 Last Dose Date and Time Prior to Sample Collected is not present)
+
+14. STUDY MEDICATION. Seq (If PK04 Last Dose Date and Time Prior to Sample Collected is not present)
+
+15. STUDY MEDICATION. Study Medication (If PK04 Last Dose Date and Time Prior to Sample Collected is not present)
+
+16. STUDY MEDICATION. Study Period (If PK04 Last Dose Date and Time Prior to Sample Collected is not present)
+
+17. STUDY MEDICATION. Scheduled Time (If PK04 Last Dose Date and Time Prior to Sample Collected is not present)
+
+18. STUDY MEDICATION. Start Date/Time (If PK04 Last Dose Date and Time Prior to Sample Collected is not present)
+
+19. STUDY MEDICATION. Stop Date/Time (If PK04 Last Dose Date and Time Prior to Sample Collected is not present)
+
+20. STUDY MEDICATION. Last Dose (If PK04 Last Dose Date and Time Prior to Sample Collected is not present)
+
+21. Derived: Date/Time Specimen(s) Obtained - SM dose date, Start or Stop Date/Time depending on post_pre dose
+
+22. Display “Lower Window Limit” per Supp Doc
+
+23. Display “Upper Window Limit” per Supp Doc
+
+24. Group from Supp Docs
+
+25. Display “Scenario 1 - Pre Dose”, “Scenario 2 - Post Dose” or “Scenario 3 - No Compare Dose” according to logic)

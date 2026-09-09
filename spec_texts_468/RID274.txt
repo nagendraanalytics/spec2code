@@ -1,0 +1,101 @@
+Report ID: RID274
+
+Report Title:
+Different Baseline Date of Assessment and Responses before First Dose.
+
+Description:
+This report will display outputs when there are 2 or more results for a test on the same or different date.
+
+Column Heading:
+1. Country
+
+2. Site
+
+3. Screening Number
+
+4. Subject Number
+
+5. SM form
+
+6. SMFirst Dose Date Date
+
+7. Vendor
+
+8. External Data form
+
+9. Date of External Data form
+
+10. Seq#
+
+11. Baseline flag
+
+12. Test
+
+13. Item with data
+
+14. Scenario
+
+Logic:
+Scenario 1: Logic 1.1: CIMG. Test Name/GEFCF. Test is NOT within supp document column ‘Test Name’ AND Logic 1.2: Information is entered in any item for this test AND Logic 1.3: CIMG. Date of Imaging/GEFCF. Date/Time of Measurement < minimum SM/SMAB/SMAU. Start Date/Time or STR. Start Date
+
+Scenario 2:
+
+ Logic 2.1: There are more than one GIMG records with CIMG. Date of Imaging <> NULL AND CIMG. Baseline Flag <> NULL
+
+OR Logic 2.2: There are more than one GEFCF records with GEFCF. Date/Time of Measurement <> NULL AND GEFCF. Baseline Flag <> NULL
+
+ Notes 1. For SM/SMAB/SMAU/STR forms, only check records that have the Please Indicate if this is the First Dose for this Label Description is checked
+
+2. Disregard SM/SMAB/SMAU/STR deleted records
+
+3. For Scenario 2: a. Please use External data Form column in supp document to evaluate logics (CIMG, logic 2.1 and GEFCF, logic 2.2) b. If NA was entered on the External data Form column in supp document, please use every logic c. If on External data Form column in supp document NA was entered, for column 9 please display form in the protocol.
+
+4. Note 3: For column 13 please consider showing the field on which data is different from NULL For example: GEFCF. Date/Time of Measurement AFTER Second Course Visit prompt AND GEFCF. Test = BEST OVERALL RESPONSE AND GEFCF. Original Units <> NULL Column 11 should show Original Units CIMG. Date of Imaging AFTER Second Course Visit prompt AND GEFCF. Test Name = OVERALL RESPONE AND GEFCF. Result or Finding in Original Units Column 11 should show Column 9 should show Original Units
+
+5. If more that one item was completed, please separate items on column 12 by commas
+
+6. For scenario 2: Please leave column 12 blank and separate by commas column 9 and column 11
+
+7. For scenario 1: Please exclude the following for column 12: Sequence Number, Visit Number, Planned Time Point Number, Site Id Or Number, Screen Id Or Number, Subject Id Or Number, Domain Abbreviation, Study Identifier, Test Short Name, Test, Category, Subcategory, Vendor Name, Visit Name, Visit Type
+
+8. Requires supporting document to be named ONC_EVD_011_supp_.csv and will contain the following columns and associated content: 1) Group 2) Test Name – Please test names that can be entered before first dose of SM 3) External data form – CIMG/GEFCF, if both forms are used please enter NA e.g. 1, Tumor Identification, CIMG 2, Tumor State, CIMG 3, Sum of Diameter, CIMG 4, Longest Diameter, CIMG 5, Longest Perpendicular, CIMG 6, Adjudication, CIMG 7, Adjudicator Response, CIMG If supporting doc is not provided, display the message as "ONC_EVD_011_JR_STD Supporting Document Not Present for This Trial". (Used for other reports when the supporting doc is required)” The number of rows in the supporting document will be represented in the Report Header as "# of rows for customization". The actual information provided by the supporting doc can be outputted by selecting Y in the parameter "Supporting doc Page".
+
+Report Scenarios:
+SCENARIO 1 A - No CIMG. Test Name per supp document AND any CIMG item <> NULL AND CIMG Date of Imaging > first dose of SM in SM/SMAB/SMAU/STR B - No CIMG. Test Name per supp document AND any CIMG item = NULL AND CIMG. Result or Finding in Original Units <> NULL AND CIMG Date of Imaging >first dose of SM in SM/SMAB/SMAU/STR C - Yes CIMG. Test Name does not appear in supp document AND any CIMG item <> NULL AND CIMG Date of Imaging < first dose of SM in SM/SMAB/SMAU/STR
+
+SCENARIO 2 A - No There are two or more records of: CIMG on different Date of Imaging OR GEFCF Date/Time of Measurement without the Baseline Flag completed B – NO There is single a CIMG OR GEFCF record with the Baseline Flag completed C - Yes There are two or more records of: CIMG on different Date of Imaging OR GEFCF on Date/Time of Measurement with the Baseline Flag completed
+
+Sorting:
+Country, Site, Subject Number, Seq#
+
+Parameter Selection:
+Country, First Site, Last Site, First Subject, Last Subject, List of Subjects, Vendor
+
+Form.Item Names:
+1. Subject Assessment.Country
+
+2. Subject Assessment.Site Mnemonic
+
+3. Subject Assessment.Screening Number
+
+4. Subject Asssessment. Subject Number
+
+5. Display SM form (SM/SMAU/SMAB/STR)
+
+6. Display first dose date in SM/SMAB/SMAU. Start Date/Time OR STR. Start Date on which SM/SMAB/SMAU/STR. Please Indicate if this is the First Dose for this Label Description was checked
+
+7. Vendor per supp document
+
+8. External data Form per supp document
+
+9. CIMG. Date of Imaging/ GEFCF. Date/Time of Measurement
+
+10. External data Form. Sequence Number
+
+11. CIMG/GEFCF. Baseline Flag
+
+12. CIMG. Test Name/GEFCF. Test
+
+13. Display item with data as per Note 4 and 5
+
+14. Display scenarios according to logic

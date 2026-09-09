@@ -1,0 +1,147 @@
+Report ID: RID314
+
+Report Title:
+Lesion Number and Location vs Lesion Evaluation Location
+
+Description:
+This report displays subjects who have different Location provided in Forms that contain associated lesion number from lesion form or Associated Sponsor ID Number from Lesion Form, from the Location entered in Lesion Evaluation Forms for the same lesion number.
+
+Column Heading:
+1. Country
+
+2. Site
+
+3. Subject
+
+4. Associated form
+
+5. Visit Name
+
+6. Sequence Number Associated Form
+
+7. Associated Lesion Number from associated form
+
+8. Location from associated form
+
+9. Lesion form
+
+10. Sequence Number from lesion form
+
+11. Lesion number from lesion form
+
+12. Location from lesion form
+
+Logic:
+Logic 1
+
+[Associated sponsor ID Number from Lesion Form in FORM 1 = FORM 2 Lesion Number] AND Location of this lesion of FORM1 <> Location (Organ) of FORM2
+
+• Note 1:
+
+Location of this lesion of FORM1 means:
+
+OSOF: Location (According to the OSOF_supp_doc.csv)
+
+TSIF: Anatomic Location of Tumor Tissue Collection
+
+ORAD2: Location 1 or Location 2 or Location 3 or Location 4 or Location 5 or Location 6 or Location 7 or Location 8 or Location 9
+
+PROC: Anatomic Location / Location
+
+SM, SMAU: Location (According to the SM_supp_doc.csv)
+
+AE: LOCATION OF REACTION (FOR INJECTION SITE AE ONLY) /  LOCATION OF REACTION<BR>(FOR INJECTION SITE AE ONLY)
+
+• Note 2:
+
+Form 1 is Comparing Forms: OSOF forms (selected from OSOF_supp_doc.csv), TSIF, PROC, SM forms (selected from SM_supp_doc.csv), AE, ORAD2
+
+Form 2 is Lesion Evaluation forms which are listed and can be selected from LSN_supp_doc.csv
+
+• Note 3: Show only output for Logic 1 if FORM 1 is inputted in the prompt “Comparing Form”
+
+• Note 4: Exclude deleted records and records completed entirely as unknown, not applicable or not done.
+
+Note 5: For every item within a lesion form please use the LSN_supp_doc.csv, F For every item within an oncologic surgery form please use the OSOF_supp_doc.csv, For every item within a Study medication form please use the SM_supp_doc.csv and use the correspondent “itemquestion” per logics
+
+Note 6: The following forms are not associated to a master supporting document but should be included in report logic. TSIF, ORAD2, PROC, AE.
+
+• Note 7: If ORAD2, PROC and OSOF Associated sponsor ID Number from Lesion Form is completed with more than one sponsor ID number then check every sponsor ID number to see if there is a matching location in lesion evaluation form. I.e. if Sponsor ID # 1 and 2 are entered then there should be a matching location (from location 1-10) with Lesion evaluation number 1, AND there should also be a matching location (from location 1-10) with Lesion evaluation number 2
+
+• Note 8: Show outputs for each FORM 2 inputted in prompts, if any of the locations on FORM 2 matches with any of the FORM 1 locations do not show in output.    For instance:
+
+PROC location: arm (Lesion number associated  NTN1)
+
+LSNAJ location: arm (Lesion number associated  NTN1)
+
+LSRIR location: leg (Lesion number associated  NTN1)
+
+Then if LSRIR is selected in prompts no output should be present as location is already matching LSNAJ.
+
+• Note 9: Output is expected even if protocol does not have all FORMs.
+
+Report Scenarios:
+Positive:
+
+Scenario 1: Output = Yes
+
+Associated sponsor ID Number from Lesion Form in FORM 1 is equal to FORM 2 Lesion Number and Location of this lesion of FORM1 is different to the Location (Organ) of FORM2
+
+Negative:
+
+Scenario 1: Output = No
+
+Associated sponsor ID Number from Lesion Form in FORM 1 is equal to FORM 2 Lesion Number and Location of this lesion of FORM1 is equal to the Location (Organ) of FORM2
+
+Scenario 2: Output = No
+
+Associated sponsor ID Number from Lesion Form in FORM 1 is different from FORM 2 Lesion Number and Location of this lesion of FORM1 is different to the Location (Organ) of FORM2
+
+Scenario 3: Output = No
+
+Associated sponsor ID Number from Lesion Form in FORM 1 is different from FORM 2 Lesion Number and Location of this lesion of FORM1 is equal to the Location (Organ) of FORM2
+
+• Note 1:
+
+Please refer to logic notes to see meaning FORM1 and FORM2.
+
+Sorting:
+Country, Site, Subject Number, Lesion Evaluation Form
+
+Parameter Selection:
+Country, First Site, Last Site, First Subject, Last Subject, List of Subjects,
+
+Lesion Evaluation forms (required, please separate by comma, i.e. LSNIR, LSNHM),
+
+Comparing Forms (required, please separate by comma, i.e. OSOF, ORAD2, SM, SMAB, AE)
+
+Randomized only
+
+Form.Item Names:
+1.SA.Site Country
+
+2.SA.Site Mnemonic
+
+3.SA. Subject Number
+
+4.OSOF/TSIF/ PROC/ SM/ SMAU/ AE/ ORAD2 form Mnemonic
+
+5.OSOF/TSIF/ PROC/ SM/ SMAU/ AE/ ORAD2 Visit Mnemonic
+
+6.OSOF. Sponsor ID Number (or other oncologic surgery forms selected from OSOF_supp_doc.csv), TSIF. Sponsor ID Number, ORAD2. Sponsor ID Number, PROC. procedure Sequence Number, SM.Formidx (or other study medication forms selected from SM_supp_doc.csv), AE. Sequence Number.
+
+7. OSOF/TSIF/ PROC/ SM/ SMAU/ AE/ ORAD2. Associated sponsor ID Number from Lesion Form
+
+8.OSOF.Location, TSIF.Anatomic Location of Tumor Tissue Collection, PROC.Anatomic Location, SM.Body Site Location of Administration, SMAU.Body Site Location of Administration, AE.Location of Reaction (Injection Site only), ORAD2. Location <1>
+
+9.Lesion. Form Mnemonic selected from LSN_supp_doc.csv
+
+10.Lesion.Sponsor ID Number selected from LSN_supp_doc.csv
+
+11.Lesion.Lesion number selected from LSN_supp_doc.csv
+
+12.Lesion.Location (Organ) selected from LSN_supp_doc.csv
+
+NOTE: In item 7 for ORAD2 Location field can be like this:  Location 1 or Location 2 or Location 3 or Location 4 or Location 5 or Location 6 or Location 7 or Location 8 or Location 9; please show one record per location.
+
+Note 2: For every item within a lesion form please use the LSN_supp_doc.csv, F For every item within an oncologic surgery form please use the OSOF_supp_doc.csv, For every item within a Study medication form please use the SM_supp_doc.csv and use the correspondent “itemquestion” per logics

@@ -1,0 +1,115 @@
+Report ID: RID106
+
+Report Title:
+Study Medication Gaps and Overlaps
+
+Description:
+This report lists subjects who have gaps or overlaps in their study medication records when comparing SME to SM, where DOV is not null and gaps or overlaps exist before the current maximum DOV
+
+Column Heading:
+1. Country
+
+2. Site
+
+3. Subject Number
+
+4. Previous SM form
+
+5. Previous SM Seq
+
+6. Previous Study Period
+
+7. Previous Study Medication
+
+8. Previous Start Date
+
+9. Previous Stop Date
+
+10. Current SM form
+
+11. Current SM Seq
+
+12. Current Study Period
+
+13. Current Study Medication
+
+14. Current Start Date
+
+15. Current Stop Date
+
+16. Gap or Overlap
+
+17. Difference in Days
+
+Logic:
+List subjects who have gaps or overlaps in their study medication records in across study medication (sm) form  and Study Medication-External Data Load (SME) form available in a study. SM is common log form, it will only record any non-compliance dose (missed/incorrect dose) SM data; SME is central vendor data form, it will include all compliance SM data.
+
+Checkbox parameters called "Study Medication", "Study Period" should be made available for the user to select checking for Gaps and Overlaps within a  study medication and/or study period. If these checkboxes are not checked, the report will check for gaps and overlaps in any study medication record, irrespective of study medication or study period.
+
+‘Gap’ if Current Start Date – Previous Stop Date - 1 > X and/or
+
+‘Overlap’ if Current Start Date – Previous Stop Date <= Y
+
+"Date Only" parameter:
+
+- If it is not checked, "Start time" and "Stop time" will be considered in the evaluation of gaps and overlaps, if available.
+
+- If it is checked, only the dates will be considered.
+
+*X is the "Allowed Gap Days" selected using a parameter, and should be set to 0 by default. It may have decimals.
+
+*Y is the "Overlap Days" selected using a parameter, and should be set to 0 by default. It may have decimals. If it is zero, then the overlapping is by day, but if it is more than zero but less than one, the overlapping is within the day, and if it is more than one, then there are more records than expected in that timeframe.
+
+*Report should not display deleted records.
+
+*If "Randomized only" parameter selection checkbox  is checked, the report should only output subjects with Randomization number that is not null.
+
+*Exclude the SM records (Start Date/Time=Stop Date/Time)with first dose or last dose checked from programming.
+
+* Case-insensitive when using Study Medication from SM and SME.
+
+Report Scenarios:
+Please refer to Test Data.
+
+Sorting:
+Country, Site, Subject Number, Current Start Date
+
+Parameter Selection:
+Country, Site, Subject, Study Period, Study Medication,  Allowed Gap Days, Overlap Days, Randomized only, Date Only, List of Subjects
+
+Form.Item Names:
+1. Subject Assignment.Site Country
+
+2. Subject Assignment.Site Mnemonic
+
+3. Subjects.Subject Number
+
+4. SM.Form Mnemonic
+
+5. SM.Form IDX
+
+6. SM/SME.Study Period
+
+7. SM/SME.Study Medication
+
+8. SM/SME. Start Date/Time
+
+9. SM/SME.Stop Date/Time
+
+10.SM.Form Mnemonic
+
+11. SM/SME.Form IDX
+
+12.SM/SME.Study Period
+
+13. SM/SME.Study Medication
+
+14. SM/SME.Start Date/Time
+
+15. SM/SME.Stop Date/Time
+
+16. Derived as ‘Gap’ if Current Start Date/Time – Previous Stop Date/Time - 1 > X and
+
+‘Overlap’ if Current Start Date/Time – Previous Stop Date/Time < = Y
+
+17. Derived as Current Start Date/Time – Previous Stop Date/Time

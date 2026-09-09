@@ -1,0 +1,99 @@
+Report ID: RID149
+
+Report Title:
+Blood PK Invoice Scheduled vs Actual  Times Report (Samples after Last Dose)
+
+Description:
+This report generates a listing of blood PK Invoice records from the PK04 forms where the elapsed time is not within a window of scheduled time expected compared against the Last Dose Administered.
+
+Column Heading:
+1. Country
+
+2. Site
+
+3. Subject Number
+
+4. Visit
+
+5. Phase
+
+6. Period
+
+7. PK Seq
+
+8. Scheduled Time
+
+9. Dose Begin Date/Time
+
+10. Dose End Date/Time
+
+11. Collection Date/Time
+
+12. Elapsed Days
+
+13. Elapsed Time (hrs)
+
+14. Elapsed Time (mins)
+
+15. Analyte
+
+16. Comments
+
+Logic:
+For Post dose:
+
+Output is produced if the elapsed time between the sample date/time and the last dosing date/time is outside window provided in supporting document compared to the expected scheduled time for the specific time point. The last dose date/time is taken from the PK04 form if present, or the study medication forms(SM04/SM/SMAU/SMAB). The last dose date/time is taken from Study medication record with the Last Dose Check box
+
+Note1:  This report should not display deleted records and erroneous visits
+
+Note 2: zero dose records should also be excluded from the Study medication forms
+
+ In the PK001_T output, columns Scheduled Time and Elapsed Time (hrs) are highlighted in yellow to aid in data review.  Include Scheduled Time points that are being used per protocol.
+
+Requires supporting document named PK001C_supp_XXXXXXX in csv format
+
+Supporting document structure:
+
+Scheduled Time  Point  Lower Window Limit(Min)   Upper Window Limit(Min)   Analyte     Dose End Date     SM Form
+
+Report Scenarios:
+Refer  to Test casebook
+
+Sorting:
+Country, Site, Subject Number, Collection Date/Time
+
+Parameter Selection:
+Country,Site,Subject Number, Randomized Only
+
+Form.Item Names:
+1. CV_SAFM. SITECOUNTRY
+
+2. CV_SAFM. SITEMNEMONIC
+
+3. CV_SAFM. ENRMSUBJNUMIT
+
+4.CV_DOVFM. VISITMNEMONIC
+
+5.CV_DOVFM. DOVPHASEIT
+
+6.CV_DOVFM. DOVPERIODIT
+
+7. PK04.Seq
+
+8. PK04. Scheduled Time
+
+9. Display nvl(PK Last Dose Date Prior to PK Sample, STUDY MEDICATION. Dose Begin Date and Time) if supporting document schedule time uses study medication start date for calculation else display STUDY MEDICATION. Dose Begin Date and Time
+
+10. Display nvl(PK Last Dose Date Prior to PK Sample, STUDY MEDICATION. Dose End Date and Time) if supporting document schedule time uses study medication end date for calculation else display STUDY MEDICATION. Dose End Date and Time
+
+11. PK04. Date and Time Sample Obtained
+
+12. Derived: Date and Time Sample Obtained - Last Dose Date and Time Prior to PK Sample Obtained (PK dose date if present or SM dose date, begin or end depending on scheduled time point)
+
+13. Derived: Date and Time Sample Obtained - Last Dose Date and Time Prior to PK Sample Obtained * 24 (PK dose date if present or SM dose date, begin or end depending on scheduled time point)
+
+14. Derived: Date and Time Sample Obtained - Last Dose Date and Time Prior to PK Sample Obtained *24*60 (PK dose date if present or SM dose date, begin or end depending on scheduled time point)
+
+15. CV_PK04FM.Analyte
+
+16. CV_PK04FM.If any deviation from the protocol specified collecting and processing procedures, please specify/comment

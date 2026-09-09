@@ -1,0 +1,83 @@
+Report ID: RID458
+
+Report Title:
+Study medication Beyond irRECIST disease progression
+
+Description:
+This report will list subjects who have selected No in the item  The Investigator Believes the Benefit/Risk Assessment Favors Continued Treatment with Study Medication Beyond irRECIST Disease Progression in TBIRP, but there is an studye medication record after TBIRP Date of Assessment.
+
+Column Heading:
+COLUMN HEADINGS:
+
+1. Country
+
+2. Site
+
+3. Subject Number
+
+4. TBIRP Visit Mnemonic
+
+5. TBIRP Date of Assessment
+
+6. The Investigator Believes the Benefit/Risk Assessment Favors Continued Treatment with Study Medication Beyond irRECIST Disease Progression
+
+7. SM Visit Mnemonic
+
+8. SM Form
+
+9. SM Seq#
+
+10. SM Start date
+
+Logic:
+LOGIC SCENARIO 1 [Output = Yes]
+
+Logic 1: [The Investigator Believes the Benefit/Risk Assessment Favors Continued Treatment with Study Medication Beyond irRECIST Disease Progression] in TBIRP is = No
+
+AND
+
+Logic 2: Date of Assessment in [TBIRP] for record in logic 1< any after Start Date/Time of Study medication in [SMAU or SMAB or SM]
+
+Note 1: Only output of randomized patients
+
+Note 2: Erroneous visit or deleted record will not be considered in the programming or output
+
+Report Scenarios:
+Will output if the item [The Investigator Believes the Benefit/Risk Assessment Favors Continued Treatment with Study Medication Beyond irRECIST Disease Progression] in TBIRP is equal to No AND Date of Assessment in [TBIRP]  is before to any after Start Date/Time of Study medication in [SMAU or SMAB or SM] form.
+
+Note 1: Only output of randomized patients
+
+Note 2: Erroneous visit or deleted record will not be considered in the programming or output.
+
+Sorting:
+1. Country
+
+2. Site
+
+3. Subject Number
+
+Parameter Selection:
+Country, Site, Subject Number, List of Subjects
+
+Form.Item Names:
+FORMS.ITEMS:
+
+1. SA form. Country
+
+2. SA form. Site
+
+3. SA form. Subject number
+
+4. TBIRP.Visit Mnemonic
+
+5. TBIRP.TBIRPCFDTC
+
+6. TBIRP.TBIRPCFORRESBR
+
+7. Study Medication Visit Mnemonic
+
+8. [SMAU, SM, SMAB]
+
+9. Study Medication Seq#
+
+10. SMAU.SMAUEXSTDTC, SMAB.SMABEXSTDTC, SM.SMEXSTDTC

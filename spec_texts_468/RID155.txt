@@ -1,0 +1,146 @@
+Report ID: RID155
+
+Report Title:
+Duplicate PK04,PK05/SCI Specimen ID check
+
+Description:
+This report will output any duplicates for Specimen ID between PK04/PK05 and SCI forms(include all SCI variant forms).
+
+Column Heading:
+Table 1:
+
+1. Country
+
+2. Site
+
+3. Subject number
+
+4. Visit
+
+5. DOV
+
+6. Form
+
+7. Seq
+
+8. Specimen ID
+
+Table 2:
+
+1. Country
+
+2. Site
+
+3. Subject number
+
+4. Visit
+
+5. DOV
+
+6. Form
+
+7. Seq
+
+8. Specimen ID
+
+Table 3:
+
+1. Country
+
+2. Site
+
+3. Subject number
+
+4. Visit
+
+5. DOV
+
+6. Form
+
+7. Seq
+
+8. Specimen ID
+
+Logic:
+Logic 1.1:
+
+Output is displayed when Specimen ID is repeated more than once within the same subject within the same visit.
+
+Logic 1.2:
+
+Output is displayed when Specimen ID is repeated more than once within the same subject in different visits.
+
+Logic 2.1:
+
+Output is displayed when Specimen ID is repeated within the same site but with different subjects within the same visit.
+
+Logic 2.2:
+
+Output is displayed when Specimen ID is repeated within the same site but with different subjects in different visits.
+
+Logic 3.1:
+
+Output is displayed when Specimen ID is repeated for different subjects at different sites within the same visit.
+
+Logic 3.2:
+
+Output is displayed when Specimen ID is repeated for different subjects at different sites in different visits.
+
+NOTE:
+
+1. For all 3 logics check all duplicates including "within PK form", "within SCI form", and "between PK and SCI form".
+
+2. "Specimen ID is repeated more than once" means to check "Specimen ID is duplicated/entered at least twice".
+
+3. Remove the deleted records and erroneous visits.
+
+4. Need to output three tables separately for three logics. Table 1 should output logic 1, table 2 should output logic 2, table 3 should output logic 3.
+
+5. For Specimen ID comparison do not consider case sensitivity. Eg: 1A2345 is the same as 1a2345
+
+6. Display Column 5(DOV) by format 'DD-MMM-YYYY', such as 14-SEP-2024.
+
+Report Scenarios:
+A- Yes
+
+Specimen ID is repeated more than once within the same subject
+
+B- Yes
+
+Specimen ID is repeated within the same site but different subjects
+
+C- Yes
+
+Specimen ID is repeated for different subjects at different sites
+
+D- No
+
+Specimen ID is not duplicate within the same subject
+
+E- No
+
+Specimen ID is not duplicate across different subjects within the same site
+
+F- No
+
+Specimen ID is not duplicate across different subjects at different sites
+
+Sorting:
+Country, Site, Subject Number, Visit, Form, Seq, Specimen ID
+
+Form.Item Names:
+1. Subject Assignment. Site Country
+
+2. Subject Assignment. Site Mnemonic
+
+3. Subject Assignment. Subject Number
+
+4. Pharmacokinetic Forms/Specimen collection invoice Forms. Visit Mnemonic
+
+5. DOV Form. Date of Visit
+
+6. Pharmacokinetic Forms/Specimen collection invoice Forms. Form Mnemonic
+
+7. Pharmacokinetic Forms/Specimen collection invoice Forms. Formidx
+
+8. Pharmacokinetic Forms/Specimen collection invoice Forms. Specimen ID

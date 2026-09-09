@@ -1,0 +1,145 @@
+Report ID: RID407
+
+Report Title:
+Surgery Date Mismatches
+
+Description:
+This report will check consistency between date of surgery recorded in PTHA and OSOFL/OSOC/OSOF
+
+Column Heading:
+Table 1:
+
+1. Country
+
+2. Site
+
+3. Subject Number
+
+4. Seq # (PTHA)
+
+5. Date of Biopsy (PTHA)
+
+6. Oncology Surgery form
+
+7. Seq # (Oncology Surgery)
+
+8. Date of Oncology Surgery
+
+9. Scenario
+
+Table 2:
+
+1. Country
+
+2. Site
+
+3. Subject Number
+
+4. Seq # (PTHA)
+
+5. Date of Biopsy (PTHA)
+
+6. Oncology Surgery form
+
+7. Date of Oncology Surgery
+
+8. Scenario
+
+Logic:
+Scenario 1:
+
+Logic 1: Oncology Surgery.Date = PTHA.Date of Biopsy AND Oncology Surgery.Intent of Surgery <> Curative.
+
+Scenario 2:
+
+Logic 2: Oncology Surgery.Date <> NULL AND Oncology Surgery.Intent of Surgery = Curative AND there is not a PTHA record with Oncology Surgery.Data = PTHA.Date of Biopsy.
+
+Scenario 3:
+
+Logic 3: PTHA.Date of Biopsy <> NULL AND there is not an Oncology Surgery.Date record with Oncology Surgery.Date = PTHA.Date of Biopsy.
+
+Notes:
+
+1. Do not output for deleted records or erroneous visits
+
+2. Do not take time into account for comparisons
+
+3. “Oncology Surgery” = OSOC, OSOF and OSOFL.
+
+4. Oncology Surgery.Date = OSOC/OSOF/OSOFL.Date Performed/Date and Time Performed, OSOFL.Date of Surgery.
+
+5. If there are more “Oncology Surgery” available generate output for all the forms.
+
+6. Consider including scenario 1 and 3 in table 1 and scenario 2 in table 2.
+
+7. For scenario 1 all the columns should be completed with the corresponding data.  For scenario 2 columns 4 and 5 should be blank. For scenario 3 columns 6 and 7 should be blank.
+
+8. For UNK day and month, please consider the first day and first month.
+
+9. If PTHA.Date of Biopsy is not exists or is blank, use PTHA.Date of Surgury replace.  If PTHA.Date of Biopsy and PTHA.Date of Surgury both not exist, use PTHA.Date of Assessment replace.
+
+10. Blank value should also output for scenario 1.
+
+Report Scenarios:
+Scenario 1:
+
+A – NO Oncology Surgery.Date = PTHA.Date of Biopsy AND Oncology Surgery.Intent of Surgery = Curative.
+
+B – YES Oncology Surgery.Date = PTHA.Date of Biopsy AND Oncology Surgery.Intent of Surgery <> Curative.
+
+Scenario 2:
+
+A – NO Oncology Surgery.Date <> NULL AND Oncology Surgery.Intent of Surgery = Curative AND  PTHA.Date of Biopsy = Oncology Surgery.Date
+
+B – YES Oncology Surgery.Date <> NULL AND Oncology Surgery.Intent of Surgery = Curative AND  PTHA.Date of Biopsy is missing
+
+Scenario 3:
+
+A – NO PTHA.Date of Biopsy <> NULL AND Oncology Surgery.Date = PTHA.Date of Biopsy AND Oncology Surgery.Intent of Surgery = Curative.
+
+B – YES PTHA.Date of Biopsy <> NULL AND Oncology Surgery.Date is missing.
+
+Sorting:
+Country, Site, Subject Number
+
+Parameter Selection:
+Country, First Site, Last Site, First Subject, Last Subject, List of Subjects
+
+Form.Item Names:
+Table 1:
+
+1. Subject Assignment.Site Country
+
+2. Subject Assignment form.Site Mnemonic
+
+3. Subject.Subject Number
+
+4. PTHA.Sponsor ID Number
+
+5. PTHA.Date of Biopsy
+
+6. Display Oncology Surgery form available per study
+
+7. [OSOC, OSOF, OSOFL].Sponsor ID Number
+
+8. [OSOC, OSOF, OSOFL].Date Performed/Date of Surgery
+
+9. Display the scenario as per logic
+
+Table 2:
+
+1. Subject Assignment.Site Country
+
+2. Subject Assignment form.Site Mnemonic
+
+3. Subject.Subject Number
+
+4. PTHA.Sponsor ID Number
+
+5. PTHA.Date of Biopsy
+
+6. Display Oncology Surgery form available per study
+
+7. [OSOC, OSOF, OSOFL].Date Performed/Date of Surgery
+
+8. Display the scenario as per logic

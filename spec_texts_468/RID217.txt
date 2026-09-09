@@ -1,0 +1,53 @@
+Report ID: RID217
+
+Report Title:
+eSignature Audit Trail
+
+Description:
+This report displays an audit trail of "Ready for Signature" and "Signature Status"
+
+Column Heading:
+1. Country
+
+2. Site
+
+3. Subject Number
+
+4. Ready for Signatrue
+
+5. PI Name
+
+6. Date and Time
+
+Logic:
+The report lists all the times the item  "Ready for Signature" was completed and the Names, Dates were signed by the PI per subject.
+
+When parameter "Only Last Time Signature Requested" is selected show only last time signature was completed, If there is no signature output subject with no data from ESIG form.
+
+Report Scenarios:
+Scenario 1:
+
+Display every time PI signature was requested and PI signature was provided, if PI is required show output but with missing columns for PI signature
+
+Scenario 2:
+
+Display only the last lime PI signature was requested and PI signature was provided, if PI is not compelted show output but with missing columns for PI signature
+
+Sorting:
+Country, Site, Subject Number
+
+Parameter Selection:
+Randomized Only, Country, Site, Subject Number,List of Subjects , Only Last Time Signature Requested
+
+Form.Item Names:
+1. Subject Assignment.Site Country
+
+2. Subject Assignment.Site Mnemonic
+
+3. Subject Assignment.Subject Number
+
+4. ESIG. Ready Signatrue Item
+
+5. ESIG. Signature Status Details Name
+
+6. ESIG. Signature Status Details Date

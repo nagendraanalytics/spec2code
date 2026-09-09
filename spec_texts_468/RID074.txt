@@ -1,0 +1,75 @@
+Report ID: RID074
+
+Report Title:
+Incremental Encoding of MedDRA Terms - Listing
+
+Description:
+This report is a listing of ALL MedDRA encoded terms.
+
+Column Heading:
+1. eCRF
+
+2. Country
+
+3. Site
+
+4. Subject Number
+
+5. Seq
+
+6. Verbatim Term
+
+7. LLT
+
+8. PT
+
+9. SOC
+
+Logic:
+This report should display all encoded Medical History, Adverse Event, Procedure, Primary Diagnosis, Death, Death Autopsy Results, Serious Adverse Events - Infants, Serious Adverse Events - Partner, MHA, Associated Persons Adverse Events, Associated Persons Medical History, Associated Persons Procedures terms. It also should display
+
+subject level information. Report should display records where LLT, PT and SOC are not null.
+
+Should be able to run report by encoded term date range (by date stamp of changed data – last modified
+
+date on LLT, old entries should not be considered or outputted) so that incremental reports can be run.
+
+Selection Criteria should be displayed on the first page of entire report, above the output table, graph,
+
+chart, etc. and not within the header or footer, and should be displayed in the same order on the prompt
+
+page. Use the same font as for the report.
+
+Sort Order should not be case sensitive.
+
+Report should not display deleted records.
+
+Display row count in footer. Display page number at bottom of each page (# of ## for pdf and Excel).
+
+Report Scenarios:
+Display all encoded Medical History, Adverse Event, Procedure, Primary Diagnosis, Death, Death Autopsy Results, Serious Adverse Events - Infants, Serious Adverse Events - Partner, MHA, Associated Persons Adverse Events, Associated Persons Medical History, Associated Persons Procedures terms where LLT, PT and SOC are not null.
+
+Sorting:
+eCRF, Country, Site, Subject Number, Seq
+
+Parameter Selection:
+Country, Site, Subject Number, Randomized Only, eCRF, Changed Data From, Changed Data To, List of Subjects
+
+Form.Item Names:
+1. Forms.Form Mnemonic
+
+2. Subject Assignment.Site Country
+
+3. Subject Assignment.Site Mnemonic
+
+4. Subjects.Subject Number
+
+5. Forms.Formidx
+
+6. Forms.Verbatim Term
+
+7. Forms.LLT
+
+8. Forms.PT
+
+9. Forms.SOC

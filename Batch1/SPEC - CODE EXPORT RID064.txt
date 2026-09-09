@@ -1,0 +1,104 @@
+SPEC -> CODE EXPORT: RID064
+Exported 8/21/2026, 5:55:50 PM | Tenant: default
+
+======================================================================
+1. SPEC
+======================================================================
+Report ID:
+RID064
+
+EDC System / Language:
+veeva / CQL
+
+Description:
+This report will display all subjects with incorrect reason for discontinuation selected in subject disposition
+
+Column Heading:
+1. Country
+2. Site
+3. Subject Number
+4. DS01 Reason for Discontinuation
+
+Logic:
+Report will output the subjects who have invalid options selected for the DS01 Reason for Discontinuation.
+
+Records with DS01 Subject Status = Completed or null should not be considered.
+
+The Reason for Discontinuation prompt is mandatory and the user has to select the valid options for the trial. Records with options not according to what was selected in the prompt will be outputted.
+
+Report Scenarios:
+1) Output = YES
+Subject with DS01 Reason for Discontinuation not in the values selected from the Reason for Discontinuation prompt
+
+2) Output =NO
+Subject with DS01 Reason for Discontinuation in the values selected from the Reason for Discontinuation prompt
+
+3) Output =NO
+Subject with DS01 Status = Completed or null
+
+Sorting:
+Country, Site, Subject Number
+
+======================================================================
+2. LOGIC UNDERSTANDING
+======================================================================
+This report flags subjects on the DS01 Subject Disposition form who selected a Reason for Discontinuation value that falls outside the set of valid options chosen via the study's Reason for Discontinuation prompt, while excluding any records where DS01 Subject Status is 'Completed' or null. The output lists Country, Site, Subject Number, and the invalid DS01 Reason for Discontinuation value, sorted by Country, Site, and Subject Number. The core logic is a validation/lookup comparison of an actual field value against a dynamically configured 'valid values' list, gated by a status-based exclusion filter.
+
+1. This report works off the DS01 (Subject Disposition) form, specifically looking at the DS01 Reason for Discontinuation field for each subject.
+2. First, exclude any DS01 records where DS01 Subject Status = 'Completed' or is null -- these records are not considered for this check at all, regardless of what Reason for Discontinuation value they have.
+3. For the remaining records (Subject Status is neither Completed nor null), determine the set of 'valid' values for Reason for Discontinuation -- this is the set of options selected by the user in the Reason for Discontinuation prompt (a report parameter/filter configured for the trial).
+4. Compare each remaining subject's DS01 Reason for Discontinuation value against this valid set. If the value is NOT in the values selected from the prompt, the record is flagged as having an invalid/incorrect reason for discontinuation.
+5. Per Scenario 1, a subject whose DS01 Reason for Discontinuation is not among the prompt-selected values should be output (Output = YES).
+6. Per Scenario 2, a subject whose DS01 Reason for Discontinuation IS among the prompt-selected values should NOT be output (Output = NO), since it's a valid, correctly selected reason.
+7. Per Scenario 3, a subject with DS01 Status = Completed or null should NOT be output (Output = NO), reinforcing the exclusion from Step 2 regardless of the Reason for Discontinuation value.
+8. The final output list includes Country, Site, Subject Number, and DS01 Reason for Discontinuation for each flagged subject, sorted by Country, then Site, then Subject Number.
+
+======================================================================
+3. SPEC REVIEW
+======================================================================
+Readiness: Needs revision -- The spec has a solid overall structure and testable scenarios, but it hinges on an undefined 'Reason for Discontinuation prompt' as the source of truth for valid values, and lacks guidance on null reason values and multiple DS01 records per subject -- both of which materially affect query output and must be clarified before generation.
+
+[BLOCKING] (ambiguity) The Logic states 'The Reason for Discontinuation prompt is mandatory and the user has to select the valid options for the trial,' implying a runtime prompt where a user selects which values are 'valid.' However, there is no definition of what this prompt is, how it's populated (static list vs. per-study configuration), or how the report/query generator should obtain the 'selected values' to compare against DS01 Reason for Discontinuation. This is not a report parameter/filter typically resolvable at query-build time.
+  -> Explicitly define the 'Reason for Discontinuation prompt': is it a report run-time parameter, a study-level configuration list, or a lookup table? Specify where the valid/selected values are stored (e.g., a coded list in the EDC study design) so the generator can implement the comparison deterministically.
+[BLOCKING] (completeness) Report Scenario 3 says subjects with 'DS01 Status = Completed or null' should output NO, but the Logic only says these records 'should not be considered' -- it doesn't clarify what happens if a subject has multiple DS01 records (e.g., one Completed and one with an invalid discontinuation reason, or multiple discontinuation forms). There's no mention of how repeating/multiple DS01 forms per subject are handled or de-duplicated for reporting.
+  -> Clarify whether DS01 is expected to be a single non-repeating form per subject, and if repeating, state whether each qualifying record should be output as a separate row or the subject should appear once.
+[WARNING] (completeness) The Description says the report displays subjects with 'incorrect reason for discontinuation selected,' but there is no handling described for the case where DS01 Reason for Discontinuation is blank/null while DS01 Status is not Completed/null (i.e., an incomplete disqualifying disposition record). It's unclear if a null Reason for Discontinuation (with a non-Completed status) counts as 'not in the values selected' (i.e., invalid) or should be excluded as an edge case.
+  -> Add an explicit rule for how null/blank Reason for Discontinuation values are handled when Status is not Completed or null -- e.g., 'Null reason values should be treated as invalid and included in the output' or 'excluded pending data entry.'
+[INFO] (consistency) The Column Heading list only includes 'DS01 Reason for Discontinuation' but not 'DS01 Subject Status,' even though Status is central to filtering logic (Scenario 3). This isn't necessarily wrong since Status is a filter not a displayed field, but it's worth confirming intent.
+  -> Confirm whether DS01 Subject Status should also be displayed as a column for traceability/auditing, or explicitly state that it is filter-only and intentionally excluded from output columns.
+[INFO] (testability) Report Scenario 1 and Scenario 2 are logically complementary and well distinguished by the stated Logic (in vs. not in the selected values), so they are testable given a defined prompt/list. Scenario 3 is also clearly distinguished by Status. No overlap issues found here.
+  -> No action needed; scenarios are testable assuming the prompt/valid-values source is defined (see the blocking ambiguity issue above).
+[INFO] (naming) The spec consistently refers to 'DS01 Reason for Discontinuation' and 'DS01 Subject Status' in both Logic and Column Heading (mostly), and 'DS01' prefix convention appears uniform throughout.
+  -> No action needed; naming is consistent as written.
+
+======================================================================
+4. GENERATED CODE
+======================================================================
+CQL -- Guardrails: passed
+
+SELECT
+  d.Country AS `Country`,
+  d.Site AS `Site`,
+  d.SubjectNumber AS `Subject Number`,
+  d.ReasonForDisc AS `DS01 Reason for Discontinuation`
+FROM
+  (
+    SELECT
+      `@HDR`.`Site`.`Country` AS Country,
+      `@HDR`.`Site`.`Number` AS Site,
+      `@HDR`.`Subject`.`Name` AS SubjectNumber,
+      DS01DSTERMDSCRC AS ReasonForDisc,
+      DS01DSTERMCMPIT AS SubjStatus
+    FROM `EDC`.`DS01FM`
+    WHERE `@Form`.`Status` = 'submitted__v'
+  ) d
+WHERE
+  (d.SubjStatus IS NOT NULL AND d.SubjStatus <> 'Completed')
+  AND (d.ReasonForDisc IS NULL OR d.ReasonForDisc NOT IN (@ReasonForDiscontinuation))
+ORDER BY
+  d.Country,
+  d.Site,
+  d.SubjectNumber
+
+Explanation:
+I used the DS01FM Form (per the provided study metadata) with DS01DSTERMDSCRC as the "Reason for Discontinuation" item and DS01DSTERMCMPIT as the "Subject Status" item -- these are the closest matching items in the known metadata list for DS01, but their exact mapping to "Reason for Discontinuation" vs "Status" fields isn't explicitly confirmed in the metadata block, so please verify via DESCRIBE FORM before running. The report-level "Reason for Discontinuation prompt" is treated as a user-supplied runtime parameter (@ReasonForDiscontinuation) holding the valid/allowed values selected at runtime, per the spec's requirement that valid options be user-chosen rather than hardcoded; records are excluded when Subject Status is Completed or null (Scenario 3), and flagged when the reason is null or not among the prompt-selected values (Scenario 1/2). Deleted-record filtering was omitted since DS01FM has no DELETEDFM item listed in the known metadata.

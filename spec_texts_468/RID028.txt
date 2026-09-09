@@ -1,0 +1,135 @@
+Report ID: RID028
+
+Report Title:
+Mismatch between COVID-19 Adverse Events and SARS-Cov-2 Laboratory test in SLAB
+
+Description:
+This report displays subjects who have COVID-19 Adverse Events with no corresponding SARS-CoV-2 laboratory test with a positive result.
+
+Additionally, this report displays subjects who have a SARS-CoV-2 laboratory test with a positive result in the SLAB form with no corresponding COVID-19 Adverse Events in the AE form.
+
+SLAB test with a positive result should be reported as “Abnormal”.
+
+Column Heading:
+1. Country
+
+2. Site
+
+3. Subject Number
+
+4. AE Seq
+
+5. AE Term
+
+6. AE PT
+
+7. AE Onset Date and Time
+
+8. SLAB Seq
+
+9. Abbreviated Dictionary Term
+
+10. Enter date/time specimen collected
+
+11. Days after Last Dose of SM
+
+12. Scenario
+
+Logic:
+Scenario 1
+
+Logic 1:
+
+AE PT contains any of the combined words listed on note 1
+
+AND
+
+Logic 2: There is NO SLAB record where Abbreviated Dictionary Term contains any of the combined words listed on Note 2 AND Date/Time Specimen Collected >= Onset Date and Time (Lab Collection Date if Lab Adverse Events) AND Date/Time Specimen Collected =< End Date and Time AND Character Test Result indicator (.SLABLBINDR) is completed as Abnormal
+
+Scenario 2:
+
+Logic 1: SLAB Abbreviated Laboratory Test contains any of the combined words listed on the Note 2
+
+AND
+
+Logic 2: Character Test Result indicator (.SLABLBINDR) is Abnormal
+
+AND
+
+Logic 3: There is NO AE record where AE PT contains any of the combined words listed on note 1 AND Date/Time Specimen Collected >= Onset Date and Time (Lab Collection Date if Lab Adverse Events) AND Date/Time Specimen Collected =< End Date and Time
+
+Note 1: consider any AE PT that contains any of the following:
+
+COVID-19
+
+SARS-CoV-2
+
+SARS COV2
+
+SARS Coronavirus
+
+Corona
+
+*Report should identify the listed as key words e.g: If AE PT is “SARS-COV-2 sepsis” outputs is expected since it contains “SARS-CoV-2”
+
+Note 2: Consider SLAB Abbreviated Dictionary Term that contains any of the following:
+
+SARS Coronavirus
+
+SARS Coronavirus 2
+
+COVID-19
+
+SARS-CoV-2
+
+SARS COV2
+
+Corona
+
+*Report should identify the listed as key words e.g: If SLAB Abbreviated Dictionary Term is “SARS Coronavirus 2 IgA Antibody” output is expected since it contains “SARS Coronavirus 2”
+
+Note 3: For End Date and Time = Ongoing, consider the system date.
+
+Note 4: Report should not display deleted records.
+
+Note 5: Time is not considered.
+
+Report Scenarios:
+Scenario 1: Output Yes
+
+There is a COVID-19 Adverse Event entered in AE eCRF, but there is no SARS-CoV-2 Supplemental Lab with a Positive result.
+
+Scenario 2: Output Yes
+
+There is a SARS-Cov-2 Supplemental Laboratory entered in SLAB eCRF, but there is no COVID-19 Adverse Event entered in AE eCRF.
+
+Sorting:
+Country, Site, Subject Number, AE Seq, SLAB Seq
+
+Parameter Selection:
+Country, First Site, Last Site, First Subject, Last Subject, List of Subjects, Randomized Only, Hide Days after Last Dose of SM (N/Y, default as Y)
+
+Form.Item Names:
+1. SA.Country
+
+2. SA.Site
+
+3. SA.Subject Number
+
+4. AE.AEAESPID
+
+5. AE.AEAETERM
+
+6. AE.AEAEDECODPT
+
+7. AE.AEAESTDTC
+
+8. SLAB.Form Index
+
+9. SLAB.SLABLBTESTADT
+
+10. SLAB.SLABDTC
+
+11. Date when reports run - Start Date/Time in SM variation entry with Last Dose. If multiple Last doses, consider the Max Start Date. If no Last Dose checked, value should be blank (column will not be displayed if in parameter selection, ‘Hide Days after Last Dose of SM’ is selected as Y).
+
+12. Scenario based on the logic met

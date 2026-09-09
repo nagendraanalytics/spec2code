@@ -1,0 +1,159 @@
+Report ID: RID150
+
+Report Title:
+Missing, Duplicate or Incorrect PK Scheduled Time
+
+Description:
+This report will list subjects whose PK Scheduled Time does not match what is specified in the protocol. This report will also list subjects that have duplicate or missing Scheduled Times.
+
+Column Heading:
+1. Country
+
+2. Site
+
+3. Subject Number
+
+4. Visit
+
+5. Date of Visit
+
+6. eCRF
+
+7. Analyte
+
+8. Scheduled Time
+
+9. Specimen ID
+
+10. Seq
+
+11. Issue
+
+Logic:
+<Criteria Form1>.<Criteria Itemquestion1> = <Criteria Value1>  AND
+
+<Criteria Form2>.<Criteria Itemquestion2> = <Criteria Value2> AND
+
+<Criteria Form3>.<Criteria Itemquestion3> = <Criteria Value3> AND
+
+This report lists missing, duplicate or incorrect PK Scheduled Times by visit, form and analyte as defined in the supporting document.
+
+Output the Missing, Incorrect or Duplicate Scheduled Time according to the Visit and Criteria form/itemquestion/Value provided in the supporting document.
+
+If the Scheduled Times selected by the user or expected per eCRF and analyte at a given visit have not been entered on the PK eCRF, then issue='Missing'.
+
+If the Scheduled Times selected by the user or expected appear more than once per Analyte 'Specimen ID duplicates' prompt is selected as 'No' then issue='Duplicate'
+
+If the Scheduled Times selected by the user or expected appear more than once per Analyte, with the same Specimen ID and 'Specimen ID duplicates' prompt selected as 'yes' then issue='Duplicate'
+
+If the Scheduled Times selected by the user or expected appear more than once per Analyte, 'Specimen ID duplicates' prompt selected as 'yes' and Specimen ID not duplicated then do not issue='Duplicate'
+
+If there are Scheduled Times entered on the PK eCRF different from the Scheduled Times selected by the user or expected per eCRF and analyte at a given visit, then issue='Incorrect'
+
+If there are Scheduled Times entered on the PK eCRF but the visit has not been initialized, then issue='Incorrect'
+
+Notes:
+
+1) Erroneous visits should not be included.
+
+2) For Scenario "Incorrect", Unscheduled assessments can be disregarded when submitting the report spec
+
+3) For Scenario "Incorrect", when Form and Visit are not provided by user in supporting document and Form is entered with Scheduled Time<>Unscheduled, please output as Incorrect
+
+4) Do not consider deleted Items for Missing scheduled time per visit scenario.
+
+5) If item Visit Initialized in Supp Doc is entered as Y, do not output Missing Scenario when form is not initialized, or only deleted items are present in the form.
+
+6) Display missing analyte and scheduled time as per supporting document for "Missing Scenario".
+
+Requires Supporting Document to be named PK004_supp_<xxxxxxx>.csv and will contain the following columns and associated content:
+
+1. Criteria Form1 - Arm/Cohort/Stratification/ASSIGNED COLLECTION SCHEDULE/TRIGAQUEST Form Mnemonic SR/SRIVRS/TRIG/TRIGA. If applies for all subjects regardless the Arm/Cohort/Stratification, enter NA
+
+2. Criteria Itemquestion1 - Arm/Cohort/Stratification/ASSIGNED COLLECTION SCHEDULE/TRIGAQUEST Itemquestion1. If applies for all subjects regardless the Arm/Cohort/Stratification, enter NA OR if the Itemquestion1 is not applicable for the protocol, enter NA
+
+3. Criteria Value1 - Arm/Cohort/Stratification/ASSIGNED COLLECTION SCHEDULE/TRIGAQUEST Value. If applies for all subjects regardless the Arm/Cohort/Stratification, enter NA OR if the itemValue1 is not applicable for the protocol, enter NA
+
+4. Criteria Form2 - Arm/Cohort/Stratification/ASSIGNED COLLECTION SCHEDULE/TRIGAQUEST Form Mnemonic SR/SRIVRS/TRIG/TRIGA. If applies for all subjects regardless the Arm/Cohort/Stratification, or is not needed enter NA
+
+5. Criteria Itemquestion2 - Arm/Cohort/Stratification/ASSIGNED COLLECTION SCHEDULE/TRIGAQUEST Itemquestion2. If applies for all subjects regardless the Arm/Cohort/Stratification, enter NA OR if the Itemquestion2 is not applicable for the protocol, or is not needed enter NA
+
+6. Criteria Value2 - Arm/Cohort/Stratification/ASSIGNED COLLECTION SCHEDULE/TRIGAQUEST Value2. If applies for all subjects regardless the Arm/Cohort/Stratification, enter NA OR if the Value2 is not applicable for the protocol, enter NA
+
+7. Criteria Form3 - Arm/Cohort/Stratification/ASSIGNED COLLECTION SCHEDULE/TRIGAQUEST Form Mnemonic SR/SRIVRS/TRIG/TRIGA. If applies for all subjects regardless the Arm/Cohort/Stratification, or is not needed enter NA
+
+8. Criteria Itemquestion3 - Arm/Cohort/Stratification/ASSIGNED COLLECTION SCHEDULE/TRIGAQUEST Itemquestion3. If applies for all subjects regardless the Arm/Cohort/Stratification, enter NA OR if the Itemquestion3 is not applicable for the protocol, or is not needed enter NA
+
+9. Criteria Value3 - Arm/Cohort/Stratification/ASSIGNED COLLECTION SCHEDULE/TRIGAQUEST Value3. If applies for all subjects regardless the Arm/Cohort/Stratification, enter NA OR if the Value3 is not applicable for the protocol, enter NA
+
+10. PK eCRF
+
+11. Analyte
+
+12. Visit - Visit where specific Analyte and Scheduled Time is required per protocol
+
+13. Scheduled time - Scheduled Time required per protocol
+
+14. Visit Initialized - (Y/N) Enter Y to show outputs ONLY when visit is initialized
+
+e.g.
+
+Criteria Form1,Criteria Itemquestion1,Criteria Value1,Criteria Form2,Criteria Itemquestion2,Criteria Value2,Criteria Form3,Criteria Itemquestion3,Criteria Value3,PK eCRF,Analyte,Visit,Scheduled Time,Visit Initialized
+
+NA,NA,NA,NA,NA,NA,NA,NA,NA,PK05,-2118,Cycle 1 Day 1, Pre Dose -2118,Y
+
+SR,Arm,INDUCT LENVATINIB + PEMBROLIZUMAB,NA,NA,NA,NA,NA,NA,PK04,-4280,Cycle 1 Day 1,Predose,N
+
+SR,Arm,INDUCT LENVATINIB + PEMBROLIZUMAB,NA,NA,NA,NA,NA,NA,PK04,-3475,Cycle 1 Day 1,30 minutes post dose,Y
+
+SR,Arm,INDUCT LENVATINIB + PEMBROLIZUMAB,SR,Stratification,EAST ASIA ECOG EQUAL TO 0 CAPOX,NA,NA,NA,PK04,-4280,Cycle 1 Day 22,Predose,N
+
+SR,Arm,INDUCT LENVATINIB + PEMBROLIZUMAB,TRIGA,Itemquestion2,CAPOX,NA,NA,NA,PK04,-3475,Cycle 1 Day 1,Predose,Y
+
+The number of rows in the supporting document will be represented in the Report Header as "# of rows for customization".
+
+The actual information provided by the supporting doc can be outputted by selecting Y in the parameter "Supporting doc Page".
+
+Report Scenarios:
+Scenario 1: Error message:  "Missing"
+
+Output if the expected Scheduled Times and analyte at a given visit have not been entered on the PK eCRF.
+
+* If selected no output if PK eCRF is not initiated for a given visit
+
+Scenario 2 Error message:  "Incorrect"
+
+Output if there are Scheduled times entered on the PK eCRF different from the Scheduled Times expected per supporting document for analyte at a given visit
+
+Scenario 3   Error message:  "Duplicated"
+
+Output if the expected Scheduled Times appear more than once per Analyte.
+
+Sorting:
+Country, Site, Subject Number
+
+Parameter Selection:
+Country, First Site, Last Site, First Subject Number, Last Subject Number, List of Subjects, Randomized Only, Visit, Scheduled Time, Analyte, Specimen ID duplicates (N/Y, Default as N), Supporting Doc Page (N/Y, Default as N)
+
+Form.Item Names:
+1. Subject Assignment.Site Country
+
+2. Subject Assignment.Site Mnemonic
+
+3. Subjects.Subject Number
+
+4. Pharmacokinetic Forms.Visit Mnemonic
+
+5. Visits.Date of Visit
+
+6. Pharmacokinetic Forms.Formmnemonic
+
+7. Pharmacokinetic Forms.Analyte
+
+8. Pharmacokinetic Forms.Scheduled Times
+
+9. Pharmacokinetic Forms.Specimen ID (leave blank for scenario Missing)
+
+10. Pharmacokinetic Forms.Formidx
+
+11. Derived: Issue - As per logic (Missing/Duplicate/Incorrect)

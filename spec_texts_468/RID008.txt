@@ -1,0 +1,77 @@
+Report ID: RID008
+
+Report Title:
+Toxicity grade vs Death check
+
+Description:
+This report lists subjects whose Maximum Toxicity is equal to selected toxicity grade (4 or 5), but AE outcome is not fatal or serious criteria is not Death. The report also lists subjects who have AE outcome that is fatal or Serious criteria is Death, but Maximum Toxicity is not equal to selected toxicity grade (4 or 5). Maximum Toxicity grade is selected using the parameter selection screen.
+
+Column Heading:
+1. Country
+
+2. Site
+
+3. Subject Number
+
+4. AE Seq
+
+5. AE Term
+
+6. Maximum Toxicity Grade
+
+7. AE Outcome
+
+8. Death?
+
+Logic:
+1. This report lists subjects whose maximum Toxicity Grade entered in the AE toxicity grade itemset is equal to x, but AE outcome is not fatal or serious criteria is not Death for matching subject and AE sequence number. The report will derive maximum toxicity from all related toxicity grade records. x = 4 or 5 as selected in the Toxicity Grade parameter selection. The parameter is mandatory and should be implemented as a radio-button selection.
+
+2. This report lists subjects whose maximum Toxicity Grade entered in the AE toxicity grade itemset is not equal to x, but AE outcome is fatal or serious criteria is Death for matching subject and AE sequence number. x = 4 or 5 as selected in the Toxicity Grade parameter selection.
+
+Report should not display deleted records.
+
+If "Randomized only" parameter selection checkbox  is checked, the report should only output subjects with Randomization number that is not null.
+
+Report Scenarios:
+1. This report lists subjects whose maximum Toxicity Grade entered in the AE toxicity grade itemset is equal to x, but AE outcome is not fatal or serious criteria is not Death for matching subject and AE sequence number. The report will derive maximum toxicity from all related toxicity grade records. x = 4 or 5 as selected in the Toxicity Grade parameter selection. The parameter is mandatory and should be implemented as a radio-button selection.
+
+2. This report lists subjects whose maximum Toxicity Grade entered in the AE toxicity grade itemset is not equal to x, but AE outcome is fatal or serious criteria is Death for matching subject and AE sequence number. x = 4 or 5 as selected in the Toxicity Grade parameter selection.
+
+Report should not display deleted records.
+
+If "Randomized only" parameter selection checkbox  is checked, the report should only output subjects with Randomization number that is not null.
+
+Sorting:
+Country, Site,
+
+Subject Number,
+
+AE Seq
+
+Parameter Selection:
+Country,
+
+Site,
+
+Subject Number,
+
+Max Toxicity Grade,
+
+Randomized Only
+
+Form.Item Names:
+1. Subject Assignment.Site Country
+
+2. Subject Assignment.Site Mnemonic
+
+3. Subject Assignment.Subject Number
+
+4. Adverse Events Form.Sequence Number
+
+5. Adverse Events Form.AE Term
+
+6. Derived: Max (Adverse Event Toxicity Grade Change Itemset.Toxicity Grade)
+
+7. Adverse Events Form.AE Outcome
+
+8. Derived: If Adverse Events Form.AEAESERDTHCB is not null then "Y" else "N"

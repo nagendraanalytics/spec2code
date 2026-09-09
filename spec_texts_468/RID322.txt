@@ -1,0 +1,137 @@
+Report ID: RID322
+
+Report Title:
+SCAN/CTO data reconciles with LSNBC
+
+Description:
+This report will display subject that have a inconsistencies between SCAN/CTO and lesion evaluation form LSNBC.
+
+Column Heading:
+1. Country
+
+2. Site
+
+3. Subject Number
+
+4. SCAN Start Date/Time of Procedure
+
+5. SCAN Findings/Results
+
+6. CTO Date of assessment
+
+7. CTO Cystoscopy Result
+
+8. LSNBC Lesion number
+
+9. LSNBC Date of Lesion Evaluation
+
+10. Error Message
+
+Logic:
+Report should output subjects who meet the following criteria:
+
+(Scenario 1)
+
+[Logic 1.1: SCAN. ‘Findings/Results’ = ’Abnormal’ AND ‘Abnormal Findings’ = ['Malignant Renal Mass' OR ‘Malignant Bladder Mass’ OR 'Benign Renal Mass' OR 'Benign Bladder Mass'] AND 'Start Date/Time of Procedure' has no corresponding ‘Date of Lesion Evaluation’ in LSNBC
+
+ OR
+
+Logic 1.2: SCAN. ‘Findings/Results’=’Abnormal’ AND ‘Abnormal Findings’= ['Malignant Renal Mass' OR Malignant Bladder Mass' OR 'Benign Renal Mass' OR 'Benign Bladder Mass'] AND LSNBC has not been initialized]
+
+OR
+
+(Scenario 2)
+
+[Logic 2.1: CTO. ‘Cystoscopy Result’ =’Abnormal’ AND ‘Date of Assessment’ has no corresponding ‘Date of Lesion Evaluation’ in LSNBC.
+
+ OR
+
+Logic 2.2: CTO. ‘Cystoscopy Result’ = ’Abnormal’ AND LSNBC has not been initialized]
+
+OR
+
+(Scenario 3)
+
+[Logic 3.1: LSNBC. ‘Date of Lesion Evaluation’ has no corresponding ‘Date of Assessment’ in CTO form OR 'Start Date/Time of Procedure' in SCAN form.
+
+OR
+
+Logic 3.2: LSNBC. ‘Date of Lesion Evaluation’ <> Null
+
+AND CTO form has not been initialized
+
+OR
+
+SCAN form has not been initialized]
+
+OR
+
+(Scenario 4)
+
+[Logic 4.1: LSNBC. 'Was the Lesion Evaluable?' = 'Yes' AND ‘Date of Lesion Evaluation’ has a corresponding 'Start Date/Time of Procedure' in SCAN form AND ‘Findings/Results’ = 'Normal'
+
+OR
+
+Logic 4.2: LSNBC. 'Was the Lesion Evaluable?' = 'Yes' AND ‘Date of Lesion Evaluation’ has a corresponding ‘Date of Assessment’ in CTO form AND ‘Cystoscopy Result' = 'Normal'
+
+Note: Erroneous visits and deleted records should not be considered in the programming and output.
+
+Report Scenarios:
+Scenario 1 Output: Yes
+
+SCAN  form has Findings/Results of 'Abnormal' and Abnormal Findings of 'Malignant Renal Mass' or Malignant Bladder Mass' or 'Benign Renal Mass' or 'Benign Bladder Mass' and the LSNBC does not have a Date of Lesion Evaluation that is the same as the SCAN form Start Date/Time of Procedure
+
+Scenario 2 Output: Yes
+
+CTO form has Abnormal Cystoscopy Result and the LSNBC does not have a Date of Lesion Evaluation that is the same as the CTO form Date of Assessment
+
+Scenario 3 Output: Yes
+
+there is an LSNBC Date of Lesion Evaluation and no corresponding SCAN or CTO form with the same Start date/time of procedure or Assessment.
+
+Scenario 4 Output: Yes
+
+there is a LSNBC (as lesion evaluable) =YES  with  Date of Lesion Evaluation and a corresponding SCAN or CTO form with the same Start date/time of procedure or Assessment and the Findings/Results is Normal.
+
+Scenario 5 Output: No
+
+SCAN  form has Findings/Results of 'Abnormal' and Abnormal Findings of 'Malignant Renal Mass' or Malignant Bladder Mass' or 'Benign Renal Mass' or 'Benign Bladder Mass' and the LSNBC does have a Date of Lesion Evaluation that is the same as the SCAN form Start Date/Time of Procedure
+
+Scenario 6 Output: No
+
+CTO form has Abnormal Cystoscopy Result and the LSNBC does have a Date of Lesion Evaluation that is the same as the CTO form Date of Assessment
+
+Scenario 7 Output: Yes
+
+there is an LSNBC Date of Lesion Evaluation and there is corresponding SCAN or CTO form with the same Start date/time of procedure or Assessment.
+
+Scenario 8 Output: Yes
+
+there is a LSNBC (as lesion evaluable) =YES  with  Date of Lesion Evaluation and a corresponding SCAN or CTO form with the same Start date/time of procedure or Assessment and the Findings/Results is not Normal.
+
+Sorting:
+Country, Site Number and Subject Number
+
+Parameter Selection:
+Country, Site Number,Subject Number, Randomized Only, List of Subject
+
+Form.Item Names:
+1. Subject ASSIGNMENT.Site Country
+
+2. Subject Assignment. Site Mnemonic
+
+3. Subject Assignment. Subject Number
+
+4. SCAN. Start Date/Time of Procedure
+
+5. SCAN. Findings/Results
+
+6. CTO. Date of assessment
+
+7. CTO. Cystoscopy Result
+
+8. LSNBC. Lesion Number
+
+9. LSNBC. Date of Lesion Evaluation
+
+10. If Logic 1 is satisfied please display "Scenario 1", if Logic 2 is satisfied please display "Scenario 2", If Logic 3 is satisfied please display "Scenario 3", if Logic 4 is satisfied please display "Scenario 4"

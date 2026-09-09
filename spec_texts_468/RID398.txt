@@ -1,0 +1,197 @@
+Report ID: RID398
+
+Report Title:
+Missing New Therapy During PFS2 Follow-up
+
+Description:
+This report lists subjects with missing or inconsistent other therapy information between PFS2 and oncologic therapies eCRFs.
+
+Column Heading:
+For Table 1:
+
+1. Country
+
+2. Site
+
+3. Subject number
+
+4. Visitmnemonic
+
+5. PFS2 seq. #
+
+6. Date of PFS2 (Progression/Recurrence Following Start of New Anti-Cancer Therapy Following Study Treatment Discontinuation)
+
+7. PFS2 answer
+
+For Table 2:
+
+1. Country
+
+2. Site
+
+3. Subject number
+
+4. Visitmnemonic
+
+5. PFS2 seq. #
+
+6. Date of PFS2 (Progression/Recurrence Following Start of New Anti-Cancer Therapy Following Study Treatment Discontinuation)
+
+7. PFS2 answer
+
+8. Form name of other therapy
+
+9. Seq# for other therapy
+
+10. Start Date of other therapy
+
+Logic:
+Logic 1:
+
+PFS2.[Date of PFS2] = minimum PFS2.[Date of PFS2]
+
+AND
+
+PFS2.[Indicate] = 'YES'
+
+AND
+
+there is not at least one entry in the corresponding ODBF/ORAD2/OSOF/OPROC with start date before or equal (<=) to PFS2.[Date of PFS2].
+
+OR
+
+Logic 2:
+
+PFS2.[Indicate] = 'YES'
+
+AND PFS2.[Date of PFS2] <> the minimum PFS2.[Date of PFS2]
+
+AND there is not at least one ODBF/ORAD2/OSOF/OPROC with start date after (>) the previous PFS2.[Date of PFS2]
+
+AND before or equal (<=) to the current PFS2.[Date of PFS2].
+
+Logic 3:
+
+PFS2.[Date of PFS2] = minimum PFS2.[Date of PFS2]
+
+AND
+
+PFS2.[Indicate] = 'NO'
+
+AND there is at least one entry in the corresponding ODBF/ORAD2/OSOF/OPROC with start date before or equal (<=) to PFS2.[Date of PFS2].
+
+OR
+
+Logic 4: PFS2.[Indicate] = 'NO'
+
+AND PFS2.[Date of PFS2] <> the minimum PFS2.[Date of PFS2]
+
+AND there is at least one entry in the corresponding ODBF/ORAD2/OSOF/OPROC with start date after (>) the previous PFS2.[Date of PFS2]
+
+AND before or equal (<=) to the current PFS2.[Date of PFS2].
+
+Note 1: Please exclude deleted records and erroneous visits from programming.
+
+Note 2: The report will use master supporting documents ODBF_supp_doc, OSOF_supp_doc and SM_supp_doc. These supporting documents should be uploaded only once at TA level per the GDO Oncology TAST authorized members and will be used to facilitate programming of the report. Report builder will use all the columns provided in the excel spreadsheet to create the programming code.
+
+Note 3: The distribution of items are as follows:
+
+"START DATE", "START DATE AND TIME LAST DOSE ADMINISTERED/RECEIVED", "DATE/TIME PREPARED" , "LAST DOSE" belong to SM_supp_doc;
+
+"IMPUTED START DATE OF REGIMEN", "IMPUTED START DATE OF MEDICATION" belong to ODBF_supp_doc;
+
+"DATE OF SURGERY" belong to OSOF_supp_doc.
+
+Note 4: For ORAD2, please use ORAD2."START DATE".
+
+Note 5: For ODBF, if both of "IMPUTED START DATE OF REGIMEN" and "IMPUTED START DATE OF MEDICATION" exist, please use "IMPUTED START DATE OF REGIMEN".
+
+Note 6: For PFS2, PFS2.[Indicate] refers to PFS2. " Has Subject Received A New Anti-Cancer Therapy, such as surgery, radiation, drugs and/or biologics, since the Last Visit/Phone Contact?", "Has the Subject Received Any New Oncologic Drugs or Biologics as Part of the Treatment Regimen?", "Has the Subject Received Any New Oncologic Radiation as Part of the Treatment Regimen?", "Has the Subject Received Any New Oncologic Procedures as Part of the Treatment Regimen?", "Has the Subject Had Any New Oncologic Surgery as Part of the Treatment Regimen?".
+
+Note 7: Time can be ignored for the comparison.
+
+Note 8: If there is UNK Date, please use: first day of each month if day is UNK, first month of each year if month is UNK.
+
+Note 9: Previous PFS2 contact is defined as the previous PFS2 entries entry based on dates.
+
+Note 10: Please exclude the corresponding ONCOLOGIC form records from programming if ODBF."IMPUTED START DATE OF REGIMEN ", "IMPUTED START DATE OF MEDICATION" OR ORAD2. "START DATE" OR OSOF. "DATE OF SURGERY" OR OPROC. "PROCEDURE START DATE" < max SM."START DATE"/"START DATE AND TIME LAST DOSE ADMINISTERED/RECEIVED"/"DATE/TIME PREPARED" with Last Dose is checked.
+
+Note 11: The following items in PFS2 are going to be compared with the corresponding eCRF as follows:
+
+ORAD2/OSOF/ODBF with PFS2.Has Subject Received A New Anti-Cancer Therapy, such as surgery, radiation, drugs and/or biologics, since the Last Visit/Phone Contact?
+
+ODBF with PFS2.Has the Subject Received Any New Oncologic Drugs or Biologics as Part of the Treatment Regimen?
+
+ORAD2 with PFS2.Has the Subject Received Any New Oncologic Radiation as Part of the Treatment Regimen?
+
+OPROC with PFS2.Has the Subject Received Any New Oncologic Procedures as Part of the Treatment Regimen?
+
+OSOF with PFS2.Has the Subject Had Any New Oncologic Surgery as Part of the Treatment Regimen?
+
+Report Scenarios:
+Scenario 1:
+
+A-Yes
+
+Subjects who have (Has the Subject Received Any New Oncologic Drugs or Biologics as Part of the Treatment Regimen? OR Has the Subject Received Any New Oncologic Radiation as Part of the Treatment Regimen? OR Has the Subject Received Any New Oncologic Procedures as Part of the Treatment Regimen? OR Has the Subject Had Any New Oncologic Surgery as Part of the Treatment Regimen?) equal to Yes in the minimum PFS2 eCRF but have no entries in the ODBF eCRF, ORAD2 eCRF, OSOF eCRF or OPROC eCRF with start date before or equal the minimum PFS2 contact.
+
+B-Yes
+
+Subjects who have (Has the Subject Received Any New Oncologic Drugs or Biologics as Part of the Treatment Regimen? OR Has the Subject Received Any New Oncologic Radiation as Part of the Treatment Regimen? OR Has the Subject Received Any New Oncologic Procedures as Part of the Treatment Regimen? OR Has the Subject Had Any New Oncologic Surgery as Part of the Treatment Regimen?) equal to Yes in the current PFS2 eCRF but have no entries in ODBF eCRF, ORAD2 eCRF, OSOF eCRF or OPROC eCRF with start date before or equal the current PFS2 contact.
+
+Scenario 2:
+
+C-Yes
+
+Subjects who have (Has the Subject Received Any New Oncologic Drugs or Biologics as Part of the Treatment Regimen? OR Has the Subject Received Any New Oncologic Radiation as Part of the Treatment Regimen? OR Has the Subject Received Any New Oncologic Procedures as Part of the Treatment Regimen? OR Has the Subject Had Any New Oncologic Surgery as Part of the Treatment Regimen?) equal to No in the minimum PFS2 eCRF but have one or more entries in the ODBF eCRF, ORAD2 eCRF, OSOF eCRF or OPROC eCRF with start date before or equal the minimum PFS2 contact.
+
+D-Yes
+
+Subjects who have (Has the Subject Received Any New Oncologic Drugs or Biologics as Part of the Treatment Regimen? OR Has the Subject Received Any New Oncologic Radiation as Part of the Treatment Regimen? OR Has the Subject Received Any New Oncologic Procedures as Part of the Treatment Regimen? OR Has the Subject Had Any New Oncologic Surgery as Part of the Treatment Regimen?) equal to No in the current PFS2 eCRF but have one or more entries in the ODBF eCRF, ORAD2 eCRF, OSOF eCRF or OPROC eCRF with start date before or equal the current PFS2 contact.
+
+E – No: Correct data entry
+
+Sorting:
+Country, Site Number, Subject Number
+
+Parameter Selection:
+Country, First Site, Last Site, First Subject, Last Subject, List of Subjects.
+
+Form.Item Names:
+For Table 1:
+
+1. SA.Country
+
+2. SA.Site
+
+3. SA.Subject number
+
+4. Visit.Visitmnemonic
+
+5. PFS2.Formidx
+
+6.PFS2.Date of PFS2 (Progression/Recurrence Following Start of New Anti-Cancer Therapy Following Study Treatment Discontinuation)
+
+7. PFS2.Has the Subject Received Any New Oncologic Drugs or Biologics as Part of the Treatment Regimen?/Has the Subject Received Any New Oncologic Radiation as Part of the Treatment Regimen?/Has the Subject Received Any New Oncologic Procedures as Part of the Treatment Regimen?/Has the Subject Had Any New Oncologic Surgery as Part of the Treatment Regimen?
+
+For Table 2:
+
+1. SA.Country
+
+2. SA.Site
+
+3. SA.Subject number
+
+4. Visit.Visitmnemonic
+
+5. PFS2.Formidx
+
+6.PFS2.Date of PFS2 (Progression/Recurrence Following Start of New Anti-Cancer Therapy Following Study Treatment Discontinuation)
+
+7. PFS2.Has the Subject Received Any New Oncologic Drugs or Biologics as Part of the Treatment Regimen?/Has the Subject Received Any New Oncologic Radiation as Part of the Treatment Regimen?/Has the Subject Received Any New Oncologic Procedures as Part of the Treatment Regimen?/Has the Subject Had Any New Oncologic Surgery as Part of the Treatment Regimen?
+
+8. Form name of other therapy
+
+9. Seq# for other therapy
+
+10. Start Date of other therapy

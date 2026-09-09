@@ -1,0 +1,123 @@
+Report ID: RID435
+
+Report Title:
+Reconciliation of total volume administered, dose amount and number of lesions injected for intratumoral studies
+
+Description:
+This report will list SM entries where the total Volume Administered, Dose Amount or the total number of lesions injected within the same Study Period are not within the range defined by the protocol
+
+Column Heading:
+1. Country
+
+2. Site
+
+3. Subject Number
+
+4. SM Form
+
+5. Label Description
+
+6. Study Period
+
+7. Total dose
+
+8. Number of injected lesions
+
+9. Scenario
+
+Logic:
+Logic 1
+
+The sum of ‘Dose item’ in the ‘SM form’ for all entries with the same ‘Label Description’ and the same Study Period < ‘Min dose’
+
+OR
+
+The sum of ‘Dose item’ in the ‘SM form’ for all entries with the same ‘Label Description’ and the same Study Period > ‘Max dose’
+
+Logic 2
+
+The number of entries in the ‘SM form’ with the same ‘Label Description’ and the same Study Period > ‘Min number of lesions’
+
+OR
+
+The number of entries in the ‘SM form’ with the same ‘Label Description’ and the same Study Period > ‘Max number of lesions’
+
+Notes:
+
+1. ‘SM form’, ‘Label Description’, ‘Dose item’, ‘Min dose’, ‘Max dose’, ‘Min number of lesions’, ‘Max number of lesions’ are items provided in the supporting doc
+
+2. Do not produce output for deleted entries
+
+Requires supporting document to be named ONC_SM_XX_supp_<xxxxxxx>.csv and will contain the following columns and associated content:
+
+1) Criteria Form - specified as NA if logic is applicable for all subjects
+
+2) Criteria Itemquestion - specified as NA if logic is applicable for all subjects
+
+3) Criteria Value - specified as NA if logic is applicable for all subjects
+
+4) SM form – enter SM/SMAU/SMAB depending on study design
+
+5) Label Description – enter Label Description for the SM that is administered directly into the lesion
+
+6) Dose item – provide the item name that captures the volume/dosage to be included in Scenario 1
+
+7) Min dose – provide the min volume/dosage allowed per protocol
+
+8) Max dose – provide the max volume/dosage allowed per protocol
+
+9) Min number of lesions – provide the min number of lesions that can be injected within the same visit
+
+10) Max number of lesions – provide the max number of lesions that can be injected within the same visit
+
+e.g.
+
+SR, Arm, Arm 1, SM, V937, Dose Amount, 0.5, 4, 1, 5
+
+SR, Arm, Arm 2, SM, V937, Dose Amount, 1, 4, 1, 5
+
+Report Scenarios:
+Scenario A, output: N
+
+The total dose and number of injected lesions is within the range defined in the supp doc
+
+Scenario B, output: Y
+
+The total dose is not within the range defined in the supp doc
+
+Scenario C, output: Y
+
+The number of injected lesions is not within the range defined in the supp doc
+
+Scenario D, output: N
+
+The Label Description is not matching the supp doc
+
+Scenario E, output: N
+
+The subject does not match the Criteria Value as per supp doc
+
+Sorting:
+Country, Site, Subject Number, Study Period
+
+Parameter Selection:
+Country, First Site, Last Site, First Subject, Last Subject, List of Subjects, Randomized Only, Supporting Doc Page (N/Y, Default as N)
+
+Form.Item Names:
+1. SA.Site Country
+
+2. SA.Site Mnemonic
+
+3. Subjects.Subject Number
+
+4. Study Medication Form
+
+5. SM.Label Description or SMAU/SMAB.Dose Number
+
+6. Study Medication Form.Study Period
+
+7. Display sum of ‘Dose item’ in the ‘SM form’ for all entries with the same ‘Label Description’ and the same Study Period
+
+8. Display the number entries in the ‘SM form’ for all entries with the same ‘Label Description’ and the same Study Period
+
+9. Display ‘Scenario 1’ for Logic 1; display ‘Scenario 2’ for Logic 2

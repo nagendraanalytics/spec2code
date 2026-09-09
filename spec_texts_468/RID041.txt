@@ -1,0 +1,143 @@
+Report ID: RID041
+
+Report Title:
+Missing Required Items in CM
+
+Description:
+This report displays subjects who have missing required items in CM eCRF.
+
+This report can also be used to only display subjects who have missing required items in CM for all medications taken within +/- 14 days of onset of a Serious AE/ECI.
+
+Column Heading:
+1. Country
+
+2. Site
+
+3. Subject Number
+
+4. Standardized Medication Name or Encoded Drug Name or Medication Class
+
+5. CM Seq
+
+6. CM Start Date
+
+7. CM Stop Date
+
+8. SAE/ECI Seq
+
+9. SAE/ECI Onset Date
+
+Logic:
+1. Report should display subjects with missing required items in the CM module selected from an item list parameter.
+
+The report should display a parameter selection list box "Missing CM Required Items" with the following values:
+
+Reason for Therapy, Total Daily Dose and Units, Dose Form, Route of Administration, Dosage Strength, Frequency of Administration
+
+Lists of Standardized Medication Name, Encoded Drug Name and Medication Class from the study's database should be available as parameter selections. The report should display missing items for only those medications selected from the list.
+
+2. Report should display subjects with all missing required items listed above in the CM module  for all medications taken within +/- 14 days of an SAE Onset Date. A parameter selection checkbox named "CM taken within 14 days of SAE/ECI" should be available for a user to select this check.
+
+The report should specifically check if:
+
+• CM start date is within +/- 14 days of SAE/ECI onset date
+
+• CM start date is more than 14 days prior to SAE/ECI onset date and
+
+CM stop date is selected as Continuing or CM stop date is > -14 days of SAE/ECI
+
+onset date.
+
+An AE record is considered an SAE if any of the 8 serious AE criteria is
+
+marked Yes or ECI is marked Y.
+
+Report should not display deleted records.
+
+If "Randomized only" parameter selection checkbox  is checked, the report should
+
+only output subjects with Randomization number that is not null.
+
+If 'If output items completed with a bubble comment of Not Done/Not Applicable/Unknown?' parameter selection was selected as No, the report should only output items that completed, not completed using comment bubble.
+
+For study without item 'Medication Category‘, parameter 'Medication Category‘ should be left blank
+
+Report Scenarios:
+1. Report should display subjects with missing required items in the CM module selected from an item list parameter.
+
+The report should display a parameter selection list box "Missing CM Required Items" with the following values:
+
+Reason for Therapy, Total Daily Dose and Units, Dose Form, Route of Administration, Dosage Strength, Frequency of Administration
+
+Lists of Medication Category, Standardized Medication Name, Encoded Drug Name and Medication Class from the study's database should be available as parameter selections. The report should display missing items for only those medications selected from the list.
+
+2. Report should display subjects with all missing required items listed above in the CM module  for all medications taken within +/- 14 days of an SAE Onset Date. A parameter selection checkbox named "CM taken within 14 days of SAE/ECI" should be available for a user to select this check.
+
+The report should specifically check if:
+
+• CM start date is within +/- 14 days of SAE/ECI onset date
+
+• CM start date is more than 14 days prior to SAE/ECI onset date and
+
+CM stop date is selected as Continuing or CM stop date is > -14 days of SAE/ECI
+
+onset date.
+
+An AE record is considered an SAE if any of the 8 serious AE criteria is
+
+marked Yes or ECI is marked Y.
+
+Report should not display deleted records.
+
+If "Randomized only" parameter selection checkbox  is checked, the report should
+
+only output subjects with Randomization number that is not null.
+
+If 'If output items completed with a bubble comment of Not Done/Not Applicable/Unknown?' parameter selection was selected as No, the report should only output items that completed, not completed using comment bubble.
+
+For study without item 'Medication Category‘, parameter 'Medication Category‘ should be left blank
+
+Sorting:
+Country, Site,
+
+Subject Number,
+
+CM Seq
+
+Parameter Selection:
+Country,
+
+Site,
+
+Subject Number,
+
+CM Missing Required Item (List),
+
+Medication Category
+
+Standardized Medication Name, Encoded Drug Name, Medication Class,
+
+CM Taken Within +/- 14 days of SAE/ECI (Checkbox),
+
+Randomized Only
+
+If output items completed with a bubble comment of Not Done/Not Applicable/Unknown? (Yes/No)
+
+Form.Item Names:
+1. Subject Assignment.Site Country
+
+2. Subject Assignment.Site Mnemonic
+
+3. Subject Assignment.Subject Number
+
+4. PRIOR CONCOMITANT MEDICATION Form.Encoded Drug Name
+
+5. PRIOR CONCOMITANT MEDICATION Form.Sequence Number
+
+6. PRIOR CONCOMITANT MEDICATION Form.Date ~ Start Date and Time
+
+7. PRIOR CONCOMITANT MEDICATION Form.Date ~ CMENDTCDT ~ Stop Date and Time
+
+8. Adverse Events Form.Sequence Number
+
+9. Adverse Events Form.Onset Date

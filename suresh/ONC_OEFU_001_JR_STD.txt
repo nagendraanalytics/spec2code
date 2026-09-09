@@ -1,0 +1,133 @@
+Report ID: ONC_OEFU_001_JR_STD
+Title: Missing OEFU and OEDRA during follow up phase when Progressive Disease is reported in the response form.
+
+Forms / Items:
+1. SA.Site Country
+2. SA.Site Mnemonic
+3. SA.Subject Number
+4. [ONCOLOGIC RESPONSE FORMS]/ORAJ that meet Logic 1
+5. [ONCOLOGIC RESPONSE FORMS]/ORAJ.SPONSOR ID NUMBER
+6. [ONCOLOGIC RESPONSE FORM].DATE RESPONSE DETERMINED/ ORAJ.Date of Assessment (Scan/Image/Physica Exam)
+7. [ONCOLOGIC RESPONSE FORM].OVERALL RESPONSE/RESPONSE/HEMATOLOGIC RESPONSE/OVERALL IRECIST RESPONSE/OVERALL RECIST RESPONSE/OVERALL IRRECIST RESPONSE/PET OR RECURRENCE SEEN (according to Logic 1 and Note #5)
+8. [PMS Form] according to Logic 2 and Note #4
+9. [PMS Form].Visit mnemonic
+10. [PMS Form].Date of Assessment
+11. Display "OEFU" or "OEDRA" according to which logic is met (Logic 3.1 or Logic 3.2)
+
+Description:
+This report will output subjects who have Progressive Disease in the lesion response form during follow up phase but no OEFU/OEDRA is provided.
+
+Logic:
+Logic 1: There is at least one [ONCOLOGIC RESPONSE FORM].OVERALL RESPONSE/RESPONSE/HEMATOLOGIC RESPONSE/OVERALL IRECIST RESPONSE/OVERALL RECIST RESPONSE/OVERALL IRRECIST RESPONSE/PET RESPONSE = "Progressive Disease" or "iCPD" or "irProgressive Disease" OR ORAJ.Disease Recurrence Indicator = "Yes"
+
+AND
+
+Logic 2: There is at least one [PMS Form]. Date of Assessment < [ONCOLOGIC RESPONSE FORM].DATE RESPONSE DETERMINED/ ORAJ.Date of Assessment (Scan/Image/Physica Exam) with
+[PMS form].Select the Status of the Subject for the Next Trial Segment = [Status for Next Trial Segment]
+
+AND
+
+Logic 3 {
+Logic 3.1: (There is NO at least one OEFU.Date of Assessment <> NULL with
+OEFU.Date of Assessment >= [ONCOLOGIC RESPONSE FORM].DATE RESPONSE DETERMINED/ ORAJ. Date of Assessment (Scan/Image/Physica Exam))
+
+OR
+Logic 3.2 (There is at least one OEFU.Date of Assessment <> NULL AND
+OEFU.Date of Assessment >= [ONCOLOGIC RESPONSE FORM].DATE RESPONSE DETERMINED/ ORAJ. Date of Assessment (Scan/Image/Physica Exam) AND
+OEFU.Select the Status of the Subject for the Next Trial Segment = "Continuing into Survival Follow-up Phase" OR "Not Continuing into Any Trial Segments"
+
+AND
+
+There is NO at least one OEDRA.Date of Assessment <> NULL with
+OEDRA.Date of Assessment >= [ONCOLOGIC RESPONSE FORM].DATE RESPONSE DETERMINED/ ORAJ. Date of Assessment (Scan/Image/Physica Exam) )
+}
+
+NOTES:
+1. Erroneous visit or deleted record will not be considered in the programming or output.
+
+2. [ONCOLOGIC RESPONSE FORMS] are defined in the RSP_supp_doc.csv as well as the items mentioned in the logic for RSP forms, except, for ORAJ
+
+3. If protocol have more than one [ONCOLOGIC RESPONSE FORMS] and at least one of the forms meets the criteria output is expected. If "RSP Form" parameter selection is leaving blank, report should work with the [ONCOLOGIC RESPONSE FORMS] that is present in the study and matches with the forms defined in the RSP_supp_doc.csv
+
+4. [PMS Form] and [Status for Next Trial Segment] are parameters that will be provided in the supporting document to be named ONC_OEFU_001_supp_<MKxxxxxxx>.csv
+
+5. For column 7, If ORAJ. Disease Recurrence Indicator = YES, please complete that column as "RECURRENCE SEEN"
+
+6. Requires supporting document to be named ONC_OEFU_001_supp_<MKxxxxxxx>.csv and will contain the following columns and associated content:
+1. row for each Treatment Phase Order, PMS Form, Status for Next Trial Segment
+
+1. Treatment Phase Order (match with treatment phase, not allow blank. ie. if treatment phase is cycle 1 group should be 1)
+2. PMS Form - PMS1 or PMST form that should be considered to indicate the beginning of the Follow up phase
+3. Status for Next Trial Segment - Enter Status of the Subject for the Next Trial Segment from PMS1/PMST that should be considered
+E.g.
+Treatment phase Order, PMS Form, Status for Next Trial Segment
+1, PMS1, Continuing Into Safety Follow-up Phase
+1, PMS1, Continuing Into Follow-up Phase
+2, PMS1, Continuing Into Efficacy Follow-up Phase
+1, PMS1, Continuing Into Safety Follow-up Phase
+2, PMS1, Continuing Into Follow-up Phase
+1, PMS1, Continuing Into Efficacy Follow-up Phase
+
+The number of rows in the supporting document will be represented in the Report Header as "# of rows for customization".
+The actual information provided by the supporting doc can be outputted by selecting Y in the parameter "Supporting doc Page".
+
+7. Requires supporting document study_phase_supp_<MKxxxxxxx>.csv and will contain the following columns and associated content:
+This supporting document should be use if more study has two or more phases:
+1. Phase Order
+2. Treatment Phase
+3. First Visitmnemonic of Treatment Phase
+ e.g.
+1, Initial Treatment Phase, Cycle 1
+2, Second Course Phase, Cycle 1 Course 2
+3, Crossover Phase, Crossover Cycle 1
+
+The report logic should be checked within the same treatment phase defined in the supporting document.
+For example, if user provides two Treatment Phases in supporting document like below:
+Phase Order, Treatment phase, First Visitmnemonic of Treatment Phase
+1,Initial Treatment Phase,Cycle 1
+2,Second Course Phase,Second Course Cycle 1
+The treatment phase will be identified as following:
+Initial Treatment Phase: Cycle 1 <= Form.Date < Second Course Cycle 1
+Second Course Phase: Second Course Cycle 1 <= Form.Date
+
+The actual information provided by the supporting doc can be outputted by selecting Y in the parameter "Study Phase Match Page".
+This supporting document is required to be created once per trial. If it was already created and uploaded, there is no need to duplicate it.
+
+Prompts (runtime parameters):
+Country, First Site, Last Site, First Subject, Last Subject, List of Subjects, Supporting Doc Page (N/Y, Default as N) (If supporting doc is needed for the report, Study Phase Page (N/Y, Default as N), Oncologic Response Forms (required, please separate by comma)
+
+Column Headings:
+1. Country
+2. Site
+3. Subject Number
+4. Response Form
+5. Seq ID
+6. Date Response Determined
+7. Overall Response
+8. PMS Form
+9. PMS Visit
+10. PMS Date
+11. Missing Form
+
+Sorting:
+Country, Site, Subject Number
+
+Report Scenarios:
+Output - Yes
+When the Logic described in LOGIC Section is met
+Output - No
+When the Logic described in LOGIC Section is NOT met
+Output - No
+Erroneous Visit and deleted records
+
+Revision History:
+Version 1 - Initial version
+Version 2 - Code update to fix code execute error when response forms have two response session
+Version 3 - Update in Logic and Prompt usage
+Version 4 - RSP Master Supporting document added. OEDRA added for Scenario 1. Scenario 2 removed. PMS form removed from Parameter Selection options. Parameter Selection updated.
+
+UAT Docs Location:
+Retired
+
+Test Case Docs:
+Retired

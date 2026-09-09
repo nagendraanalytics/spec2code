@@ -1,0 +1,215 @@
+Report ID: RID381
+
+Report Title:
+Incorrect Non Target/New lesion
+
+Description:
+Incorrect Enhancing Non Target Lesion Response and/or New Lesions Since Last Evaluation
+
+Column Heading:
+Table 1:
+
+1. Country
+
+2. Site
+
+3. Subject Number
+
+4. LSNRN Seq#
+
+5. Date of Lesion Evaluation
+
+6. Was lesion evaluable?
+
+7. Enhancing Non-Target or Non-Enhancing Non-Target Lesion Status
+
+8. ORRN Seq#
+
+9. Date Response
+
+10. Enhancing Non Target Lesion Response
+
+11. Expected RANO Response
+
+12. Scenario
+
+Table 2:
+
+1.Country
+
+2.Site
+
+ 3.Subject Number
+
+4.Response form
+
+5. ORRN Seq#
+
+6.Date Response Determined
+
+7.Lesion Evaluation form
+
+8. LSNRN Seq#
+
+9.Lesion Evaluation Date of assessment
+
+10.Scenario
+
+Logic:
+Table 1:
+
+{[Logic 1: RSP. DATE RESPONSE DETERMINED is not NULL
+
+AND
+
+Logic 2.1: LSNRN.‘Date of Lesion Evaluation' match with RSP. DATE RESPONSE DETERMINED      AND
+
+Logic 2.2: LSNRN.‘Date of Lesion Evaluation' <> LSNRN.’Date of Assessment’
+
+AND
+
+Logic 3: LSNRN.'Lesion Identification'="Enhancing Non-Target" OR "Non-Enhancing Non-Target"]
+
+OR
+
+[Logic 4: RSP. DATE RESPONSE DETERMINED is not NULL
+
+AND
+
+Logic 5: No LSNRN.‘Date of Lesion Evaluation' match with RSP. DATE RESPONSE DETERMINED   AND
+
+Logic 6: LSNRN record in logic 5 has LSNRN.'Lesion Identification'="Enhancing Non-Target" OR "Non-Enhancing Non-Target"]}
+
+AND
+
+Logic 7: RSP. ENHANCING NON TARGET LESION RESPONSE <> ‘RANO Expected Response’
+
+Table 2:
+
+(Logic 1: RSP. NEW LESIONS SINCE LAST EVALUATION =“Yes”
+
+AND
+
+(Logic 2: No LSNRN.'Date of Assessment' equal to RSP. DATE RESPONSE DETERMINED from Logic 1 AND with LSNRN.'Lesion Identification'=”New”))
+
+OR
+
+(Logic 3: LSNRN.'Lesion Identification'=”New”
+
+AND
+
+(Logic 4: No RSP. NEW LESIONS SINCE LAST EVALUATION =“Yes”
+
+AND with RSP. DATE RESPONSE DETERMINED equal to LSNRN.'Date of Assessment' from Logic 3))
+
+Notes:
+
+1. For Table 1 disregard deleted records
+
+2. For Table 2 display columns 7, 8, 9 in blank for Logic 1 and 2 and columns 4, 5, 6 in blank for Logic 3 and 4.
+
+3. For Table 2 there should be an output when the form is not initialized
+
+4. The report will use master supporting document RSP_supp_doc. Report builder will use all the columns provided in the excel spreadsheet to create the programming code. RSP refers to the forms included in the RSP_supp_doc.
+
+Report Scenarios:
+Table 1:
+
+A= YES:  RSP. ENHANCING NON TARGET LESION RESPONSE on the response form (ORRN) entered incorrectly in comparison to Enhancing Non-Target or Non-Enhancing Non-Target record in the lesion evaluation form (LSNRN) for the same date.
+
+B=Yes: There is completed RSP. ENHANCING NON TARGET LESION RESPONSE on the response form (ORRN) which has no corresponding LSNRN record
+
+C=No: Deleted record
+
+Table 2:
+
+D= YES: New Lesions Since Last Evaluation item is “Yes” on the response form (ORRN) and there is not a new lesion record in the lesion evaluation form (LSNRN) for the same date.
+
+E= YES: There is a new lesion on lesion evaluation form (LSNRN) and response form (ORRN) on the same date does not have New Lesions Since Last Evaluation item as “Yes”.
+
+F= NO: New Lesions Since Last Evaluation item is “Yes” in the response form (ORRN) but there is at least one lesion record on the same date for a new lesion in the lesion evaluation form (LSNRN).
+
+G= NO: There is a new lesion on lesion evaluation form (LSNRN) and response form (ORRN) on the same date has New Lesions Since Last Evaluation item as “Yes”.
+
+Sorting:
+Table 1:
+
+Country, Site, Subject Number, Date Response (ORRN) OR Date of Lesion Evaluation (LSNRN).
+
+If some rows of output have both ORRN date and LSNRN date, consider sort by LSNRN date first then ORRN date
+
+Table 2:
+
+Country, Site Number, Subject Number, ORRN Seq #
+
+Parameter Selection:
+Country, First Site, Last Site, First Subject, Last Subject, List of Subjects, Randomized Only (N/Y, default as N)
+
+Form.Item Names:
+Table 1:
+
+1. SA Form. Site Country
+
+2. SA Form. Site Mnemonic
+
+3. SA Form. Subject Number
+
+4. LSNRN. Associated Lesion Number (if there are more than one Lesion number for each Lesion Identification, display them all and joined by commas.)
+
+5. LSNRN. Date of Lesion Evaluation
+
+6. LSNRN. Was the Lesion Evaluable? (display in one row for all lesions with the same Identification and Date, separated by commas. Display as “Y=<total number as Yes>” and “N=<total number as No>”
+
+7. Display the value of “Enhancing Non-Target or Non-Enhancing Non-Target Lesion Status”.
+
+Should display as below format:
+
+“Absent=<total number>” , “Present=<total number>”, “Worsening=<total number>” OR “Not Evaluable=<total number with item Was the Lesion Evaluable? as No>”  in sequence. If there are multiple status, display them all in this column separated by commas.
+
+8. ORRN. Sponsor ID Number
+
+9. RSP. DATE RESPONSE DETERMINED
+
+10. Display the value of  RSP. ENHANCING NON TARGET LESION RESPONSE
+
+11. Display “Progressive Disease” if at least one lesion has “LSNRN. Enhancing Non-Target or Non-Enhancing Non-Target Lesion Status” as ‘Worsening’.
+
+Display "Complete Response" if ALL lesions have Enhancing Non-Target or Non-Enhancing Non-Target Lesion Status as Absent.
+
+Display “Not evaluable” if criteria for “Progressive Disease” are not met AND on column 6 there is at least one lesion as No
+
+Display “Not Applicable” if there are no lesions with Lesion Identification "Enhancing Non-Target" or "Non-Enhancing Non-Target"
+
+Display "Stable Disease" if there is at least one LSNRN. Enhancing Non-Target or Non-Enhancing Non-Target Lesion Status = PRESENT.
+
+Otherwise leave blank
+
+12. Display Scenario 1
+
+Notes:
+
+Note 1:  If there is not matching LSNRN form for a ORRN record display column 4 to 7 blank.
+
+Note 2: Previous ORRN record would be the immediate previous according to dates.
+
+Table 2:
+
+1. SA.Country
+
+2. SA.Site Mnemonic
+
+3. SA.Subject Number
+
+4.ORRN
+
+5. ORRN. Sponsor ID Number
+
+6. RSP. DATE RESPONSE DETERMINED
+
+7. LSNRN
+
+8. LSNRN. Lesion Number
+
+9. LSNRN. Date of Assessment
+
+10.Display Scenario 2

@@ -1,0 +1,101 @@
+Report ID: RID426
+
+Report Title:
+Mismatches between DS01 and SFU
+
+Description:
+This report lists subjects with missing DS01 status after specific protocol timelines from the last dose or inconsistent DS01 status.
+
+Column Heading:
+1. Country
+
+2. Site
+
+3. Subject Number
+
+4. Status of the Subject
+
+5. Date of Last Dose
+
+6. SFU Count
+
+7. Error Message
+
+Logic:
+Logic 1:
+
+DS01. Select the Status of the Subject for the Study = Null AND System date >= Date of Last Dose + X Months.
+
+Note: Date of Last Dose should be obtained based on the SM forms present for the study. If Using SM/SMAU/SMAB Date of Last dose corresponds to the maximum Start Date/Time of the SM records where the "Please Indicate if this is the Last Dose for this Label Description" field is checked.
+
+X should be obtained from parameter "Period in Months", by default set as 24
+
+Logic 2:
+
+DS01. Select the Status of the Subject for the Study <> Completed AND the total of entries in SFU = Y
+
+Logic 3:
+
+DS01. Select the Status of the Subject for the Study = Completed AND the total of entries in SFU <> Y
+
+Y should be obtained from parameter "Number of SFUs", by default set as 8
+
+Note1: Deleted records or data in Erroneous visits should not be considered.
+
+Note2: Time should be ignored.
+
+Note3: A valid entry for SFU is those that have Date of contact or last attempt of contact and Survival Status items completed with in the form.
+
+Report Scenarios:
+A-Yes
+
+DS01. Select the Status of the Subject for the Study = Null AND System date >= Date of Last Dose + X Months.
+
+B-No
+
+DS01. Select the Status of the Subject for the Study = Null AND System date < Date of Last Dose + X Months
+
+C-No
+
+DS01. Select the Status of the Subject for the Study <> Null
+
+D-Yes
+
+DS01. Select the Status of the Subject for the Study <> Completed AND the total of entries in SFU = Y
+
+E-No
+
+DS01. Select the Status of the Subject for the Study <> Completed AND the total of entries in SFU <> Y
+
+F-Yes
+
+DS01. Select the Status of the Subject for the Study = Completed AND the total of entries in SFU <> Y
+
+G-No
+
+DS01. Select the Status of the Subject for the Study = Completed AND the total of entries in SFU = Y
+
+H-No
+
+Deleted record or Erroneous Visit
+
+Sorting:
+Country, Site Number, Subject Number
+
+Parameter Selection:
+Country, Site Number, Subject Number, Period in Months, Number of SFUs
+
+Form.Item Names:
+1. SA.Country
+
+2. SA.Site
+
+3. SA.Subject Number
+
+4. DS01.Select the Status of the Subject for the Study
+
+5. SM/SMAU/SMAB.Start Date/Time where the "Please Indicate if this is the Last Dose for this Label Description" field is checked.
+
+6. Count of SFUs entries.
+
+7. If Logic 1 is met, display "Scenario 1". If Logic 2 is met, display "Scenario 2a". If Logic 3 is met, display "Scenario 2b".

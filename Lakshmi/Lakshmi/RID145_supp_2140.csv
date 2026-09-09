@@ -1,0 +1,11 @@
+Criteria Form,Criteria Item,Criteria Value,Phase Order,Minimal start timepoint,Group,Type of Image,Anatomical Location,Frequency,Lower window of days,Upper window of days,Next Trial Segment from PMS1,End of Response eCRF,Start Week,Stop Week,Oncologic Treatment,Oncologic Radiation,Oncologic Surgery,Permitted Window,Scenario
+NA,NA,NA,1,SR,1,CT Scan,NA,1,28,0,Continuing Into Efficacy Follow-up Phase,OEDRA,1,1,ODBHF,ORAD2,OSOF,28,Scenario 1
+NA,NA,NA,1,SR,1,CT Scan Without Contrast,NA,1,28,0,Continuing Into Efficacy Follow-up Phase,OEDRA,1,1,ODBHF,ORAD2,OSOF,28,Scenario 1
+NA,NA,NA,1,SR,1,Contrast Enhanced CT Scan,NA,1,28,0,Continuing Into Efficacy Follow-up Phase,OEDRA,1,1,ODBHF,ORAD2,OSOF,28,Scenario 1
+NA,NA,NA,1,SR,2,Contrast Enhanced Pet/CT Scan,NA,1,28,0,Continuing Into Efficacy Follow-up Phase,OEDRA,1,1,ODBHF,ORAD2,OSOF,28,Scenario 1
+NA,NA,NA,1,SR,3,PET Scan,NA,1,28,0,Continuing Into Efficacy Follow-up Phase,OEDRA,1,1,ODBHF,ORAD2,OSOF,28,Scenario 1
+NA,NA,NA,1,SR,1,Contrast Enhanced CT Scan,NA,10,7,7,Continuing Into Efficacy Follow-up Phase,OEDRA,7,16,ODBHF,ORAD2,OSOF,NA,Scenario 2
+NA,NA,NA,1,SR,1,CT Scan,NA,10,7,7,Continuing Into Efficacy Follow-up Phase,OEDRA,7,16,ODBHF,ORAD2,OSOF,NA,Scenario 2
+NA,NA,NA,1,SR,1,CT Scan Without Contrast,NA,10,7,7,Continuing Into Efficacy Follow-up Phase,OEDRA,7,16,ODBHF,ORAD2,OSOF,NA,Scenario 2
+NA,NA,NA,1,SR,2,PET Scan,NA,10,7,7,Continuing Into Efficacy Follow-up Phase,OEDRA,7,16,ODBHF,ORAD2,OSOF,NA,Scenario 2
+NA,NA,NA,1,SR,3,Contrast Enhanced Pet/CT Scan,NA,10,7,7,Continuing Into Efficacy Follow-up Phase,OEDRA,7,16,ODBHF,ORAD2,OSOF,NA,Scenario 2

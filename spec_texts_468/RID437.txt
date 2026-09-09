@@ -1,0 +1,221 @@
+Report ID: RID437
+
+Report Title:
+Reconciliation of the 'Reason for Dose Variation of Study Medication' records vs Reduced Actions Taken with Lenvatinib/Placebo
+
+Description:
+Output is produced when Action taken with Lenvatinib/Placebo OR Action taken with Lenvatinib is 'Reduced' and there is no Reason for Dose Variation of Study Medication entered as 'Adverse Event' or 'Toxicity' for the first SM entry of reduced dose
+
+OR
+
+If Reason for Dose Variation is provided as 'Adverse Event' or 'Toxicity' on SM for the first entry of reduced dose and there is no Adverse Event with Action taken with Lenvatinib/Placebo OR Action taken with Lenvatinib completed as 'Reduced'.
+
+Column Heading:
+Table 1 - Missing SM with reason for dose variation
+
+1. Country
+
+2. Site
+
+3. Subject Number
+
+4. AE Seq
+
+5. AE Term
+
+6. AE onset date
+
+7. AE end date
+
+8. Study Medication
+
+9. AE action taken with Study Medication
+
+10. Expected SM Start Date
+
+Table 2 - Reason for dose variation added not at first occurrence of the dose reduction
+
+1. Country
+
+2. Site
+
+3. Subject Number
+
+4. SM eCRF
+
+5. SM Seq
+
+6. Study Medication
+
+7. Start Date/Time
+
+8. SM Dosage
+
+9. Reason for Dose Variation
+
+Table 3 - Missing AE with Action taken of reduced with Lenvatinib/Placebo
+
+1. Country
+
+2. Site
+
+3. Subject Number
+
+4. SM eCRF
+
+5. SM Seq
+
+6. Study Medication
+
+7. Start Date/Time
+
+8. SM Dosage
+
+9. Reason for Dose Variation
+
+10. Acceptable min AE end date
+
+Logic:
+Logic 1:
+
+AE Action taken with Lenvatinib/Placebo OR Action taken with Lenvatinib = Reduced
+
+AND
+
+SM start date is within AE duration (between Onset and End date inclusive) or just after AE is resolved (AE End Date + 1 day). AND SM Dosage item is less than the last chronological Lenvatinib entry
+
+AND
+
+The chronologically first SM record when the unique dose reduction occurred does not have Reason for Dose variation = Adverse Event or Toxicity
+
+Logic 2:
+
+SM Dosage item = one of the allowed dosages per supporting document (and it is not the chronologically first SM record when the unique dose reduction occurred (e.g., from 20 to 14 mg and then again from 14 to 10 mg)
+
+AND
+
+SM Reason for Dose Variation = Adverse Event or Toxicity for records other than the chronologically first SM record when the unique dose reduction occurred (e.g., from 20 to 14 mg and then again from 14 to 10 mg).
+
+Logic 3:
+
+SM Dosage item = one of the allowed dosages per supporting document (the chronologically first SM record when the unique dose reduction occurred (e.g., from 20 to 14 mg and then again from 14 to 10)
+
+AND
+
+SM Reason for Dose Variation = Adverse Event or Toxicity
+
+AND
+
+There is no AE record which duration range (AE onset date – AE end date) is within SM start date (AE end date inclusive) + [1] day with AE Action taken with Lenvatinib/Placebo = Reduced.
+
+Note: if AE End date is ongoing, AE onset date must be equal or before SM start date.
+
+e.g.:
+
+- acceptable scenario is AE start date 2-Jan-2020 and AE End date = 1-Feb-2020 and action taken = reduced; SM Start date = 2-Feb-2020 and dose amount 14 mg
+
+- acceptable scenario is AE start date 2-Jan-2020 and AE End date = 1-Feb-2020 and action taken = reduced; SM Start date = 20-Jan-2020 and dose amount 14 mg
+
+Acceptable scenario is AE start date 2-Jan-2020 and AE End date = 1-Feb-2020 and action taken = reduced; SM Start date = 2-Jan-2020 and dose amount 14 mg
+
+- not acceptable: AE start date 2-Jan-2020 and AE End date = 1-Feb-2020 and action taken = reduced; SM Start date = 3- Feb-2020 and dose amount 14 mg
+
+- not acceptable: AE start date 2-Jan-2020 and AE End date = 1-Feb-2020 and action taken = reduced; SM Start date = 1- Jan-2020 and dose amount 14 mg
+
+Report Scenarios:
+A. YES if AE Action taken with Lenvatinib/Placebo OR Action taken with Lenvatinib = ‘Reduced’ and there is no such SM with Reason for Dose Variation = ‘Adverse Event’ or ‘Toxicity’ from AE Start Date to AE end date (inclusive) or [1] day after AE end date and SM Dosage item is reduced (according to the supporting document allowed reductions) on the first occurrence of the unique dose.
+
+B. YES if Action taken with Lenvatinib/Placebo OR Action taken with Lenvatinib = ‘Reduced’ and there is such SM with Reason for Dose Variation = ‘Adverse Event’ OR ‘Toxicity’ after AE Start Date to AE end date (inclusive) or after AE end date and SM Dosage item is reduced (according to the supporting document allowed reductions) and SM record is chronologically not the first record when unique dose reduction has occurred.
+
+C. YES if SM form Reason for Dose Variation is ‘Adverse Event’ or ‘Toxicity’ and SM Dosage item was reduced (according to the supporting document allowed reductions) and there is no AE with Action taken with Lenvatinib/Placebo OR Action taken with Lenvatinib of ‘Reduced’ within [1] day (inclusive) before the SM Start Date.
+
+D. NO if SM Reason for Dose Variation is ‘Adverse Event’ or ‘Toxicity’ and SM Dosage item is reduced and there is an AE with Action taken with Lenvatinib/Placebo OR Action taken with Lenvatinib of ‘Reduced’ with AE start date equal or > [1] days before the SM Start Date and AE is ongoing
+
+E. NO if SM Reason for Dose Variation is ‘Adverse Event’ or ‘Toxicity’ and SM Dosage item is reduced and there is an Action taken with Lenvatinib/Placebo OR Action taken with Lenvatinib of ‘Reduced’ with start date equal or > [1] days before the SM Start Date and AE End Date is after SM Start Date
+
+F. NO if AE Action taken with Lenvatinib/Placebo OR Action taken with Lenvatinib is ‘Reduced’ and there is an SM with Reason for Dose Variation = ‘Adverse Event’ or ‘Toxicity’ and SM Dosage item is reduced and start date equal or after the AE Start Date and AE is ongoing
+
+G. NO if Action taken with Lenvatinib/Placebo OR Action taken with Lenvatinib is ‘Reduced’ and there is an SM with Reason for Dose Variation = ‘Adverse Event’ or ‘Toxicity’ starting on or after AE Start Date and on or before [1] days (inclusive) after AE End Date and SM Dosage item is reduced
+
+Note: Output is produced if
+
+- AE start date and end date (with allowed window) are prior SM start date.
+
+- AE start date is after SM start date.
+
+Output is not produced if
+
+- AE start date is prior SM start date and AE is ongoing
+
+- AE start date is prior SM start date and AE end date is after SM start date.
+
+Sorting:
+Country; Site; Subject; eCRF, Seq #
+
+Parameter Selection:
+Randomized only, Country(ies), Site(s), Subject(s), List of Subjects
+
+Form.Item Names:
+Table 1.
+
+1. Subject Assignment. Site Country
+
+2. Subject Assignment. Site Mnemonic
+
+3. Subject Assignment. Subject Number
+
+4. Adverse Event. Sequence Number
+
+5. Adverse Event. AE Term
+
+6. Adverse Event. Onset Date and Time
+
+7. Adverse Event. End Date and Time
+
+8. Adverse Event. Study Medication
+
+9. Adverse Event. Action taken with Study Medication
+
+10. Hardcode as 'AE onset date~AE end date + window'
+
+Table 2.
+
+1. Subject Assignment. Site Country
+
+2. Subject Assignment. Site Mnemonic
+
+3. Subject Assignment. Subject Number
+
+4. Study Medication. Form Mnemonic
+
+5. Study Medication. Formidx
+
+6. Study Medication. Study Medication [x]
+
+7. Study Medication. Start Date/Time
+
+8. SM. Dose Amount
+
+9. Study Medication. Reason for Dose Variation [x]
+
+Table 3.
+
+1. Subject Assignment. Site Country
+
+2. Subject Assignment. Site Mnemonic
+
+3. Subject Assignment. Subject Number
+
+4. Study Medication. Form Mnemonic
+
+5. Study Medication. Formidx
+
+6. Study Medication. Study Medication [x]
+
+7. Study Medication. Start Date/Time
+
+8. SM. Dose Amount
+
+9. Study Medication. Reason for Dose Variation [x]
+
+10. Hardcode as 'SM Start date minus window of days'

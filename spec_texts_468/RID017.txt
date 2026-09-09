@@ -1,0 +1,111 @@
+Report ID: RID017
+
+Report Title:
+AE Onset Date after maximum dose of Study Medication
+
+Description:
+The report generates a listing of subjects whose AE Onset Date is greater than a selected period from the maximum dose of study medication prior to the AE onset date.
+
+Column Heading:
+1.Country
+
+2.Site
+
+3.Subject Number
+
+4.AE Seq
+
+5.AE Term
+
+6.Onset Date and Time
+
+7.Max SM Visit
+
+8.SM Form
+
+9.Max SM Start Date/Time
+
+10.Last Dose
+
+11.Days from Maximum Dose
+
+12. DS01 Status
+
+13. SAE/ECI
+
+Logic:
+Logic1:
+
+　　　 AE Onset - Maximum Non-zero SM Start Date  > Selected period (the period is entered in parameter),when Start Date/Time is selected in prompt- SM date/time used
+
+            OR
+
+            AE Onset - Maximum Non-zero SM Stop Date  > Selected period (the period is entered in parameter), when Stop Date/Time is selected in prompt- SM date/time used
+
+Note:
+
+1. Use the Max Non-zero SM across SM, SMAB, SMAU.
+
+2. If study medication time is collected, the report will compare both date and time for AE and SM records.
+
+3. "Days from Last Dose" should be a parameter where the user can enter the period and and default to zero if not entered.
+
+4. Exclude deleted data and erroneous visit from programming
+
+5. If "Randomized only" parameter selection checkbox is checked, the report should only output subjects with Randomization number that is not null.
+
+6. An AE record is considered an SAE/ECI if any of the 8 serious AE criteria is marked Yes or "Is the AE an Event of Clinical Interest?" seleted Yes.
+
+7. Consider null when SMEXDOSEIT item is not available
+
+8.LCDM should provide in prompt which SM date item is to be used to compare with AE date: Start Date/Time OR Stop Date/Time
+
+Report Scenarios:
+1)	Output=Yes
+
+AE Onset - Maximum Non-zero SM Start/Stop date > Selected period
+
+2)	Output=No
+
+AE Onset - Maximum Non-zero SM Start/Stop date <= Selected period
+
+Output=No Deleted AE record
+
+Sorting:
+Country, Site, Subject Number, AE Seq
+
+Parameter Selection:
+Country, First Site, Last Site, First Subject Number, Last Subject Number, List of Subjects,Days from Maximum Dose,SM Date/Time used(Options:Start Date/Time,Stop Date/Time) , Randomized Only, If AE is SAE/ECI or NSAE (Options: NSAE, SAE/ECI, All)
+
+Form.Item Names:
+1. SITECOUNTRY (CV_SAFM)
+
+2. SITEMNEMONIC (CV_SAFM)
+
+3. subjectnumberstr(irv_cur_subject )
+
+4. NVL(aeaespidit, formidx) (CV_AEFM)
+
+5. AEAETERMIT (CV_AEFM)
+
+6. if there is no time collected then DT_AEAESTDTCIT (CV_AEFM); if time is collected then DT_AEAESTDTCIT ||' ' ||TMS_AEAESTDTCIT (CV_AEFM)
+
+7. VISITMNEMONIC (CV_SMABFM, CV_SMAUFM, CV_SMFM)
+
+8. formmnemonic (CV_SMABFM, CV_SMAUFM, CV_SMFM)
+
+9. Derived: if there is no time collected then Maximum of (CV_SMFM.DT_SMEXSTDTCIT/CV_SMAU.DT_SMAUEXSTDTCIT/CV_SMAB.DT_SMABEXSTDTCIT) prior to Column 6
+
+if time is collected then Maximum of (CV_SMFM.DT_SMEXSTDTCIT||' '||TMS_SMEXSTDTCIT/CV_SMAU.DT_SMAUEXSTDTCIT||' '||TMS_SMAUEXSTDTCIT/CV_SMAB.DT_SMAUEXSTDTCIT||' '||TMS_SMAUEXSTDTCIT) prior to Column 6
+
+10. SMABEXLDINDCCB_SMABEXLDIND_1 (CV_SMABFM) / SMAUEXLDINDCCB_SMAUEXLDIND_1(CV_SMAUFM)/SMEXLDINDCCB_SMEXLDINDCSC 1(CV_SMFM)
+
+11. Derived: Column6-Column9
+
+INITCAP(C_ds01dstermcmprc_ds01dste_1) (CV_DS01FM)
+
+13. Derived.
+
+ Serious Criteria=None and Is the AE an Event of Clinical Interest? = No - "No"
+
+ Serious Criteria seleted any of 8 criteria or Is the AE an Event of Clinical Interest? = Yes - "Yes"

@@ -1,0 +1,78 @@
+Report ID: RID125
+
+Report Title:
+Mismatch in sequence numbers between Local Lab and Local Lab NR
+
+Description:
+This report outputs subjects who have a local lab (CLAB, HLAB, OLAB) associated normal sequence number that does not match any subject level local lab normal range (CNR, HNR, ONR) sequence number, or the local lab associated normal sequence number is blank. This report also outputs subjects who have a subject level local lab normal range (CNR, HNR, ONR) sequence number that does not match any local lab (CLAB, HLAB, OLAB, or any variation of CLAB, HLAB and OLAB) associated normal sequence number, or the subject level local lab normal range sequence number is blank.
+
+Column Heading:
+1. Country
+
+2. Site
+
+3. Subject Number
+
+4. Local Lab eCRF
+
+5. Visit
+
+6. Local Lab Seq
+
+7. Local Lab Associated NR Sequence number
+
+8. NR Sequence numbe
+
+Logic:
+Report should display subjects who have
+
+1. local lab (CLAB, HLAB, OLAB, or any variation of CLAB, HLAB and OLAB) associated normal sequence number that does not match any local lab normal range (CNR, HNR, ONR) sequence number, or the local lab associated sequence number is blank. Hard-code 'null' when sequence number is blank.
+
+2. local lab normal range (CNR, HNR, ONR) sequence number that does not match any local lab (CLAB, HLAB, OLAB, or any variation of CLAB, HLAB and OLAB) associated normal sequence number, or the local lab normal range sequence number is blank. Hard-code 'null' when sequence number is blank
+
+Report Scenarios:
+Output Yes:
+
+A1-Yes. local lab (CLAB, HLAB, OLAB, or any variation of CLAB, HLAB and OLAB) associated normal sequence number that does not match any local lab normal range (CNR, HNR, ONR) sequence number, or the local lab associated sequence number is blank. Hard-code 'null' when sequence number is blank.
+
+A2-Yes. local lab normal range (CNR, HNR, ONR) sequence number that does not match any local lab (CLAB, HLAB, OLAB, or any variation of CLAB, HLAB and OLAB.) associated normal sequence number, or the local lab normal range sequence number is blank. Hard-code 'null' when sequence number is blank.
+
+Output No:
+
+When Local lab (CLAB, HLAB, OLAB, or any variation of CLAB, HLAB and OLAB) associated normal sequence number that does match with corresponding (CNR, HNR, ONR). Without BLANKs
+
+Sorting:
+Country, Site, Subject Number
+
+Form.Item Names:
+1. Subject Assignment.Site Country
+
+2. Subject Assignment.Site Mnemonic
+
+3. Subject Assignment.Subject Number
+
+4. Hardcode: 'CLAB' / 'HLAB'/ 'OLAB'
+
+5. CHEMISTRY LAB Form.Visit Mnemonic/
+
+HEMATOLOGY LAB Form.Visit Mnemonic/
+
+OTHER LABORATORY FORM Form.Visit Mnemonic
+
+6. CHEMISTRY LAB Form.Sequence Number/
+
+HEMATOLOGY LAB Form.Sequence Number/
+
+OTHER LABORATORY FORM Form.Sequence Number
+
+7. CHEMISTRY LAB Form.Associated NR Sequence Number/
+
+HEMATOLOGY LAB Form.Assocuated NR Sequence Number/
+
+OTHER LABORATORY FORM Form.Associated NR Sequence Number
+
+8. SUBJECT LEVEL CHEMISTRY NORMAL RANGE Form.Sequence Number/
+
+SUBJECT LEVEL HEMATOLOGY NORMAL RANGE Form.Sequence Number/
+
+SUBJECT LEVEL OTHER NORMAL RANGE FORM Form.Sequence Number

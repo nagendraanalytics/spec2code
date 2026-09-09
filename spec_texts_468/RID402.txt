@@ -1,0 +1,61 @@
+Report ID: RID402
+
+Report Title:
+Protocol Milestone Status forms entered listing
+
+Description:
+This report will list subjects who have data  in PMS1/PMS1A
+
+Column Heading:
+1. Country
+
+2. Site
+
+3. Subject Number
+
+4. Visit Mnemonic
+
+5. Form Mnemonic
+
+6. Date of assessment
+
+7. Reason for Discontinuation
+
+8. Next trial Segment.
+
+Logic:
+If PMS1/PMS1A.Date of Assessment AND PMS1.Status of Study Medication at the End of This Trial Segment/PMS1A.Status of Subject at End of This Trial Segment AND PMS1/PMS1A.Select the Status of the Subject for the Next Trial Segment are entered
+
+Note 1: PMS1A.Status of Subject at End of This Trial Segment should only be considered if present in the study.
+
+Note 2: For column 7. Reason for Discontinuation if nested items are not present then display output as it is shown in the next example: ‘Discontinued – Progressive Disease’
+
+Note 3: For column 7. Reason for Discontinuation if nested items are present then display output as it is shown in the next example: ‘Discontinued – Progressive Disease – Centrally verified’
+
+Report Scenarios:
+A- Yes PMS1/PMS1A.Date of Assessment AND PMS1.Status of Study Medication at the End of This Trial Segment/PMS1A.Status of Subject at End of This Trial Segment AND PMS1/PMS1A.Select the Status of the Subject for the Next Trial Segment are entered
+
+B- No One ore more of the following times is missing: PMS1/PMS1A.Date of Assessment , PMS1.Status of Study Medication at the End of This Trial Segment/PMS1A.Status of Subject at End of This Trial Segment , PMS1/PMS1A.Select the Status of the Subject for the Next Trial Segment is missing
+
+Sorting:
+Country, Site, Subject Number
+
+Parameter Selection:
+Country, First Site, Last Site, First Subject, Last Subject, List of Subjects, Randomized Only
+
+Form.Item Names:
+1. SA. Site Country
+
+2. SA. Site Mnemonic
+
+3. SA. Subject Number
+
+4. PMS1/PMS1A. Visit Mnemonic
+
+5. Form Mnemonic
+
+6. PMS1/PMS1A. Date of Assessment
+
+7. PMS1/PMS1A. Status of Study Medication at the End of This Trial Segment/Status of Subject at End of This Trial Segment (show nested item)
+
+8. PMS1/PMS1A.Select the Status of the Subject for the Next Trial Segment

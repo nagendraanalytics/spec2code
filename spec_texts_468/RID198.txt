@@ -1,0 +1,263 @@
+Report ID: RID198
+
+Report Title:
+Incorrect changes in doses of study medication
+
+Description:
+This report will display subjects dose variations that are not permitted per protocol.
+
+Column Heading:
+1. Country
+
+2. Site
+
+3. Subject Number
+
+4. Current SM Seq
+
+5. Current Study Medication
+
+6. Current Study Period
+
+7. Current Scheduled Time
+
+8. Current Start Date and Time
+
+9. Current Protocol Dose Level
+
+10. Current Reason for Dose Variation
+
+11. Previous SM Seq
+
+12. Previous Study Medication
+
+13. Previous Study Period
+
+14. Previous Scheduled Time
+
+15. Previous Start Date and Time
+
+16. Previous Dose Level
+
+17. Previous Reason for Dose Variation
+
+18. Scenario
+
+Logic:
+Scenario 1
+
+Logic 1.1:
+
+Criteria Form1.Criteria Itemquestion1 = Criteria Value1 AND
+
+Criteria Form2.Criteria Itemquestion2 = Criteria Value2 AND
+
+Criteria Form3.Criteria Itemquestion3 = Criteria Value3 AND
+
+Logic 1.2:
+
+SM.Study Medication.SM Dosage Item > Protocol Expected Dose Level
+
+OR
+
+Scenario 2
+
+Logic 2.1:
+
+Criteria Form1.Criteria Itemquestion1 = Criteria Value1 AND
+
+Criteria Form2.Criteria Itemquestion2 = Criteria Value2 AND
+
+Criteria Form3.Criteria Itemquestion3 = Criteria Value3 AND
+
+Logic 2.2:
+
+SM.Study Medication for current SM.Start Date/Time = SM.Study Medication for previous SM.Start Date/Time AND
+
+Logic 2.3:
+
+SM.Protocol Dose Level for current SM.Start Date/Time > SM.Protocol Dose Level for previous SM.Start Date/Time
+
+OR
+
+Scenario 3
+
+Logic 3.1:
+
+Criteria Form1.Criteria Itemquestion1 = Criteria Value1 AND
+
+Criteria Form2.Criteria Itemquestion2 = Criteria Value2 AND
+
+Criteria Form3.Criteria Itemquestion3 = Criteria Value3 AND
+
+Logic 3.2:
+
+SM.Study Medication for current SM.Start Date/Time = SM.Study Medication for previous SM.Start Date/Time AND
+
+Logic 3.3:
+
+SM.Protocol Dose Level for current SM.Start Date/Time < SM.Protocol Dose Level for previous SM.Start Date/Time AND
+
+Logic 3.4:
+
+(
+
+Logic 3.4.1:
+
+SM.Study Medication.SM Dosage Item <> Protocol Expected Dose Level defined within each Group OR
+
+Logic 3.4.2:
+
+SM.Study Medication.SM Dosage Item = Protocol Expected Dose Level defined within each Group BUT is not within the expected descending order per supp doc
+
+)
+
+E.g
+
+Lenvatinib: Expected 20 > 14 > 10 mg
+
+SM#1 Lenvatinib – Protocol Dose Level = 20
+
+SM#2 Lenvatinib – Protocol Dose Level = 14
+
+SM#3 Lenvatinib – Protocol Dose Level = 10
+
+-No output is expected since the dose is reduced within the expected values
+
+SM#1 Lenvatinib – Protocol Dose Level = 20
+
+SM#2 Lenvatinib – Protocol Dose Level = 16
+
+SM#3 Lenvatinib – Protocol Dose Level = 10
+
+-Output is expected for SM#2 since the dose is not reduced within the expected values
+
+SM#1 Lenvatinib – Protocol Dose Level = 20
+
+SM#2 Lenvatinib – Protocol Dose Level = 10
+
+SM#3 Lenvatinib – Protocol Dose Level = 14
+
+-Output is expected for SM#2 since the dose is reduced within the expected values, BUT not within the expected order
+
+Notes:
+
+1. Disregard deleted records or erroneous visits
+
+2. For SM dates entered as UNK use System date
+
+3. Exclude the zero doses in programming (SM Form.Study Medication.SM Dosage Item = 0)
+
+4. For Scenario 2 and 3, previous SM corresponds to the SM record with the same SM. Study Medication that has the CLOSEST SM.Start Date/Time from the Current SM. Start Date/Time
+
+5. For Columns 11 to 17: Only display for Scenario 2 and 3. Leave blank for Scenario 1
+
+6. Group, Criteria FormX, Criteria ItemquestionX, Criteria ValueX, SM Form, Study Medication, SM Dosage Item, Protocol Expected Dose Level are valued defined within a supporting document
+
+7. If supporting doc is not provided, display the message as "SM032_JR_STD Supporting Document is required and not provided"
+
+8. Requires supporting document to be named SM032_supp_<xxxxxxx>.csv and will contain the following columns and associated content:
+
+1. Group - Numbers that identify the different groups of SM.
+
+For Scenarios 1 and 2, leave as NA
+
+For Scenario 3, Use the same group for SMs that have different allowed Protocol Expected Dose Level values
+
+2. Criteria Form1 - Arm/Cohort/Stratification Form Mnemonic SR/SRIVRS/TRIG. If applies for all subjects regardless the Arm/Cohort/Stratification, enter NA
+
+3. Criteria Itemquestion1 - Arm/Cohort/Stratification Itemquestion1. If applies for all subjects regardless the Arm/Cohort/Stratification, enter NA OR if the Itemquestion1 is not applicable for the protocol, enter NA
+
+4. Criteria Value1 - Arm/Cohort/Stratification Value. If applies for all subjects regardless the Arm/Cohort/Stratification, enter NA OR if the itemValue1 is not applicable for the protocol, enter NA
+
+5. Criteria Form2 - Arm/Cohort/Stratification Form Mnemonic SR/SRIVRS/TRIG. If applies for all subjects regardless the Arm/Cohort/Stratification, or is not needed enter NA
+
+6. Criteria Itemquestion2 - Arm/Cohort/Stratification Itemquestion2. If applies for all subjects regardless the Arm/Cohort/Stratification, enter NA OR if the Itemquestion2 is not applicable for the protocol, or is not needed enter NA
+
+7. Criteria Value2 - Arm/Cohort/Stratification Value2. If applies for all subjects regardless the Arm/Cohort/Stratification, enter NA OR if the Value2 is not applicable for the protocol, enter NA
+
+8. Criteria Form3 - Arm/Cohort/Stratification Form Mnemonic SR/SRIVRS/TRIG. If applies for all subjects regardless the Arm/Cohort/Stratification, or is not needed enter NA
+
+9. Criteria Itemquestion3 - Arm/Cohort/Stratification Itemquestion3. If applies for all subjects regardless the Arm/Cohort/Stratification, enter NA OR if the Itemquestion3 is not applicable for the protocol, or is not needed enter NA
+
+10. Criteria Value3 - Arm/Cohort/Stratification Value3. If applies for all subjects regardless the Arm/Cohort/Stratification, enter NA OR if the Value3 is not applicable for the protocol, enter NA
+
+11. SM Form – SM form to be reviewed (SM/SMAB/SMAU)
+
+12. Study Medication – Enter the Study Medication name
+
+13. SM Dosage Item: Provide item in which the information for protocol dose amount is registered
+
+14. Protocol Expected Dose Level: List expected dose amount as per protocol guidelines
+
+15. Scenario: For Scenarios 1 and 2, leave as NA. For Scenario 3, enter “3”
+
+e.g:
+
+Group, Criteria Form1,Criteria Itemquestion1,Criteria Value1,Criteria Form2,Criteria Itemquestion2,Criteria Value2, Criteria Form3,Criteria Itemquestion3,Criteria Value3,SM Form,Study Medication,SM Dosage Item,Protocol Expected Dose Level, Scenario
+
+NA, SR, Arm, INDUCT, SR, Stratification, CAPOX, NA, NA, NA, SM, Oxaliplatin, 130, NA
+
+NA, SR, Arm, INDUCT, SR, Stratification, FOLFOX, NA, NA, NA, SM, Oxaliplatin, 85, NA
+
+NA, SR, Arm, INDUCT, NA, NA, NA, NA, NA, NA, SM, -3475, 400, NA
+
+NA, SR, Arm, INDUCT, NA, NA, NA, NA, NA, NA, SM, 5-FU, 2400, NA
+
+1, SR, Arm, INDUCT, NA, NA, NA, NA, NA, NA, SM, Lenvatinib, 20, 3
+
+1, SR, Arm, INDUCT, NA, NA, NA, NA, NA, NA, SM, Lenvatinib, 8, 3
+
+1, SR, Arm, INDUCT, NA, NA, NA, NA, NA, NA, SM, Lenvatinib, 4, 3
+
+2, SR, Arm, INDUCT, NA, NA, NA, NA, NA, NA, SM, Levo-leucovorin, 400, 3
+
+2, SR, Arm, INDUCT, NA, NA, NA, NA, NA, NA, SM, Levo-leucovorin, 200, 3
+
+Report Scenarios:
+Output – Yes: When Logic is met
+
+Output – Yes: When Logic is not met
+
+Sorting:
+Country, Site, Subject Number
+
+Parameter Selection:
+Country, First Site, Last Site, First Subject, Last Subject, List of Subjects, Randomized Only, Study Medication, SM032_JR_STD supporting document (N/Y, default as N)
+
+Form.Item Names:
+1. SA.SITECOUNTRY
+
+2. SA.SITEMNEMONIC
+
+3. SA.Subject Number
+
+5. SM Form.FORMIDX
+
+4. SM Form.Study Medication
+
+6. SM Form.Study Period
+
+7. SM Form.Scheduled Time – Leave blank if Scheduled Time item does not exist for the trial
+
+8. SM Form.Start Date/Time – Display in “dd-Mmm-yyyy” format. Do not display hour portion
+
+9. SM Form.SM Dosage Item
+
+10. SM Form.Reason for Dose Variation
+
+11. SM Form.FORMIDX (from previous SM record per Notes 4 and 5)
+
+12. SM Form.Study Medication (from previous SM record per Notes 4 and 5)
+
+13. SM Form.Study Period (from previous SM record per Notes 4 and 5)
+
+14. SM Form.Scheduled Time – Leave blank if Scheduled Time item does not exist for the trial (from previous SM record per Notes 4 and 5)
+
+15. SM Form.Start Date/Time – Display in “dd-Mmm-yyyy” format. Do not display hour portion (from previous SM record per Notes 4 and 5)
+
+16. SM Form.SM Dosage Item (from previous SM record per Notes 4 and 5)
+
+17. SM Form.Reason for Dose Variation (from previous SM record per Notes 4 and 5)
+
+18. Display “Scenario 1” if logic for Scenario 1 is met.  Display “Scenario 2” if logic for Scenario 2 is met.  Display “Scenario 3” if logic for Scenario 3 is met.

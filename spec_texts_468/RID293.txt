@@ -1,0 +1,107 @@
+Report ID: RID293
+
+Report Title:
+Mismatch between cause of death and dates between DEATH and AE of GVHD
+
+Description:
+This report will display subjects with inconsistencies in Cause of Death/dates between DEATH and AE forms
+
+Column Heading:
+1. Country
+
+2. Site
+
+3. Subject Number
+
+4. AE Seq
+
+5. AE Term
+
+6. Cause of Death
+
+7. DS01 Status
+
+8. Scenario
+
+Logic:
+Scenario 1:
+
+Logic 1: there is DEATH form with LLT IN "Acute graft versus host disease" or "Hyperacute graft versus host disease" or "Chronic graft versus host disease"
+
+AND
+
+Logic 2: there is no AE with Outcome of AE as Fatal AND matching LLT.
+
+Scenario 2:
+
+Logic 3: there is an AE with Outcome of AE as Fatal AND LLT contains "graft versus host disease".
+
+AND
+
+Logic 4: DS01 Select the Status of the Subject for the Study is not completed as Death or Adverse Event according to prompt "Expected reason for discontinuation on DS01"
+
+Scenario 3:
+
+Logic 5: there is an AE with Outcome of AE as Fatal AND LLT IN "Acute graft versus host disease" or "Hyperacute graft versus host disease" or "Chronic graft versus host disease"
+
+AND
+
+Logic 6: Death Date/Time of Death <> NULL
+
+AND
+
+Logic 6: DEATH LLT is Different than AE LLT from logic 5.
+
+Note 1: please exclude erroneous visits and deleted records from programming.
+
+Note 2: reconciliaiton should not be case sensitive
+
+Note 3: for scenario 1, display columns 4 and 5 blank.
+
+Report Scenarios:
+Scenario 1 Output yes:
+
+LLT on DEATH form is "Acute graft versus host disease" or "Hyperacute graft versus host disease" or "Chronic graft versus host disease" but there is no Fatal AE with Matching LLT
+
+Scenario 2 Output yes:
+
+There is a Fatal AE with LLT that contains "graft versus host disease" but Reason subject discontinued from study is not "Death" or "Adverse Event" on DS01 eCRF.
+
+Scenario 3 Ouput yes:
+
+There is a Fatal AE with LLT "Acute graft versus host disease" or "Hyperacute graft versus host disease" or "Chronic graft versus host disease"  and there is no DEATH form with matching LLT.
+
+Scenario 5 Output No:
+
+LLT on DEATH form is "Acute graft versus host disease" or "Hyperacute graft versus host disease" or "Chronic graft versus host disease" and there is Fatal AE with Matching LLT
+
+Scenario 6 Output No:
+
+There is a Fatal AE with LLT that contains "graft versus host disease" and Reason subject discontinued from study is "Death" on DS01 eCRF.
+
+Scenario 7 Ouput No:
+
+There is a Fatal AE with LLT "Acute graft versus host disease" or "Hyperacute graft versus host disease" or "Chronic graft versus host disease"  and there is DEATH form with matching LLT.
+
+Sorting:
+Country, Site Number, Subject Number, AE Seq
+
+Parameter Selection:
+Country, Site Number, Subject Number, Randomized only, List of subjects, Expected reason for discontinuation on DS01 (Radio button, required, Display "Adverse Event" and "Death")
+
+Form.Item Names:
+1. SA.Country
+
+2. SA.Site Mnemonic
+
+3. SA.Subject Number
+
+4. AE. Sequence Number
+
+5. AE. AE Term (For lab AE use the term increased or decreased)
+
+6. Death. Primary Reported Cause of Death
+
+7. DS01. Select the Status of the Subject for the Study
+
+8. Display "Scenario 1" or "Scenario 2" or "Scenario 3"

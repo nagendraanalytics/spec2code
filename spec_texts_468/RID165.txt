@@ -1,0 +1,73 @@
+Report ID: RID165
+
+Report Title:
+GDRQA subject selection sample
+
+Description:
+This report generates a random list of subjects with a total of data points and the cumulative sum of those data points.
+
+Column Heading:
+1. Study
+
+2. Country
+
+3. Site
+
+4. Subject Number
+
+5. Visit Count
+
+6. Item Count
+
+7. Item Cumulative
+
+Logic:
+This report lists subjects as follows:
+
+1) Determine DOVs and erroneous visits.
+
+2) Determine scheduled and common log visits removing 'CONFLICT','LABS','GEFCF','CECG','PFT','ESIG'.
+
+3) Assign a random number to subjects with DRC completed within the specified date range in GMT and without considering the excluded visits.
+
+4) Count items of any non-excluded forms in all initialized non-erroneous visits and/or in common log visit, if not excluded, for each subject determined in 3).
+
+5) Determine the cumulative item count for the subjects ordered by ascending random number (RANDNUM).
+
+6) Show the subjects with the cumulative item count within the item cumulative limit and the first subject with the cumulative item count over the item cumulative limit.
+
+7) Determine the visit count of the visits which were considered for the item count. The CCRF visit does not count as a visit.
+
+Report Scenarios:
+1) Output = NO
+
+Subjects with DRC not completed within the specified date range.
+
+2) Output = NO
+
+Subjects with cumulative item count not within the item cumulative limit or immediately above.
+
+3) Output = YES
+
+Subjects with DRC completed within the specified date range and with cumulative item count within the item cumulative limit or immediately above and visits and forms not excluded.
+
+Sorting:
+RANDNUM, Country, Site, Subject Number
+
+Parameter Selection:
+Country, Site, Subject, List of Subjects, Exclude Visit(s), Exclude eCRF(s), Item Cumulative Limit (required), DRC From (required), DRC To (required)
+
+Form.Item Names:
+1. Study ID
+
+2. Subject Assignment.Site Country
+
+3. Subject Assignment.Site Mnemonic
+
+4. Subjects.Subject Number
+
+5. Calculated: Visit Count (excluding CCRF)
+
+6. Calculated: Item Count
+
+7. Calculated: Cumulative Item Count

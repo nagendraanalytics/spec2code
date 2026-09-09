@@ -1,0 +1,93 @@
+Report ID: RID071
+
+Report Title:
+Missing Supplemental Laboratory Test and Unit Derivations
+
+Description:
+This reports displays missing Supplemental Laboratory Test and Unit dictionary derivations.
+
+Column Heading:
+1.Country
+
+2 Site
+
+3.Subject Number
+
+4.eCRF
+
+5. Visit Date
+
+6. Seq
+
+7. Laboratory Test
+
+8. Abbrev. Dictionary Term
+
+9. CDISC Code
+
+10. Laboratory Test Unit
+
+11. Unit Dictionary Term
+
+12. Abbrev. Unit Dictionary Term
+
+Logic:
+This report should display Supplemental Laboratory Test and Unit dictionary derivations where the following criteria are met:
+
+1) Abbreviated Dictionary Term is not null and CDISC Code is null; or
+
+2) Abbreviated Dictionary Term is null and CDISC Code is not null; or
+
+3) Unit Dictionary Term is not null and Abbreviated Unit Dictionary Term is null (for this item, report should only display when Numeric Test Result is not null); or
+
+4) Unit Dictionary Term is null and Abbreviated Unit Dictionary Term is not null (for this item, report should only display when Numeric Test Result is not null);
+
+Report should not display deleted records.
+
+If "Randomized only" parameter selection checkbox  is checked, the report should only output subjects with Randomization number that is not null.
+
+Report Scenarios:
+This report should display Supplemental Laboratory Test and Unit dictionary derivations where the following criteria are met:
+
+1) Abbreviated Dictionary Term is not null and CDISC Code is null; or
+
+2) Abbreviated Dictionary Term is null and CDISC Code is not null; or
+
+3) Unit Dictionary Term is not null and Abbreviated Unit Dictionary Term is null (for this item, report should only display when Numeric Test Result is not null); or
+
+4) Unit Dictionary Term is null and Abbreviated Unit Dictionary Term is not null (for this item, report should only display when Numeric Test Result is not null);
+
+Report should not display deleted records.
+
+If "Randomized only" parameter selection checkbox  is checked, the report should only output subjects with Randomization number that is not null.
+
+Sorting:
+Country, Site, Subject Number, Visit Date, Seq Num
+
+Parameter Selection:
+Country, Site, Subject Number, Laboratory Test, Randomized Only
+
+Form.Item Names:
+1. Subject Assignment.Site Country
+
+2. Subject Assignment.Site Mnemonic
+
+3. Subject Assignment.Subject Number
+
+4. Form Mnemonic
+
+5. DOV
+
+6. Form Index
+
+7. Laboratory Test
+
+8. Abbreviated Dictionary Term
+
+9. CDISC Code
+
+10. Numeric Test Unit
+
+11. Unit Dictionary Term
+
+12. Abbreviated Unit Dictionary Term

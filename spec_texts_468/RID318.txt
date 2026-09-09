@@ -1,0 +1,191 @@
+Report ID: RID318
+
+Report Title:
+More than one lesion evaluation entered for a timepoint for one lesion.
+
+Description:
+This report lists all lesion evaluation entries where for the same timepoint more than one lesion evaluation add-entry is provided.
+
+Column Heading:
+1. Country
+
+2. Site
+
+3. Subject Number
+
+4. Lesion Evaluation Form
+
+5. Lesion Evaluation Seq#1
+
+6. Lesion Evaluation Date #1
+
+7. Lesion Evaluation Scheduled Time #1
+
+8. Lesion Evaluation Seq#2
+
+9. Lesion Evaluation Date #2
+
+10. Lesion Evaluation Scheduled Time #2
+
+Logic:
+(
+
+Logic 1. LSN eCRF.Formname = ‘LSN eCRF’
+
+AND
+
+Logic 2. LSN eCRF. Scheduled Time = ‘Scheduled’
+
+AND
+
+Logic 3. There is another LSN eCRF record with LSN eCRF. Scheduled Time = ‘Scheduled’
+
+AND
+
+Logic 4.  LSN eCRF. Date item from Logic 2 – ‘Window for Scheduled’ < LSN eCRF. Date item < LSN eCRF. Date item from Logic 2 + ‘Window for Scheduled’
+
+)
+
+OR
+
+(
+
+Logic 4: LSN eCRF.Formname = ‘LSN eCRF’
+
+AND
+
+Logic 5: LSN eCRF. Scheduled Time = ‘Unscheduled
+
+AND
+
+Logic 6:
+
+There is another LSN eCRF Record with LSN eCRF. Date from Logic 5 – ‘Window for Unscheduled’ <LSN eCRF. Date < LSN eCRF. Date from Logic 5 + ‘Window for Unscheduled’
+
+)
+
+Note 1. Please exclude deleted records and erroneous visits from programming.
+
+Note 2. LSN eCRF form is provided by Supporting Document in column with the same name.
+
+Note 3. This report will use Global Supporting Document LSN_supp_doc, and the LSN eCRF. Date item refers to ‘DATE OF LESION EVALUATION’.
+
+Note 4. Report should compare each undeleted evaluation itemset within single LSN eCRF entry for the same Treatment Phase with all other undeleted evaluation itemset in that same LSN eCRF  record.
+
+For example:
+
+If Window of Scheduled = 14 Window of Unscheduled = 7 and
+
+LSNIR#1 entry has add entries:
+
+01-Jan-2024 Scheduled Time = Scheduled
+
+02-Jan-2024 Scheduled Time = Scheduled
+
+ -This will be present in output since (01-Jan-2024 – 14) < 02-Jan-204 < (01-Jan-2024 + 14) is TRUE
+
+01-Feb-2024 Scheduled Time = Scheduled
+
+28-Feb-2024 Scheduled Time = Scheduled
+
+-This will not be present in the output since (01-Feb-2024 – 14) < 28-Feb-204 < (01-Feb-2024 + 14) is FALSE
+
+01-Apr-2024 Scheduled Time = Unscheduled
+
+07-Apr-2024 Scheduled Time = Unscheduled
+
+- This will be present in the output since (01-Apr-2024 – 7) < 07-Apr-204 < (01-Apr-2024 + 7) is TRUE
+
+01-May-2024 Scheduled Time = Unscheduled
+
+10-May-2024 Scheduled Time = Unscheduled
+
+-This will not be present in the output since (01-May-2024 – 7) < 10-May-204 < (01-May-2024 + 7) is FALSE
+
+Note 5. Treatment Phase is defined in the Study Phase Supporting Document. Entry is considered within phase if date is equal or after First Visitmnemonic of Treatment Phase and before First Visitmnemonic of Treatment Phase of the next phase. For example, if user provides two Treatment Phases in supporting document like below:
+
+Treatment Phase Order, Treatment phase,First Visitmnemonic of Treatment Phase
+
+1,Initial Treatment Phase,Cycle 1
+
+2,Second Course Phase,Second Course Cycle 1
+
+The treatment phase will be identified as following:
+
+Initial Treatment Phase: Cycle 1 <= [Date item from supp doc] < Second Course Cycle 1
+
+Second Course Phase: Second Course Cycle 1 <= [Date item from supp doc]
+
+Note 6: This is a required supporting document for all studies with one or more phases.
+
+This supporting document is required to be created once per trial. If it was already created and uploaded, there is no need to duplicate it.
+
+Required supporting document should be named as study_phase_supp_<xxxxxxx>.csv and will contain the following columns and associated content:
+
+One row for each Treatment Phase
+
+1. Phase Order: the order on which phases will appear on protocol
+
+2. Treatment Phase: this information is the phase name given in the protocol (Initial Treatment Phase/Second Course Phase/Crossover/Neoadjuvant)
+
+3. First Visitmnemonic of Treatment Phase: the first visit on which treatment is expected to be administered on each phase.
+
+e.g.
+
+1, Initial Treatment Phase, Cycle 1
+
+2, Second Course Phase, Cycle 1 Course 2
+
+3, Crossover Phase, Crossover Cycle 1
+
+The actual information provided by the supporting doc can be outputted by selecting Y in the parameter "Study Phase Page".
+
+Note 7. Requires report-specific supporting document to be named ONC_LSN_026_supp_<xxxxxxx>.csv and will contain the following columns and associated content: 1 row for each expected Lesion Evaluation Form, Treatment Phase
+
+Definition of each column criteria:
+
+1. LSN eCRF – Lesion Evaluation form to be used in the logic [e.g. LSNEV, LSRIR, LSNPC, LSNPI, LSNIR, LSNHM]
+
+2. Treatment Phase Order - enter the phase order as provided in the protocol
+
+3. Window for Scheduled – Number of days to be used for Scheduled entries
+
+4. Window for Unscheduled - Number of days to be used for Unscheduled entries
+
+e.g. LSN eCRF, Treatment Phase Order, Window for Scheduled, Window for Unscheduled
+
+LSNIR, 1, 7, 14
+
+Note 8. If report-specific supporting document is not provided, display the message as "ONC_LSN_026_JR_STD Supporting Document Not Present for This Trial".
+
+Report Scenarios:
+Output – Yes: logic is satisfied
+
+Output – No: logic is not satisfied
+
+Sorting:
+Country, Site, Subject Number, Lesion Evaluation Seq#1, Lesion Evaluation Date #1
+
+Parameter Selection:
+Country, First Site, Last Site, First Subject, Last Subject, List of Subjects, Supporting Document, Study Phase Page
+
+Form.Item Names:
+1. SA. Country
+
+2. SA. Site mnemonic
+
+3. SA.Subject Number
+
+4. LSN.Formname
+
+5. LSN.Formidx(Itemidx) of the first record
+
+6. LSN.Date Item of the first record
+
+7. LSN.Scheduled Time of the first record
+
+8. LSN.Formidx(Itemidx) of the second record
+
+9. LSN.Date Item of the second record
+
+10. LSN.Scheduled Time of the second record

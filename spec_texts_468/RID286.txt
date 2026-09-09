@@ -1,0 +1,108 @@
+Report ID: RID286
+
+Report Title:
+Duplicate OEFU/OEDRA OR NATS/NAPS OR PMS1/PMST
+
+Description:
+This report will reconcile duplicate OEFU/OEDRA OR NATS/NAPS across different visits or PMS1 / PMS1 on the same visit.
+
+Column Heading:
+1.	Country
+
+2.	Site
+
+3.	Subject Number
+
+4.	Form
+
+5.	Visit Mnemonics
+
+6.	Scenarios
+
+Logic:
+Scenario 1:
+
+Logic 1.1: OEDRA. Date of Assessment <> NULL AND there are two or more OEDRA entries on different visits
+
+OR
+
+Logic 1.2: OEFU. Date of Assessment <> NULL NAD there are two or more OEFU entries on different visits
+
+Scenario 2:
+
+Logic 2.1: NATS. Date of Assessment<> NULL AND there are two or more NATS entries with the same NATS. Study Treatment Not Received
+
+OR
+
+Logic 2.2: NAPS. Date of Assessment <> NULL AND there are two or more NAPS entries with the same NAPS. Indicate the Phase Not Started by the Subject
+
+Scenario 3:
+
+Logic 3.1: PMS1. Date of Assessment <> NULL OR PMS1. Status of Study Medication at the End of This Trial Segment <> NULL
+
+AND
+
+Logic 3.2: PMST. Date of Assessment <> NULL
+
+AND
+
+Logic 3.3: PMS1 from logic 3.1 and PMST from logic 3.2 are completed on the same visit
+
+Note:
+
+1.	Disregard deleted records or erroneous visits
+
+Report Scenarios:
+Scenario 1
+
+A-	YES
+
+There is more than one OEDRA/OEFU in different visits
+
+B-	NO
+
+There is a single OEDRA entered in a single visit
+
+C-	NO
+
+There is a single OEFU entered in a single visit
+
+Scenario 2
+
+D-	YES
+
+There is more than one NATS/NAPS entry with the same NATS. Study Treatment Not Received/NAPS. Indicate the Phase Not Started by the Subject
+
+E-	NO
+
+There is a single NATS entry
+
+F-	NO
+
+There is a single NAPS entry
+
+Scenario 3:
+
+G-	YES
+
+There is a PMS1 completed on the same visit as PMST
+
+H-	No
+
+There is NOT a PMS1 completed on the same visit as PMST
+
+Sorting:
+Country, Site, Subject Number
+
+Form.Item Names:
+1.	Subject Assignment.Site Country
+
+2.	Subject Assignment.Site Mnemonic
+
+3.	Subject Assignment.Subject Number
+
+4.	Display form according to the scenario that is met (OEFU or OEDRA for scenario 1, NATS or NAPS for scenario 2, PMS1/PMST for scenario 3)
+
+5.	Display the visits separated by a comma on which form in column 4 is duplicated (if the duplicate is within the same visit, only show 1 visit mnemonic)
+
+6.	Display scenarios according to logic that is met.

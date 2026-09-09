@@ -1,0 +1,137 @@
+Report ID: RID376
+
+Report Title:
+Overall Response vs Lesion Evaluation measurements
+
+Description:
+This listing contains details about the type of lesions reported under Lesion Category item on LSNLR (Target, Non-target, and New) and the corresponding Responses (Target, Non-Target and Overall Response)  recorded in ORLR.
+
+Column Heading:
+1. Country
+
+2. Site
+
+3. Subject Number
+
+4. ORLR Seq
+
+5. Date of Procedure for Overall Response
+
+6. Overall Response
+
+7. Associated Lesion Number
+
+8. Tumor Identification
+
+9. Date of Current Lesion Evaluation
+
+10. SOD of Target Lesion
+
+11. % Change from Re-Baseline
+
+12. % Change from Nadir
+
+13. Non-Target Lesion Status/Total number
+
+14. New Lesion/Total Number
+
+15. Was the Lesion Evaluable?
+
+Logic:
+Report will output the subjects who meet following criteria.
+
+(Logic 1: ORLR, Date of Procedure for Overall Response (Scan/Image/Physical Exam) AND Overall Response is not Null
+
+AND
+
+Logic 2: LSNLR, Tumor Identification <> NULL AND LSNLR form. was the Lesion Evaluable? <> No
+
+AND
+
+Logic 3: LSNLR, Evaluation Entry with Date of Current Lesion Evaluation (Scan/Image/Physical Exam) is within Date Response Determined of ORLR +/- 7 days)
+
+OR
+
+(Logic 4: ORLR, Date of Procedure for Overall Response (Scan/Image/Physical Exam) AND Overall Response is not Null
+
+AND
+
+Logic 5: No LSNLR record which Tumor Identification <> NULL AND Date of Lesion Evaluation is within Date of Procedure for Overall Response (Scan/Image/Physical Exam) in ORLR +/- 7 days in Evaluation Entry)
+
+OR
+
+(Logic 6: LSNLR form. was the Lesion Evaluable? <> No AND LSNLR form, Tumor Identification <> NULL AND Date of Current Lesion Evaluation (Scan/Image/Physical Exam) is out of any Date of Procedure for Overall Response (Scan/Image/Physical Exam) +/- 7 days days in ORLR form
+
+OR
+
+Logic 7: LSNLR form, Was the Lesion Evaluable? =No)
+
+Note 1: Deleted data should be excluded from programming
+
+Note 2: SOD is calculated as Sum of ‘Longest Diameter (Extra Nodal Lesion)’ and ‘Short Axis (Nodal Lesion)’ depending on what is in the trial and of all records of Evaluation Entry of LSNLR which Tumor Identification=’Target’ and have same Date of Evaluation. SOD calculation will consider either ‘Longest Diameter (Extra Nodal Lesion)’ or ‘Short Axis (Nodal Lesion)‘ that with value entered. SOD should only display for logic 3 and 6 when Lesion Identification is “Target”. Display the whole addition expression like “1.5+2.5=3.0”, not only “3.0”.
+
+Note 3: % Change from Baseline is calculated as [(SOD from current Timepoint - SOD from Baseline)/SOD from Baseline]*100%. Baseline SOD corresponds to the SOD of the Baseline assessment, i.e., evaluation done prior first Dose. If SOD from Baseline is equal to 0, ignore calculation and display "Baseline is zero".
+
+Note 4: % Change from Nadir is Calculated as [(SOD from current Timepoint - SOD from Nadir)/SOD from Nadir]*100%. Nadir SOD corresponds to the smallest SOD of all prior lesion evaluations of current Timepoint. If SOD from Nadir is equal to 0, ignore calculation and display "Nadir is zero".
+
+Note 5: Non-Target Lesion Status/Total number should display as below format: “N/A(baseline)=”, “Absent=”, “Present=”, “Enlargement From Nadir=” in sequence. If there are multiple status, display them all in this column and joined by semicolon. Total number is calculated as the total record number of Evaluation Entry of LSNLR which Tumor Identification=’Non-Target’ and have same Date of Current Lesion Evaluation (Scan/Image/Physical Exam). This column should only display for logic 3 and 6 when Tumor Identification is “Non-Target”
+
+Note 6: New Lesion/Total Number is calculated as the total record number of LSNLR which Tumor Identification is ‘New’. This column should only display for logic 3 and 6 when Tumor Identification is “New”.
+
+Note 7: LSNLR form, Was the Lesion Evaluable? This column should only display when Logic 7 is met. Please display “No” in the column.
+
+Report Scenarios:
+REPORT SCENARIOS:
+
+A-Yes
+
+List Overall Response of ORLR and its corresponding LSNLR (target, non-target and new lesion)
+
+B-Yes
+
+List Overall Response of ORLR which has no corresponding LSNLR or LSNLR which have no corresponding ORLR
+
+C- Yes
+
+LSNLR cannot evaluate appropriate response on ORLR
+
+D-No
+
+Deleted record
+
+Sorting:
+Country, Site, Subject Number, Date of Procedure for Overall Response (Scan/Image/Physical Exam) (ORLR) OR Date of Current Lesion Evaluation (Scan/Image/Physical Exam) (LSNLR). If some rows of output have both ORLR date and LSNLR date, consider sort by LSNLR date first then ORLR date.
+
+Parameter Selection:
+Country, First Site, Last Site, First Subject, Last Subject, List of Subjects, Randomized Only (N/Y, default as N)
+
+Form.Item Names:
+1. SA Form. Site Country
+
+2. SA Form. Site Mnemonic
+
+3. SA Form. Subject Number
+
+4. ORLR Form. Formidx
+
+5. ORLR Form. Date of Procedure for Overall Response (Scan/Image/Physical Exam)
+
+6. ORLR Form. Overall Response
+
+7. LSNLR Form. LSNLR.Associated Lesion Number (if there are more than one Lesion for each Tumor Identification, display them all and joined by semicolon)
+
+8. LSNLR.Tumor Identification
+
+9. LSNLR Form. Date of Current Lesion Evaluation (Scan/Image/Physical Exam)
+
+10. As specified by Note 2
+
+11. As specified by Note 3
+
+12. As specified by Note 4
+
+13. As specified by Note 5
+
+14. As specified by Note 6
+
+15. As specified by Note 7

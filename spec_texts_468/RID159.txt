@@ -1,0 +1,83 @@
+Report ID: RID159
+
+Report Title:
+Missing PMS1 in specified Treatment Phase
+
+Description:
+This report will review records for patients who complete a specified Treatment phase and the related PMS1 is not completed
+
+Column Heading:
+1. Country
+
+2. Site
+
+3. Subject Number
+
+4.Visit Mnemonic
+
+5. Date of visit
+
+6. Treatment phase
+
+Logic:
+Requires supporting document to be named PMS1001_supp_<xxxxxxx>.csv. It will contain the following columns and associated content:
+
+1) Treatment phase – Each treatment phase where PMS1 is required
+
+2) Scheduled time – Visit where the form is expected
+
+e.g.
+
+Treatment Phase, Scheduled time
+
+Neoadjuvant Treatment, Cycle 4 Day 1
+
+Please refer to Note 3
+
+LOGIC 1:
+
+Logic 1.1 Expected visit DOV.Date of Visit <> NULL AND DOV.Erroneous Visit = NULL AND PMS1 for Expected visit is missing
+
+Note 1: Please exclude deleted records from programming
+
+Note 2: Please exclude subjects with SA.Treatment/Randomization Number=BLANK from programming
+
+Note 3:
+
+ i) The visits that should be considered for Expected visit are the ones specified in the supporting document in the column ‘’Scheduled time’’
+
+ii) Treatment phase = Treatment phase
+
+iii) Expected visit should be = visit of  PMS1.
+
+iv) Treatment phase should be verified with Trial Segment Reference in PMS1 form
+
+Report Scenarios:
+Scenario 1, Outputs = Yes
+
+Output is produced when Expected visit is initialized, Expected visit is not an erroneous visit and PMS1 is missing for the Treatment phase
+
+Scenario 2, Outputs = Yes
+
+Output is produced when PMS1 is completed in a visit different than the Expected visit for the Treatment phase
+
+Scenario 3, Outputs = No
+
+Output is not produced when PMS1 is completed in the Expected visit for the Treatment phase
+
+Scenario 4, Outputs = No
+
+Output is not produced when the expected visit is not initialized for the Treatment phase
+
+Form.Item Names:
+1. SA. Country
+
+2. SA.Site Mnemonic
+
+3. SA. Subject Number
+
+4. DOV. Visit Mnemonic
+
+5. DOV.Date of Visit
+
+6. Treatment phase from Supporting Document

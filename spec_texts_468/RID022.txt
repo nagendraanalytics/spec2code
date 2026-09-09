@@ -1,0 +1,99 @@
+Report ID: RID022
+
+Report Title:
+Relationship to Study Medication reconciliation with Dose Amount
+
+Description:
+Study Medication Dose Amount is Null or zero however, Relationship to Study Medication is checked as Related
+
+Column Heading:
+1 Country
+
+2. Site Number
+
+3. Subject Number
+
+4. AE Seq
+
+5. AE Term
+
+6. AE Onset Date
+
+7. AE relationship
+
+8. SM Seq
+
+9. Study Medication/TACE
+
+Logic:
+Output the subjects who meet the following criteria.
+
+Logic 1: AE relatonship to study medication/TACE= related
+
+and
+
+[Logic 2: Dose Amount on SM form = null or zero and study medication matches study medication in the item of AE relationship to study medication
+
+OR
+
+Logic 3: Date of TACE on TACE form = null
+
+Note 1: Deleted record is not considered in program or output.
+
+Note 2: If study is with multiple study medications on SM form, report needs to check each of AE relationship to study medication.
+
+Note 3: Do not output if SM is not initialized.
+
+Note 4: Logic 3 used for study using TACE form.
+
+Optional supporting document should be named as study_med_match_supp_<xxxxxxx>.csv and will contain the following columns and associated content: 1 row for each Label Description or Dose Number present in SM/SMAU/SMAB eCRFs. 1. eCRF – SM/SMAU/SMAB 2. Study Medication – Value of Study Medication 3. Matching Item – SM Label Description or SMAU/SMAB Dose Number 4. Matching Value – Value of SM Label Description or SMAU/SMAB Dose Number eCRF,Study Medication,Matching Item,Matching Value SM,-1439,Label Description,-1439 100 mg SM,Methadone,Label Description,Methadone Tablet 5 mg SM,Methadone,Label Description,Methadone Tablet 10 mg SMAB,3475/Placebo,Dose Number,3475/Placebo SMAU,Carboplatin,Dose Number,Carboplatin SMAU,Carboplatin,Dose Number,Carboplatin - Dose 1 SMAU,Carboplatin,Dose Number,Carboplatin - Dose 2 SMAU,Carboplatin,Dose Number,Carboplatin - Dose 3 The actual information provided by the optional supporting doc can be outputted by selecting Y in the parameter "Study Med Match Page".
+
+Report Scenarios:
+Scenario A- Yes
+
+AE relatonship = related and Dose Amount = blank or zero to the corresponding study medication
+
+Scenario B- No
+
+AE relatonship = related and Dose Amount <> blank or zero to the corresponding study medication
+
+Scenario C- No
+
+AE relatonship <> related
+
+Scenario D- No/Yes
+
+Deleted record
+
+Scenario E- Yes
+
+AE relationship to TACE = related and Date of TACE on TACE form = null
+
+Scenario F- No
+
+AE relationship to TACE = related and Date of TACE on TACE form<> null
+
+Sorting:
+Country, Site Number and Subject Number
+
+Parameter Selection:
+(Defaulted to Country, Site Number and Subject Number if not specified): Country, First Site, Last Site, First Subject, Last Subject, List of Subjects, Randomized Only, Study Med Match Page (N/Y, Default as N)
+
+Form.Item Names:
+1. Subject Assignment. Country
+
+2. Subject Assignment. Site Number
+
+3. Subject Assignment. Subject Number
+
+4. AE. Formdix
+
+5. AE. AE term
+
+6. AE. Onset date
+
+7. AE. Overall relationship to study medication/relationship with study medication
+
+8. SM/TACE. Formdix
+
+9. SM/TACE. Study Medication/Chemotherapy

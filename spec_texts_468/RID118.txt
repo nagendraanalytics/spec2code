@@ -1,0 +1,201 @@
+Report ID: RID118
+
+Report Title:
+Duplicated eCOA records
+
+Description:
+This report will output subjects with duplicated eCOA records entered for the same visit within visit windowor duplicated eCOA records on the same date, regardless of the visit.
+
+Column Heading:
+1. Country
+
+2. Site
+
+3. Subject Number
+
+4. InForm Visit
+
+5. Date of Visit
+
+6. Vendor
+
+7. Vendor Visit
+
+8. Category
+
+9. Date/Time of Measurement
+
+10. Questionnaire Completion Status
+
+11.Scheduled time
+
+12. Scenario
+
+Logic:
+Logic 1:
+
+There is more than one GEFCF.Test = Questionnaire Completion Status record for the same GEFCF.Category AND GEFCF.Visit Name
+
+AND
+
+GEFCF. Date/Time of Measurement is within window of days from corresponding DOV.Date of Visit (as per supporting document).
+
+Note 1: Requires supporting document to be named EVD045_supp_<xxxxxxx>.csv and will contain the following columns and associated content:
+
+1. Vendor
+
+2. Vendor Visit Name
+
+3. Inform Visit Name
+
+4. Lower Window of Days
+
+5. Upper Window of Days
+
+Vendor Vendor Visit Name Inform Visit Name Lower Window of Days Upper Window of Days
+
+ERT Cycle 1 Day 1 Cycle 1 Day 1 7 7
+
+Note 2: Erroneous Visits should not be considered
+
+Note 3: If DOV.Date of Visit for the visit is Null, output should not be displayed
+
+Note 4: For Column Heading 8 - If the same duplicate (as per Logic 1) is present for more than one category for the same visit (For comparison of Date/Time of Measurement, Time should not be considered), please display all categories in one row, separated by comma.
+
+Note 5: If there is more than one record for GEFCF.Test = Questionnaire Completion Status with related GEFCF.Result or Finding in Original Units  = COMPLETED meeting Logic 1 conditions, only the first assessment should be considered, other can be discarded (do not consider them in the report).
+
+Note 6: The report should not take into account the deleted records
+
+Logic 2:
+
+There is more than one GEFCF.Test = Questionnaire Completion Status record for the same GEFCF.Category
+
+AND
+
+GEFCF. Date/Time of Measurement are the same for both records.
+
+Note 1: Requires supporting document to be named EVD045_supp_<xxxxxxx>.csv and will contain the following columns and associated content:
+
+1. Vendor
+
+2. Vendor Visit Name
+
+3. Inform Visit Name
+
+4. Lower Window of Days
+
+5. Upper Window of Days
+
+Vendor Vendor Visit Name Inform Visit Name Lower Window of Days Upper Window of Days
+
+Example 1: Study uses Scenario 1 and Scenario 2.
+
+ERT Cycle 1 Day 1 Cycle 1 Day 1 7 7
+
+Example 2: Study only uses Scenario 2.
+
+ERT
+
+Note 2: Logic 2 does not involve DOV date in Inform, no matter the visit is checked Errenous Visit or not, it does not impact the output.
+
+Note 3: For Date/Time values, only consider Date.
+
+Note 4: Use the same supporting document as scenario 1 for studies that need both Scenarios. For scenario 2, Vendor Visit Name, Inform Visit Name, Lower Window of Days, Upper Window of Days in the supporting document will not be considered. If the study only uses Scenario 2, please leave Vendor Visit Name, Inform Visit Name, Lower Window of Days, Upper Window of Days blank.
+
+Note 5 : If there is more than one record for GEFCF.Test = Questionnaire Completion Status with related GEFCF.Result or Finding in Original Units  = COMPLETED meeting Logic 2 conditions, only the last assessment should be considered, other can be discarded (do not consider them in the report).
+
+Note 6: The report should not take into account the deleted records.
+
+Report Scenarios:
+Scenario 1
+
+1 - Yes
+
+There are 2 records of GEFCF.Test = Questionnaire Completion Status with related GEFCF.Result or Finding in Original Units <> COMPLETED for the same Visit and Category AND Date/Time of Measurement is within DOV window for both records
+
+2 - Yes
+
+There is 1 record of GEFCF.Test = Questionnaire Completion Status with related GEFCF.Result or Finding in Original Units <> COMPLETED and 1 record of GEFCF.Test = Questionnaire Completion Status with related GEFCF.Result or Finding in Original Units = COMPLETED for the same Visit and Category AND Date/Time of Measurement is within DOV window for both records
+
+3 - Yes
+
+There are 2 records of GEFCF.Test = Questionnaire Completion Status with related GEFCF.Result or Finding in Original Units <> COMPLETED and 1 record of Questionnaire Status = COMPLETED for the same Visit and Category AND Date/Time of Measurement is within DOV window for all records
+
+4 - Yes
+
+There are 2 records of GEFCF.Test = Questionnaire Completion Status with related GEFCF.Result or Finding in Original Units = COMPLETED and 1 record of GEFCF.Test = Questionnaire Completion Status with related GEFCF.Result or Finding in Original Units <> COMPLETED for the same Visit and Category AND Date/Time of Measurement is within DOV window for all records; Note: Output will appear only for first GEFCF.Test = Questionnaire Completion Status with related GEFCF.Result or Finding in Original Units = COMPLETED and remaining GEFCF.Test = Questionnaire Completion Status with related GEFCF.Result or Finding in Original Units <> COMPLETED
+
+5 - No
+
+There are 2 records of GEFCF.Test = Questionnaire Completion Status with related GEFCF.Result or Finding in Original Units = COMPLETED for the same Visit and Category AND Date/Time of Measurement is within DOV window for both records
+
+6 - No
+
+There is more than one record of GEFCF.Test = Questionnaire Completion Status for different Visit or Category
+
+7 - No
+
+There is more than one record of GEFCF.Test = Questionnaire Completion Status for the same Visit and Category AND Date/Time of Measurement is not within DOV window for at least one record
+
+8 - No
+
+There is more than one record of GEFCF.Test = Questionnaire Completion Status for erroneous visit
+
+Scenario 2
+
+1 - Yes
+
+There are 2 records of GEFCF.Test = Questionnaire Completion Status with related GEFCF.Result or Finding in Original Units <> COMPLETED for the same Category AND Date/Time of Measurement for both records.
+
+2 - Yes
+
+There is 1 record of GEFCF.Test = Questionnaire Completion Status with related GEFCF.Result or Finding in Original Units <> COMPLETED and 1 record of GEFCF.Test = Questionnaire Completion Status with related GEFCF.Result or Finding in Original Units = COMPLETED for the same Category AND Date/Time of Measurement for both records.
+
+3- Yes
+
+There are 2 records of GEFCF.Test = Questionnaire Completion Status with related GEFCF.Result or Finding in Original Units <> COMPLETED and 1 record of Questionnaire Status = COMPLETED for the same Category AND Date/Time of Measurement for all records
+
+4 - Yes
+
+There are 2 records of GEFCF.Test = Questionnaire Completion Status with related GEFCF.Result or Finding in Original Units = COMPLETED and 1 record of GEFCF.Test = Questionnaire Completion Status with related GEFCF.Result or Finding in Original Units <> COMPLETED for the same Category AND Date/Time of Measurement for all records;
+
+Note: Output will appear only for first GEFCF.Test = Questionnaire Completion Status with related GEFCF.Result or Finding in Original Units = COMPLETED and remaining GEFCF.Test = Questionnaire Completion Status with related GEFCF.Result or Finding in Original Units <> COMPLETED
+
+5 - No
+
+There are 2 records of GEFCF.Test = Questionnaire Completion Status with related GEFCF.Result or Finding in Original Units = COMPLETED for the same Category AND Date/Time of Measurement for both records
+
+6 - No
+
+There is more than one record of GEFCF.Test = Questionnaire Completion Status for different Category
+
+Sorting:
+Default
+
+Parameter Selection:
+Country, First Site, Last Site, First Subject, Last Subject, List of Subjects, Supporting Doc Page (N/Y, Default as N), Scenario 1(Y/N), Scenario 2(Y/N)
+
+Form.Item Names:
+1. Country
+
+2. Site
+
+3. Subject Number
+
+4. InForm Visit
+
+5. Date of Visit
+
+6. Vendor
+
+7. Vendor Visit
+
+8. Category
+
+9. Date/Time of Measurement
+
+10. Questionnaire Completion Status
+
+11.Scheduled time
+
+12. Scenario

@@ -1,0 +1,105 @@
+Report ID: RID056
+
+Report Title:
+DOV Completed but IVR Date Missing
+
+Description:
+This report lists when DOV is completed but IVRS Contact date is missing. Visits using IVRS should be selected based on protocol requirement.
+
+Column Heading:
+1) Country
+
+2) Site
+
+3) Subject Number
+
+4) Visit
+
+5) DOV
+
+Logic:
+This report lists when DOV is completed but IVRS Contact date is missing. Visits using IVRS should be selected based on protocol requirement.
+
+- table 1- Just check DOV and IVRS Contact date on DOV form (applicable to study does not need to consider SM period)
+
+- table 2- Please include SM, SMAU, SMAB, SMPB, SMPU, SM01, SM02, SM04 (applicable to study need to consider SM period)
+
+Notes:
+
+- Note1: Visits with Erroneous visit box checked should not be outputted in the report.
+
+- Note2: Supporting document is just required for study using table 2.
+
+- Note3: In parameter page, add selection button for table1 and table 2 to apply for different kinds of study
+
+- Note4: For Table 1, exclude DOV from Visits in parameter "Visits to exclude in Table 1" to allow the exclusion of visits that do not require IVR Contact Date
+
+Required supporting document to be named DOV005_supp_<xxxxxxx>.csv and will contain the following columns and associated content:
+
+1) Study Medication eCRF - Required any of the SM forms for this report.
+
+2) Study Medication - Required Study Medication name that needs to be checked.
+
+3) Dose Number - Required Dose Number name that needs to be checked according to the Study Medication. If dose Number not needed, enter NA.
+
+4) Study Period (when IVRS is contacted for each SM) - Required Study Period.
+
+5) Visit - Visit where Study Medication selected should be present.
+
+The optional supporting document is only required in the following cases:
+
+- SM Label Description and SMAU/SMAB Dose Number are not exactly matched with Study Medication.
+
+This supporting document is only required to be created once per trial. If it was already created and uploaded, there is no need to duplicate it.
+
+Optional supporting document should be named as study_med_match_supp_<xxxxxxx>.csv and will contain the following columns and associated content:
+
+1 row for each Label Description or Dose Number present in SM/SMAU/SMAB eCRFs.
+
+1. eCRF – SM/SMAU/SMAB
+
+2. Study Medication – Value of Study Medication
+
+3. Matching Item – SM Label Description or SMAU/SMAB Dose Number
+
+4. Matching Value – Value of SM Label Description or SMAU/SMAB Dose Number
+
+Example
+
+eCRF,Study Medication,Matching Item,Matching Value
+
+SM,-1439,Label Description,-1439 100 mg
+
+SM,Methadone,Label Description,Methadone Tablet 5 mg
+
+SM,Methadone,Label Description,Methadone Tablet 10 mg
+
+SMAB,3475/Placebo,Dose Number,3475/Placebo
+
+SMAU,Carboplatin,Dose Number,Carboplatin
+
+SMAU,Carboplatin,Dose Number,Carboplatin - Dose 1
+
+SMAU,Carboplatin,Dose Number,Carboplatin - Dose 2
+
+SMAU,Carboplatin,Dose Number,Carboplatin - Dose 3
+
+Report Scenarios:
+Output when DOV is completed but IVRS Contact date is missing
+
+Sorting:
+Country, Site, Subject Number, Visitorder, DOV
+
+Parameter Selection:
+Country, Site, Subject, Visit, List of Subjects, Visits to exclude in Table 1, Table
+
+Form.Item Names:
+1) Subject Assignment.Site Country
+
+2) Subject Assignment.Site Mnemonic
+
+3) Subjects.Subject Number
+
+4) Visits.Visit Mnemonic
+
+5) Visits.DOV

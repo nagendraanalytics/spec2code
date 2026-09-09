@@ -1,0 +1,175 @@
+Report ID: RID216
+
+Report Title:
+Opened/answered/candidate queries on hidden fields
+
+Description:
+This report displays queries that are located on fields that are not visible from site's view
+
+Column Heading:
+1. Country
+
+2. Site
+
+3. Subject Number
+
+4. Visit Mnemonic
+
+5. Date of Visit/Reference Date
+
+6. eCRF Name
+
+7. Seq
+
+8. Deleted Record
+
+9. Item Name
+
+10. Opened Date
+
+11. Days Outstanding
+
+12. Originating User
+
+13. Originating Group
+
+Logic:
+Log
+
+There is/are one or more open/answered/candidate queries in the “Itemrefname” that belongs to the corresponding “Form”
+
+Notes:
+
+1- “Itemrefname”, “Form” are values from supporting document
+
+2- Column “Days Outstanding” will populate the result of “System Date – Opened Date”. Please consider only the date and disregard the time
+
+3- For columns where a date is displayed in the output, the report will show it in format “DDMMMYYYY” e.g. 01JAN2020
+
+4- For common forms column 5 will be displayed using the “Reference Date” itemrefname provided in the supporting document.
+
+5- Column 8 will display “Yes” when query is present in a deleted record and “No” when query is present in a non-deleted record
+
+6- Include all queries even if it is in a erroneous visit.
+
+7-Display DOV/reference date as null if form is present in Final Status Visit
+
+7- If supporting doc is not provided, display the message as "TQ034_JR_STD Supporting Document Not Present for This Trial".
+
+8-            If reference date contain UNK in the date consider 01 as the day and January as the month. For example: UNK/UNK/2020 will be considered as 01/Jan/2020
+
+Requires supporting document to be named TQ034_supp_</Vxxxxxxx>.csv and will contain the following columns and associated content:
+
+1 row for each form that contains hidden fields and its corresponding question text.
+
+1. Form – Required, use formmnemonic value from TQ028_STD
+
+2. Itemrefname - Required, use itemrefname value from TQ028_STD
+
+3. Itemquestion – Required, use itemquestion value from TQ028_STD.
+
+4. Reference Date  – Required, for common forms use itemquestion value from TQ028_STD that corresponds to the date that should be used as reference date (e.g. for AE, Onset Date and Time). For visit-based forms simply enter as NA
+
+e.g.
+
+Headers:
+
+Form,Itemrefname,Itemquestion,Reference Date
+
+Content:
+
+AE,AEAEWRSNDTIT,Date the AE Worsened,Onset Date and Time
+
+AE,AEAEPQCAIT,Is There a Product Quality Complaint Attached?,Onset Date and Time
+
+AE,AEAELLTIT,LLT,Onset Date and Time
+
+AE,AEAETERMMAPIT,MapAETerm,Onset Date and Time
+
+AE,AEAEDECODPTIT,PT,Onset Date and Time
+
+AE,AEAEBODSYSSOCIT,SOC,Onset Date and Time
+
+CDDM,CDDMMHCATIT,Category,NA
+
+CDDM,CDDMMHPRESPIT,Medical History Event Pre-Specified,NA
+
+CDDM,CDDMMHOCCURIT,Medical History Occurrence,NA
+
+CDDM,CDDMMHLOCOTHIT,Other Location,NA
+
+CLAB,itmCLABLabCat,Lab Category,NA
+
+CLAB,itmCLABTptH,Scheduled Time,NA
+
+CM,CMTCLAS1IT,ATC1 Term,Imputed Start Date and Time
+
+CM,CMTCLAS2IT,ATC2 Term,Imputed Start Date and Time
+
+CM,CMBRDTRMIT,Broader Term,Imputed Start Date and Time
+
+CM,CMENCDRUGIT,Encoded Drug Name,Imputed Start Date and Time
+
+CM,CMTRTMAPIT,Map Medication Name,Imputed Start Date and Time
+
+CM,CMCLASIT,Medication Class,Imputed Start Date and Time
+
+CM,CMCLASCDIT,Medication Class Code,Imputed Start Date and Time
+
+Include:
+
+1. All hidden fields from latest version of study PROD eCRFs
+
+2. Read-only fields which have display overrides as “hidden” according to the display overrides tab from T&E. For example fields with display overrides similar to “InForm Default: Read-only, Override Rights Groups : Hidden to CRC, PI and PI Sig rights groups” should also be included.
+
+3. All encoding fields
+
+Do NOT include enterable items or read-only items that the are visible from site’s view.
+
+The number of rows in the supporting document will be represented in the Report Header as "# of rows for customization".
+
+The actual information provided by the supporting doc can be outputted by selecting Y in the parameter "Supporting doc Page".
+
+Report Scenarios:
+Scenario 1 Output Yes:
+
+1. There are one/more than one open/answered/candidate queries in the itemquestion field provided in the supporting document
+
+Scenario 1 Output No:
+
+1. There are one/more than one deleted/closed queries in the itemquestion field provided in the supporting document
+
+2. There are one/more than one open/answered/candidate queries in an itemquestion field different to the ones provided in the supporting document
+
+Sorting:
+Days outstanding ( from greater to less)
+
+Parameter Selection:
+Country, First Site, Last Site, First Subject, Last Subject, List of Subjects, Randomized Only (Y/N), Supporting Doc Page (N/Y, Default as N)
+
+Form.Item Names:
+1. cv_safm.sitecountry
+
+2. cv_safm.sitemnemonic
+
+3. irv_cur_subject.subjectnumberstr
+
+4. irm_studyversion_visits.visitmnemonic
+
+5. irv_sv_subjectvisits.dov
+
+6. irv_form_revs.formmnemonic
+
+7. irv_sv_subject_forms.formindex
+
+8. As specified by Note 5
+
+9. Form.Itemquestion
+
+10. irv_cur_query.querytime (Derived - first record based on subjectid,visitid,visitindex,formid,formindex,itemid,itemsetid,itemsetindex,queryid when qopened>0)
+
+11. As specified by Note 2
+
+12. irv_cur_user.queryuserid (Derived - first record based on subjectid,visitid,visitindex,formid,formindex,itemid,itemsetid,itemsetindex,queryid)
+
+13. irv_cur_user.rightsgroup
