@@ -14,6 +14,8 @@ spec:
       labels:
         app: spec2code
     spec:
+      imagePullSecrets:
+        - name: ghcr-creds    
       containers:
         - name: spec2code
           image: ghcr.io/nagendraanalytics/spec2code:latest
