@@ -15,7 +15,7 @@ spec:
         app: spec2code
     spec:
       imagePullSecrets:
-        - name: ghcr-creds    
+        - name: ghcr-creds
       containers:
         - name: spec2code
           image: ghcr.io/nagendraanalytics/spec2code:latest
@@ -42,11 +42,15 @@ spec:
             httpGet:
               path: /
               port: 8002
-            initialDelaySeconds: 10
+            initialDelaySeconds: 15
             periodSeconds: 10
           livenessProbe:
             httpGet:
               path: /
               port: 8002
-            initialDelaySeconds: 30
+            initialDelaySeconds: 45
             periodSeconds: 20
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: spec2code-data
