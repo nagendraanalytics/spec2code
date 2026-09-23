@@ -30,7 +30,10 @@ spec:
                   name: spec2code-secrets
                   key: anthropic-api-key
             - name: DATABASE_URL
-              value: "sqlite:///./cdm_spec_to_cql.db"
+              value: "sqlite:////app/data/cdm_spec_to_cql.db"
+          volumeMounts:
+            - name: data
+              mountPath: /app/data
           resources:
             requests:
               cpu: 100m
