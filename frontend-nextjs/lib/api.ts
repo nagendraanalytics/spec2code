@@ -40,7 +40,7 @@ import type {
 
 // The app is a static export, so there is no server-side proxy: the browser
 // calls the FastAPI backend directly (CORS is configured in main.py).
-export const API_BASE = process.env.NEXT_PUBLIC_API_BASE ?? "http://127.0.0.1:8002";
+export const API_BASE = process.env.NEXT_PUBLIC_API_BASE ?? "";
 
 async function request<T>(path: string, tenantId: string, init?: RequestInit): Promise<T> {
   let res: Response;
