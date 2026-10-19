@@ -18,7 +18,7 @@ spec:
         - name: ghcr-creds
       containers:
         - name: spec2code
-          image: ghcr.io/nagendraanalytics/spec2code:latest
+          image: ghcr.io/nagendraanalytics/spec2code:v2
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8002
