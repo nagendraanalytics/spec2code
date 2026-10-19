@@ -421,7 +421,7 @@ Column Heading: {spec.get('columnHeading', '')}
 Logic: {spec.get('logic', '')}
 Report Scenarios: {spec.get('reportScenarios', '')}
 Sorting: {spec.get('sorting', '')}
-
+{spec.get('_knowledge_block', '')}
 Review this spec for readiness now."""
 
 
@@ -449,7 +449,7 @@ Column Heading: {spec.get('columnHeading', '')}
 Logic: {spec.get('logic', '')}
 Report Scenarios: {spec.get('reportScenarios', '')}
 Sorting: {spec.get('sorting', '')}
-{metadata_section}{few_shot_section}{patterns_section}{supporting_doc_section}
+{metadata_section}{few_shot_section}{patterns_section}{supporting_doc_section}{spec.get('_knowledge_block', '')}
 Generate the SQL for this report spec now."""
 
 

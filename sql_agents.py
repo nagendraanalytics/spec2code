@@ -24,6 +24,8 @@ from typing import Optional
 
 import anthropic
 
+import clinical_modules
+
 SQL_SYSTEM_PROMPT = """You are a clinical data programmer generating SQL for a \
 CDM (clinical data management) report specification. These specs follow \
 Merck/CDISC-style report library conventions: source tables are named \
@@ -137,6 +139,7 @@ Logic: {spec.get('logic', '')}
 Report Scenarios: {spec.get('reportScenarios', '')}
 Sorting: {spec.get('sorting', '')}
 
+{clinical_modules.prompt_block(spec)}{spec.get('_context_block', '')}
 Generate the SQL for this report spec now."""
 
 

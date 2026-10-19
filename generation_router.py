@@ -55,7 +55,40 @@ _TIER5_BETA_HANDLERS = {
 }
 
 
-def resolve(spec_template: str, edc_system: str, language: str, allow_unverified: bool = False) -> RouteInfo:
+def coverage(edc_system: str, language: str) -> str:
+    """How much of the pipeline backs this (edc_system, language) cell:
+      "full"       -- rules, retrieval, Claude generation and guardrails
+      "rules_only" -- Tier 1 deterministic rules only; no Claude fallback,
+                      so most specs produce no code
+      "draft"      -- unverified-beta Claude generation, programmer review needed
+      "none"       -- nothing to run
+    Exposed through /api/targets so the UI never calls a rules-only path
+    "verified" without saying how narrow it is."""
+    if (edc_system, language) in _TIER5_HANDLERS:
+        return "full"
+    if (edc_system, language) in _TIER5_BETA_HANDLERS:
+        return "draft"
+    if language in _TIER1_MODULES and code_gen_registry.is_available(edc_system, language):
+        return "rules_only"
+    return "none"
+
+
+def grounded_draft_possible(edc_system: str, language: str, has_metadata: bool) -> bool:
+    """A system with no checked generator can still produce an UNVERIFIED DRAFT
+    in a language that has a beta generator, when the study's own metadata is
+    loaded: the model then names real forms and items instead of guessing a
+    convention. Never applies to Veeva (it has its own cells) or to CQL."""
+    import edc_registry
+
+    return (
+        has_metadata
+        and edc_system != "veeva"
+        and language in edc_registry.GROUNDED_LANGUAGES
+        and edc_registry.is_known(edc_system)
+    )
+
+
+def resolve(spec_template: str, edc_system: str, language: str, allow_unverified: bool = False, has_metadata: bool = False) -> RouteInfo:
     """Validates the full combination and returns what's actually
     available. Raises GenerationUnavailable with a specific, honest
     reason (not a generic "not supported") if anything in the chain is
@@ -74,6 +107,9 @@ def resolve(spec_template: str, edc_system: str, language: str, allow_unverified
         raise GenerationUnavailable(f"Spec template '{spec_template}' is registered but not verified: {template['detail']}")
 
     status = code_gen_registry.get_status(edc_system, language)
+    grounded = status["status"] not in ("verified", "built", "unverified_beta") and grounded_draft_possible(edc_system, language, has_metadata)
+    if grounded:
+        status = {"status": "unverified_beta", "detail": "Metadata-grounded draft: no checked generator exists for this system, so names come from the loaded study metadata."}
     is_beta = status["status"] == "unverified_beta"
 
     if status["status"] not in ("verified", "built") and not (is_beta and allow_unverified):
@@ -88,7 +124,7 @@ def resolve(spec_template: str, edc_system: str, language: str, allow_unverified
         "edc_system": edc_system,
         "language": language,
         "has_tier1": language in _TIER1_MODULES,
-        "has_tier5": (edc_system, language) in _TIER5_HANDLERS or ((edc_system, language) in _TIER5_BETA_HANDLERS and allow_unverified),
+        "has_tier5": (edc_system, language) in _TIER5_HANDLERS or (((edc_system, language) in _TIER5_BETA_HANDLERS or grounded) and allow_unverified),
         "is_beta": is_beta,
     }
 

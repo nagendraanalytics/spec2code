@@ -8,7 +8,7 @@ that isolation actually holds, not just that the column exists.
 import uuid
 from datetime import datetime, timezone
 
-from sqlalchemy import Boolean, Column, DateTime, ForeignKey, Integer, JSON, String, Text
+from sqlalchemy import Boolean, Column, DateTime, Float, ForeignKey, Integer, JSON, LargeBinary, String, Text
 from sqlalchemy.orm import relationship
 
 from db import Base
@@ -34,6 +34,7 @@ class Spec(Base):
     logic = Column(Text, default="")
     report_scenarios = Column(Text, default="")
     sorting = Column(Text, default="")
+    source = Column(String, default="app")  # app = run in this tool | imported = executed elsewhere
     created_at = Column(DateTime, default=_now)
 
     reviews = relationship("SpecReview", back_populates="spec", cascade="all, delete-orphan")
@@ -69,6 +70,8 @@ class GenerationRun(Base):
     guardrail_reports_json = Column(Text, default="[]")
     status = Column(String, nullable=False)  # generated | generated_with_override | blocked_needs_review | error
     error = Column(Text)
+    language = Column(String)  # cql | sql | sas | r | python (None on rows from before v2.10)
+    source = Column(String, default="app")  # app | imported
     created_at = Column(DateTime, default=_now)
 
     spec = relationship("Spec", back_populates="runs")
@@ -301,4 +304,252 @@ class SpecSupportingDocItem(Base):
     original_item_question = Column(Text, default="")
     control_level = Column(String, default="")
     prefix = Column(String, default="")
+    created_at = Column(DateTime, default=_now)
+
+
+class BatchJob(Base):
+    """One batch run: many listings pushed through the pipeline in parallel.
+    Persisted (not just held in memory) so a 100-listing run survives a
+    server reload and its results stay downloadable afterwards."""
+    __tablename__ = "batch_jobs"
+
+    id = Column(String, primary_key=True, default=_uuid)
+    tenant_id = Column(String, nullable=False, index=True)
+    name = Column(String, default="")
+    status = Column(String, nullable=False, default="running")  # running | finished | cancelled | interrupted
+    options_json = Column(Text, default="{}")
+    created_at = Column(DateTime, default=_now)
+    finished_at = Column(DateTime, nullable=True)
+
+    items = relationship("BatchItem", back_populates="job", cascade="all, delete-orphan")
+
+
+class BatchItem(Base):
+    """One listing inside a batch. Each result field is stored as JSON text,
+    same convention as the other tables here."""
+    __tablename__ = "batch_items"
+
+    id = Column(String, primary_key=True, default=_uuid)
+    job_id = Column(String, ForeignKey("batch_jobs.id"), nullable=False, index=True)
+    tenant_id = Column(String, nullable=False, index=True)  # denormalized, same reason as SpecReview
+    position = Column(Integer, default=0)
+    name = Column(String, default="")  # file name / label shown in the UI
+    report_id = Column(String, default="")
+    status = Column(String, nullable=False, default="pending")
+    # pending | running | done | needs_attention | failed | cancelled | interrupted
+    stage = Column(String, default="")  # extract | understand | review | generate
+    spec_json = Column(Text, default="")
+    raw_text = Column(Text, default="")
+    understanding_json = Column(Text, default="")
+    review_json = Column(Text, default="")
+    result_json = Column(Text, default="")
+    error = Column(Text, default="")
+    attempts = Column(Integer, default=0)
+    started_at = Column(DateTime, nullable=True)
+    finished_at = Column(DateTime, nullable=True)
+    study_id = Column(String, default="")  # per-listing study override (report-wise metadata)
+
+    job = relationship("BatchJob", back_populates="items")
+
+
+class Study(Base):
+    """A study registered for metadata-driven runs. `study_id` is the user's
+    own code for the study (unique per tenant, enforced in study_setup)."""
+    __tablename__ = "studies"
+
+    id = Column(String, primary_key=True, default=_uuid)
+    tenant_id = Column(String, nullable=False, index=True)
+    study_id = Column(String, nullable=False, index=True)
+    name = Column(String, default="")
+    edc_system = Column(String, default="veeva")
+    ta = Column(String, default="")  # therapeutic area; selects which TA knowledge applies to this study
+    sponsor = Column(String, default="")  # sponsor; selects which sponsor knowledge applies to this study
+    active_version = Column(Integer, nullable=True)  # the version runs use unless one is pinned
+    created_at = Column(DateTime, default=_now)
+
+    versions = relationship("StudyMetadataVersion", back_populates="study", cascade="all, delete-orphan")
+
+
+class StudyMetadataVersion(Base):
+    """An immutable snapshot of a study's metadata. Re-uploading creates a new
+    version instead of overwriting, so a run can say exactly which metadata it
+    used and a bad upload can be rolled back by activating an older version."""
+    __tablename__ = "study_metadata_versions"
+
+    id = Column(String, primary_key=True, default=_uuid)
+    study_pk = Column(String, ForeignKey("studies.id"), nullable=False, index=True)
+    tenant_id = Column(String, nullable=False, index=True)
+    version = Column(Integer, nullable=False)
+    source_files = Column(Text, default="[]")  # JSON list of uploaded file names
+    notes = Column(Text, default="")
+    counts_json = Column(Text, default="{}")
+    created_at = Column(DateTime, default=_now)
+
+    study = relationship("Study", back_populates="versions")
+    items = relationship("StudyItemRow", cascade="all, delete-orphan")
+    visits = relationship("StudyVisitRow", cascade="all, delete-orphan")
+    codelists = relationship("StudyCodelistRow", cascade="all, delete-orphan")
+
+
+class StudyItemRow(Base):
+    __tablename__ = "study_item_rows"
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    version_id = Column(String, ForeignKey("study_metadata_versions.id"), nullable=False, index=True)
+    form = Column(String, nullable=False)
+    form_label = Column(String, default="")
+    item = Column(String, nullable=False)
+    label = Column(Text, default="")
+    data_type = Column(String, default="")
+    codelist = Column(String, default="")
+
+
+class StudyVisitRow(Base):
+    __tablename__ = "study_visit_rows"
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    version_id = Column(String, ForeignKey("study_metadata_versions.id"), nullable=False, index=True)
+    position = Column(Integer, default=0)
+    name = Column(String, nullable=False)
+    label = Column(String, default="")
+
+
+class StudyCodelistRow(Base):
+    __tablename__ = "study_codelist_rows"
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    version_id = Column(String, ForeignKey("study_metadata_versions.id"), nullable=False, index=True)
+    codelist = Column(String, nullable=False)
+    value = Column(String, default="")
+    label = Column(String, default="")
+
+
+# ---------------------------------------------------------------------------
+# Knowledge base: sources (any uploaded document), their chunks (the RAG
+# store) and rules. Nothing here influences generation until a person
+# approves it: status is draft -> approved -> retired.
+# ---------------------------------------------------------------------------
+
+class KnowledgeSource(Base):
+    __tablename__ = "knowledge_sources"
+
+    id = Column(String, primary_key=True, default=_uuid)
+    tenant_id = Column(String, nullable=False, index=True)
+    title = Column(String, default="")
+    filename = Column(String, default="")
+    file_hash = Column(String, index=True, default="")
+    size_bytes = Column(Integer, default=0)
+    raw_path = Column(String, default="")  # the original file, kept so a re-extract never needs a re-upload
+    # standard | protocol | spec | sas_program | history | edc_guide | listing_standard | other
+    doc_type = Column(String, default="other", index=True)
+    doc_type_reason = Column(String, default="")
+    # global | ta | study. scope_ref is the TA name or study id (empty for global).
+    # For doc_type edc_guide on global scope, scope_ref may name one EDC system id.
+    scope = Column(String, default="global", index=True)
+    scope_ref = Column(String, default="", index=True)
+    standard_version = Column(String, default="")  # e.g. "SDTM IG 3.4"
+    license_note = Column(String, default="")
+    status = Column(String, default="draft", index=True)  # draft | approved | retired
+    extract_status = Column(String, default="ok")  # ok | needs_ocr | empty | error
+    extract_note = Column(Text, default="")
+    text_chars = Column(Integer, default=0)
+    chunk_count = Column(Integer, default=0)
+    embed_backend = Column(String, default="")
+    created_by = Column(String, default="")
+    created_at = Column(DateTime, default=_now)
+    approved_by = Column(String, default="")
+    approved_at = Column(DateTime, nullable=True)
+
+    chunks = relationship("KnowledgeChunk", back_populates="source", cascade="all, delete-orphan")
+
+
+class KnowledgeChunk(Base):
+    __tablename__ = "knowledge_chunks"
+
+    id = Column(String, primary_key=True, default=_uuid)
+    tenant_id = Column(String, nullable=False, index=True)
+    source_id = Column(String, ForeignKey("knowledge_sources.id", ondelete="CASCADE"), nullable=False, index=True)
+    position = Column(Integer, default=0)
+    heading = Column(String, default="")
+    text = Column(Text, default="")
+    meta = Column(JSON, default=dict)  # page, sheet, kind (text|table|code), ...
+    embedding = Column(LargeBinary, nullable=True)  # float32 vector; pgvector replaces this column in Postgres
+    embed_backend = Column(String, default="")
+
+    source = relationship("KnowledgeSource", back_populates="chunks")
+
+
+class KnowledgeRule(Base):
+    __tablename__ = "knowledge_rules"
+
+    id = Column(String, primary_key=True, default=_uuid)
+    tenant_id = Column(String, nullable=False, index=True)
+    name = Column(String, nullable=False)
+    description = Column(Text, default="")
+    scope = Column(String, default="global")  # global | ta | study
+    scope_ref = Column(String, default="")
+    applies_to = Column(JSON, default=list)  # agents: extract | understand | review | generate
+    condition = Column(JSON, default=dict)  # edcSystem[], listingType[], specType[], language[], forms[], textPattern
+    action_type = Column(String, default="prompt")  # pattern | prompt | guardrail | name_map
+    action = Column(JSON, default=dict)
+    priority = Column(Integer, default=100)  # higher wins among equally specific rules
+    status = Column(String, default="draft", index=True)  # draft | approved | retired
+    evidence_source_id = Column(String, nullable=True)
+    evidence_note = Column(Text, default="")
+    tests = Column(JSON, default=list)  # [{"spec": {...}, "expect": "fires" | "not_fires"}]
+    version = Column(Integer, default=1)
+    created_by = Column(String, default="")
+    created_at = Column(DateTime, default=_now)
+    updated_at = Column(DateTime, default=_now)
+    approved_by = Column(String, default="")
+    approved_at = Column(DateTime, nullable=True)
+
+
+class SyntheticSet(Base):
+    """Synthetic test data for one listing: conditions found in its logic and cases (small multi-form datasets,
+    each with an expected include/exclude). One row per version; editing a reviewed set returns it to draft."""
+    __tablename__ = "synthetic_sets"
+
+    id = Column(String, primary_key=True, default=_uuid)
+    tenant_id = Column(String, nullable=False, index=True)
+    report_id = Column(String, nullable=False, index=True)
+    version = Column(Integer, default=1)
+    spec_id = Column(String, default="")  # library spec it came from, if any
+    batch_id = Column(String, default="")
+    batch_item_id = Column(String, default="")
+    study_id = Column(String, default="")
+    status = Column(String, default="draft")  # draft | reviewed | retired
+    edited = Column(Boolean, default=False)
+    spec_json = Column(Text, default="{}")  # snapshot of the spec the data was built from
+    conditions_json = Column(Text, default="[]")
+    cases_json = Column(Text, default="[]")
+    open_questions_json = Column(Text, default="[]")
+    summary = Column(Text, default="")
+    used_knowledge = Column(Boolean, default=False)
+    created_by = Column(String, default="")
+    reviewed_by = Column(String, default="")
+    reviewed_at = Column(DateTime, nullable=True)
+    created_at = Column(DateTime, default=_now)
+    updated_at = Column(DateTime, default=_now)
+
+
+class SyntheticRun(Base):
+    """One check of code against a synthetic set: executed here (SQL), uploaded from a real system, or could not run."""
+    __tablename__ = "synthetic_runs"
+
+    id = Column(String, primary_key=True, default=_uuid)
+    tenant_id = Column(String, nullable=False, index=True)
+    set_id = Column(String, nullable=False, index=True)
+    set_version = Column(Integer, default=1)
+    language = Column(String, default="")
+    method = Column(String, default="")  # executed | uploaded
+    status = Column(String, default="")  # executed | uploaded | could_not_execute
+    code = Column(Text, default="")
+    results_json = Column(Text, default="[]")
+    counts_json = Column(Text, default="{}")
+    issues_json = Column(Text, default="{}")
+    rows_returned = Column(Integer, default=0)
+    source_name = Column(String, default="")  # uploaded file name
+    error = Column(Text, default="")
+    created_by = Column(String, default="")
     created_at = Column(DateTime, default=_now)

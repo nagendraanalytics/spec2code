@@ -90,26 +90,20 @@
         <div id="gap-chat-panel"></div>
       </div>
 
-      <div class="stage-card" id="sas-migration-panel">
+      <div class="stage-card" id="reference-code-panel">
         <div class="stage-card-header">
-          <h2 class="stage-card-title">Migrate from existing SAS code (optional)</h2>
+          <h2 class="stage-card-title">Cross-check against reference code (optional)</h2>
         </div>
         <p class="stage-card-hint">
-          Only relevant if this client is migrating off legacy SAS-based reporting. Paste or
-          upload SAS code that's already been written and confirmed working -- it will be
-          reverse-engineered into the same spec fields below, so it can then be regenerated for
-          whichever target (CQL, SAS, R, Python) this client actually needs. This does NOT
-          translate SAS syntax directly -- see the migration notes for why.
+          Paste or upload code that already implements this spec and has been confirmed working
+          (any language: SAS, SQL, R, Python, CQL). It is compared against the spec to surface
+          conventions the spec never states. Findings stay candidates until a human confirms them.
         </p>
-        <textarea id="sas-code-input" rows="8" placeholder="Paste existing SAS code here..."></textarea>
+        <textarea id="ref-code-input" rows="8" placeholder="Paste existing reference code here..."></textarea>
         <div class="extract-row">
-          <input type="file" id="sas-code-file" accept=".sas,.txt" />
-          <button type="button" id="migrate-sas-btn" class="btn btn-ghost">Understand SAS Code</button>
-        </div>
-        <p class="extract-notes" id="sas-migration-notes" hidden></p>
-        <div class="extract-row crossref-row">
-          <button type="button" id="crossref-sas-btn" class="btn btn-secondary" title="Requires an existing spec (Report ID + Description) to check the code against">
-            Cross-Reference Against Spec
+          <input type="file" id="ref-code-file" accept=".sas,.sql,.r,.py,.cql,.txt" />
+          <button type="button" id="crossref-ref-btn" class="btn btn-secondary" title="Requires an existing spec (Report ID + Description) to check the code against">
+            Cross-Check Against Spec
           </button>
         </div>
         <div id="crossref-panel"></div>

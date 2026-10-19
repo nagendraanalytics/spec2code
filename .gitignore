@@ -15,6 +15,7 @@ downloads/
 eggs/
 .eggs/
 lib/
+!frontend-nextjs/lib/
 lib64/
 parts/
 sdist/
@@ -219,3 +220,13 @@ __marimo__/
 
 # Live secrets — managed in-cluster
 k8s/secret.yaml
+kb_files/
+node_modules/
+*.db
+knowledge/knowledge_sources.zip
+*.db-shm
+*.db-wal
+frontend-nextjs/out/
+*.tsbuildinfo
+manifest.csv
+spec_texts_*.zip

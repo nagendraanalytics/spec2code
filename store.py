@@ -28,6 +28,7 @@ def create_spec(db: Session, tenant_id: str, spec: dict) -> Spec:
         logic=spec.get("logic", ""),
         report_scenarios=spec.get("reportScenarios", ""),
         sorting=spec.get("sorting", ""),
+        source=spec.get("source", "app"),
     )
     db.add(row)
     db.commit()
@@ -114,6 +115,8 @@ def save_generation_run(db: Session, tenant_id: str, spec_id: str, run: dict) ->
         guardrail_reports_json=json.dumps(run.get("guardrail_reports", [])),
         status=run.get("status", "error"),
         error=run.get("error"),
+        language=run.get("language"),
+        source=run.get("source", "app"),
     )
     db.add(row)
     db.commit()
@@ -136,6 +139,37 @@ def list_generation_runs(db: Session, tenant_id: str, spec_id: str) -> list:
     )
 
 
+def list_reviews(db: Session, tenant_id: str, spec_id: str) -> list:
+    if get_spec(db, tenant_id, spec_id) is None:
+        return []
+    return (
+        db.query(SpecReview)
+        .filter(SpecReview.spec_id == spec_id, SpecReview.tenant_id == tenant_id)
+        .order_by(SpecReview.created_at.desc())
+        .all()
+    )
+
+
+def spec_overview(db: Session, tenant_id: str, spec_ids: list) -> dict:
+    """{spec_id: {readiness, reviews, runs, languages, lastStatus}} for the library list, in two queries."""
+    out = {i: {"readiness": None, "reviews": 0, "runs": 0, "languages": [], "lastStatus": None} for i in spec_ids}
+    if not spec_ids:
+        return out
+    for r in (db.query(SpecReview).filter(SpecReview.tenant_id == tenant_id, SpecReview.spec_id.in_(spec_ids))
+              .order_by(SpecReview.created_at.asc()).all()):
+        o = out[r.spec_id]
+        o["reviews"] += 1
+        o["readiness"] = r.readiness  # ascending order, so the last one wins = latest
+    for g in (db.query(GenerationRun).filter(GenerationRun.tenant_id == tenant_id, GenerationRun.spec_id.in_(spec_ids))
+              .order_by(GenerationRun.created_at.asc()).all()):
+        o = out[g.spec_id]
+        o["runs"] += 1
+        o["lastStatus"] = g.status
+        if g.language and g.language not in o["languages"]:
+            o["languages"].append(g.language)
+    return out
+
+
 def spec_to_dict(spec: Spec) -> dict:
     return {
         "id": spec.id,
@@ -145,6 +179,7 @@ def spec_to_dict(spec: Spec) -> dict:
         "logic": spec.logic,
         "reportScenarios": spec.report_scenarios,
         "sorting": spec.sorting,
+        "source": spec.source or "app",
         "createdAt": spec.created_at.isoformat() if spec.created_at else None,
     }
 
@@ -169,6 +204,8 @@ def run_to_dict(run: GenerationRun) -> dict:
         "guardrailReports": json.loads(run.guardrail_reports_json or "[]"),
         "status": run.status,
         "error": run.error,
+        "language": run.language,
+        "source": run.source or "app",
         "createdAt": run.created_at.isoformat() if run.created_at else None,
     }
 

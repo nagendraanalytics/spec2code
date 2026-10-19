@@ -17,6 +17,8 @@ import os
 
 import anthropic
 
+import clinical_modules
+
 R_SYSTEM_PROMPT = """You are a clinical data programmer generating R (tidyverse/dplyr) \
 code for a CDM (clinical data management) report specification. These specs \
 follow Merck/CDISC-style report library conventions: source data frames are \
@@ -116,6 +118,7 @@ Logic: {spec.get('logic', '')}
 Report Scenarios: {spec.get('reportScenarios', '')}
 Sorting: {spec.get('sorting', '')}
 
+{clinical_modules.prompt_block(spec)}{spec.get('_context_block', '')}
 Generate the R (dplyr) code for this report spec now."""
 
 

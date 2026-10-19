@@ -44,6 +44,7 @@ from abc import ABC, abstractmethod
 from typing import Optional
 
 import guardrails as guardrails_module
+import holdout
 
 logger = logging.getLogger("rag_retriever")
 
@@ -163,7 +164,7 @@ class PrecedentStore:
         few-shot example. A rejected precedent is logged, not silently
         dropped, so a growing rejection rate is visible rather than
         just quietly shrinking the effective corpus."""
-        if not self.precedents:
+        if not self.precedents or holdout.precedents_off():
             return []
         query = _spec_text(spec)
         scores = self.embedder.similarity(query, self._texts)
@@ -173,6 +174,8 @@ class PrecedentStore:
         for p, s in ranked:
             if s < min_score:
                 continue
+            if holdout.is_held_out(p.get("spec_id", "")):
+                continue  # the report being evaluated must not be handed its own verified answer
             report = guardrails_module.run_guardrails(p.get("cql", ""))
             if not report["passed"]:
                 failed = [c["check"] for c in report["checks"] if not c["passed"]]

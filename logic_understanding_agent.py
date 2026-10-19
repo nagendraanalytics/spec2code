@@ -16,7 +16,9 @@ not a readable narrative) -- this is one call, in plain language, meant
 to be read by a person.
 """
 
+import json
 import os
+import re
 
 import anthropic
 
@@ -139,7 +141,7 @@ Column Heading: {spec.get('columnHeading', '')}
 Logic: {spec.get('logic', '')}
 Report Scenarios: {spec.get('reportScenarios', '')}
 Sorting: {spec.get('sorting', '')}
-{supporting_doc_section}
+{supporting_doc_section}{spec.get('_knowledge_block', '')}
 Walk through your understanding of this spec's logic now, before any code is written."""
 
 
@@ -217,21 +219,105 @@ _SUPPLEMENTARY_LIST_FIELDS = ["domains_identified", "key_definitions", "assumpti
 _CRITICAL_LIST_FIELDS = ["logic_steps"]
 
 
+_LEAKED_PARAM = re.compile(r'<parameter\s+name="([A-Za-z_]\w*)"\s*>')
+
+
+def _decode_prefix(text: str):
+    """Decode the first JSON value at the start of text, ignoring whatever
+    follows it (closing tags, further leaked parameters). None on failure."""
+    text = text.lstrip()
+    if not text or text[0] not in "[{":
+        return None
+    try:
+        value, _ = json.JSONDecoder().raw_decode(text)
+    except ValueError:
+        return None
+    return value
+
+
+def _recover_leaked_params(result: dict) -> dict:
+    """The model sometimes emits its tool-call markup as TEXT inside one
+    field, e.g. logic_steps = '\\n<parameter name="logic_steps">[...]\\n
+    <parameter name="assumptions">[...]'. Pull each leaked parameter out and
+    fill fields that are not already usable lists. Never overwrites a field
+    that already holds a real list."""
+    recovered = dict(result)
+    for value in list(result.values()):
+        if not isinstance(value, str) or '<parameter' not in value:
+            continue
+        parts = _LEAKED_PARAM.split(value)
+        # parts = [prefix, name1, body1, name2, body2, ...]
+        for name, body in zip(parts[1::2], parts[2::2]):
+            if isinstance(recovered.get(name), list) and recovered[name]:
+                continue
+            decoded = _decode_prefix(body)
+            if decoded is not None:
+                recovered[name] = decoded
+    return recovered
+
+
+def _coerce_list(value):
+    """Tool-use output sometimes carries a nested array as a JSON-encoded
+    string, or wraps it in a one-key object. Accept those shapes instead of
+    discarding an otherwise-good response; anything else becomes None."""
+    if isinstance(value, list):
+        return value
+    if isinstance(value, str):
+        try:
+            decoded = json.loads(value)
+        except ValueError:
+            decoded = _decode_prefix(value)
+            return _coerce_list(decoded) if decoded is not None else None
+        return _coerce_list(decoded) if not isinstance(decoded, str) else None
+    if isinstance(value, dict) and len(value) == 1:
+        return _coerce_list(next(iter(value.values())))
+    return None
+
+
+def _normalize_logic_steps(steps: list) -> list:
+    """Bare strings become numbered steps; dicts missing fields get defaults.
+    Entries with no usable explanation are dropped."""
+    out = []
+    for i, step in enumerate(steps, start=1):
+        if isinstance(step, str):
+            step = {"explanation": step}
+        if not isinstance(step, dict):
+            continue
+        explanation = step.get("explanation")
+        if not isinstance(explanation, str) or not explanation.strip():
+            continue
+        number = step.get("step_number")
+        out.append({
+            "step_number": number if isinstance(number, int) else i,
+            "explanation": explanation,
+            "inferred": bool(step.get("inferred", False)),
+        })
+    return out
+
+
 def _sanitize_understanding(result: dict) -> dict:
     if not isinstance(result, dict):
         raise AgentError(f"Model returned a non-object understanding (got {type(result).__name__}).")
 
-    for field in _CRITICAL_LIST_FIELDS:
-        if field not in result or not isinstance(result[field], list) or len(result[field]) == 0:
-            raise AgentError(
-                f"Model's understanding is missing or has an empty/malformed '{field}' -- "
-                f"this is the core content of the walkthrough, so this response isn't usable."
-            )
-
+    result = _recover_leaked_params(result)
     sanitized = dict(result)
+
+    steps = _coerce_list(result.get("logic_steps"))
+    steps = _normalize_logic_steps(steps) if steps else []
+    if not steps:
+        raw = result.get("logic_steps")
+        preview = repr(raw)[:200]
+        print(f"[logic_understanding] unusable logic_steps: type={type(raw).__name__} keys={list(result)} preview={preview}", flush=True)
+        raise AgentError(
+            f"Model's understanding is missing or has an empty/malformed 'logic_steps' "
+            f"(got {type(raw).__name__}: {preview}) -- this is the core content of the "
+            f"walkthrough, so this response isn't usable."
+        )
+    sanitized["logic_steps"] = steps
+
     for field in _SUPPLEMENTARY_LIST_FIELDS:
-        if field not in sanitized or not isinstance(sanitized[field], list):
-            sanitized[field] = []
+        coerced = _coerce_list(result.get(field))
+        sanitized[field] = coerced if coerced is not None else []
     if not isinstance(sanitized.get("summary"), str):
         sanitized["summary"] = ""
     return sanitized

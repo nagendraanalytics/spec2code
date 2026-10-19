@@ -530,57 +530,13 @@ document.getElementById("raw-text-file").addEventListener("change", async (e) =>
   document.getElementById("raw-text-input").value = await file.text();
 });
 
-document.getElementById("sas-code-file").addEventListener("change", async (e) => {
+document.getElementById("ref-code-file").addEventListener("change", async (e) => {
   const file = e.target.files[0];
   if (!file) return;
-  document.getElementById("sas-code-input").value = await file.text();
+  document.getElementById("ref-code-input").value = await file.text();
 });
 
-document.getElementById("migrate-sas-btn").addEventListener("click", async () => {
-  const sasCode = document.getElementById("sas-code-input").value.trim();
-  const notesEl = document.getElementById("sas-migration-notes");
-  notesEl.hidden = true;
-  showError("");
-
-  if (!sasCode) {
-    showError("Paste some SAS code first, or upload a .sas file.");
-    return;
-  }
-
-  const btn = document.getElementById("migrate-sas-btn");
-  btn.disabled = true;
-  btn.textContent = "Understanding SAS logic\u2026";
-
-  try {
-    const res = await fetch("/api/migrate-sas", {
-      method: "POST",
-      headers: tenantHeaders({ "Content-Type": "application/json" }),
-      body: JSON.stringify({ sasCode }),
-    });
-    const data = await res.json();
-    if (!res.ok) throw new Error(data.error || "SAS migration failed.");
-
-    // Populate the SAME spec fields extraction uses -- everything
-    // downstream (Understand/Review/Suggest/Generate) is reused as-is,
-    // no separate code path needed from here on.
-    for (const field of ["description", "columnHeading", "logic", "reportScenarios", "sorting"]) {
-      if (field in data) document.getElementById(field).value = data[field] || "";
-    }
-    lastExtractionNotes = data.migration_notes || "";
-    if (data.migration_notes) {
-      notesEl.textContent = data.migration_notes;
-      notesEl.hidden = false;
-    }
-    document.getElementById("gap-chat-row").hidden = false;
-  } catch (err) {
-    showError(String(err));
-  } finally {
-    btn.disabled = false;
-    btn.textContent = "Understand SAS Code";
-  }
-});
-
-// ===== Cross-reference spec against existing legacy code =====
+// ===== Cross-check spec against existing reference code (any language) =====
 
 async function callCrossref(spec, legacyCode) {
   const res = await fetch("/api/crossref-spec-code", {
@@ -673,21 +629,21 @@ function renderCrossrefResult(result, reportId) {
   });
 }
 
-document.getElementById("crossref-sas-btn").addEventListener("click", async () => {
+document.getElementById("crossref-ref-btn").addEventListener("click", async () => {
   showError("");
   const spec = readSpec();
-  const legacyCode = document.getElementById("sas-code-input").value.trim();
+  const legacyCode = document.getElementById("ref-code-input").value.trim();
 
   if (!spec.reportId.trim() || !spec.description.trim()) {
-    showError("Cross-referencing needs an existing spec -- fill in Report ID and Description first (or run Extract Fields / Understand SAS Code).");
+    showError("Cross-checking needs an existing spec -- fill in Report ID and Description first (or run Extract Fields).");
     return;
   }
   if (!legacyCode) {
-    showError("Paste the existing legacy code to cross-reference against, in the box above.");
+    showError("Paste the existing reference code (any language) to cross-check against, in the box above.");
     return;
   }
 
-  const btn = document.getElementById("crossref-sas-btn");
+  const btn = document.getElementById("crossref-ref-btn");
   btn.disabled = true;
   btn.textContent = "Cross-referencing\u2026";
   try {

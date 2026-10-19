@@ -12,7 +12,7 @@ not to present a roadmap as if it were a status report.
 ## 1. Layer overview
 
 ```
-Frontend (Next.js/React)              -- design-only (current: vanilla HTML/JS, built)
+Frontend (Next.js/React workspace)    -- built (classic HTML/JS UI kept as a minimal fallback)
         |
 FastAPI (main.py)                     -- built
         |
@@ -37,9 +37,18 @@ Code-Gen Matrix (EDC system x Language)  -- partially built (see section 5)
 | Component | Status | Detail |
 |---|---|---|
 | Vanilla HTML/JS UI (`static/`) | **built** | Form -> review -> generate flow, insight display, RAG chip |
-| Next.js/React migration | **design-only** | Matches ProtocolIQ's actual stack (Next.js 14); not started here. Current vanilla UI works but doesn't share components/patterns with ProtocolIQ's frontend |
+| Next.js workspace (`frontend-nextjs/`) | **built** | App Router, TypeScript, Tailwind v4, TanStack Query. Pages: workspace (spec, pipeline timeline, results), clinical modules, spec library, platform. Static export |
+| Review console (diff, comments, sign-off) | **design-only** | Not started |
 
-**Open question for confirmation:** is a Next.js migration worth doing now, or does the vanilla UI stay until the backend surface stabilizes further? Rebuilding the frontend twice is wasted effort if the API shape is still moving (it changed twice already this session: `specId` round-tripping, tenant headers).
+
+## 2b. Spec types and output languages
+
+| Component | Status | Detail |
+|---|---|---|
+| `clinical_modules.py` | **built** | Five spec types. EDC/CDM listings are verified; data review, safety monitoring, medical monitoring and ADaM listings are templates (no confirmed spec and code pair yet). Guidance reaches the SQL, SAS and R generators only |
+| `GET /api/modules`, `GET /api/targets`, `GET /api/health` | **built** | The UI reads the support matrix from the backend. `coverage` says whether a language has the full pipeline, rules only, or an unverified draft |
+| SAS-to-CQL migration | **removed** | The agents and `/api/migrate-sas` were deleted. SAS is an output target and a reference-code format, nothing more |
+| Canonical spec IR | **design-only** | See the v2 architecture doc. Today every generator reads the spec fields directly |
 
 ## 3. API layer — FastAPI (`main.py`)
 

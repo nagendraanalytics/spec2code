@@ -14,6 +14,8 @@ import os
 
 import anthropic
 
+import clinical_modules
+
 SAS_SYSTEM_PROMPT = """You are a clinical data programmer generating SAS code for a \
 CDM (clinical data management) report specification. These specs follow \
 Merck/CDISC-style report library conventions: source datasets are named \
@@ -116,6 +118,7 @@ Logic: {spec.get('logic', '')}
 Report Scenarios: {spec.get('reportScenarios', '')}
 Sorting: {spec.get('sorting', '')}
 
+{clinical_modules.prompt_block(spec)}{spec.get('_context_block', '')}
 Generate the SAS code for this report spec now."""
 
 

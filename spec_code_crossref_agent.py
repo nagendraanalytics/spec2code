@@ -39,10 +39,9 @@ import os
 import anthropic
 
 CROSSREF_SYSTEM_PROMPT = """You are a clinical data programmer cross-referencing a \
-written report specification against EXISTING, CONFIRMED-WORKING legacy \
-code that already implements it (e.g. real SAS code from a client \
-migrating off legacy reporting) -- to find what the code does that the \
-spec doesn't say.
+written report specification against EXISTING, CONFIRMED-WORKING reference \
+code that already implements it (in any language: SAS, SQL, R, Python, \
+CQL) -- to find what the code does that the spec doesn't say.
 
 Real production code often encodes organizational conventions and edge- \
 case handling that never made it into the formal written spec: a \
