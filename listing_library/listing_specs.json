@@ -1,0 +1,1362 @@
+[
+ {
+  "reportId": "LIB-ENR-01",
+  "description": "Study procedures before informed consent. Subjects with any study procedure or assessment dated before the informed consent date, or with study data but no consent date.",
+  "columnHeading": "1. Country\n2. Site\n3. Subject\n4. Consent date\n5. Earliest assessment date\n6. Form with earliest assessment\n7. Days before consent",
+  "logic": "Scenario 1: Consent date is not null AND the earliest date on any assessment form (labs, vital signs, ECG, medical history excluded) < Consent date.\nScenario 2: Consent date is null AND the subject has at least one submitted assessment form.\nExclude deleted forms. Compare dates as dates. If a date is partial, state the imputation used.",
+  "reportScenarios": "Scenario 1 - YES: Any assessment dated before consent, or any data with no consent date.\nScenario 2 - NO: All assessments are on or after the consent date.",
+  "sorting": "Country, Site, Subject"
+ },
+ {
+  "reportId": "LIB-ENR-02",
+  "description": "Eligibility criteria not met. Randomized or enrolled subjects with an inclusion criterion answered No, or an exclusion criterion answered Yes.",
+  "columnHeading": "1. Country\n2. Site\n3. Subject\n4. Criterion type\n5. Criterion number\n6. Response\n7. Randomization date\n8. Deviation recorded",
+  "logic": "Scenario 1: Inclusion form item = \"No\" for any criterion AND the subject has a randomization date.\nScenario 2: Exclusion form item = \"Yes\" for any criterion AND the subject has a randomization date.\nShow whether a protocol deviation or waiver is recorded for the subject.",
+  "reportScenarios": "Scenario 1 - YES: A criterion that blocks eligibility is failed and the subject was randomized.\nScenario 2 - NO: All inclusion criteria are Yes and all exclusion criteria are No, or the subject is not randomized.",
+  "sorting": "Country, Site, Subject, Criterion number"
+ },
+ {
+  "reportId": "LIB-ENR-03",
+  "description": "Randomized subjects with no eligibility data. Subjects with a randomization record but no inclusion/exclusion form, or an incomplete one.",
+  "columnHeading": "1. Country\n2. Site\n3. Subject\n4. Randomization date\n5. Inclusion form status\n6. Exclusion form status",
+  "logic": "Scenario 1: Randomization record exists AND the inclusion form does not exist or its status is not submitted.\nScenario 2: Randomization record exists AND the exclusion form does not exist or its status is not submitted.",
+  "reportScenarios": "Scenario 1 - YES: Randomized with a missing or unsubmitted eligibility form.\nScenario 2 - NO: Both eligibility forms are submitted.",
+  "sorting": "Country, Site, Subject"
+ },
+ {
+  "reportId": "LIB-ENR-04",
+  "description": "Age outside the protocol range. Subjects whose age at consent is outside the allowed range.",
+  "columnHeading": "1. Country\n2. Site\n3. Subject\n4. Date of birth\n5. Consent date\n6. Age at consent\n7. Minimum age\n8. Maximum age",
+  "logic": "Scenario 1: Age at consent = whole years between Date of birth and Consent date. Age < [protocol minimum] OR Age > [protocol maximum].\nIf the date of birth is partial, say how the age is derived. Missing date of birth or consent date: list separately as Not derivable.",
+  "reportScenarios": "Scenario 1 - YES: Age at consent is below the minimum or above the maximum.\nScenario 2 - NO: Age is within range.",
+  "sorting": "Country, Site, Subject"
+ },
+ {
+  "reportId": "LIB-ENR-05",
+  "description": "Randomization before eligibility confirmed. Subjects randomized on or before the date eligibility was completed.",
+  "columnHeading": "1. Country\n2. Site\n3. Subject\n4. Eligibility completion date\n5. Randomization date\n6. Days between",
+  "logic": "Scenario 1: Randomization date < the latest of the inclusion and exclusion form dates.\nCompare dates as dates; list ties for review.",
+  "reportScenarios": "Scenario 1 - YES: Randomization is dated before eligibility was complete.\nScenario 2 - NO: Eligibility completed before randomization.",
+  "sorting": "Country, Site, Subject"
+ },
+ {
+  "reportId": "LIB-ENR-06",
+  "description": "Possible duplicate subjects. Subjects at different sites, or repeated at one site, who share the same date of birth, sex and initials.",
+  "columnHeading": "1. Country\n2. Site\n3. Subject\n4. Initials\n5. Date of birth\n6. Sex\n7. Matching subject",
+  "logic": "Scenario 1: Two or more subjects with the same Date of birth, Sex and Initials (self-comparison on the demographics form).\nOnly full dates of birth count. Show each pair once.",
+  "reportScenarios": "Scenario 1 - YES: Same date of birth, sex and initials appear on more than one subject.\nScenario 2 - NO: No other subject matches.",
+  "sorting": "Date of birth, Initials, Site, Subject"
+ },
+ {
+  "reportId": "LIB-ENR-07",
+  "description": "Screen failures with later data. Subjects recorded as screen failures who have visits or dosing after the screening disposition.",
+  "columnHeading": "1. Country\n2. Site\n3. Subject\n4. Screen failure date\n5. Latest later data date\n6. Form",
+  "logic": "Scenario 1: Disposition = \"Screen failure\" AND the subject has submitted data on any visit or exposure form dated after the screen failure date.",
+  "reportScenarios": "Scenario 1 - YES: A screen failure has data after the screening outcome.\nScenario 2 - NO: A screen failure has no later data.",
+  "sorting": "Country, Site, Subject"
+ },
+ {
+  "reportId": "LIB-ENR-08",
+  "description": "Demographics date and value checks. Impossible or inconsistent demographic values.",
+  "columnHeading": "1. Country\n2. Site\n3. Subject\n4. Date of birth\n5. Consent date\n6. Sex\n7. Issue",
+  "logic": "Scenario 1: Date of birth is after Consent date.\nScenario 2: Date of birth is in the future.\nScenario 3: Sex is missing or not in the allowed codelist.",
+  "reportScenarios": "Scenario 1 - YES: Any of the three conditions.\nScenario 2 - NO: None apply.",
+  "sorting": "Country, Site, Subject"
+ },
+ {
+  "reportId": "LIB-AE-01",
+  "description": "Adverse events starting before consent. Adverse events with a start date before the informed consent date.",
+  "columnHeading": "1. Country\n2. Site\n3. Subject\n4. AE term\n5. AE start date\n6. Consent date",
+  "logic": "Scenario 1: AE start date < Consent date. Partial start dates: compare the known parts only and say so.\nExclude deleted AE forms.",
+  "reportScenarios": "Scenario 1 - YES: AE start is before consent.\nScenario 2 - NO: AE start is on or after consent.",
+  "sorting": "Country, Site, Subject, AE start date"
+ },
+ {
+  "reportId": "LIB-AE-02",
+  "description": "AE end date before start date. Adverse events whose end date is before the start date.",
+  "columnHeading": "1. Country\n2. Site\n3. Subject\n4. AE term\n5. AE start date\n6. AE end date",
+  "logic": "Scenario 1: AE end date < AE start date, both dates present. Compare dates as dates. Partial dates: compare known parts only.",
+  "reportScenarios": "Scenario 1 - YES: End is before start.\nScenario 2 - NO: End is on or after start, or end is null.",
+  "sorting": "Country, Site, Subject, AE start date"
+ },
+ {
+  "reportId": "LIB-AE-03",
+  "description": "Fatal AE and death consistency. Fatal adverse events with no matching death record, and death records with no fatal AE.",
+  "columnHeading": "1. Country\n2. Site\n3. Subject\n4. AE term\n5. AE outcome\n6. Date of death\n7. Disposition\n8. Issue",
+  "logic": "Scenario 1: AE outcome = \"Fatal\" AND (no death date on the disposition or death form OR death date differs from AE end date).\nScenario 2: Death date present on the disposition or death form AND no AE with outcome = \"Fatal\".",
+  "reportScenarios": "Scenario 1 - YES: Fatal AE without death record, or death without fatal AE.\nScenario 2 - NO: Death data and fatal AE agree.",
+  "sorting": "Country, Site, Subject"
+ },
+ {
+  "reportId": "LIB-AE-04",
+  "description": "Seriousness flag and criteria disagree. Serious AEs with no seriousness criterion selected, and non-serious AEs with a criterion selected.",
+  "columnHeading": "1. Country\n2. Site\n3. Subject\n4. AE term\n5. Serious\n6. Criteria selected",
+  "logic": "Scenario 1: Serious = \"Yes\" AND no seriousness criterion (death, life-threatening, hospitalization, disability, congenital anomaly, other medically important) is selected.\nScenario 2: Serious = \"No\" AND at least one criterion is selected.",
+  "reportScenarios": "Scenario 1 - YES: Seriousness flag and criteria disagree.\nScenario 2 - NO: Flag and criteria agree.",
+  "sorting": "Country, Site, Subject, AE start date"
+ },
+ {
+  "reportId": "LIB-AE-05",
+  "description": "SAE reporting timeliness. Serious AEs reported later than the protocol allows.",
+  "columnHeading": "1. Country\n2. Site\n3. Subject\n4. AE term\n5. Date of awareness\n6. Date reported\n7. Hours or days late",
+  "logic": "Scenario 1: Date reported - Date of awareness > [protocol reporting limit, often 24 hours]. If only dates are collected, compare in days.",
+  "reportScenarios": "Scenario 1 - YES: Report is later than the limit.\nScenario 2 - NO: Report is within the limit.",
+  "sorting": "Country, Site, Subject"
+ },
+ {
+  "reportId": "LIB-AE-06",
+  "description": "AE action taken withdraw with dosing still active. AEs where the study drug was withdrawn but dosing continues after the AE start.",
+  "columnHeading": "1. Country\n2. Site\n3. Subject\n4. AE term\n5. AE start date\n6. Action taken\n7. Last dose date",
+  "logic": "Scenario 1: Action taken with study drug = \"Drug withdrawn\" AND the subject has an exposure record dated after the AE start date.",
+  "reportScenarios": "Scenario 1 - YES: Withdrawn but dosed afterwards.\nScenario 2 - NO: No dosing after withdrawal.",
+  "sorting": "Country, Site, Subject"
+ },
+ {
+  "reportId": "LIB-AE-07",
+  "description": "Outcome and end date disagree. Outcome says recovered with no end date, or an end date with an ongoing or not recovered outcome.",
+  "columnHeading": "1. Country\n2. Site\n3. Subject\n4. AE term\n5. AE start date\n6. AE end date\n7. Outcome",
+  "logic": "Scenario 1: Outcome in (\"Recovered/Resolved\", \"Recovered with sequelae\") AND AE end date is null.\nScenario 2: Outcome in (\"Not recovered\", \"Ongoing\") AND AE end date is not null.",
+  "reportScenarios": "Scenario 1 - YES: Outcome and end date disagree.\nScenario 2 - NO: They agree.",
+  "sorting": "Country, Site, Subject, AE start date"
+ },
+ {
+  "reportId": "LIB-AE-08",
+  "description": "Serious AEs missing causality. Serious AEs with no relationship to study treatment recorded.",
+  "columnHeading": "1. Country\n2. Site\n3. Subject\n4. AE term\n5. Serious\n6. Relationship to study drug",
+  "logic": "Scenario 1: Serious = \"Yes\" AND Relationship to study drug is null.",
+  "reportScenarios": "Scenario 1 - YES: Serious and causality missing.\nScenario 2 - NO: Causality is recorded.",
+  "sorting": "Country, Site, Subject, AE start date"
+ },
+ {
+  "reportId": "LIB-AE-09",
+  "description": "Duplicate AE records. AEs with the same term and start date for the same subject.",
+  "columnHeading": "1. Country\n2. Site\n3. Subject\n4. AE term\n5. AE start date\n6. Record count",
+  "logic": "Scenario 1: Count of AE records with the same Subject, AE term and AE start date > 1. Use GROUP BY with HAVING. Exclude deleted forms.",
+  "reportScenarios": "Scenario 1 - YES: More than one record with the same term and start date.\nScenario 2 - NO: Only one record.",
+  "sorting": "Country, Site, Subject, AE term"
+ },
+ {
+  "reportId": "LIB-AE-10",
+  "description": "Ongoing AEs at end of study. AEs with no end date for subjects who completed or discontinued the study.",
+  "columnHeading": "1. Country\n2. Site\n3. Subject\n4. AE term\n5. AE start date\n6. Disposition\n7. Disposition date",
+  "logic": "Scenario 1: AE end date is null AND the subject has a disposition date (completed, discontinued or death).",
+  "reportScenarios": "Scenario 1 - YES: Open AE after the subject left the study.\nScenario 2 - NO: AE has an end date, or the subject is still active.",
+  "sorting": "Country, Site, Subject"
+ },
+ {
+  "reportId": "LIB-CM-01",
+  "description": "CM end date before start date. Concomitant medications ending before they start.",
+  "columnHeading": "1. Country\n2. Site\n3. Subject\n4. Medication\n5. Start date\n6. End date",
+  "logic": "Scenario 1: CM end date < CM start date. Partial dates: compare known parts only.",
+  "reportScenarios": "Scenario 1 - YES: End before start.\nScenario 2 - NO: End on or after start, or end null.",
+  "sorting": "Country, Site, Subject, Start date"
+ },
+ {
+  "reportId": "LIB-CM-02",
+  "description": "CM with no indication. Concomitant medications with no indication recorded.",
+  "columnHeading": "1. Country\n2. Site\n3. Subject\n4. Medication\n5. Start date\n6. Indication",
+  "logic": "Scenario 1: Indication is null AND the medication is not marked prophylaxis or study-related.",
+  "reportScenarios": "Scenario 1 - YES: Indication missing.\nScenario 2 - NO: Indication present.",
+  "sorting": "Country, Site, Subject, Start date"
+ },
+ {
+  "reportId": "LIB-CM-03",
+  "description": "Prohibited medication use. Medications on the protocol's prohibited list taken during the study.",
+  "columnHeading": "1. Country\n2. Site\n3. Subject\n4. Medication\n5. Coded term\n6. Start date\n7. End date\n8. Study period",
+  "logic": "Scenario 1: Coded medication term or drug class is in [protocol prohibited list] AND the medication period overlaps the treatment period (start <= last dose date AND (end is null OR end >= first dose date)).",
+  "reportScenarios": "Scenario 1 - YES: A prohibited medication overlaps treatment.\nScenario 2 - NO: No prohibited medication overlaps.",
+  "sorting": "Country, Site, Subject, Start date"
+ },
+ {
+  "reportId": "LIB-CM-04",
+  "description": "AE treated by medication but no CM record. AEs marked as treated with medication where no concomitant medication is linked.",
+  "columnHeading": "1. Country\n2. Site\n3. Subject\n4. AE term\n5. AE start date\n6. Treatment given\n7. CM records in window",
+  "logic": "Scenario 1: AE Treatment given = \"Yes\" AND no CM record for the subject starts between the AE start date and the AE end date (or the last visit date if the AE is ongoing).",
+  "reportScenarios": "Scenario 1 - YES: Treated AE with no CM in the AE window.\nScenario 2 - NO: A CM exists in the window.",
+  "sorting": "Country, Site, Subject, AE start date"
+ },
+ {
+  "reportId": "LIB-EX-01",
+  "description": "Dosing before randomization. Subjects with a dose dated before the randomization date.",
+  "columnHeading": "1. Country\n2. Site\n3. Subject\n4. Randomization date\n5. First dose date\n6. Days before",
+  "logic": "Scenario 1: First dose date < Randomization date. Exclude run-in or lead-in dosing if the protocol defines it.",
+  "reportScenarios": "Scenario 1 - YES: Dose before randomization.\nScenario 2 - NO: First dose on or after randomization.",
+  "sorting": "Country, Site, Subject"
+ },
+ {
+  "reportId": "LIB-EX-02",
+  "description": "Dosing after treatment discontinuation. Doses dated after the recorded treatment discontinuation date.",
+  "columnHeading": "1. Country\n2. Site\n3. Subject\n4. Discontinuation date\n5. Dose date\n6. Dose",
+  "logic": "Scenario 1: Dose date > treatment discontinuation date from the end-of-treatment form.",
+  "reportScenarios": "Scenario 1 - YES: Dosing after discontinuation.\nScenario 2 - NO: No dosing after discontinuation.",
+  "sorting": "Country, Site, Subject, Dose date"
+ },
+ {
+  "reportId": "LIB-EX-03",
+  "description": "Dose changes without a reason. Dose differs from the previous record with no dose modification reason.",
+  "columnHeading": "1. Country\n2. Site\n3. Subject\n4. Previous dose date\n5. Previous dose\n6. Dose date\n7. Dose\n8. Reason",
+  "logic": "Scenario 1: Compare each exposure record with the previous record of the same subject (consecutive record comparison by date). Dose <> previous dose AND Reason for dose change is null.",
+  "reportScenarios": "Scenario 1 - YES: Dose changed and no reason given.\nScenario 2 - NO: Dose unchanged, or reason present.",
+  "sorting": "Country, Site, Subject, Dose date"
+ },
+ {
+  "reportId": "LIB-EX-04",
+  "description": "Gaps in dosing. Gaps between consecutive dosing records longer than the allowed interval.",
+  "columnHeading": "1. Country\n2. Site\n3. Subject\n4. Previous dose end date\n5. Next dose start date\n6. Gap days",
+  "logic": "Scenario 1: Next dose start date - previous dose end date > [protocol allowed gap, in days]. Do not list planned dose holds that have a hold reason.",
+  "reportScenarios": "Scenario 1 - YES: Gap longer than allowed without a hold.\nScenario 2 - NO: No gap, or a recorded hold.",
+  "sorting": "Country, Site, Subject, Next dose start date"
+ },
+ {
+  "reportId": "LIB-EX-05",
+  "description": "Dose above the protocol maximum. Exposure records with a dose above the allowed maximum.",
+  "columnHeading": "1. Country\n2. Site\n3. Subject\n4. Dose date\n5. Dose\n6. Unit\n7. Maximum dose",
+  "logic": "Scenario 1: Dose (converted to the protocol unit) > [protocol maximum dose]. Say how units are converted.",
+  "reportScenarios": "Scenario 1 - YES: Dose above the maximum.\nScenario 2 - NO: Dose within limit.",
+  "sorting": "Country, Site, Subject, Dose date"
+ },
+ {
+  "reportId": "LIB-EX-06",
+  "description": "Low treatment compliance. Subjects whose compliance is below the protocol threshold.",
+  "columnHeading": "1. Country\n2. Site\n3. Subject\n4. Doses planned\n5. Doses taken\n6. Compliance %",
+  "logic": "Scenario 1: Compliance % = Doses taken / Doses planned x 100 < [protocol threshold, commonly 80]. Planned doses are counted up to the discontinuation date.",
+  "reportScenarios": "Scenario 1 - YES: Compliance below the threshold.\nScenario 2 - NO: At or above.",
+  "sorting": "Compliance %, Site, Subject"
+ },
+ {
+  "reportId": "LIB-LB-01",
+  "description": "Out-of-range lab with no clinical significance. Lab results outside the normal range where the investigator did not assess clinical significance.",
+  "columnHeading": "1. Country\n2. Site\n3. Subject\n4. Visit\n5. Test\n6. Result\n7. Unit\n8. Normal low\n9. Normal high\n10. Clinically significant",
+  "logic": "Scenario 1: Result < Normal low OR Result > Normal high AND Clinically significant is null.\nSkip records where the test was not done. Compare numbers, not text.",
+  "reportScenarios": "Scenario 1 - YES: Abnormal with no assessment.\nScenario 2 - NO: In range, or assessed.",
+  "sorting": "Country, Site, Subject, Visit, Test"
+ },
+ {
+  "reportId": "LIB-LB-02",
+  "description": "Clinically significant lab with no AE. Clinically significant lab values with no adverse event reported near the collection date.",
+  "columnHeading": "1. Country\n2. Site\n3. Subject\n4. Test\n5. Result\n6. Collection date\n7. AEs within window",
+  "logic": "Scenario 1: Clinically significant = \"Yes\" AND no AE for the subject starts within [N days] of the collection date.",
+  "reportScenarios": "Scenario 1 - YES: Significant lab with no AE nearby.\nScenario 2 - NO: An AE exists in the window.",
+  "sorting": "Country, Site, Subject, Collection date"
+ },
+ {
+  "reportId": "LIB-LB-03",
+  "description": "Lab units differ within a subject and test. The same lab test reported in different units across records.",
+  "columnHeading": "1. Country\n2. Site\n3. Subject\n4. Test\n5. Unit 1\n6. Unit 2",
+  "logic": "Scenario 1: For the same Subject and Test, the count of distinct units > 1.",
+  "reportScenarios": "Scenario 1 - YES: More than one unit.\nScenario 2 - NO: One unit.",
+  "sorting": "Country, Site, Subject, Test"
+ },
+ {
+  "reportId": "LIB-LB-04",
+  "description": "Missing mandatory lab panel. Visits where a required lab panel has no data.",
+  "columnHeading": "1. Country\n2. Site\n3. Subject\n4. Visit\n5. Visit date\n6. Panel missing",
+  "logic": "Scenario 1: The visit occurred AND the required panel is scheduled for that visit in the schedule of assessments AND no panel record exists AND the panel was not marked not done.",
+  "reportScenarios": "Scenario 1 - YES: Required panel missing.\nScenario 2 - NO: Panel present or not done with a reason.",
+  "sorting": "Country, Site, Subject, Visit"
+ },
+ {
+  "reportId": "LIB-LB-05",
+  "description": "Duplicate lab results. More than one result for the same subject, test and collection date and time.",
+  "columnHeading": "1. Country\n2. Site\n3. Subject\n4. Test\n5. Collection date\n6. Record count",
+  "logic": "Scenario 1: Count of records with the same Subject, Test and Collection date/time > 1. Use GROUP BY with HAVING.",
+  "reportScenarios": "Scenario 1 - YES: Duplicate result records.\nScenario 2 - NO: A single result.",
+  "sorting": "Country, Site, Subject, Test"
+ },
+ {
+  "reportId": "LIB-LB-06",
+  "description": "Test not done with a result. Results entered for tests marked not done, and not-done tests with no reason.",
+  "columnHeading": "1. Country\n2. Site\n3. Subject\n4. Visit\n5. Test\n6. Not done\n7. Reason\n8. Result",
+  "logic": "Scenario 1: Not done = \"Yes\" AND Result is not null.\nScenario 2: Not done = \"Yes\" AND Reason is null.",
+  "reportScenarios": "Scenario 1 - YES: Not done conflicts with a result, or has no reason.\nScenario 2 - NO: Neither applies.",
+  "sorting": "Country, Site, Subject, Visit"
+ },
+ {
+  "reportId": "LIB-VS-01",
+  "description": "Implausible vital signs. Vital sign values that are physiologically unlikely or inconsistent.",
+  "columnHeading": "1. Country\n2. Site\n3. Subject\n4. Visit\n5. Test\n6. Result\n7. Unit\n8. Issue",
+  "logic": "Scenario 1: Diastolic >= Systolic blood pressure at the same time point.\nScenario 2: Value outside [plausibility range per test, for example heart rate].\nScenario 3: Height changes by more than [N cm] between visits for an adult.",
+  "reportScenarios": "Scenario 1 - YES: A plausibility rule is broken.\nScenario 2 - NO: All values are plausible.",
+  "sorting": "Country, Site, Subject, Visit"
+ },
+ {
+  "reportId": "LIB-VS-02",
+  "description": "Large weight change between visits. Weight changes by more than the allowed percentage between consecutive visits.",
+  "columnHeading": "1. Country\n2. Site\n3. Subject\n4. Previous visit\n5. Previous weight\n6. Visit\n7. Weight\n8. Change %",
+  "logic": "Scenario 1: Compare each weight with the previous weight of the same subject (consecutive record comparison). ABS(Weight - Previous weight) / Previous weight x 100 > [threshold, commonly 10].",
+  "reportScenarios": "Scenario 1 - YES: Change above the threshold.\nScenario 2 - NO: At or below.",
+  "sorting": "Country, Site, Subject, Visit"
+ },
+ {
+  "reportId": "LIB-EG-01",
+  "description": "ECG interval and interpretation checks. ECG records with interpretation or interval problems.",
+  "columnHeading": "1. Country\n2. Site\n3. Subject\n4. Visit\n5. Time point\n6. QTcF\n7. Interpretation\n8. Clinically significant",
+  "logic": "Scenario 1: Interpretation = \"Abnormal\" AND Clinically significant is null.\nScenario 2: QTcF > [alert level, commonly 450, 480 or 500 ms] without an AE.\nScenario 3: Required ECG time point has no record.",
+  "reportScenarios": "Scenario 1 - YES: Any of the three conditions.\nScenario 2 - NO: None.",
+  "sorting": "Country, Site, Subject, Visit, Time point"
+ },
+ {
+  "reportId": "LIB-VIS-01",
+  "description": "Visits outside the protocol window. Visits outside the allowed window around the target day.",
+  "columnHeading": "1. Country\n2. Site\n3. Subject\n4. Visit\n5. Target day\n6. Actual day\n7. Window\n8. Days outside",
+  "logic": "Scenario 1: Actual study day - Target day is outside [protocol window]. Study day counts from the first dose or randomization as the protocol defines it.",
+  "reportScenarios": "Scenario 1 - YES: Outside the window.\nScenario 2 - NO: Within the window.",
+  "sorting": "Country, Site, Subject, Visit"
+ },
+ {
+  "reportId": "LIB-VIS-02",
+  "description": "Visit dates out of order. Visit dates that do not follow the visit sequence.",
+  "columnHeading": "1. Country\n2. Site\n3. Subject\n4. Visit\n5. Visit date\n6. Previous visit\n7. Previous visit date",
+  "logic": "Scenario 1: Visit date < the date of an earlier-numbered visit for the same subject. Exclude unscheduled visits.",
+  "reportScenarios": "Scenario 1 - YES: Date earlier than a previous visit.\nScenario 2 - NO: In order.",
+  "sorting": "Country, Site, Subject, Visit"
+ },
+ {
+  "reportId": "LIB-VIS-03",
+  "description": "Data after death, discontinuation or completion. Data dated after the subject's last expected date.",
+  "columnHeading": "1. Country\n2. Site\n3. Subject\n4. End event\n5. End date\n6. Form\n7. Later date",
+  "logic": "Scenario 1: Any visit or assessment date > the death date, study discontinuation date or completion date. Follow-up visits that the protocol allows are excluded.",
+  "reportScenarios": "Scenario 1 - YES: Data after the end.\nScenario 2 - NO: None.",
+  "sorting": "Country, Site, Subject"
+ },
+ {
+  "reportId": "LIB-VIS-04",
+  "description": "Missing expected visits. Scheduled visits with no data although the window has passed.",
+  "columnHeading": "1. Country\n2. Site\n3. Subject\n4. Visit\n5. Expected by date\n6. Days overdue",
+  "logic": "Scenario 1: The subject is active (no disposition) AND the visit's window has ended before the data cut date AND no form exists for that visit.",
+  "reportScenarios": "Scenario 1 - YES: Visit overdue with no data.\nScenario 2 - NO: Visit exists, or is not due.",
+  "sorting": "Country, Site, Subject, Visit"
+ },
+ {
+  "reportId": "LIB-VIS-05",
+  "description": "Late data entry. Forms entered much later than the visit.",
+  "columnHeading": "1. Country\n2. Site\n3. Subject\n4. Visit\n5. Visit date\n6. Entry date\n7. Days late",
+  "logic": "Scenario 1: Entry date - Visit date > [protocol or site target, in days].",
+  "reportScenarios": "Scenario 1 - YES: Entered later than the target.\nScenario 2 - NO: Entered on time.",
+  "sorting": "Days late (desc), Site"
+ },
+ {
+  "reportId": "LIB-VIS-06",
+  "description": "Future-dated entries. Dates later than the date the data was entered or later than today.",
+  "columnHeading": "1. Country\n2. Site\n3. Subject\n4. Form\n5. Item\n6. Date\n7. Entry date",
+  "logic": "Scenario 1: Any date item > Entry date, or > the data cut date.",
+  "reportScenarios": "Scenario 1 - YES: Date is in the future.\nScenario 2 - NO: None.",
+  "sorting": "Country, Site, Subject, Form"
+ },
+ {
+  "reportId": "LIB-VIS-07",
+  "description": "Partial and unknown dates. All dates with an unknown day, month or year, grouped by form.",
+  "columnHeading": "1. Country\n2. Site\n3. Subject\n4. Form\n5. Item\n6. Date as entered\n7. Unknown parts",
+  "logic": "Scenario 1: Any date item with at least one unknown part (day, month, year or time). Show the date as entered. Do not impute for this listing.",
+  "reportScenarios": "Scenario 1 - YES: Date is not complete.\nScenario 2 - NO: Date is complete.",
+  "sorting": "Form, Site, Subject"
+ },
+ {
+  "reportId": "LIB-VIS-08",
+  "description": "Unscheduled visits. Unscheduled visits and their reasons.",
+  "columnHeading": "1. Country\n2. Site\n3. Subject\n4. Visit date\n5. Reason\n6. Related AE",
+  "logic": "Scenario 1: Visit type = \"Unscheduled\". Show the reason and whether an AE starts within 7 days before the visit.",
+  "reportScenarios": "Scenario 1 - YES: Unscheduled visit.\nScenario 2 - NO: Not unscheduled.",
+  "sorting": "Country, Site, Subject, Visit date"
+ },
+ {
+  "reportId": "LIB-DM-01",
+  "description": "Open queries older than the limit. Queries that have been open longer than the allowed number of days.",
+  "columnHeading": "1. Country\n2. Site\n3. Subject\n4. Form\n5. Item\n6. Query text\n7. Opened date\n8. Days open\n9. Status",
+  "logic": "Scenario 1: Query status in (Open, Answered) AND Data cut date - Opened date > [N days].",
+  "reportScenarios": "Scenario 1 - YES: Open longer than the limit.\nScenario 2 - NO: Closed, or younger.",
+  "sorting": "Days open (desc), Site, Subject"
+ },
+ {
+  "reportId": "LIB-DM-02",
+  "description": "Forms not submitted. Forms still in progress or not started.",
+  "columnHeading": "1. Country\n2. Site\n3. Subject\n4. Visit\n5. Form\n6. Form status\n7. Last modified",
+  "logic": "Scenario 1: Form status <> submitted for a visit that has a visit date and is older than [N days].",
+  "reportScenarios": "Scenario 1 - YES: Not submitted.\nScenario 2 - NO: Submitted.",
+  "sorting": "Country, Site, Subject, Visit"
+ },
+ {
+  "reportId": "LIB-DM-03",
+  "description": "Missing pages. Expected forms with no record for a completed visit.",
+  "columnHeading": "1. Country\n2. Site\n3. Subject\n4. Visit\n5. Expected form",
+  "logic": "Scenario 1: A required form for the visit has no record and was not marked not done.",
+  "reportScenarios": "Scenario 1 - YES: Required form missing.\nScenario 2 - NO: Present or not done with a reason.",
+  "sorting": "Country, Site, Subject, Visit"
+ },
+ {
+  "reportId": "LIB-DM-04",
+  "description": "SDV incomplete on critical forms. Critical forms with source data verification outstanding.",
+  "columnHeading": "1. Country\n2. Site\n3. Subject\n4. Form\n5. Item\n6. SDV status",
+  "logic": "Scenario 1: Form or item is on the critical data list AND SDV status <> verified.",
+  "reportScenarios": "Scenario 1 - YES: SDV outstanding on a critical form.\nScenario 2 - NO: Verified.",
+  "sorting": "Site, Subject, Form"
+ },
+ {
+  "reportId": "LIB-DM-05",
+  "description": "Signatures pending or broken. Forms awaiting investigator signature, and signatures invalidated by later changes.",
+  "columnHeading": "1. Country\n2. Site\n3. Subject\n4. Form\n5. Signature status\n6. Last change date\n7. Signed date",
+  "logic": "Scenario 1: Form is submitted AND the PI signature is missing.\nScenario 2: Data changed after the signature date.",
+  "reportScenarios": "Scenario 1 - YES: Unsigned, or changed after signing.\nScenario 2 - NO: Signed and unchanged.",
+  "sorting": "Site, Subject, Form"
+ },
+ {
+  "reportId": "LIB-DM-06",
+  "description": "Changes after lock or freeze. Items modified after the form was frozen or locked.",
+  "columnHeading": "1. Country\n2. Site\n3. Subject\n4. Form\n5. Item\n6. Locked date\n7. Changed date\n8. Changed by",
+  "logic": "Scenario 1: Audit trail change date > Locked or Frozen date for the same form.",
+  "reportScenarios": "Scenario 1 - YES: Changed after lock.\nScenario 2 - NO: No change after lock.",
+  "sorting": "Site, Subject, Form"
+ },
+ {
+  "reportId": "LIB-DM-07",
+  "description": "Intentionally left blank items. Items or forms marked intentionally left blank, with their reasons.",
+  "columnHeading": "1. Country\n2. Site\n3. Subject\n4. Form\n5. Item\n6. Reason",
+  "logic": "Scenario 1: Item or form is marked ILB.",
+  "reportScenarios": "Scenario 1 - YES: Marked ILB.\nScenario 2 - NO: Not marked.",
+  "sorting": "Form, Site, Subject"
+ },
+ {
+  "reportId": "LIB-DM-08",
+  "description": "Uncoded terms. Adverse events and medications still waiting for dictionary coding.",
+  "columnHeading": "1. Country\n2. Site\n3. Subject\n4. Form\n5. Verbatim term\n6. Coding status",
+  "logic": "Scenario 1: Coding status <> coded.",
+  "reportScenarios": "Scenario 1 - YES: Not coded.\nScenario 2 - NO: Coded.",
+  "sorting": "Form, Verbatim term"
+ },
+ {
+  "reportId": "LIB-DM-09",
+  "description": "Protocol deviations to review. Protocol deviations with no category, or open for too long.",
+  "columnHeading": "1. Country\n2. Site\n3. Subject\n4. Deviation date\n5. Description\n6. Category\n7. Status\n8. Days open",
+  "logic": "Scenario 1: Category is null.\nScenario 2: Status is open AND Days open > [N days].",
+  "reportScenarios": "Scenario 1 - YES: Uncategorized or open too long.\nScenario 2 - NO: Categorized and closed.",
+  "sorting": "Site, Subject, Deviation date"
+ },
+ {
+  "reportId": "LIB-DM-10",
+  "description": "Query rate by site. Number of queries per form and per subject by site.",
+  "columnHeading": "1. Country\n2. Site\n3. Forms\n4. Queries\n5. Queries per 100 forms",
+  "logic": "Scenario 1: For each site, count queries and forms; Queries per 100 forms = Queries / Forms x 100. Use GROUP BY.",
+  "reportScenarios": "Scenario 1 - YES: All sites are listed.\nScenario 2 - NO: ",
+  "sorting": "Queries per 100 forms (desc)"
+ },
+ {
+  "reportId": "LIB-DM-11",
+  "description": "External data not in the EDC. Subjects or visits present in an external file (central lab, ECG, ePRO) but not in the EDC, and the reverse.",
+  "columnHeading": "1. Subject\n2. Visit\n3. Source\n4. In EDC\n5. In external file",
+  "logic": "Scenario 1: A subject-visit key exists in the external file and not in the EDC.\nScenario 2: A subject-visit key exists in the EDC and not in the external file where the schedule expects data.",
+  "reportScenarios": "Scenario 1 - YES: Records do not match.\nScenario 2 - NO: Both sides match.",
+  "sorting": "Subject, Visit"
+ },
+ {
+  "reportId": "LIB-CX-01",
+  "description": "Date sequence across the study. Subjects whose key dates are not in the expected order.",
+  "columnHeading": "1. Country\n2. Site\n3. Subject\n4. Consent date\n5. Randomization date\n6. First dose date\n7. Last dose date\n8. End of study date\n9. Rule broken",
+  "logic": "Check each rule separately and show the rule broken:\nRule 1: Consent date > Randomization date.\nRule 2: Randomization date > First dose date.\nRule 3: First dose date > Last dose date.\nRule 4: Last dose date > End of study date.\nSkip a rule when either date is null. Compare dates as dates.",
+  "reportScenarios": "Scenario 1 - YES: Any rule is broken.\nScenario 2 - NO: All dates are in order.",
+  "sorting": "Country, Site, Subject"
+ },
+ {
+  "reportId": "LIB-CX-02",
+  "description": "Disposition and dosing agree. Disposition status that conflicts with dosing records.",
+  "columnHeading": "1. Country\n2. Site\n3. Subject\n4. Disposition\n5. Disposition date\n6. Last dose date\n7. Issue",
+  "logic": "Scenario 1: Disposition = \"Discontinued treatment\" AND a dose is dated after the disposition date.\nScenario 2: Disposition = \"Completed treatment\" AND the last dose date is earlier than [planned end date] without a recorded reason.\nScenario 3: Disposition reason = \"Adverse event\" AND no AE with action taken = \"Drug withdrawn\" exists for the subject.",
+  "reportScenarios": "Scenario 1 - YES: Any scenario.\nScenario 2 - NO: None.",
+  "sorting": "Country, Site, Subject"
+ },
+ {
+  "reportId": "LIB-CX-03",
+  "description": "Death consistency across forms. Death recorded differently on different forms, or activity after death.",
+  "columnHeading": "1. Country\n2. Site\n3. Subject\n4. Death date (disposition)\n5. Death date (death form)\n6. Fatal AE end date\n7. Last visit date\n8. Last dose date\n9. Issue",
+  "logic": "Scenario 1: Death dates on different forms are not equal.\nScenario 2: Death date present AND any visit or dose date is later.\nScenario 3: Fatal AE exists AND no death date is recorded anywhere.",
+  "reportScenarios": "Scenario 1 - YES: Any scenario.\nScenario 2 - NO: Death data agree and nothing follows death.",
+  "sorting": "Country, Site, Subject"
+ },
+ {
+  "reportId": "LIB-CX-04",
+  "description": "Abnormal lab with no AE and no medication. Severe lab abnormalities with neither an AE nor a treatment recorded.",
+  "columnHeading": "1. Country\n2. Site\n3. Subject\n4. Test\n5. Result\n6. Grade\n7. Collection date\n8. AEs in window\n9. CMs in window",
+  "logic": "Scenario 1: Lab grade >= [3] AND no AE starts within [N days] of the collection date AND no CM starts within [N days] of the collection date.\nGrades are taken from the lab data if derived there, or by a grading table in the data review plan.",
+  "reportScenarios": "Scenario 1 - YES: Severe abnormality with no AE or CM.\nScenario 2 - NO: An AE or CM covers it.",
+  "sorting": "Country, Site, Subject, Collection date"
+ },
+ {
+  "reportId": "LIB-CX-05",
+  "description": "Pregnancy test checks. Pregnancy testing that is missing, wrongly collected or positive without follow-up.",
+  "columnHeading": "1. Country\n2. Site\n3. Subject\n4. Sex\n5. Childbearing potential\n6. Visit\n7. Test result\n8. Issue",
+  "logic": "Scenario 1: Sex = \"Female\" AND Childbearing potential = \"Yes\" AND a required visit has no pregnancy test.\nScenario 2: Sex = \"Male\" AND a pregnancy test exists.\nScenario 3: Test result = \"Positive\" AND no AE, dosing stop or disposition follows within [N days].",
+  "reportScenarios": "Scenario 1 - YES: Any scenario.\nScenario 2 - NO: None.",
+  "sorting": "Country, Site, Subject, Visit"
+ },
+ {
+  "reportId": "LIB-CX-06",
+  "description": "Overlapping records of the same medication. The same medication with overlapping date ranges for one subject.",
+  "columnHeading": "1. Country\n2. Site\n3. Subject\n4. Medication\n5. Start date 1\n6. End date 1\n7. Start date 2\n8. End date 2",
+  "logic": "Scenario 1: Two CM records for the same Subject and coded medication, where start2 <= end1 AND start1 <= end2 (null end = ongoing). Compare each pair once (self-join).",
+  "reportScenarios": "Scenario 1 - YES: Date ranges overlap.\nScenario 2 - NO: No overlap.",
+  "sorting": "Country, Site, Subject, Medication"
+ },
+ {
+  "reportId": "LIB-CX-07",
+  "description": "AE already present at baseline. Adverse events that match an ongoing medical history condition but are not flagged as worsening.",
+  "columnHeading": "1. Country\n2. Site\n3. Subject\n4. AE term\n5. AE start date\n6. Medical history term\n7. Ongoing\n8. Flagged as pre-existing",
+  "logic": "Scenario 1: Medical history Ongoing = \"Yes\" AND the AE coded term equals the medical history coded term (or the same system organ class) AND the AE start date is after consent AND the pre-existing / worsening flag is null.",
+  "reportScenarios": "Scenario 1 - YES: Same condition and not flagged.\nScenario 2 - NO: Flagged, or no match.",
+  "sorting": "Country, Site, Subject"
+ },
+ {
+  "reportId": "LIB-CX-08",
+  "description": "Randomization stratum disagrees with source data. Stratification factors given at randomization that differ from the data in the EDC.",
+  "columnHeading": "1. Country\n2. Site\n3. Subject\n4. Stratum (randomization)\n5. Value from source form\n6. Form",
+  "logic": "Scenario 1: Age group at randomization <> age group derived from Date of birth and Consent date.\nScenario 2: Stratification factor on the randomization form <> the value on its source form.",
+  "reportScenarios": "Scenario 1 - YES: Stratum and source differ.\nScenario 2 - NO: They agree.",
+  "sorting": "Country, Site, Subject"
+ },
+ {
+  "reportId": "LIB-CX-09",
+  "description": "Large change between consecutive visits. Lab or vital values that change by more than a threshold relative to the previous visit.",
+  "columnHeading": "1. Country\n2. Site\n3. Subject\n4. Test\n5. Previous visit\n6. Previous value\n7. Visit\n8. Value\n9. Ratio or change",
+  "logic": "Scenario 1: For each subject and test, compare each value with the previous value by visit date (consecutive record comparison). Value / Previous value >= [ratio, for example 1.5 for creatinine] OR ABS(Value - Previous value) >= [absolute change].\nDo not compare values in different units.",
+  "reportScenarios": "Scenario 1 - YES: Change above the threshold.\nScenario 2 - NO: Below.",
+  "sorting": "Country, Site, Subject, Test, Visit"
+ },
+ {
+  "reportId": "LIB-CX-10",
+  "description": "Discontinuation status differs across forms. A subject marked as discontinued on one form but not on related forms, repeated for each trial segment.",
+  "columnHeading": "1. Country\n2. Site\n3. Subject\n4. Form\n5. Visit\n6. Date\n7. Status on this form\n8. Status on disposition\n9. Scenario",
+  "logic": "Scenario 1: The study disposition form says \"Discontinued\" AND the treatment status form for any segment does not.\nScenario 2: The treatment status form for a segment says \"Discontinued\" AND the study disposition form does not.\nScenario 3: Repeat Scenarios 1 and 2 for each trial segment form (same check, different forms).\nCompare the latest record per subject and form.",
+  "reportScenarios": "Scenario 1 - YES: Statuses disagree.\nScenario 2 - NO: Statuses agree.",
+  "sorting": "Country, Site, Subject, Form"
+ },
+ {
+  "reportId": "LIB-CX-11",
+  "description": "Visit marked not done but has data. Visits recorded as not conducted that still have assessments or dosing.",
+  "columnHeading": "1. Country\n2. Site\n3. Subject\n4. Visit\n5. Visit not done reason\n6. Form with data\n7. Date",
+  "logic": "Scenario 1: Visit performed = \"No\" AND any assessment or exposure form for that visit has data.",
+  "reportScenarios": "Scenario 1 - YES: Not done but data exists.\nScenario 2 - NO: No conflict.",
+  "sorting": "Country, Site, Subject, Visit"
+ },
+ {
+  "reportId": "LIB-CX-12",
+  "description": "Repeating form sequence problems. Gaps or duplicates in the sequence numbers of repeating forms.",
+  "columnHeading": "1. Country\n2. Site\n3. Subject\n4. Form\n5. Sequence number\n6. Issue",
+  "logic": "Scenario 1: For the same Subject and Form, two records have the same sequence number.\nScenario 2: A sequence number is missing between 1 and the highest number.",
+  "reportScenarios": "Scenario 1 - YES: Duplicate or gap in sequence.\nScenario 2 - NO: Sequence is continuous.",
+  "sorting": "Country, Site, Subject, Form, Sequence number"
+ },
+ {
+  "reportId": "LIB-CX-13",
+  "description": "Overlapping exposure periods. Exposure records for the same subject and study drug whose date ranges overlap.",
+  "columnHeading": "1. Country\n2. Site\n3. Subject\n4. Study drug\n5. Start date 1\n6. End date 1\n7. Start date 2\n8. End date 2",
+  "logic": "Scenario 1: Two exposure records for the same subject and drug where start2 <= end1 AND start1 <= end2. Compare each pair once.",
+  "reportScenarios": "Scenario 1 - YES: Ranges overlap.\nScenario 2 - NO: No overlap.",
+  "sorting": "Country, Site, Subject"
+ },
+ {
+  "reportId": "LIB-CX-14",
+  "description": "Conditional forms present or missing. A form that should exist only when an answer on another form is Yes, shown both ways.",
+  "columnHeading": "1. Country\n2. Site\n3. Subject\n4. Trigger form\n5. Trigger answer\n6. Dependent form\n7. Dependent form exists\n8. Issue",
+  "logic": "Scenario 1: Trigger answer = \"Yes\" AND the dependent form does not exist.\nScenario 2: Trigger answer = \"No\" or null AND the dependent form exists.",
+  "reportScenarios": "Scenario 1 - YES: Dependency is broken in either direction.\nScenario 2 - NO: Both sides agree.",
+  "sorting": "Country, Site, Subject"
+ },
+ {
+  "reportId": "LIB-EXT-01",
+  "description": "Vendor records with no matching EDC visit. Vendor records (lab, ECG, PK, imaging) whose subject and date match no EDC visit.",
+  "columnHeading": "1. Vendor\n2. Subject\n3. Vendor visit label\n4. Collection date\n5. Test or assessment\n6. Nearest EDC visit\n7. Days from nearest visit",
+  "logic": "Scenario 1: Subject exists in the vendor file AND no EDC visit for the subject has a date within [N days] of the collection date.\nScenario 2: Subject exists in the vendor file but not in the EDC subject list.",
+  "reportScenarios": "Scenario 1 - YES: A vendor record cannot be tied to an EDC visit or subject.\nScenario 2 - NO: Every vendor record matches an EDC visit.",
+  "sorting": "Vendor, Subject, Collection date"
+ },
+ {
+  "reportId": "LIB-EXT-02",
+  "description": "EDC visit with no vendor result. EDC visits where the vendor sample or assessment was due but nothing arrived.",
+  "columnHeading": "1. Site\n2. Subject\n3. Visit\n4. Visit date\n5. Sample collected flag\n6. Expected vendor data\n7. Days since visit",
+  "logic": "Scenario 1: EDC shows the sample as collected = \"Yes\" AND no vendor record exists within [N days] of the visit date AND days since visit > [transfer lag].\nScenario 2: EDC shows not done and a vendor record exists for the same visit.",
+  "reportScenarios": "Scenario 1 - YES: Collected in EDC with no vendor data, or vendor data for a visit marked not done.\nScenario 2 - NO: Both sources agree.",
+  "sorting": "Site, Subject, Visit"
+ },
+ {
+  "reportId": "LIB-EXT-03",
+  "description": "Collection date or time differs between EDC and vendor. Same sample with different collection dates or times in the two sources.",
+  "columnHeading": "1. Site\n2. Subject\n3. Visit\n4. EDC collection date\n5. Vendor collection date\n6. EDC time\n7. Vendor time\n8. Difference",
+  "logic": "Scenario 1: EDC and vendor collection dates are both present and not equal.\nScenario 2: Dates are equal, both times are present and differ by more than [N minutes].",
+  "reportScenarios": "Scenario 1 - YES: The two sources disagree on when the sample was taken.\nScenario 2 - NO: They agree.",
+  "sorting": "Site, Subject, Visit"
+ },
+ {
+  "reportId": "LIB-EXT-04",
+  "description": "Duplicate vendor records. The same test for the same subject, visit and collection date received more than once.",
+  "columnHeading": "1. Subject\n2. Visit\n3. Test code\n4. Collection date\n5. Result\n6. Transfer date\n7. Record count",
+  "logic": "Scenario 1: More than one record with the same Subject, Visit, Test code and Collection date.\nShow whether results are identical (true duplicate) or different (conflicting).",
+  "reportScenarios": "Scenario 1 - YES: More than one record for the same test and sample.\nScenario 2 - NO: One record per test and sample.",
+  "sorting": "Subject, Visit, Test code"
+ },
+ {
+  "reportId": "LIB-EXT-05",
+  "description": "Vendor values outside the transfer specification. Values that break the data transfer agreement.",
+  "columnHeading": "1. Vendor\n2. Subject\n3. Variable\n4. Value\n5. Allowed values or format\n6. Issue",
+  "logic": "Scenario 1: A coded variable has a value not in the agreed code list.\nScenario 2: A date does not follow the agreed format.\nScenario 3: A numeric result contains text other than the agreed qualifiers.\nScenario 4: A required variable is null.",
+  "reportScenarios": "Scenario 1 - YES: Any scenario.\nScenario 2 - NO: All values conform.",
+  "sorting": "Vendor, Subject, Variable"
+ },
+ {
+  "reportId": "LIB-EXT-06",
+  "description": "Lab results missing units or reference ranges. Central or local lab results that cannot be interpreted.",
+  "columnHeading": "1. Site\n2. Subject\n3. Visit\n4. Test\n5. Result\n6. Unit\n7. Normal low\n8. Normal high\n9. Issue",
+  "logic": "Scenario 1: Result is numeric AND unit is null.\nScenario 2: Result is numeric AND both reference limits are null.\nScenario 3: Same test has more than one unit for the same lab.",
+  "reportScenarios": "Scenario 1 - YES: A result lacks the information needed to interpret it.\nScenario 2 - NO: Units and ranges are present.",
+  "sorting": "Site, Subject, Test, Visit"
+ },
+ {
+  "reportId": "LIB-EXT-07",
+  "description": "Randomization and dispensing do not match IRT. Disagreement between the EDC and the IRT/RTSM system.",
+  "columnHeading": "1. Site\n2. Subject\n3. EDC randomization date\n4. IRT randomization date\n5. EDC treatment or kit\n6. IRT treatment or kit\n7. Issue",
+  "logic": "Scenario 1: Subject randomized in one source and not in the other.\nScenario 2: Randomization dates differ.\nScenario 3: Dispensed kit number in the EDC differs from the IRT.\nDo not show treatment arm in any output intended for blinded users.",
+  "reportScenarios": "Scenario 1 - YES: The EDC and IRT disagree.\nScenario 2 - NO: They agree.",
+  "sorting": "Site, Subject"
+ },
+ {
+  "reportId": "LIB-EXT-08",
+  "description": "ePRO or eCOA compliance. Subjects below the required diary or questionnaire completion rate.",
+  "columnHeading": "1. Site\n2. Subject\n3. Instrument\n4. Expected entries\n5. Completed entries\n6. Completion %\n7. Threshold %\n8. Last entry date",
+  "logic": "Scenario 1: Completion % = Completed / Expected * 100 AND Completion % < [threshold].\nScenario 2: Last entry date is more than [N days] before the data cut.",
+  "reportScenarios": "Scenario 1 - YES: Completion is below the threshold or entries have stopped.\nScenario 2 - NO: Completion meets the threshold.",
+  "sorting": "Completion %, Site, Subject"
+ },
+ {
+  "reportId": "LIB-EXT-09",
+  "description": "PK samples out of window. PK samples collected outside the allowed time window around dosing.",
+  "columnHeading": "1. Site\n2. Subject\n3. Visit\n4. Nominal time point\n5. Dose date and time\n6. Sample date and time\n7. Actual hours\n8. Allowed window",
+  "logic": "Scenario 1: Actual hours = Sample time minus Dose time AND Actual hours is outside nominal +/- [window].\nScenario 2: Dose time or sample time is null.",
+  "reportScenarios": "Scenario 1 - YES: Sample is out of window or cannot be timed.\nScenario 2 - NO: Sample is in window.",
+  "sorting": "Subject, Visit, Nominal time point"
+ },
+ {
+  "reportId": "LIB-EXT-10",
+  "description": "Imaging or ECG read missing or late. Central reads not returned in time.",
+  "columnHeading": "1. Site\n2. Subject\n3. Visit\n4. Assessment date\n5. Read status\n6. Days since assessment\n7. Read date",
+  "logic": "Scenario 1: Assessment exists AND Read status is null or pending AND days since assessment > [turnaround].\nScenario 2: Read date is before assessment date.",
+  "reportScenarios": "Scenario 1 - YES: A read is overdue or impossible by date.\nScenario 2 - NO: Reads are complete and ordered.",
+  "sorting": "Days since assessment desc"
+ },
+ {
+  "reportId": "LIB-REC-01",
+  "description": "SAE in the clinical database but not in the safety database. Serious AEs in the EDC with no matching safety-system case.",
+  "columnHeading": "1. Site\n2. Subject\n3. AE term\n4. Onset date\n5. Serious flag\n6. Seriousness criteria\n7. Safety case ID",
+  "logic": "Scenario 1: Serious flag = \"Yes\" AND no safety case matches on Subject and onset date (within [N days]).\nExclude deleted AE records.",
+  "reportScenarios": "Scenario 1 - YES: A serious AE has no safety case.\nScenario 2 - NO: Every SAE has a matching case.",
+  "sorting": "Site, Subject, Onset date"
+ },
+ {
+  "reportId": "LIB-REC-02",
+  "description": "SAE in the safety database but not in the EDC. Safety cases with no corresponding AE in the EDC.",
+  "columnHeading": "1. Subject\n2. Safety case ID\n3. Event term\n4. Onset date\n5. Seriousness criteria\n6. Report date",
+  "logic": "Scenario 1: A safety case exists for the subject AND no AE in the EDC matches on onset date (within [N days]) or on term.",
+  "reportScenarios": "Scenario 1 - YES: A safety case has no EDC AE.\nScenario 2 - NO: All cases are in the EDC.",
+  "sorting": "Subject, Onset date"
+ },
+ {
+  "reportId": "LIB-REC-03",
+  "description": "Matched SAE with differing fields. Cases found in both systems that disagree on key fields.",
+  "columnHeading": "1. Subject\n2. Safety case ID\n3. Field\n4. EDC value\n5. Safety value",
+  "logic": "Scenario 1: Onset date differs.\nScenario 2: Outcome differs.\nScenario 3: Causality (relationship to treatment) differs.\nScenario 4: Seriousness criteria differ.\nScenario 5: Stop date differs while both are present.",
+  "reportScenarios": "Scenario 1 - YES: Any field differs.\nScenario 2 - NO: All compared fields agree.",
+  "sorting": "Subject, Safety case ID, Field"
+ },
+ {
+  "reportId": "LIB-REC-04",
+  "description": "AE with no MedDRA coding. AE terms not yet coded or coded incompletely.",
+  "columnHeading": "1. Site\n2. Subject\n3. Reported term\n4. LLT\n5. PT\n6. SOC\n7. Coding status",
+  "logic": "Scenario 1: Reported term is not null AND PT is null.\nScenario 2: PT is present AND SOC is null.\nScenario 3: Coding status = \"Query\" or \"Uncodable\".",
+  "reportScenarios": "Scenario 1 - YES: A term is not fully coded.\nScenario 2 - NO: All AE terms are coded to PT and SOC.",
+  "sorting": "Site, Subject"
+ },
+ {
+  "reportId": "LIB-REC-05",
+  "description": "Same verbatim term coded to different PTs. Coding consistency check.",
+  "columnHeading": "1. Reported term (normalized)\n2. PT\n3. Record count\n4. Subjects",
+  "logic": "Scenario 1: After lowercasing and trimming, the same verbatim term maps to more than one PT.",
+  "reportScenarios": "Scenario 1 - YES: One term, several PTs.\nScenario 2 - NO: Each term has one PT.",
+  "sorting": "Reported term, PT"
+ },
+ {
+  "reportId": "LIB-REC-06",
+  "description": "Medication with no WHODrug coding. Concomitant medications not coded.",
+  "columnHeading": "1. Site\n2. Subject\n3. Medication\n4. Drug record\n5. ATC code\n6. Coding status",
+  "logic": "Scenario 1: Medication name is not null AND Drug record is null.\nScenario 2: Drug record present AND ATC code is null.",
+  "reportScenarios": "Scenario 1 - YES: A medication is not coded.\nScenario 2 - NO: All coded.",
+  "sorting": "Site, Subject"
+ },
+ {
+  "reportId": "LIB-REC-07",
+  "description": "Dictionary version differences. Records coded with a dictionary version different from the study version.",
+  "columnHeading": "1. Domain\n2. Dictionary\n3. Version on record\n4. Study version\n5. Record count",
+  "logic": "Scenario 1: Dictionary version on a record <> the version in the data management plan.",
+  "reportScenarios": "Scenario 1 - YES: Mixed versions.\nScenario 2 - NO: One version throughout.",
+  "sorting": "Domain"
+ },
+ {
+  "reportId": "LIB-REC-08",
+  "description": "Death and pregnancy reporting check. Deaths and pregnancies with no expedited-report record.",
+  "columnHeading": "1. Site\n2. Subject\n3. Event\n4. Event date\n5. Reported in safety system\n6. Days to report",
+  "logic": "Scenario 1: Death recorded AND no safety case.\nScenario 2: Pregnancy recorded AND no safety case.",
+  "reportScenarios": "Scenario 1 - YES: Missing report.\nScenario 2 - NO: Every event has a case.",
+  "sorting": "Site, Subject"
+ },
+ {
+  "reportId": "LIB-DEV-01",
+  "description": "Visits outside the protocol window. Visits dated outside the allowed window around their target day.",
+  "columnHeading": "1. Site\n2. Subject\n3. Visit\n4. Visit date\n5. Target date\n6. Allowed from\n7. Allowed to\n8. Days off",
+  "logic": "Scenario 1: Visit date < Target date - [lower] OR Visit date > Target date + [upper]. Target date = Reference date + planned day.\nReference date is the first dose date, or randomization date if the protocol says so.",
+  "reportScenarios": "Scenario 1 - YES: A visit falls outside its window.\nScenario 2 - NO: Within window.",
+  "sorting": "Site, Subject, Visit"
+ },
+ {
+  "reportId": "LIB-DEV-02",
+  "description": "Missed required assessments. Required assessments with no data at a visit that took place.",
+  "columnHeading": "1. Site\n2. Subject\n3. Visit\n4. Assessment\n5. Visit date\n6. Status",
+  "logic": "Scenario 1: Visit exists AND the assessment required at that visit has no record AND is not marked Not Done with a reason.",
+  "reportScenarios": "Scenario 1 - YES: Required assessment absent.\nScenario 2 - NO: Present or documented.",
+  "sorting": "Site, Subject, Visit"
+ },
+ {
+  "reportId": "LIB-DEV-03",
+  "description": "Dosing deviations. Doses not as planned.",
+  "columnHeading": "1. Site\n2. Subject\n3. Visit\n4. Planned dose\n5. Actual dose\n6. Dose date\n7. Reason",
+  "logic": "Scenario 1: Actual dose <> Planned dose AND no reason such as dose reduction for toxicity is recorded.\nScenario 2: Dose given after a recorded stop-treatment date.\nScenario 3: Dose given while a criterion in the dose-hold rule is met.",
+  "reportScenarios": "Scenario 1 - YES: Dose differs from the plan without a recorded reason.\nScenario 2 - NO: As planned.",
+  "sorting": "Site, Subject, Dose date"
+ },
+ {
+  "reportId": "LIB-DEV-04",
+  "description": "Prohibited medication use. Medications the protocol prohibits.",
+  "columnHeading": "1. Site\n2. Subject\n3. Medication\n4. Drug class\n5. Start date\n6. End date\n7. Overlaps treatment",
+  "logic": "Scenario 1: Medication matches the prohibited list (by drug record, ATC class, or name) AND its dates overlap the treatment period.",
+  "reportScenarios": "Scenario 1 - YES: Prohibited drug taken during treatment.\nScenario 2 - NO: None.",
+  "sorting": "Site, Subject, Start date"
+ },
+ {
+  "reportId": "LIB-DEV-05",
+  "description": "Recorded deviations with no category or no action. Deviation log quality.",
+  "columnHeading": "1. Site\n2. Subject\n3. Deviation ID\n4. Date\n5. Category\n6. Severity\n7. Action\n8. Status",
+  "logic": "Scenario 1: Category is null.\nScenario 2: Severity is null.\nScenario 3: Status is open AND age > [N days].",
+  "reportScenarios": "Scenario 1 - YES: Incomplete or stale deviation record.\nScenario 2 - NO: Complete and current.",
+  "sorting": "Site, Subject"
+ },
+ {
+  "reportId": "LIB-DEV-06",
+  "description": "Informed consent version and re-consent. Subjects consented on an outdated version or not re-consented.",
+  "columnHeading": "1. Site\n2. Subject\n3. Consent version\n4. Consent date\n5. Current version approved on\n6. Re-consent date",
+  "logic": "Scenario 1: Consent date is after the current version approval date AND the version on record is older.\nScenario 2: A new version required re-consent AND the subject has data after approval date but no re-consent date.",
+  "reportScenarios": "Scenario 1 - YES: Wrong version or missing re-consent.\nScenario 2 - NO: Current.",
+  "sorting": "Site, Subject"
+ },
+ {
+  "reportId": "LIB-OPS-01",
+  "description": "Data entry timeliness. Visits entered late.",
+  "columnHeading": "1. Site\n2. Subject\n3. Visit\n4. Visit date\n5. Entry date\n6. Days to enter",
+  "logic": "Scenario 1: Days to enter = Entry date minus Visit date AND Days to enter > [target days].",
+  "reportScenarios": "Scenario 1 - YES: Late entry.\nScenario 2 - NO: On time.",
+  "sorting": "Days to enter desc"
+ },
+ {
+  "reportId": "LIB-OPS-02",
+  "description": "Open queries by age. Queries still open, grouped by age.",
+  "columnHeading": "1. Site\n2. Subject\n3. Form\n4. Item\n5. Query text\n6. Opened\n7. Age (days)\n8. Owner",
+  "logic": "Scenario 1: Query status is Open or Answered AND age > [N days].\nAge = report date minus opened date.",
+  "reportScenarios": "Scenario 1 - YES: Query still open.\nScenario 2 - NO: Closed.",
+  "sorting": "Age desc, Site"
+ },
+ {
+  "reportId": "LIB-OPS-03",
+  "description": "Overdue visits. Subjects whose next visit is past its window with no data.",
+  "columnHeading": "1. Site\n2. Subject\n3. Last visit\n4. Next expected visit\n5. Latest allowed date\n6. Days overdue",
+  "logic": "Scenario 1: The next planned visit has no record AND the latest allowed date < report date AND the subject is still active.",
+  "reportScenarios": "Scenario 1 - YES: Visit overdue.\nScenario 2 - NO: Not overdue.",
+  "sorting": "Days overdue desc"
+ },
+ {
+  "reportId": "LIB-OPS-04",
+  "description": "Forms not source verified or not signed. Pending monitoring and investigator sign-off.",
+  "columnHeading": "1. Site\n2. Subject\n3. Visit\n4. Form\n5. SDV status\n6. Signature status\n7. Entry date",
+  "logic": "Scenario 1: SDV status is required AND not complete.\nScenario 2: Signature status is not signed AND the form is older than [N days].",
+  "reportScenarios": "Scenario 1 - YES: Pending verification or signature.\nScenario 2 - NO: Complete.",
+  "sorting": "Site, Subject, Visit"
+ },
+ {
+  "reportId": "LIB-OPS-05",
+  "description": "Enrollment by site against target. Recruitment progress.",
+  "columnHeading": "1. Country\n2. Site\n3. Screened\n4. Screen failures\n5. Randomized\n6. Target\n7. % of target",
+  "logic": "Scenario 1: Count subjects by site and status.\nScenario 2: Highlight sites with % of target below [threshold] after [N weeks] open.",
+  "reportScenarios": "Scenario 1 - YES: Behind target.\nScenario 2 - NO: At or ahead.",
+  "sorting": "Country, Site"
+ },
+ {
+  "reportId": "LIB-OPS-06",
+  "description": "Subjects lost or not seen. Subjects with no activity for a long period.",
+  "columnHeading": "1. Site\n2. Subject\n3. Last activity date\n4. Days since\n5. Status\n6. Contact attempts recorded",
+  "logic": "Scenario 1: Days since last data > [N] AND no disposition recorded.",
+  "reportScenarios": "Scenario 1 - YES: Possible lost to follow-up.\nScenario 2 - NO: Active or dispositioned.",
+  "sorting": "Days since desc"
+ },
+ {
+  "reportId": "LIB-OPS-07",
+  "description": "Key risk indicators by site. Risk-based monitoring indicators.",
+  "columnHeading": "1. Site\n2. AE per subject\n3. SAE rate\n4. Deviation rate\n5. Query rate\n6. Entry delay (median)\n7. Missing data %\n8. Flag",
+  "logic": "Scenario 1: Each indicator compared with the study median or an agreed threshold.\nScenario 2: Flag = Yes when two or more indicators exceed the limit.",
+  "reportScenarios": "Scenario 1 - YES: Site flagged.\nScenario 2 - NO: Within limits.",
+  "sorting": "Flag, Site"
+ },
+ {
+  "reportId": "LIB-SDT-01",
+  "description": "Required and expected variables missing or null. Core variables that are empty.",
+  "columnHeading": "1. Domain\n2. USUBJID\n3. Variable\n4. Core\n5. Record number",
+  "logic": "Scenario 1: Variable is Required in the implementation guide AND null.\nScenario 2: Variable is Expected AND null for every record in the domain.",
+  "reportScenarios": "Scenario 1 - YES: Required value missing.\nScenario 2 - NO: Present.",
+  "sorting": "Domain, USUBJID"
+ },
+ {
+  "reportId": "LIB-SDT-02",
+  "description": "Values outside controlled terminology. Coded variables with values not in the codelist.",
+  "columnHeading": "1. Domain\n2. USUBJID\n3. Variable\n4. Value\n5. Codelist\n6. Record count",
+  "logic": "Scenario 1: Value is not in the codelist for the variable, using the controlled terminology version stated in the define file.\nExtensible codelists: list the value as a new term for review.",
+  "reportScenarios": "Scenario 1 - YES: Value not in codelist.\nScenario 2 - NO: In codelist.",
+  "sorting": "Domain, Variable"
+ },
+ {
+  "reportId": "LIB-SDT-03",
+  "description": "Invalid or inconsistent ISO 8601 dates. Date variables with a bad format or order.",
+  "columnHeading": "1. Domain\n2. USUBJID\n3. Variable\n4. Value\n5. Issue",
+  "logic": "Scenario 1: A --DTC value is not valid ISO 8601.\nScenario 2: --STDTC > --ENDTC.\nScenario 3: A --DY value does not agree with the date and RFSTDTC.",
+  "reportScenarios": "Scenario 1 - YES: Invalid or inconsistent date.\nScenario 2 - NO: Valid.",
+  "sorting": "Domain, USUBJID"
+ },
+ {
+  "reportId": "LIB-SDT-04",
+  "description": "USUBJID not in DM. Subjects in other domains that are missing from the demographics domain.",
+  "columnHeading": "1. Domain\n2. USUBJID\n3. Record count",
+  "logic": "Scenario 1: USUBJID in any domain does not exist in DM.\nScenario 2: A DM subject has no record in DS.",
+  "reportScenarios": "Scenario 1 - YES: Orphan subject.\nScenario 2 - NO: All in DM.",
+  "sorting": "Domain, USUBJID"
+ },
+ {
+  "reportId": "LIB-SDT-05",
+  "description": "Sequence and key uniqueness. Duplicate sequence numbers or keys.",
+  "columnHeading": "1. Domain\n2. USUBJID\n3. --SEQ\n4. Key variables\n5. Count",
+  "logic": "Scenario 1: --SEQ repeats within a USUBJID.\nScenario 2: The record keys declared in the define file repeat.",
+  "reportScenarios": "Scenario 1 - YES: Duplicate.\nScenario 2 - NO: Unique.",
+  "sorting": "Domain, USUBJID"
+ },
+ {
+  "reportId": "LIB-SDT-06",
+  "description": "Standardized and original values disagree. Result variables whose standard and original forms conflict.",
+  "columnHeading": "1. Domain\n2. USUBJID\n3. Test\n4. Original result\n5. Standard result\n6. Original unit\n7. Standard unit",
+  "logic": "Scenario 1: Numeric standard result is null while original result is numeric.\nScenario 2: Standard unit differs from original unit AND no conversion is documented.",
+  "reportScenarios": "Scenario 1 - YES: Conflict.\nScenario 2 - NO: Consistent.",
+  "sorting": "Domain, USUBJID"
+ },
+ {
+  "reportId": "LIB-SDT-07",
+  "description": "Baseline flag problems. Baseline flag missing or applied more than once.",
+  "columnHeading": "1. Domain\n2. USUBJID\n3. Test\n4. Baseline records\n5. Reference date",
+  "logic": "Scenario 1: A subject-test combination has more than one baseline flag.\nScenario 2: A subject has dosing and tests before the first dose but no baseline flag.",
+  "reportScenarios": "Scenario 1 - YES: No or multiple baselines.\nScenario 2 - NO: One baseline.",
+  "sorting": "Domain, USUBJID, Test"
+ },
+ {
+  "reportId": "LIB-SDT-08",
+  "description": "SUPPQUAL records with no parent. Supplemental qualifiers that cannot be linked.",
+  "columnHeading": "1. RDOMAIN\n2. USUBJID\n3. IDVAR\n4. IDVARVAL\n5. QNAM",
+  "logic": "Scenario 1: No parent record in the related domain matches USUBJID, IDVAR and IDVARVAL.",
+  "reportScenarios": "Scenario 1 - YES: Orphan.\nScenario 2 - NO: Linked.",
+  "sorting": "RDOMAIN, USUBJID"
+ },
+ {
+  "reportId": "LIB-SDT-09",
+  "description": "Dataset and define file mismatches. Variables present in data but not described, or the reverse.",
+  "columnHeading": "1. Domain\n2. Variable\n3. In data\n4. In define\n5. Issue",
+  "logic": "Scenario 1: Variable in the data but not in the define file.\nScenario 2: In the define file but not in the data.\nScenario 3: Label, type or length differs.",
+  "reportScenarios": "Scenario 1 - YES: Mismatch.\nScenario 2 - NO: Match.",
+  "sorting": "Domain, Variable"
+ },
+ {
+  "reportId": "LIB-ADM-01",
+  "description": "Population flags inconsistent. Analysis population flags that conflict with each other.",
+  "columnHeading": "1. USUBJID\n2. ITTFL\n3. SAFFL\n4. PPROTFL\n5. Randomized\n6. Dosed\n7. Issue",
+  "logic": "Scenario 1: SAFFL = \"Y\" AND no exposure record exists.\nScenario 2: ITTFL = \"Y\" AND subject is not randomized.\nScenario 3: PPROTFL = \"Y\" AND ITTFL <> \"Y\".",
+  "reportScenarios": "Scenario 1 - YES: Flags conflict.\nScenario 2 - NO: Consistent.",
+  "sorting": "USUBJID"
+ },
+ {
+  "reportId": "LIB-ADM-02",
+  "description": "Treatment variables differ from SDTM. Planned or actual treatment not matching the source.",
+  "columnHeading": "1. USUBJID\n2. TRT01P\n3. ARM\n4. TRT01A\n5. ACTARM\n6. Issue",
+  "logic": "Scenario 1: TRT01P differs from the source planned arm.\nScenario 2: TRT01A differs from the source actual arm.\nScenario 3: Treatment variable is null for a subject in a population.",
+  "reportScenarios": "Scenario 1 - YES: Treatment mismatch.\nScenario 2 - NO: Matches.",
+  "sorting": "USUBJID"
+ },
+ {
+  "reportId": "LIB-ADM-03",
+  "description": "Derived value cannot be reproduced. Derived variables whose value differs from an independent recalculation.",
+  "columnHeading": "1. USUBJID\n2. PARAMCD\n3. AVISIT\n4. Derived value\n5. Recalculated value\n6. Difference",
+  "logic": "Scenario 1: ABS(derived - recalculated) > [tolerance].\nRecalculation follows the derivation text in the ADaM specification.",
+  "reportScenarios": "Scenario 1 - YES: Value differs.\nScenario 2 - NO: Reproduced.",
+  "sorting": "PARAMCD, USUBJID, AVISIT"
+ },
+ {
+  "reportId": "LIB-ADM-04",
+  "description": "Change from baseline missing. Post-baseline records with no change value.",
+  "columnHeading": "1. USUBJID\n2. PARAMCD\n3. AVISIT\n4. BASE\n5. AVAL\n6. CHG",
+  "logic": "Scenario 1: AVAL is not null AND BASE is not null AND CHG is null.\nScenario 2: Baseline record exists, but BASE is null on later records.",
+  "reportScenarios": "Scenario 1 - YES: Change missing.\nScenario 2 - NO: Present.",
+  "sorting": "PARAMCD, USUBJID"
+ },
+ {
+  "reportId": "LIB-ADM-05",
+  "description": "Analysis visit windowing. Records mapped to a visit inconsistent with the windowing rule.",
+  "columnHeading": "1. USUBJID\n2. PARAMCD\n3. ADT\n4. ADY\n5. AVISIT\n6. Window rule",
+  "logic": "Scenario 1: ADY lies outside the window defined for AVISIT.\nScenario 2: Two records are assigned to the same AVISIT with ANL01FL = \"Y\".",
+  "reportScenarios": "Scenario 1 - YES: Window broken.\nScenario 2 - NO: In window.",
+  "sorting": "USUBJID, PARAMCD, ADY"
+ },
+ {
+  "reportId": "LIB-ADM-06",
+  "description": "Time-to-event censoring check. Records with unclear event or censor status.",
+  "columnHeading": "1. USUBJID\n2. PARAMCD\n3. AVAL\n4. CNSR\n5. Start date\n6. Event or censor date\n7. Issue",
+  "logic": "Scenario 1: CNSR is null.\nScenario 2: AVAL < 0.\nScenario 3: CNSR = 0 AND no event record in the source.",
+  "reportScenarios": "Scenario 1 - YES: Status problem.\nScenario 2 - NO: Valid.",
+  "sorting": "USUBJID"
+ },
+ {
+  "reportId": "LIB-PDL-01",
+  "description": "Demographics. Subject demographic data.",
+  "columnHeading": "1. Treatment\n2. Site\n3. Subject\n4. Age\n5. Sex\n6. Race\n7. Ethnicity\n8. Country",
+  "logic": "Scenario 1: One row per subject in the population selected.",
+  "reportScenarios": "Scenario 1 - YES: Always, for subjects in the population.\nScenario 2 - NO: Subjects outside the population.",
+  "sorting": "Treatment, Site, Subject"
+ },
+ {
+  "reportId": "LIB-PDL-02",
+  "description": "Subject disposition. Completion and discontinuation.",
+  "columnHeading": "1. Treatment\n2. Site\n3. Subject\n4. First dose date\n5. Last dose date\n6. Completed\n7. Discontinuation reason\n8. Date",
+  "logic": "Scenario 1: One row per subject with the end-of-study or end-of-treatment disposition.",
+  "reportScenarios": "Scenario 1 - YES: Subjects with disposition data.\nScenario 2 - NO: Subjects without it show as ongoing.",
+  "sorting": "Treatment, Site, Subject"
+ },
+ {
+  "reportId": "LIB-PDL-03",
+  "description": "Adverse events. All reported AEs.",
+  "columnHeading": "1. Treatment\n2. Subject\n3. SOC\n4. PT\n5. Reported term\n6. Start\n7. End\n8. Severity\n9. Relationship\n10. Serious\n11. Action\n12. Outcome",
+  "logic": "Scenario 1: One row per AE. Include treatment-emergent flag where derived.",
+  "reportScenarios": "Scenario 1 - YES: All AE records not deleted.\nScenario 2 - NO: Deleted records.",
+  "sorting": "Treatment, Subject, Start"
+ },
+ {
+  "reportId": "LIB-PDL-04",
+  "description": "Serious adverse events and deaths. Serious events and deaths.",
+  "columnHeading": "1. Treatment\n2. Subject\n3. PT\n4. Start\n5. End\n6. Seriousness criteria\n7. Relationship\n8. Outcome\n9. Death date",
+  "logic": "Scenario 1: AE with serious flag = Yes.\nScenario 2: Any death recorded.",
+  "reportScenarios": "Scenario 1 - YES: Serious or fatal.\nScenario 2 - NO: Non-serious.",
+  "sorting": "Treatment, Subject, Start"
+ },
+ {
+  "reportId": "LIB-PDL-05",
+  "description": "Concomitant medications. Medications taken during the study.",
+  "columnHeading": "1. Treatment\n2. Subject\n3. Medication\n4. ATC class\n5. Dose\n6. Route\n7. Start\n8. End\n9. Indication",
+  "logic": "Scenario 1: One row per medication record.",
+  "reportScenarios": "Scenario 1 - YES: All records.\nScenario 2 - NO: None.",
+  "sorting": "Treatment, Subject, Start"
+ },
+ {
+  "reportId": "LIB-PDL-06",
+  "description": "Exposure. Study drug administration.",
+  "columnHeading": "1. Treatment\n2. Subject\n3. Visit\n4. Dose\n5. Unit\n6. Start\n7. End\n8. Dose change reason",
+  "logic": "Scenario 1: One row per administration or dosing record.",
+  "reportScenarios": "Scenario 1 - YES: All records.\nScenario 2 - NO: None.",
+  "sorting": "Treatment, Subject, Start"
+ },
+ {
+  "reportId": "LIB-PDL-07",
+  "description": "Laboratory abnormalities. Out-of-range lab results.",
+  "columnHeading": "1. Treatment\n2. Subject\n3. Visit\n4. Test\n5. Result\n6. Unit\n7. Range\n8. Flag\n9. Grade",
+  "logic": "Scenario 1: Result is outside the reference range or graded.",
+  "reportScenarios": "Scenario 1 - YES: Abnormal.\nScenario 2 - NO: Normal.",
+  "sorting": "Treatment, Subject, Test, Visit"
+ },
+ {
+  "reportId": "LIB-PDL-08",
+  "description": "Vital signs. Vital sign measurements.",
+  "columnHeading": "1. Treatment\n2. Subject\n3. Visit\n4. Test\n5. Result\n6. Unit\n7. Position\n8. Date",
+  "logic": "Scenario 1: One row per measurement.",
+  "reportScenarios": "Scenario 1 - YES: All.\nScenario 2 - NO: None.",
+  "sorting": "Treatment, Subject, Visit"
+ },
+ {
+  "reportId": "LIB-PDL-09",
+  "description": "Protocol deviations. Recorded deviations.",
+  "columnHeading": "1. Treatment\n2. Subject\n3. Deviation\n4. Category\n5. Date\n6. Important flag",
+  "logic": "Scenario 1: One row per deviation.",
+  "reportScenarios": "Scenario 1 - YES: All.\nScenario 2 - NO: None.",
+  "sorting": "Treatment, Subject, Date"
+ },
+ {
+  "reportId": "LIB-PDL-10",
+  "description": "Efficacy assessments. Primary and secondary measurements by visit.",
+  "columnHeading": "1. Treatment\n2. Subject\n3. Visit\n4. Parameter\n5. Result\n6. Change from baseline",
+  "logic": "Scenario 1: One row per parameter and visit, for parameters in the analysis plan.",
+  "reportScenarios": "Scenario 1 - YES: Planned parameters.\nScenario 2 - NO: Others.",
+  "sorting": "Treatment, Subject, Parameter, Visit"
+ },
+ {
+  "reportId": "LIB-MED-01",
+  "description": "Possible Hy's law cases. Liver injury pattern.",
+  "columnHeading": "1. Subject\n2. Visit date\n3. ALT x ULN\n4. AST x ULN\n5. Bilirubin x ULN\n6. ALP x ULN\n7. Days between",
+  "logic": "Scenario 1: ALT or AST > 3 x ULN AND total bilirubin > 2 x ULN within [N days] AND ALP < 2 x ULN.",
+  "reportScenarios": "Scenario 1 - YES: Pattern met.\nScenario 2 - NO: Not met.",
+  "sorting": "Subject, Visit date"
+ },
+ {
+  "reportId": "LIB-MED-02",
+  "description": "Subjects with more than one serious event. Repeat SAEs.",
+  "columnHeading": "1. Site\n2. Subject\n3. SAE count\n4. Terms\n5. Dates",
+  "logic": "Scenario 1: Count of serious AEs per subject > 1.",
+  "reportScenarios": "Scenario 1 - YES: Repeats.\nScenario 2 - NO: One or none.",
+  "sorting": "SAE count desc"
+ },
+ {
+  "reportId": "LIB-MED-03",
+  "description": "Treatment discontinued for an AE. Early stops due to AEs.",
+  "columnHeading": "1. Site\n2. Subject\n3. AE term\n4. Onset date\n5. Severity\n6. Last dose date\n7. Outcome",
+  "logic": "Scenario 1: Action taken with study drug = \"Drug withdrawn\" OR disposition reason = \"Adverse event\".",
+  "reportScenarios": "Scenario 1 - YES: Stopped for an AE.\nScenario 2 - NO: Others.",
+  "sorting": "Site, Subject"
+ },
+ {
+  "reportId": "LIB-MED-04",
+  "description": "Lab shifts from normal to grade 3 or higher. Worsening labs.",
+  "columnHeading": "1. Subject\n2. Test\n3. Baseline grade\n4. Worst post-baseline grade\n5. Date of worst",
+  "logic": "Scenario 1: Baseline grade <= 1 AND worst post-baseline grade >= 3.",
+  "reportScenarios": "Scenario 1 - YES: Shifted.\nScenario 2 - NO: No.",
+  "sorting": "Test, Subject"
+ },
+ {
+  "reportId": "LIB-MED-05",
+  "description": "QTc prolongation. ECG intervals of concern.",
+  "columnHeading": "1. Subject\n2. Visit\n3. QTcF (ms)\n4. Baseline QTcF\n5. Change\n6. Category",
+  "logic": "Scenario 1: QTcF > [450, 480, 500] ms.\nScenario 2: Change from baseline > [30, 60] ms.",
+  "reportScenarios": "Scenario 1 - YES: Prolonged.\nScenario 2 - NO: No.",
+  "sorting": "Subject, Visit"
+ },
+ {
+  "reportId": "LIB-MED-06",
+  "description": "Dose reductions and interruptions with reason. Dose modifications.",
+  "columnHeading": "1. Subject\n2. Date\n3. Previous dose\n4. New dose\n5. Reason\n6. Linked AE",
+  "logic": "Scenario 1: A dose lower than the previous dose, or a gap in dosing longer than [N days].",
+  "reportScenarios": "Scenario 1 - YES: Modification.\nScenario 2 - NO: No.",
+  "sorting": "Subject, Date"
+ },
+ {
+  "reportId": "LIB-MED-07",
+  "description": "Deaths. All deaths with timeline.",
+  "columnHeading": "1. Site\n2. Subject\n3. Death date\n4. Cause\n5. Days from first dose\n6. Last dose date\n7. Related AE",
+  "logic": "Scenario 1: Death date is not null.",
+  "reportScenarios": "Scenario 1 - YES: Death recorded.\nScenario 2 - NO: None.",
+  "sorting": "Death date"
+ },
+ {
+  "reportId": "LIB-DMM-01",
+  "description": "Missing pages. Expected forms not entered.",
+  "columnHeading": "1. Site\n2. Subject\n3. Visit\n4. Form\n5. Visit date\n6. Days missing",
+  "logic": "Scenario 1: Visit has a date AND an expected form has no record.",
+  "reportScenarios": "Scenario 1 - YES: Missing.\nScenario 2 - NO: Present.",
+  "sorting": "Site, Subject, Visit"
+ },
+ {
+  "reportId": "LIB-DMM-02",
+  "description": "Duplicate records in repeating forms. Same record entered twice.",
+  "columnHeading": "1. Site\n2. Subject\n3. Form\n4. Key values\n5. Count",
+  "logic": "Scenario 1: More than one record with identical key values.",
+  "reportScenarios": "Scenario 1 - YES: Duplicates.\nScenario 2 - NO: Unique.",
+  "sorting": "Form, Subject"
+ },
+ {
+  "reportId": "LIB-DMM-03",
+  "description": "Forms changed after lock or freeze. Changes after a freeze.",
+  "columnHeading": "1. Site\n2. Subject\n3. Form\n4. Freeze date\n5. Change date\n6. User\n7. Reason",
+  "logic": "Scenario 1: Change date > freeze date.",
+  "reportScenarios": "Scenario 1 - YES: Changed after freeze.\nScenario 2 - NO: No.",
+  "sorting": "Change date"
+ },
+ {
+  "reportId": "LIB-DMM-04",
+  "description": "Unanswered or pending data clarifications. Query status by form for lock readiness.",
+  "columnHeading": "1. Form\n2. Open\n3. Answered\n4. Closed\n5. Total",
+  "logic": "Scenario 1: Count by status per form.",
+  "reportScenarios": "Scenario 1 - YES: Open or answered > 0.\nScenario 2 - NO: All closed.",
+  "sorting": "Form"
+ },
+ {
+  "reportId": "LIB-DMM-05",
+  "description": "Audit trail review. Unusual change patterns.",
+  "columnHeading": "1. Site\n2. Subject\n3. Form\n4. Item\n5. Old value\n6. New value\n7. User\n8. Date\n9. Reason",
+  "logic": "Scenario 1: A single item changed more than [N] times.\nScenario 2: A change has no reason.\nScenario 3: A change made by a user not on the site delegation log.",
+  "reportScenarios": "Scenario 1 - YES: Pattern found.\nScenario 2 - NO: None.",
+  "sorting": "Site, Subject"
+ },
+ {
+  "reportId": "LIB-DMM-06",
+  "description": "Reconciliation status across all sources. One line per source for lock.",
+  "columnHeading": "1. Source\n2. Last transfer date\n3. Records\n4. Open discrepancies\n5. Reconciled by\n6. Status",
+  "logic": "Scenario 1: One row per source (EDC, central lab, ECG, IRT, safety, coding).",
+  "reportScenarios": "Scenario 1 - YES: Open discrepancies > 0.\nScenario 2 - NO: None.",
+  "sorting": "Source"
+ },
+ {
+  "reportId": "LIB-ONC-01",
+  "description": "Overall response inconsistent with lesion data. Overall response that cannot follow from the target, non-target and new lesion assessments.",
+  "columnHeading": "1. Country\n2. Site\n3. Subject\n4. Visit\n5. Target lesion response\n6. Non-target response\n7. New lesion\n8. Overall response\n9. Issue",
+  "logic": "Scenario 1: New lesion = \"Yes\" AND Overall response <> \"PD\".\nScenario 2: Overall response = \"CR\" AND (Target lesion response <> \"CR\" OR Non-target response <> \"CR\").\nScenario 3: Overall response = \"PR\" AND Target lesion response in (\"SD\", \"PD\").\nUse the response criteria named in the protocol; these three follow the RECIST pattern.",
+  "reportScenarios": "Scenario 1 - YES: Overall response cannot follow from the components.\nScenario 2 - NO: Components and overall response agree.",
+  "sorting": "Country, Site, Subject, Visit"
+ },
+ {
+  "reportId": "LIB-ONC-02",
+  "description": "Target lesion measurements incomplete. Assessment visits with target lesions identified at baseline but no measurement.",
+  "columnHeading": "1. Country\n2. Site\n3. Subject\n4. Visit\n5. Lesion\n6. Baseline size\n7. Visit size\n8. Not evaluable reason",
+  "logic": "Scenario 1: A target lesion recorded at baseline has no measurement at the visit AND no not-evaluable reason.\nScenario 2: Number of target lesions at a visit > [protocol limit, 5 in RECIST 1.1, 2 per organ].",
+  "reportScenarios": "Scenario 1 - YES: Missing measurement, or too many target lesions.\nScenario 2 - NO: All baseline target lesions are measured.",
+  "sorting": "Country, Site, Subject, Visit, Lesion"
+ },
+ {
+  "reportId": "LIB-ONC-03",
+  "description": "Tumor assessment timing. Assessments done earlier or later than the protocol schedule, or before the baseline scan.",
+  "columnHeading": "1. Country\n2. Site\n3. Subject\n4. Baseline assessment date\n5. Assessment date\n6. Previous assessment date\n7. Weeks between",
+  "logic": "Scenario 1: Assessment date <= Baseline assessment date.\nScenario 2: Weeks between consecutive assessments > [protocol interval + allowed window].\nScenario 3: Subject on treatment past the scheduled assessment with no assessment recorded.",
+  "reportScenarios": "Scenario 1 - YES: Timing breaks the schedule.\nScenario 2 - NO: Timing follows the schedule.",
+  "sorting": "Country, Site, Subject, Assessment date"
+ },
+ {
+  "reportId": "LIB-ONC-04",
+  "description": "Performance status missing or worsening. ECOG performance status missing at scheduled visits, or worsening by two or more grades without an AE.",
+  "columnHeading": "1. Country\n2. Site\n3. Subject\n4. Visit\n5. ECOG\n6. Previous ECOG\n7. AEs in window",
+  "logic": "Scenario 1: ECOG is null at a scheduled visit.\nScenario 2: ECOG - Previous ECOG >= 2 AND no AE starts within [N days].",
+  "reportScenarios": "Scenario 1 - YES: Missing, or worsening with no AE.\nScenario 2 - NO: Present and stable.",
+  "sorting": "Country, Site, Subject, Visit"
+ },
+ {
+  "reportId": "LIB-ONC-05",
+  "description": "PSA values missing or rising. Prostate studies: PSA missing at scheduled visits, or rising across consecutive visits.",
+  "columnHeading": "1. Country\n2. Site\n3. Subject\n4. Visit\n5. PSA\n6. Previous PSA\n7. Nadir PSA\n8. Rise from nadir",
+  "logic": "Scenario 1: PSA is null at a scheduled visit.\nScenario 2: PSA >= Nadir PSA + [protocol rise] AND the rise is confirmed by a later value (consecutive record comparison).",
+  "reportScenarios": "Scenario 1 - YES: Missing, or rising and confirmed.\nScenario 2 - NO: Present and not rising.",
+  "sorting": "Country, Site, Subject, Visit"
+ },
+ {
+  "reportId": "LIB-ONC-06",
+  "description": "Biomarker status missing. Randomized subjects with no tumor biomarker status where the protocol needs it.",
+  "columnHeading": "1. Country\n2. Site\n3. Subject\n4. Biomarker\n5. Result\n6. Sample date\n7. Randomization date",
+  "logic": "Scenario 1: Subject is randomized AND the required biomarker (for example KRAS or EGFR) has no result, or the result is dated after randomization when it must come before.",
+  "reportScenarios": "Scenario 1 - YES: Biomarker missing or late.\nScenario 2 - NO: Result present and timely.",
+  "sorting": "Country, Site, Subject"
+ },
+ {
+  "reportId": "LIB-DIA-01",
+  "description": "Hypoglycemia events and glucose values disagree. Hypoglycemia events whose recorded glucose does not fit the severity, and events with no glucose value.",
+  "columnHeading": "1. Country\n2. Site\n3. Subject\n4. Event date\n5. Severity\n6. Glucose value\n7. Unit\n8. Treatment given",
+  "logic": "Scenario 1: Severity = \"Severe\" AND no assistance recorded.\nScenario 2: Glucose value >= [protocol hypoglycemia threshold; 70 mg/dL is commonly used for level 1] AND event classified as hypoglycemia.\nScenario 3: Glucose value is null AND event classified as hypoglycemia.\nConvert mg/dL and mmol/L before comparing (1 mmol/L = 18 mg/dL, approximately).",
+  "reportScenarios": "Scenario 1 - YES: Severity, glucose and assistance disagree.\nScenario 2 - NO: They agree.",
+  "sorting": "Country, Site, Subject, Event date"
+ },
+ {
+  "reportId": "LIB-DIA-02",
+  "description": "HbA1c missing or in a different unit. HbA1c missing at scheduled visits, or reported in a different unit from the other visits.",
+  "columnHeading": "1. Country\n2. Site\n3. Subject\n4. Visit\n5. HbA1c\n6. Unit\n7. Previous unit",
+  "logic": "Scenario 1: HbA1c is null at a visit where it is scheduled.\nScenario 2: Unit differs between visits for the same subject (% versus mmol/mol).",
+  "reportScenarios": "Scenario 1 - YES: Missing or unit differs.\nScenario 2 - NO: Present and consistent.",
+  "sorting": "Country, Site, Subject, Visit"
+ },
+ {
+  "reportId": "LIB-DIA-03",
+  "description": "Insulin dose changes without a reason. Insulin dose changes between consecutive records with no recorded reason.",
+  "columnHeading": "1. Country\n2. Site\n3. Subject\n4. Date\n5. Previous basal dose\n6. Basal dose\n7. Previous bolus dose\n8. Bolus dose\n9. Reason",
+  "logic": "Scenario 1: Compare each insulin record with the previous record of the same subject (consecutive record comparison). Basal or bolus dose differs AND Reason is null.",
+  "reportScenarios": "Scenario 1 - YES: Dose changed with no reason.\nScenario 2 - NO: Unchanged, or reason given.",
+  "sorting": "Country, Site, Subject, Date"
+ },
+ {
+  "reportId": "LIB-DIA-04",
+  "description": "Continuous glucose monitor data coverage. Subjects whose sensor wear time is below the protocol minimum.",
+  "columnHeading": "1. Country\n2. Site\n3. Subject\n4. Period start\n5. Period end\n6. Days with data\n7. Wear time %",
+  "logic": "Scenario 1: Wear time % = readings obtained / readings possible x 100 < [protocol minimum, often 70 over 14 days].",
+  "reportScenarios": "Scenario 1 - YES: Coverage below the minimum.\nScenario 2 - NO: At or above.",
+  "sorting": "Wear time %, Site, Subject"
+ },
+ {
+  "reportId": "LIB-CV-01",
+  "description": "Heart failure hospitalization dates. Hospitalizations with missing or illogical dates.",
+  "columnHeading": "1. Country\n2. Site\n3. Subject\n4. Admission date\n5. Discharge date\n6. Reason\n7. Related AE",
+  "logic": "Scenario 1: Discharge date < Admission date.\nScenario 2: Admission date is null.\nScenario 3: Hospitalization reason = heart failure AND no AE or event form is recorded.",
+  "reportScenarios": "Scenario 1 - YES: Dates or linked records are wrong.\nScenario 2 - NO: Dates are logical and linked.",
+  "sorting": "Country, Site, Subject, Admission date"
+ },
+ {
+  "reportId": "LIB-CV-02",
+  "description": "Baseline cardiac measures missing. Subjects with no baseline ejection fraction or NYHA class.",
+  "columnHeading": "1. Country\n2. Site\n3. Subject\n4. Baseline LVEF\n5. Baseline NYHA\n6. Baseline visit date",
+  "logic": "Scenario 1: Baseline LVEF is null.\nScenario 2: Baseline NYHA class is null.\nScenario 3: LVEF is outside [protocol eligibility range].",
+  "reportScenarios": "Scenario 1 - YES: Missing or out of range.\nScenario 2 - NO: Present and in range.",
+  "sorting": "Country, Site, Subject"
+ },
+ {
+  "reportId": "LIB-CV-03",
+  "description": "Cardiovascular events without an event form. AEs of myocardial infarction, stroke or similar with no corresponding event form for adjudication.",
+  "columnHeading": "1. Country\n2. Site\n3. Subject\n4. AE term\n5. AE start date\n6. Event form exists",
+  "logic": "Scenario 1: Coded AE term in [myocardial infarction, stroke, other adjudicated events] AND no event form exists for the subject within [N days] of the AE start date.\nThe adjudicated event list is protocol-specific.",
+  "reportScenarios": "Scenario 1 - YES: Event with no event form.\nScenario 2 - NO: Event form exists.",
+  "sorting": "Country, Site, Subject, AE start date"
+ },
+ {
+  "reportId": "LIB-CV-04",
+  "description": "QTcF thresholds and missing ECG time points. QTcF above alert levels, increases from baseline, and incomplete ECG sets.",
+  "columnHeading": "1. Country\n2. Site\n3. Subject\n4. Visit\n5. Time point\n6. QTcF\n7. Baseline QTcF\n8. Change from baseline\n9. Replicates",
+  "logic": "Scenario 1: QTcF > [alert level; 450, 480 and 500 ms are commonly used].\nScenario 2: QTcF - Baseline QTcF > [change; 30 and 60 ms are commonly used].\nScenario 3: Number of ECG replicates at a time point < [protocol replicates].",
+  "reportScenarios": "Scenario 1 - YES: Above a level, or incomplete.\nScenario 2 - NO: Within limits and complete.",
+  "sorting": "Country, Site, Subject, Visit, Time point"
+ },
+ {
+  "reportId": "LIB-RESP-01",
+  "description": "Exacerbations without systemic corticosteroids. Exacerbations that the protocol defines by treatment, with no corticosteroid recorded.",
+  "columnHeading": "1. Country\n2. Site\n3. Subject\n4. Exacerbation start\n5. Exacerbation end\n6. Systemic corticosteroid\n7. Related CM",
+  "logic": "Scenario 1: Exacerbation recorded AND no CM with a systemic corticosteroid starts within [N days] of the exacerbation start.\nScenario 2: Exacerbation end < start.\nScenario 3: Exacerbation is reported as an AE but not on the exacerbation form, or the reverse.",
+  "reportScenarios": "Scenario 1 - YES: Exacerbation and treatment or forms disagree.\nScenario 2 - NO: They agree.",
+  "sorting": "Country, Site, Subject, Exacerbation start"
+ },
+ {
+  "reportId": "LIB-RESP-02",
+  "description": "FEV1 measurement checks. FEV1 results missing, or large changes between visits.",
+  "columnHeading": "1. Country\n2. Site\n3. Subject\n4. Visit\n5. Pre-bronchodilator FEV1\n6. Post-bronchodilator FEV1\n7. Previous FEV1\n8. Change %",
+  "logic": "Scenario 1: A scheduled FEV1 has no pre- or post-bronchodilator value.\nScenario 2: ABS(FEV1 - Previous FEV1) / Previous FEV1 x 100 > [threshold] (consecutive record comparison).\nScenario 3: Post-bronchodilator FEV1 < pre-bronchodilator FEV1 by more than [tolerance].",
+  "reportScenarios": "Scenario 1 - YES: Missing or implausible.\nScenario 2 - NO: Present and plausible.",
+  "sorting": "Country, Site, Subject, Visit"
+ },
+ {
+  "reportId": "LIB-ID-01",
+  "description": "HIV viral load rebound and missing CD4. Detectable viral load after suppression, with no repeat test, and visits missing CD4.",
+  "columnHeading": "1. Country\n2. Site\n3. Subject\n4. Visit\n5. Viral load\n6. Previous viral load\n7. Repeat test date\n8. CD4",
+  "logic": "Scenario 1: Viral load >= [threshold, for example 200 copies/mL] after a previous value below the threshold AND no repeat test within [N days].\nScenario 2: CD4 is null at a scheduled visit.",
+  "reportScenarios": "Scenario 1 - YES: Rebound with no repeat, or CD4 missing.\nScenario 2 - NO: Repeated, or present.",
+  "sorting": "Country, Site, Subject, Visit"
+ },
+ {
+  "reportId": "LIB-ID-02",
+  "description": "Respiratory support without hospitalization. COVID-19 records of oxygen or ventilation support with no hospitalization record.",
+  "columnHeading": "1. Country\n2. Site\n3. Subject\n4. Support type\n5. Start date\n6. End date\n7. Hospitalization admission\n8. Hospitalization discharge",
+  "logic": "Scenario 1: Oxygen or ventilation support recorded AND no hospitalization record overlaps the support dates.\nScenario 2: Support end date < start date.",
+  "reportScenarios": "Scenario 1 - YES: Support with no hospitalization.\nScenario 2 - NO: Hospitalization covers the support.",
+  "sorting": "Country, Site, Subject, Start date"
+ },
+ {
+  "reportId": "LIB-ID-03",
+  "description": "Malaria parasitemia at follow-up without rescue treatment. Positive parasite counts at the end of follow-up with no rescue medication recorded.",
+  "columnHeading": "1. Country\n2. Site\n3. Subject\n4. Visit\n5. Parasite count\n6. Gametocytes\n7. Rescue medication\n8. Fever",
+  "logic": "Scenario 1: Parasite count > 0 at Day [28] AND no rescue medication recorded.\nScenario 2: Parasite count missing at a scheduled day.",
+  "reportScenarios": "Scenario 1 - YES: Positive and no rescue, or missing.\nScenario 2 - NO: Negative, rescued, or recorded.",
+  "sorting": "Country, Site, Subject, Visit"
+ },
+ {
+  "reportId": "LIB-ID-04",
+  "description": "Influenza symptom diary completeness. Subjects with missing diary days within the symptom period.",
+  "columnHeading": "1. Country\n2. Site\n3. Subject\n4. Day\n5. Diary entry\n6. Hospitalized",
+  "logic": "Scenario 1: A diary day inside the symptom assessment period has no entry for a subject who was not hospitalized.\nScenario 2: Hospitalization recorded AND diary entries continue during the stay without an explanation.",
+  "reportScenarios": "Scenario 1 - YES: Missing diary days, or entries during hospitalization.\nScenario 2 - NO: Diary is complete.",
+  "sorting": "Country, Site, Subject, Day"
+ },
+ {
+  "reportId": "LIB-NEU-01",
+  "description": "MS relapses without a disability assessment. Relapses with no EDSS assessment near the relapse, and scheduled MRI scans missing.",
+  "columnHeading": "1. Country\n2. Site\n3. Subject\n4. Relapse start\n5. EDSS date\n6. EDSS\n7. MRI date\n8. MRI scheduled",
+  "logic": "Scenario 1: Relapse recorded AND no EDSS assessment within [N days] of the relapse start.\nScenario 2: MRI scheduled at a visit AND no MRI record exists.",
+  "reportScenarios": "Scenario 1 - YES: Relapse with no EDSS, or MRI missing.\nScenario 2 - NO: Both present.",
+  "sorting": "Country, Site, Subject, Relapse start"
+ },
+ {
+  "reportId": "LIB-NEU-02",
+  "description": "Cognitive scale scores out of range or missing. Cognitive scores outside the scale range, outside the eligibility range, or missing.",
+  "columnHeading": "1. Country\n2. Site\n3. Subject\n4. Visit\n5. Scale\n6. Score\n7. Valid range\n8. Eligibility range\n9. Rater",
+  "logic": "Scenario 1: Score outside the valid range of the scale (for example MMSE 0 to 30).\nScenario 2: Screening score outside [protocol eligibility range].\nScenario 3: A scheduled cognitive assessment has no score.\nScenario 4: Rater changes between consecutive visits where the protocol asks for the same rater.",
+  "reportScenarios": "Scenario 1 - YES: Out of range, missing or rater changed.\nScenario 2 - NO: In range, present, same rater.",
+  "sorting": "Country, Site, Subject, Visit"
+ },
+ {
+  "reportId": "LIB-NEU-03",
+  "description": "Glasgow Coma Scale checks. Glasgow Coma Scale totals that do not equal the components, or are out of range.",
+  "columnHeading": "1. Country\n2. Site\n3. Subject\n4. Visit\n5. Eye\n6. Verbal\n7. Motor\n8. Total",
+  "logic": "Scenario 1: Total <> Eye + Verbal + Motor.\nScenario 2: Total < 3 or Total > 15.",
+  "reportScenarios": "Scenario 1 - YES: Total disagrees or is out of range.\nScenario 2 - NO: Total is correct.",
+  "sorting": "Country, Site, Subject, Visit"
+ },
+ {
+  "reportId": "LIB-DER-01",
+  "description": "PASI components and total disagree. PASI totals that do not match the regional scores, and regional values out of range.",
+  "columnHeading": "1. Country\n2. Site\n3. Subject\n4. Visit\n5. Head\n6. Upper limbs\n7. Trunk\n8. Lower limbs\n9. Total PASI\n10. Calculated PASI",
+  "logic": "Scenario 1: Total PASI <> the sum of regional scores calculated with the standard region weights (head 0.1, upper limbs 0.2, trunk 0.3, lower limbs 0.4) applied to (erythema + induration + scaling) x area score.\nScenario 2: Area score outside 0 to 6, or a sign score outside 0 to 4.\nScenario 3: Total PASI outside 0 to 72.",
+  "reportScenarios": "Scenario 1 - YES: Total disagrees or an input is out of range.\nScenario 2 - NO: Total matches and inputs are valid.",
+  "sorting": "Country, Site, Subject, Visit"
+ },
+ {
+  "reportId": "LIB-DER-02",
+  "description": "PGA and PASI disagree. Physician global assessment of clear with a high PASI, or the reverse.",
+  "columnHeading": "1. Country\n2. Site\n3. Subject\n4. Visit\n5. PGA\n6. PASI\n7. BSA",
+  "logic": "Scenario 1: PGA = \"Clear\" AND PASI >= [threshold].\nScenario 2: PGA = \"Severe\" AND PASI <= [threshold].\nScenario 3: BSA > 100.",
+  "reportScenarios": "Scenario 1 - YES: Scales disagree or BSA is impossible.\nScenario 2 - NO: Scales agree.",
+  "sorting": "Country, Site, Subject, Visit"
+ },
+ {
+  "reportId": "LIB-GI-01",
+  "description": "CDAI components and diary completeness. Visits where the Crohn's Disease Activity Index cannot be calculated.",
+  "columnHeading": "1. Country\n2. Site\n3. Subject\n4. Visit\n5. Diary days\n6. Stool frequency\n7. Abdominal pain\n8. General well-being\n9. CDAI",
+  "logic": "Scenario 1: Diary days available in the 7 days before the visit < [required days].\nScenario 2: CDAI is present AND any component used to calculate it is null.\nScenario 3: Fistula assessment missing for subjects with perianal disease at baseline.",
+  "reportScenarios": "Scenario 1 - YES: CDAI cannot be supported, or fistula assessment is missing.\nScenario 2 - NO: All components are present.",
+  "sorting": "Country, Site, Subject, Visit"
+ },
+ {
+  "reportId": "LIB-PSY-01",
+  "description": "PANSS item scores and totals. PANSS items out of range, missing, or totals that do not match.",
+  "columnHeading": "1. Country\n2. Site\n3. Subject\n4. Visit\n5. Positive total\n6. Negative total\n7. General total\n8. Total\n9. Items missing",
+  "logic": "Scenario 1: Any item score outside 1 to 7.\nScenario 2: Any item is null while a total is present.\nScenario 3: Total <> Positive + Negative + General.",
+  "reportScenarios": "Scenario 1 - YES: Out of range, missing or totals differ.\nScenario 2 - NO: Items valid and totals match.",
+  "sorting": "Country, Site, Subject, Visit"
+ },
+ {
+  "reportId": "LIB-PSY-02",
+  "description": "Relapse and hospitalization consistency. Relapses and psychiatric hospitalizations recorded without each other.",
+  "columnHeading": "1. Country\n2. Site\n3. Subject\n4. Relapse date\n5. Hospitalization admission\n6. Hospitalization discharge",
+  "logic": "Scenario 1: Relapse defined by hospitalization in the protocol AND no hospitalization record exists.\nScenario 2: Psychiatric hospitalization recorded AND no relapse record within [N days].",
+  "reportScenarios": "Scenario 1 - YES: Relapse and hospitalization disagree.\nScenario 2 - NO: They agree.",
+  "sorting": "Country, Site, Subject, Relapse date"
+ },
+ {
+  "reportId": "LIB-NEP-01",
+  "description": "Creatinine rise without an AKI event. Serum creatinine increases that meet the AKI definition with no AKI event recorded.",
+  "columnHeading": "1. Country\n2. Site\n3. Subject\n4. Baseline creatinine\n5. Creatinine\n6. Collection date\n7. Rise\n8. AKI event recorded\n9. Dialysis",
+  "logic": "Scenario 1: Creatinine - previous creatinine >= 0.3 mg/dL within 48 hours, OR Creatinine >= 1.5 x baseline, AND no AKI event or AE is recorded.\nScenario 2: Dialysis recorded AND no AKI or renal AE.\nUse the definition in the protocol. These thresholds are the commonly used KDIGO ones.",
+  "reportScenarios": "Scenario 1 - YES: Rise or dialysis with no AKI event.\nScenario 2 - NO: AKI event is recorded.",
+  "sorting": "Country, Site, Subject, Collection date"
+ },
+ {
+  "reportId": "LIB-NEP-02",
+  "description": "Rejection episodes and graft loss records. Rejection episodes with no biopsy, and graft loss with no date.",
+  "columnHeading": "1. Country\n2. Site\n3. Subject\n4. Rejection date\n5. Biopsy date\n6. Biopsy result\n7. Graft loss\n8. Graft loss date",
+  "logic": "Scenario 1: Rejection episode recorded AND no biopsy within [N days] where the protocol requires one.\nScenario 2: Graft loss = \"Yes\" AND graft loss date is null.\nScenario 3: Graft loss date < transplant date.",
+  "reportScenarios": "Scenario 1 - YES: Missing biopsy or date, or illogical date.\nScenario 2 - NO: Records complete.",
+  "sorting": "Country, Site, Subject, Rejection date"
+ },
+ {
+  "reportId": "LIB-PED-01",
+  "description": "Age group, growth and pubertal stage checks. Subjects whose age group, growth values or Tanner stage look wrong.",
+  "columnHeading": "1. Country\n2. Site\n3. Subject\n4. Visit\n5. Age at visit\n6. Age group\n7. Height\n8. Weight\n9. Tanner stage\n10. Previous Tanner stage",
+  "logic": "Scenario 1: Age group on the form <> the group derived from Date of birth and visit date.\nScenario 2: Height decreases between consecutive visits.\nScenario 3: Tanner stage decreases between consecutive visits.\nScenario 4: Dose per kg outside [protocol range] using the recorded weight.",
+  "reportScenarios": "Scenario 1 - YES: Any check fails.\nScenario 2 - NO: All checks pass.",
+  "sorting": "Country, Site, Subject, Visit"
+ }
+]

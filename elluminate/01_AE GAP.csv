@@ -1,0 +1,42 @@
+Order,Field Label,Field Name,Source Domain(s),Source Field(s),ETL Key Field,Exclude in Listing,Logic/Transformation,Comment,
+1,Study Site Identifier,SITEID,SRDM.DM,SITEID,,N,N/A,,
+2,Unique Subject Identifier for the Study,SUBJID,SRDM.DM,USUBJID,,N,N/A,,
+3,Study Identifier,STUDYID,SRDM.DM,STUDYID,Y,N,N/A,,
+4,Subject Identifier for the Study,SUBJID,SRDM.DM,SUBJID,,N,N/A,,
+5,Cohort,COHORT,SDTM.SUPPDM,QVAL,,,when QNAM=COHORT output QVAL,,
+6,Randomization Date,RANDDAT_INT,SRDM.DM,RANDDAT_INT,,N,If subject does not have a record in SRDM.DM where RANDDAT_INT is not null then do not include subject in the listing ,,
+7,Date of First Dose,FIRSTEXSTDTC,SRDM.EX,EXSTDTC,,N,"For each subject MIN(SRDM.EX.EXSTDTC)
+",,
+8,Date of Last Dose,LASTEXSTDTC,SRDM.EX,EXSTDTC,,N,For each subject MAX(SRDM.EX.EXSTDTC),,
+9,Number of Days on Treatment,DAYTREAT,Derived,Derived,,N,Date of Last Dose - Date of First Dose,,
+10,Date of Study Medication Discontinuation ,TDDTC,SRDM.DM,TDDTC,,N,N/A,,
+11,Number of AE's Reported ,NUMAE,SRDM.AE,Derived,,N,Number of records for each subject in SRDM.AE linked by USUBJID,,
+12,AE Start Dates,AESTDTC_INT ,SRDM.AE,AESTDTC_INT ,,N,"List the SRDM.AE.AESTDTC_INT for each record in SRDM.AE and separate with a "" , ""
+Take Date only and format date as ISO8601
+If SRDM.AE.AESTDTC_INT is Null for any record then input NULL",,
+13,# Days for Patient reporting no AE's since study start ,AEDAYSTART,Derived,Derived,,N,MIN(SRDM.AE.AESTDTC_INT) - Randomization Date,,
+14,# Days since last AE onset,AEDAYLAST,Derived,Derived,,N,Todays date - MAX(SRDM.AE.AESTDTC_INT),,
+15,Flag,Flag,Derived,Derived,,N,"Case 1: 
+If Number of AE's Reported = 0 
+THEN display: ""Participant has no AE's reported"" 
+
+Case 2: 
+If Number of AE's Reported = 0 
+AND Number of Days on Treatment => 30
+THEN display: ""Participant has no AE's reported and they have been on treatment for 30 days""
+
+Case 3:
+If # Days for Patient reporting no AE's since study start => 30 
+THEN display: ""# Days for ""Participant reporting no AE's since study start is equal to or more than 30 days""
+
+Case 4: 
+If # Days since last AE onset => 30
+THEN display: ""Participant has more than 30 days since last AE onset""",,
+16,RecordID,,,,N,Y,,,
+17,Query Text,,,,,,,,
+*,FormOID,FormOID,Derived,Derived,,,,"Only applicable for bi-directional RAVE/Inform Query functionality and DC 'related Queries' functionality (can be null)
+The form to create the query against",
+*,ItemOID,ItemOID,Derived,Derived,,,,"Only applicable for bi-directional RAVE/Inform Query functionality and DC 'related Queries' functionality (can be null)
+The Item to create the query against",
+*,SourceRecordId,SourceRecordId,Derived,Derived,,,,"Only applicable for bi-directional RAVE/Inform Query functionality and DC 'related Queries' functionality (can be null)
+The RecordID to create the query against",

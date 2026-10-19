@@ -1,0 +1,442 @@
+[
+ {
+  "file": "listings_global_enrollment.md",
+  "title": "Listing library: Enrollment and eligibility listings (AI draft)",
+  "scope": "global",
+  "scopeRef": "",
+  "docType": "listing_standard",
+  "listings": 8,
+  "ids": [
+   "LIB-ENR-01",
+   "LIB-ENR-02",
+   "LIB-ENR-03",
+   "LIB-ENR-04",
+   "LIB-ENR-05",
+   "LIB-ENR-06",
+   "LIB-ENR-07",
+   "LIB-ENR-08"
+  ]
+ },
+ {
+  "file": "listings_global_safety.md",
+  "title": "Listing library: Adverse event and safety listings (AI draft)",
+  "scope": "global",
+  "scopeRef": "",
+  "docType": "listing_standard",
+  "listings": 10,
+  "ids": [
+   "LIB-AE-01",
+   "LIB-AE-02",
+   "LIB-AE-03",
+   "LIB-AE-04",
+   "LIB-AE-05",
+   "LIB-AE-06",
+   "LIB-AE-07",
+   "LIB-AE-08",
+   "LIB-AE-09",
+   "LIB-AE-10"
+  ]
+ },
+ {
+  "file": "listings_global_medications.md",
+  "title": "Listing library: Medication and exposure listings (AI draft)",
+  "scope": "global",
+  "scopeRef": "",
+  "docType": "listing_standard",
+  "listings": 10,
+  "ids": [
+   "LIB-CM-01",
+   "LIB-CM-02",
+   "LIB-CM-03",
+   "LIB-CM-04",
+   "LIB-EX-01",
+   "LIB-EX-02",
+   "LIB-EX-03",
+   "LIB-EX-04",
+   "LIB-EX-05",
+   "LIB-EX-06"
+  ]
+ },
+ {
+  "file": "listings_global_labs.md",
+  "title": "Listing library: Laboratory, vital signs and ECG listings (AI draft)",
+  "scope": "global",
+  "scopeRef": "",
+  "docType": "listing_standard",
+  "listings": 9,
+  "ids": [
+   "LIB-LB-01",
+   "LIB-LB-02",
+   "LIB-LB-03",
+   "LIB-LB-04",
+   "LIB-LB-05",
+   "LIB-LB-06",
+   "LIB-VS-01",
+   "LIB-VS-02",
+   "LIB-EG-01"
+  ]
+ },
+ {
+  "file": "listings_global_visits.md",
+  "title": "Listing library: Visit, date and schedule listings (AI draft)",
+  "scope": "global",
+  "scopeRef": "",
+  "docType": "listing_standard",
+  "listings": 8,
+  "ids": [
+   "LIB-VIS-01",
+   "LIB-VIS-02",
+   "LIB-VIS-03",
+   "LIB-VIS-04",
+   "LIB-VIS-05",
+   "LIB-VIS-06",
+   "LIB-VIS-07",
+   "LIB-VIS-08"
+  ]
+ },
+ {
+  "file": "listings_global_dm_status.md",
+  "title": "Listing library: Data management status listings (AI draft)",
+  "scope": "global",
+  "scopeRef": "",
+  "docType": "listing_standard",
+  "listings": 11,
+  "ids": [
+   "LIB-DM-01",
+   "LIB-DM-02",
+   "LIB-DM-03",
+   "LIB-DM-04",
+   "LIB-DM-05",
+   "LIB-DM-06",
+   "LIB-DM-07",
+   "LIB-DM-08",
+   "LIB-DM-09",
+   "LIB-DM-10",
+   "LIB-DM-11"
+  ]
+ },
+ {
+  "file": "listings_global_complex.md",
+  "title": "Listing library: Complex cross-form edit-check listings (AI draft)",
+  "scope": "global",
+  "scopeRef": "",
+  "docType": "listing_standard",
+  "listings": 14,
+  "ids": [
+   "LIB-CX-01",
+   "LIB-CX-02",
+   "LIB-CX-03",
+   "LIB-CX-04",
+   "LIB-CX-05",
+   "LIB-CX-06",
+   "LIB-CX-07",
+   "LIB-CX-08",
+   "LIB-CX-09",
+   "LIB-CX-10",
+   "LIB-CX-11",
+   "LIB-CX-12",
+   "LIB-CX-13",
+   "LIB-CX-14"
+  ]
+ },
+ {
+  "file": "listings_global_external_data.md",
+  "title": "Listing library: External (vendor) data listings (AI draft)",
+  "scope": "global",
+  "scopeRef": "",
+  "docType": "listing_standard",
+  "listings": 10,
+  "ids": [
+   "LIB-EXT-01",
+   "LIB-EXT-02",
+   "LIB-EXT-03",
+   "LIB-EXT-04",
+   "LIB-EXT-05",
+   "LIB-EXT-06",
+   "LIB-EXT-07",
+   "LIB-EXT-08",
+   "LIB-EXT-09",
+   "LIB-EXT-10"
+  ]
+ },
+ {
+  "file": "listings_global_safety_recon.md",
+  "title": "Listing library: Safety reconciliation and coding listings (AI draft)",
+  "scope": "global",
+  "scopeRef": "",
+  "docType": "listing_standard",
+  "listings": 8,
+  "ids": [
+   "LIB-REC-01",
+   "LIB-REC-02",
+   "LIB-REC-03",
+   "LIB-REC-04",
+   "LIB-REC-05",
+   "LIB-REC-06",
+   "LIB-REC-07",
+   "LIB-REC-08"
+  ]
+ },
+ {
+  "file": "listings_global_deviations.md",
+  "title": "Listing library: Protocol deviation and compliance listings (AI draft)",
+  "scope": "global",
+  "scopeRef": "",
+  "docType": "listing_standard",
+  "listings": 6,
+  "ids": [
+   "LIB-DEV-01",
+   "LIB-DEV-02",
+   "LIB-DEV-03",
+   "LIB-DEV-04",
+   "LIB-DEV-05",
+   "LIB-DEV-06"
+  ]
+ },
+ {
+  "file": "listings_global_operations.md",
+  "title": "Listing library: Site and operational listings (AI draft)",
+  "scope": "global",
+  "scopeRef": "",
+  "docType": "listing_standard",
+  "listings": 7,
+  "ids": [
+   "LIB-OPS-01",
+   "LIB-OPS-02",
+   "LIB-OPS-03",
+   "LIB-OPS-04",
+   "LIB-OPS-05",
+   "LIB-OPS-06",
+   "LIB-OPS-07"
+  ]
+ },
+ {
+  "file": "listings_global_sdtm_conformance.md",
+  "title": "Listing library: SDTM dataset conformance listings (AI draft)",
+  "scope": "global",
+  "scopeRef": "",
+  "docType": "listing_standard",
+  "listings": 9,
+  "ids": [
+   "LIB-SDT-01",
+   "LIB-SDT-02",
+   "LIB-SDT-03",
+   "LIB-SDT-04",
+   "LIB-SDT-05",
+   "LIB-SDT-06",
+   "LIB-SDT-07",
+   "LIB-SDT-08",
+   "LIB-SDT-09"
+  ]
+ },
+ {
+  "file": "listings_global_adam_checks.md",
+  "title": "Listing library: ADaM dataset check listings (AI draft)",
+  "scope": "global",
+  "scopeRef": "",
+  "docType": "listing_standard",
+  "listings": 6,
+  "ids": [
+   "LIB-ADM-01",
+   "LIB-ADM-02",
+   "LIB-ADM-03",
+   "LIB-ADM-04",
+   "LIB-ADM-05",
+   "LIB-ADM-06"
+  ]
+ },
+ {
+  "file": "listings_global_patient_data.md",
+  "title": "Listing library: Patient data listings (clinical study report appendix style) (AI draft)",
+  "scope": "global",
+  "scopeRef": "",
+  "docType": "listing_standard",
+  "listings": 10,
+  "ids": [
+   "LIB-PDL-01",
+   "LIB-PDL-02",
+   "LIB-PDL-03",
+   "LIB-PDL-04",
+   "LIB-PDL-05",
+   "LIB-PDL-06",
+   "LIB-PDL-07",
+   "LIB-PDL-08",
+   "LIB-PDL-09",
+   "LIB-PDL-10"
+  ]
+ },
+ {
+  "file": "listings_global_medical_review.md",
+  "title": "Listing library: Medical and clinical review listings (AI draft)",
+  "scope": "global",
+  "scopeRef": "",
+  "docType": "listing_standard",
+  "listings": 7,
+  "ids": [
+   "LIB-MED-01",
+   "LIB-MED-02",
+   "LIB-MED-03",
+   "LIB-MED-04",
+   "LIB-MED-05",
+   "LIB-MED-06",
+   "LIB-MED-07"
+  ]
+ },
+ {
+  "file": "listings_global_dm_metrics.md",
+  "title": "Listing library: Data management status and metrics (AI draft)",
+  "scope": "global",
+  "scopeRef": "",
+  "docType": "listing_standard",
+  "listings": 6,
+  "ids": [
+   "LIB-DMM-01",
+   "LIB-DMM-02",
+   "LIB-DMM-03",
+   "LIB-DMM-04",
+   "LIB-DMM-05",
+   "LIB-DMM-06"
+  ]
+ },
+ {
+  "file": "listings_ta_oncology.md",
+  "title": "Listing library: Oncology listings (AI draft)",
+  "scope": "ta",
+  "scopeRef": "Oncology",
+  "docType": "listing_standard",
+  "listings": 6,
+  "ids": [
+   "LIB-ONC-01",
+   "LIB-ONC-02",
+   "LIB-ONC-03",
+   "LIB-ONC-04",
+   "LIB-ONC-05",
+   "LIB-ONC-06"
+  ]
+ },
+ {
+  "file": "listings_ta_diabetes.md",
+  "title": "Listing library: Diabetes listings (AI draft)",
+  "scope": "ta",
+  "scopeRef": "Diabetes",
+  "docType": "listing_standard",
+  "listings": 4,
+  "ids": [
+   "LIB-DIA-01",
+   "LIB-DIA-02",
+   "LIB-DIA-03",
+   "LIB-DIA-04"
+  ]
+ },
+ {
+  "file": "listings_ta_cardiovascular.md",
+  "title": "Listing library: Cardiovascular listings (AI draft)",
+  "scope": "ta",
+  "scopeRef": "Cardiovascular",
+  "docType": "listing_standard",
+  "listings": 4,
+  "ids": [
+   "LIB-CV-01",
+   "LIB-CV-02",
+   "LIB-CV-03",
+   "LIB-CV-04"
+  ]
+ },
+ {
+  "file": "listings_ta_respiratory.md",
+  "title": "Listing library: Respiratory listings (AI draft)",
+  "scope": "ta",
+  "scopeRef": "Respiratory",
+  "docType": "listing_standard",
+  "listings": 2,
+  "ids": [
+   "LIB-RESP-01",
+   "LIB-RESP-02"
+  ]
+ },
+ {
+  "file": "listings_ta_infectious_disease.md",
+  "title": "Listing library: Infectious disease listings (AI draft)",
+  "scope": "ta",
+  "scopeRef": "Infectious Disease",
+  "docType": "listing_standard",
+  "listings": 4,
+  "ids": [
+   "LIB-ID-01",
+   "LIB-ID-02",
+   "LIB-ID-03",
+   "LIB-ID-04"
+  ]
+ },
+ {
+  "file": "listings_ta_neurology.md",
+  "title": "Listing library: Neurology listings (AI draft)",
+  "scope": "ta",
+  "scopeRef": "Neurology",
+  "docType": "listing_standard",
+  "listings": 3,
+  "ids": [
+   "LIB-NEU-01",
+   "LIB-NEU-02",
+   "LIB-NEU-03"
+  ]
+ },
+ {
+  "file": "listings_ta_dermatology.md",
+  "title": "Listing library: Dermatology listings (AI draft)",
+  "scope": "ta",
+  "scopeRef": "Dermatology",
+  "docType": "listing_standard",
+  "listings": 2,
+  "ids": [
+   "LIB-DER-01",
+   "LIB-DER-02"
+  ]
+ },
+ {
+  "file": "listings_ta_gastroenterology.md",
+  "title": "Listing library: Gastroenterology listings (AI draft)",
+  "scope": "ta",
+  "scopeRef": "Gastroenterology",
+  "docType": "listing_standard",
+  "listings": 1,
+  "ids": [
+   "LIB-GI-01"
+  ]
+ },
+ {
+  "file": "listings_ta_psychiatry.md",
+  "title": "Listing library: Psychiatry listings (AI draft)",
+  "scope": "ta",
+  "scopeRef": "Psychiatry",
+  "docType": "listing_standard",
+  "listings": 2,
+  "ids": [
+   "LIB-PSY-01",
+   "LIB-PSY-02"
+  ]
+ },
+ {
+  "file": "listings_ta_nephrology.md",
+  "title": "Listing library: Nephrology listings (AI draft)",
+  "scope": "ta",
+  "scopeRef": "Nephrology",
+  "docType": "listing_standard",
+  "listings": 2,
+  "ids": [
+   "LIB-NEP-01",
+   "LIB-NEP-02"
+  ]
+ },
+ {
+  "file": "listings_ta_pediatrics.md",
+  "title": "Listing library: Pediatrics listings (AI draft)",
+  "scope": "ta",
+  "scopeRef": "Pediatrics",
+  "docType": "listing_standard",
+  "listings": 1,
+  "ids": [
+   "LIB-PED-01"
+  ]
+ }
+]
