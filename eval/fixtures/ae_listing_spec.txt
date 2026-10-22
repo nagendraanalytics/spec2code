@@ -1,0 +1,106 @@
+12_AE_Listing
+
+Description
+AE Listing. Review updated/newly created adverse events for consistency, completeness, and emerging patterns that may indicate potential safety signals requiring further evaluation.
+
+Output columns
+1. Merck patient #
+2. Cohort
+3. Arm
+4. Randomization Date
+5. Inform Form Name
+6. Sequence Number
+7. AE Category
+8. AE Reported Term
+9. AE Term
+10. PT
+11. LLT
+12. HLT
+13. HLGT
+14. SOC
+15. Start Date/Time
+16. End Date/Time
+17. Standard Toxicity Grade
+18. Overall Toxicity Grade
+19. Ongoing (Y/N)
+20. Outcome
+21. Serious/cancer/result of an overdose/ECI
+22. Serious Event (Y/N)
+23. Serious Criteria Met
+24. Relationship to Treatment (Overall)
+25. Treatment related to AE
+26. Action taken with Study Tx (Overall)
+27. Action Taken with each Study Tx
+28. Relationship to Suspect Non-Study Tx
+29. Medically Important AE
+30. Admission Date
+31. Discharge Date
+32. Narrative
+33. Rechallenge (Overall)
+34. Dechallenge (Overall)
+35. Rechallenge Details
+36. Dechallenge Details
+37. Flag
+
+Logic
+Logic 1: Programming considerations
+Only display records where RANDDAT_INT is not NULL.
+
+Logic 2: Column derivations (one row per listing record)
+Merck patient #: no source or logic given.
+Cohort [SDTM.SUPPDM.QVAL]: when QNAM=COHORT output QVAL
+Arm = SRDM.DM.ARM CLASSIFICATION.
+Randomization Date [SRDM.DM.RANDDAT_INT]: If subject does not have a record in SRDM.DM where RANDDAT_INT is not NULL then do not include subject in the listing
+Inform Form Name: no source or logic given.
+Sequence Number = SRDM.AE.
+AE Category = SDTM.AE.
+AE Reported Term = SRDM.AE.
+AE Term: no source or logic given.
+PT: no source or logic given.
+LLT = SRDM.AE.
+HLT = SRDM.AE.
+HLGT = SRDM.AE.
+SOC = SRDM.AE.
+Start Date/Time = SRDM.AE.
+End Date/Time = SRDM.AE.
+Standard Toxicity Grade = SRDM.AE.
+Overall Toxicity Grade: no source or logic given.
+Ongoing (Y/N) = SRDM.AE.
+Outcome: no source or logic given.
+Serious/cancer/result of an overdose/ECI: Display all criteria that were met if "YES" selected ELSE display "NO".
+Serious Event (Y/N): no source or logic given.
+Serious Criteria Met: Display "Death" IF AE_AESDTH = Yes, "Immediately Life Threatening" IF AE_AESLIFE = Yes, "Hospitalization" IF AE_AESHOSP = Yes, "Disability or Permanent Damage" IF AE_AESDISAB = Yes, "Congenital Anomaly or Birth Defect" IF AE_AESCONG = Yes. Concatenate if multiple selected. ELSE BLANK.
+Relationship to Treatment (Overall): no source or logic given.
+Treatment related to AE: IF Overall Relationship=Related THEN Display AE_AESTTX_1/2/3/4/5/6/7/8/9/10/11 WHERE corresponding AE_AEREL_1/2/3/4/5/6/7/8/9/10/11 = Related. ELSE BLANK
+Action taken with Study Tx (Overall): no source or logic given.
+Action Taken with each Study Tx: IF Overall Action Taken ≠ Dose Not changed then concatenate AE_AESTTX_1 with AE_AEACN_1 for all treatments where AE_AEACN_1 ≠ Dose not changed. ELSE BLANK
+Relationship to Suspect Non-Study Tx: no source or logic given.
+Medically Important AE: no source or logic given.
+Admission Date: no source or logic given.
+Discharge Date: no source or logic given.
+Narrative: no source or logic given.
+Rechallenge (Overall): no source or logic given.
+Dechallenge (Overall): no source or logic given.
+Rechallenge Details: Display all study Tx where AE_AESRCH = Yes ELSE display "No"
+Dechallenge Details: Display all study Tx where AE_AEDRCH = Yes ELSE display "No"
+Flag:
+Case 1
+IF LLT = "Nausea" OR "Vomiting" or "Diarrhoea" AND AEREL_1 = "RELATED"
+AND AETOXGR => 3 THEN Flag Text = "≥Grade 3 Nausea/Vomiting/Diarrhea. Review per protocol Table 9".ELSE = BLANK.
+Case 2
+IF AEBODSYS = "Blood and lymphatic system disorder" AND AEREL_1 = "RELATED" AND AETOXGR => 3
+AND AEENDTC- AESTDTC >= 7 OR Todays date - AESTDTC >= 7
+THEN Flag Text = "≥Grade 3 Hematological Toxicity. Review per protocol Table 9." ELSE = BLANK "
+Case 3
+IF AEBODSYS <> "Blood and lymphatic system disorder" or "Investigations" AND LLT <>"Nausea" or "Vomiting" or ""Diarrhea"
+AND AEREL_1 = ""RELATED"" AND AETOXGR => 3 AND AEENDTC- AESTDTC >= 7 OR Todays date - AESTDTC >= 7
+THEN Flag Text = "≥Grade 3 Nonhematological toxicity. Review per protocol Table 9." ELSE = BLANK"
+Case 4
+Any time 2 of following PTs reported concurrently (ovlerap) when at least one of them is SAE: Asthenia, Fatigue, decreased appetite, Weight decreased, Abdominal pain/Abdominal pain lower/Abdominal pain upper, Nausea, Vomiting, Delirium, Confusional state.
+
+Scenarios
+Scenario 1 - YES: record meets the programming considerations; display it.
+Scenario 2 - NO: record does not; exclude it.
+
+Sorting
+Merck patient number, AESEQ
