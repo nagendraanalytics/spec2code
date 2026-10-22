@@ -230,3 +230,7 @@ frontend-nextjs/out/
 *.tsbuildinfo
 manifest.csv
 spec_texts_*.zip
+
+frontend-nextjs/.next/
+
+frontend-nextjs/.next/
