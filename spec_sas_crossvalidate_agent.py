@@ -25,9 +25,8 @@ what's actually different between the two sources. Never resolve a
 disagreement by guessing which one is "right" -- that's a human call.
 """
 
-import os
 
-import anthropic
+import llm_client
 
 CROSSVALIDATE_SYSTEM_PROMPT = """You are a clinical data programmer cross-validating a \
 written report specification against REAL, CONFIRMED-WORKING legacy SAS \
@@ -125,33 +124,17 @@ Cross-validate the spec against this code now -- find what's CONFIRMED, SPEC_ONL
 def run_crossvalidation(spec: dict, sas_code: str) -> dict:
     """Returns {"findings": [...], "updated_fields": {...},
     "overall_summary": ...}. Raises AgentError on failure."""
-    api_key = os.environ.get("ANTHROPIC_API_KEY")
-    if not api_key:
-        raise AgentError("ANTHROPIC_API_KEY is not set.")
-
-    client = anthropic.Anthropic(api_key=api_key)
+    if not llm_client.available():
+        raise AgentError(llm_client.not_configured_message())
     try:
-        with client.messages.stream(
-            model="claude-sonnet-5",
-            max_tokens=24000,  # cross-validation covers both sources in full plus per-topic
-            # findings -- sized generously from the start given this project's repeated
-            # real-world truncation history on similarly multi-part agents.
-            system=CROSSVALIDATE_SYSTEM_PROMPT,
-            tools=[CROSSVALIDATE_TOOL],
-            tool_choice={"type": "tool", "name": "submit_crossvalidation"},
-            messages=[{"role": "user", "content": build_crossvalidate_user_prompt(spec, sas_code)}],
-        ) as stream:
-            response = stream.get_final_message()
-    except Exception as e:  # noqa: BLE001
-        raise AgentError(f"Claude API request failed: {e}") from e
-
-    for block in response.content:
-        if getattr(block, "type", None) == "tool_use" and block.name == "submit_crossvalidation":
-            return _sanitize_crossvalidation_result(block.input, spec)
-
-    if response.stop_reason == "max_tokens":
-        raise AgentError("Cross-validation was cut off before finishing (ran out of tokens).")
-    raise AgentError(f"Model did not return a structured result (stop_reason={response.stop_reason}).")
+        res = llm_client.call_tool(system=CROSSVALIDATE_SYSTEM_PROMPT, user=build_crossvalidate_user_prompt(spec, sas_code), tool=CROSSVALIDATE_TOOL, max_tokens=24000, model="claude-sonnet-5")
+    except llm_client.LLMClientError as e:
+        raise AgentError(f"Language model request failed: {e}") from e
+    if res.input is not None:
+        return _sanitize_crossvalidation_result(res.input, spec)
+    if res.stop_reason in ("max_tokens", "invalid_json"):
+        raise AgentError("Cross-validation was cut off before finishing or was not valid structured output.")
+    raise AgentError(f"Model did not return a structured result (stop_reason={res.stop_reason}).")
 
 
 _VALID_CLASSIFICATIONS = {"CONFIRMED", "SPEC_ONLY", "CODE_ONLY"}

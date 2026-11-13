@@ -14,6 +14,7 @@ import os
 import re
 
 import knowledge_rules as kr
+import llm_client
 import models_db as m
 from cdisc_starter_rules import norm
 
@@ -59,22 +60,14 @@ def candidates(db, tenant_id: str, source_id: str, limit: int = 20) -> list:
 
 
 def ask_model(passage: str, heading: str) -> list:
-    import anthropic
-    key = os.environ.get("ANTHROPIC_API_KEY")
-    if not key:
-        raise ProposerError("ANTHROPIC_API_KEY is not set.")
-    client = anthropic.Anthropic(api_key=key)
+    if not llm_client.available():
+        raise ProposerError(llm_client.not_configured_message())
     try:
-        resp = client.messages.create(model=MODEL, max_tokens=4000, system=SYSTEM, tools=[TOOL],
-                                      tool_choice={"type": "tool", "name": "submit_rules"},
-                                      messages=[{"role": "user", "content": f"Section: {heading}\n\nPassage:\n{passage}"}])
-    except Exception as e:  # noqa: BLE001
-        raise ProposerError(f"Claude API request failed: {e}") from e
-    for b in resp.content:
-        if getattr(b, "type", None) == "tool_use" and b.name == "submit_rules":
-            r = (b.input or {}).get("rules")
-            return r if isinstance(r, list) else []
-    return []
+        res = llm_client.call_tool(system=SYSTEM, user=f"Section: {heading}\n\nPassage:\n{passage}", tool=TOOL, max_tokens=4000, model=MODEL)
+    except llm_client.LLMClientError as e:
+        raise ProposerError(f"Language model request failed: {e}") from e
+    r = (res.input or {}).get("rules")
+    return r if isinstance(r, list) else []
 
 
 def to_payload(raw: dict, source: m.KnowledgeSource, chunk: m.KnowledgeChunk) -> dict:

@@ -103,7 +103,7 @@ def main():
         return
     if calls > 20 and not a.yes:
         sys.exit("That is more than 20 model calls and will use your API credits. Re-run with --yes to confirm.")
-    if not os.environ.get("ANTHROPIC_API_KEY"):
+    if not os.environ.get("GENAI_AUTH_CLIENT_SECRET") and not os.environ.get("ANTHROPIC_API_KEY"):
         try:
             from dotenv import load_dotenv
             load_dotenv()

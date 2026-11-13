@@ -24,9 +24,8 @@ an open gap in the spec text (stated as such), not a silently-guessed
 default.
 """
 
-import os
 
-import anthropic
+import llm_client
 
 SPEC_GAP_CHAT_SYSTEM_PROMPT = """You are a clinical data programmer helping fill in \
 GAPS in a report specification that was just extracted from raw text --
@@ -126,33 +125,17 @@ then either ask the next single most important question or mark this done."""
 def run_gap_chat_turn(spec: dict, extraction_notes: str, transcript: list) -> dict:
     """Returns {"updated_fields": {...}, "done": bool, "next_question":
     ..., "gap_context": ...}. Raises AgentError on failure."""
-    api_key = os.environ.get("ANTHROPIC_API_KEY")
-    if not api_key:
-        raise AgentError("ANTHROPIC_API_KEY is not set.")
-
-    client = anthropic.Anthropic(api_key=api_key)
+    if not llm_client.available():
+        raise AgentError(llm_client.not_configured_message())
     try:
-        # See cql_agents.run_spec_review's comment for why this is
-        # messages.stream() + get_final_message(), not messages.create().
-        with client.messages.stream(
-            model="claude-sonnet-5",
-            max_tokens=8000,
-            system=SPEC_GAP_CHAT_SYSTEM_PROMPT,
-            tools=[SPEC_GAP_CHAT_TOOL],
-            tool_choice={"type": "tool", "name": "submit_gap_chat_turn"},
-            messages=[{"role": "user", "content": build_gap_chat_user_prompt(spec, extraction_notes, transcript)}],
-        ) as stream:
-            response = stream.get_final_message()
-    except Exception as e:  # noqa: BLE001
-        raise AgentError(f"Claude API request failed: {e}") from e
-
-    for block in response.content:
-        if getattr(block, "type", None) == "tool_use" and block.name == "submit_gap_chat_turn":
-            return _sanitize_turn_result(block.input, spec)
-
-    if response.stop_reason == "max_tokens":
-        raise AgentError("Gap-filling turn was cut off before finishing (ran out of tokens).")
-    raise AgentError(f"Model did not return a structured turn (stop_reason={response.stop_reason}).")
+        res = llm_client.call_tool(system=SPEC_GAP_CHAT_SYSTEM_PROMPT, user=build_gap_chat_user_prompt(spec, extraction_notes, transcript), tool=SPEC_GAP_CHAT_TOOL, max_tokens=8000, model="claude-sonnet-5")
+    except llm_client.LLMClientError as e:
+        raise AgentError(f"Language model request failed: {e}") from e
+    if res.input is not None:
+        return _sanitize_turn_result(res.input, spec)
+    if res.stop_reason in ("max_tokens", "invalid_json"):
+        raise AgentError("Gap-filling turn was cut off before finishing or was not valid structured output.")
+    raise AgentError(f"Model did not return a structured turn (stop_reason={res.stop_reason}).")
 
 
 _EDITABLE_FIELDS = ["description", "columnHeading", "logic", "reportScenarios", "sorting"]

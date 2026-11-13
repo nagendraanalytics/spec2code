@@ -29,9 +29,8 @@ evidence as an actual test run, and must never be presented or reasoned
 about as if it were.
 """
 
-import os
 
-import anthropic
+import llm_client
 
 SYNTHETIC_VALIDATION_SYSTEM_PROMPT = """You are a clinical data programmer designing a \
 rigorous, systematic test of generated code's logic against synthetic \
@@ -156,35 +155,17 @@ def run_synthetic_validation(spec: dict, generated_code: str, language: str, met
     """Returns {"test_cases": [...], "conditions_identified": [...],
     "overall_summary": ...}. Raises AgentError on failure -- never
     returns a partial/garbage result silently."""
-    api_key = os.environ.get("ANTHROPIC_API_KEY")
-    if not api_key:
-        raise AgentError("ANTHROPIC_API_KEY is not set.")
-
-    client = anthropic.Anthropic(api_key=api_key)
+    if not llm_client.available():
+        raise AgentError(llm_client.not_configured_message())
     try:
-        # See cql_agents.run_spec_review's comment for why this is
-        # messages.stream() + get_final_message(), not messages.create().
-        with client.messages.stream(
-            model="claude-sonnet-5",
-            max_tokens=24000,  # systematic multi-condition, multi-direction coverage can produce
-            # substantially more test cases than the old scenario-only version -- sized generously
-            # from the start given this project's repeated real-world truncation history.
-            system=SYNTHETIC_VALIDATION_SYSTEM_PROMPT,
-            tools=[SYNTHETIC_VALIDATION_TOOL],
-            tool_choice={"type": "tool", "name": "submit_synthetic_validation"},
-            messages=[{"role": "user", "content": build_synthetic_validation_user_prompt(spec, generated_code, language, metadata_block)}],
-        ) as stream:
-            response = stream.get_final_message()
-    except Exception as e:  # noqa: BLE001
-        raise AgentError(f"Claude API request failed: {e}") from e
-
-    for block in response.content:
-        if getattr(block, "type", None) == "tool_use" and block.name == "submit_synthetic_validation":
-            return _sanitize_validation_result(block.input)
-
-    if response.stop_reason == "max_tokens":
-        raise AgentError("Synthetic validation was cut off before finishing (ran out of tokens).")
-    raise AgentError(f"Model did not return a structured validation result (stop_reason={response.stop_reason}).")
+        res = llm_client.call_tool(system=SYNTHETIC_VALIDATION_SYSTEM_PROMPT, user=build_synthetic_validation_user_prompt(spec, generated_code, language, metadata_block), tool=SYNTHETIC_VALIDATION_TOOL, max_tokens=24000, model="claude-sonnet-5")
+    except llm_client.LLMClientError as e:
+        raise AgentError(f"Language model request failed: {e}") from e
+    if res.input is not None:
+        return _sanitize_validation_result(res.input)
+    if res.stop_reason in ("max_tokens", "invalid_json"):
+        raise AgentError("Synthetic validation was cut off before finishing or was not valid structured output.")
+    raise AgentError(f"Model did not return a structured validation result (stop_reason={res.stop_reason}).")
 
 
 _VALID_QUADRANTS = {"TP", "TN", "FP", "FN"}

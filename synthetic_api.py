@@ -7,6 +7,7 @@ authentication (a known gap). Generation is one model call per listing; the UI r
 import csv
 import io
 import json
+
 from datetime import datetime
 
 from fastapi import APIRouter, Depends
@@ -15,6 +16,7 @@ from pydantic import BaseModel
 from sqlalchemy.orm import Session
 
 import db
+import llm_client
 import knowledge_binding
 import models_db as m
 import store
@@ -114,7 +116,7 @@ def generate(b: GenIn, s: Session = Depends(db.get_session), t: str = Depends(te
     try:
         out = agent.run_synthetic_generation(spec, meta_block, kb_block)
     except agent.AgentError as e:
-        return err(str(e), 500 if "ANTHROPIC_API_KEY" in str(e) else 502)
+        return err(str(e), 500 if llm_client.is_config_error(e) else 502)
     rid = str(spec.get("reportId", "")).strip()
     last = s.query(m.SyntheticSet).filter_by(tenant_id=t, report_id=rid).order_by(m.SyntheticSet.version.desc()).first()
     if last is not None and last.status != "retired":  # a new version replaces the live one; keep the old one as history

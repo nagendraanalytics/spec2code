@@ -1,5 +1,5 @@
-"""Ask Claude for draft rules from one source in the library.
-  ANTHROPIC_API_KEY=... python scripts/propose_rules_from_source.py --tenant default --source "SDTM Implementation Guide v3.4" --limit 20 [--dry-run]
+"""Ask the language model (via llm_client; needs the GENAI_* settings in .env) for draft rules from one source in the library.
+  python scripts/propose_rules_from_source.py --tenant default --source "SDTM Implementation Guide v3.4" --limit 20 [--dry-run]
 
 --source is a source id or part of its title. Only that source's text is sent to the model. Every rule must carry a
 quote found in the passage it came from; others are dropped and listed. Rules are created as drafts for programmer approval.

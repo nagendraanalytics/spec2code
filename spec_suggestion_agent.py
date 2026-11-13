@@ -20,9 +20,8 @@ every other agent in this project: ground suggestions in what's actually
 there, flag every addition as an assumption, never silently invent scope.
 """
 
-import os
 
-import anthropic
+import llm_client
 
 SPEC_SUGGESTION_SYSTEM_PROMPT = """You are a clinical data programmer proposing a \
 REVISED version of a CDM report specification, to resolve issues a prior \
@@ -133,34 +132,17 @@ def run_spec_suggestion(spec: dict, review: dict) -> dict:
     """Returns {"fields": [...], "overall_summary": ...}. Raises
     AgentError on failure -- never returns a partial/garbage result
     silently."""
-    api_key = os.environ.get("ANTHROPIC_API_KEY")
-    if not api_key:
-        raise AgentError("ANTHROPIC_API_KEY is not set.")
-
-    client = anthropic.Anthropic(api_key=api_key)
+    if not llm_client.available():
+        raise AgentError(llm_client.not_configured_message())
     try:
-        # See cql_agents.run_spec_review's comment for why this is
-        # messages.stream() + get_final_message(), not messages.create().
-        with client.messages.stream(
-            model="claude-sonnet-5",
-            max_tokens=16000,
-            system=SPEC_SUGGESTION_SYSTEM_PROMPT,
-            tools=[SPEC_SUGGESTION_TOOL],
-            tool_choice={"type": "tool", "name": "submit_spec_suggestion"},
-            messages=[{"role": "user", "content": build_suggestion_user_prompt(spec, review)}],
-        ) as stream:
-            response = stream.get_final_message()
-    except Exception as e:  # noqa: BLE001
-        raise AgentError(f"Claude API request failed: {e}") from e
-
-    for block in response.content:
-        if getattr(block, "type", None) == "tool_use" and block.name == "submit_spec_suggestion":
-            result = block.input
-            return _sanitize_suggestion(result, spec)
-
-    if response.stop_reason == "max_tokens":
-        raise AgentError("Spec suggestion was cut off before finishing (ran out of tokens).")
-    raise AgentError(f"Model did not return a structured suggestion (stop_reason={response.stop_reason}).")
+        res = llm_client.call_tool(system=SPEC_SUGGESTION_SYSTEM_PROMPT, user=build_suggestion_user_prompt(spec, review), tool=SPEC_SUGGESTION_TOOL, max_tokens=16000, model="claude-sonnet-5")
+    except llm_client.LLMClientError as e:
+        raise AgentError(f"Language model request failed: {e}") from e
+    if res.input is not None:
+        return _sanitize_suggestion(res.input, spec)
+    if res.stop_reason in ("max_tokens", "invalid_json"):
+        raise AgentError("Spec suggestion was cut off before finishing or was not valid structured output.")
+    raise AgentError(f"Model did not return a structured suggestion (stop_reason={res.stop_reason}).")
 
 
 _EDITABLE_FIELDS = ["description", "columnHeading", "logic", "reportScenarios", "sorting"]

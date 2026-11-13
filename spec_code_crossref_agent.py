@@ -34,9 +34,8 @@ That's what makes this a real, live "the system gets smarter from
 migrations over time" mechanism instead of a one-off manual exercise.
 """
 
-import os
 
-import anthropic
+import llm_client
 
 CROSSREF_SYSTEM_PROMPT = """You are a clinical data programmer cross-referencing a \
 written report specification against EXISTING, CONFIRMED-WORKING reference \
@@ -146,35 +145,17 @@ def run_crossref(spec: dict, legacy_code: str) -> dict:
     "enrichment_summary": ..., "candidate_patterns": [...]}. Raises
     AgentError on failure -- never returns a partial/garbage result
     silently."""
-    api_key = os.environ.get("ANTHROPIC_API_KEY")
-    if not api_key:
-        raise AgentError("ANTHROPIC_API_KEY is not set.")
-
-    client = anthropic.Anthropic(api_key=api_key)
+    if not llm_client.available():
+        raise AgentError(llm_client.not_configured_message())
     try:
-        # See cql_agents.run_spec_review's comment for why this is
-        # messages.stream() + get_final_message(), not messages.create().
-        with client.messages.stream(
-            model="claude-sonnet-5",
-            max_tokens=24000,  # cross-referencing a full legacy program against a spec can need
-            # substantial reasoning -- sized generously from the start given this project's
-            # repeated real-world truncation history.
-            system=CROSSREF_SYSTEM_PROMPT,
-            tools=[CROSSREF_TOOL],
-            tool_choice={"type": "tool", "name": "submit_crossref"},
-            messages=[{"role": "user", "content": build_crossref_user_prompt(spec, legacy_code)}],
-        ) as stream:
-            response = stream.get_final_message()
-    except Exception as e:  # noqa: BLE001
-        raise AgentError(f"Claude API request failed: {e}") from e
-
-    for block in response.content:
-        if getattr(block, "type", None) == "tool_use" and block.name == "submit_crossref":
-            return _sanitize_crossref_result(block.input, spec)
-
-    if response.stop_reason == "max_tokens":
-        raise AgentError("Cross-reference was cut off before finishing (ran out of tokens).")
-    raise AgentError(f"Model did not return a structured cross-reference result (stop_reason={response.stop_reason}).")
+        res = llm_client.call_tool(system=CROSSREF_SYSTEM_PROMPT, user=build_crossref_user_prompt(spec, legacy_code), tool=CROSSREF_TOOL, max_tokens=24000, model="claude-sonnet-5")
+    except llm_client.LLMClientError as e:
+        raise AgentError(f"Language model request failed: {e}") from e
+    if res.input is not None:
+        return _sanitize_crossref_result(res.input, spec)
+    if res.stop_reason in ("max_tokens", "invalid_json"):
+        raise AgentError("Cross-reference was cut off before finishing or was not valid structured output.")
+    raise AgentError(f"Model did not return a structured cross-reference result (stop_reason={res.stop_reason}).")
 
 
 def _sanitize_crossref_result(result: dict, original_spec: dict) -> dict:

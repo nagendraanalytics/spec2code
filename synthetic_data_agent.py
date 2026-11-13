@@ -12,7 +12,7 @@ from __future__ import annotations
 
 import os
 
-import anthropic
+import llm_client
 
 MODEL = os.environ.get("SPEC2CODE_SYNTH_MODEL", "claude-sonnet-5")
 
@@ -119,22 +119,14 @@ def sanitize(raw) -> dict:
 
 
 def run_synthetic_generation(spec: dict, metadata_block: str = "", knowledge_block: str = "") -> dict:
-    key = os.environ.get("ANTHROPIC_API_KEY")
-    if not key:
-        raise AgentError("ANTHROPIC_API_KEY is not set.")
-    client = anthropic.Anthropic(api_key=key)
+    if not llm_client.available():
+        raise AgentError(llm_client.not_configured_message())
     try:
-        with client.messages.stream(
-            model=MODEL, max_tokens=24000, system=SYSTEM, tools=[TOOL],
-            tool_choice={"type": "tool", "name": "submit_synthetic_data"},
-            messages=[{"role": "user", "content": build_prompt(spec, metadata_block, knowledge_block)}],
-        ) as stream:
-            resp = stream.get_final_message()
-    except Exception as e:  # noqa: BLE001
-        raise AgentError(f"Claude API request failed: {e}") from e
-    for b in resp.content:
-        if getattr(b, "type", None) == "tool_use" and b.name == "submit_synthetic_data":
-            return sanitize(b.input)
-    if resp.stop_reason == "max_tokens":
-        raise AgentError("Synthetic data generation ran out of tokens before finishing.")
-    raise AgentError(f"Model did not return structured data (stop_reason={resp.stop_reason}).")
+        res = llm_client.call_tool(system=SYSTEM, user=build_prompt(spec, metadata_block, knowledge_block), tool=TOOL, max_tokens=24000, model=MODEL)
+    except llm_client.LLMClientError as e:
+        raise AgentError(f"Language model request failed: {e}") from e
+    if res.input is not None:
+        return sanitize(res.input)
+    if res.stop_reason in ("max_tokens", "invalid_json"):
+        raise AgentError("Synthetic data generation was cut off before finishing or was not valid structured output.")
+    raise AgentError(f"Model did not return structured data (stop_reason={res.stop_reason}).")
