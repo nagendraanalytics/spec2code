@@ -14,10 +14,9 @@ the human can fill in is honest; a fabricated one that looks plausible
 is a worse outcome than making them type it themselves.
 """
 
-import os
 from typing import Optional
 
-import anthropic
+import llm_client
 
 EXTRACTION_SYSTEM_PROMPT = """You extract structured fields from raw, unstructured \
 CDM (clinical data management) report specification text. The source \
@@ -87,46 +86,27 @@ def run_spec_extraction(raw_text: str) -> dict:
     """Returns the extracted field dict (same shape as ReportSpec, plus
     extraction_notes). Raises AgentError on failure -- never returns a
     partial/garbage result silently."""
-    api_key = os.environ.get("ANTHROPIC_API_KEY")
-    if not api_key:
-        raise AgentError("ANTHROPIC_API_KEY is not set.")
+    if not llm_client.available():
+        raise AgentError(llm_client.not_configured_message())
     if not raw_text or not raw_text.strip():
         raise AgentError("No text provided to extract from.")
 
-    client = anthropic.Anthropic(api_key=api_key)
+    # max_tokens 16000 (bumped from 8000): thinking shares this budget with the response on models with adaptive
+    # thinking, and "extract, don't summarize" can mean reproducing close to the full source text plus JSON escaping
+    # overhead -- a real "response was cut off" report on a complex spec came from exactly this.
     try:
-        # See cql_agents.run_spec_review's comment for why this is
-        # messages.stream() + get_final_message(), not messages.create().
-        with client.messages.stream(
-            model="claude-sonnet-5",
-            max_tokens=16000,  # bumped from 8000 -- confirmed via docs Sonnet 5 supports up to
-            # 128k output tokens; adaptive thinking (on by default) shares this same budget with
-            # the actual response, which was the real mechanism behind a real "response was cut
-            # off" report on a complex spec, not just the extracted text itself being long.
-            # (see EXTRACTION_SYSTEM_PROMPT's "Extract, don't summarize" rule) -- for a real,
-            # detailed spec this can mean reproducing close to the full source text, plus JSON
-            # escaping overhead (every newline becomes \n, quotes need escaping). 3000 was
-            # measured too tight for real specs in this project (~2,080 tokens of raw content
-            # in some -- see chat) and had no graceful degradation on truncation, unlike
-            # cql_agents.run_cql_generation -- it just raised an opaque error, which is
-            # exactly what "extraction isn't working" looks like from the outside.
-            system=EXTRACTION_SYSTEM_PROMPT,
-            tools=[EXTRACTION_TOOL],
-            tool_choice={"type": "tool", "name": "submit_extracted_spec"},
-            messages=[{"role": "user", "content": f"RAW SPEC TEXT:\n\n{raw_text}"}],
-        ) as stream:
-            response = stream.get_final_message()
-    except Exception as e:  # noqa: BLE001
-        raise AgentError(f"Claude API request failed: {e}") from e
+        res = llm_client.call_tool(system=EXTRACTION_SYSTEM_PROMPT, user=f"RAW SPEC TEXT:\n\n{raw_text}",
+                                   tool=EXTRACTION_TOOL, max_tokens=16000, model="claude-sonnet-5")
+    except llm_client.LLMClientError as e:
+        raise AgentError(str(e)) from e
 
-    for block in response.content:
-        if getattr(block, "type", None) == "tool_use" and block.name == "submit_extracted_spec":
-            return block.input
+    if res.input is not None:
+        return res.input
 
-    if response.stop_reason == "max_tokens":
+    if res.stop_reason in ("max_tokens", "invalid_json"):
         raise AgentError(
-            "Extraction was cut off before finishing (ran out of tokens) -- the source text may "
-            "be too long/detailed for the current max_tokens budget. Try a shorter excerpt, or "
+            "Extraction was cut off or was not valid structured output (ran out of tokens, or not valid JSON) -- the "
+            "source text may be too long/detailed for the current max_tokens budget. Try a shorter excerpt, or "
             "increase max_tokens in spec_extraction_agent.py further if this keeps happening."
         )
-    raise AgentError(f"Model did not return a structured extraction (stop_reason={response.stop_reason}).")
+    raise AgentError(f"Model did not return a structured extraction (stop_reason={res.stop_reason}).")

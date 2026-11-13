@@ -25,11 +25,10 @@ a pure function of severities, and asking a model to do that arithmetic
 correctly every time is an unforced risk.
 """
 
-import os
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from typing import Optional
 
-import anthropic
+import llm_client
 
 FIELD_NAMES = ["description", "columnHeading", "logic", "reportScenarios", "sorting"]
 
@@ -99,11 +98,12 @@ class AgentError(Exception):
     pass
 
 
-def _get_client() -> anthropic.Anthropic:
-    api_key = os.environ.get("ANTHROPIC_API_KEY")
-    if not api_key:
-        raise AgentError("ANTHROPIC_API_KEY is not set.")
-    return anthropic.Anthropic(api_key=api_key)
+def _ask(system: str, user: str, tool: dict, max_tokens: int, who: str):
+    """One forced-tool call through llm_client (the enterprise wrapper by default). Returns its ToolResult."""
+    try:
+        return llm_client.call_tool(system=system, user=user, tool=tool, max_tokens=max_tokens, model="claude-sonnet-5")
+    except llm_client.LLMClientError as e:
+        raise AgentError(f"{who} failed: {e}") from e
 
 
 def _full_spec_text(spec: dict) -> str:
@@ -123,7 +123,6 @@ def _run_field_agent(field_name: str, spec: dict) -> list:
     about problems within its own field -- enforced by prompt, not code,
     so this is a soft guarantee, not a hard one; the master's aggregation
     doesn't re-check field-scoping."""
-    client = _get_client()
     field_value = spec.get(field_name, "") or "(empty)"
     focus = _FIELD_FOCUS[field_name]
 
@@ -153,30 +152,17 @@ Use the submit_field_review tool."""
 --
 The "{field_name}" field to review: {field_value}"""
 
-    try:
-        response = client.messages.create(
-            model="claude-sonnet-5",
-            max_tokens=1200,
-            system=system,
-            tools=[FIELD_REVIEW_TOOL],
-            tool_choice={"type": "tool", "name": "submit_field_review"},
-            messages=[{"role": "user", "content": user}],
-        )
-    except Exception as e:  # noqa: BLE001
-        raise AgentError(f"{field_name} agent failed: {e}") from e
+    res = _ask(system, user, FIELD_REVIEW_TOOL, 1200, f"{field_name} agent")
+    if res.input is not None:
+        insights = res.input.get("insights", [])
+        for insight in insights:
+            insight["source"] = f"{field_name}_agent"
+        return insights
 
-    for block in response.content:
-        if getattr(block, "type", None) == "tool_use" and block.name == "submit_field_review":
-            insights = block.input.get("insights", [])
-            for insight in insights:
-                insight["source"] = f"{field_name}_agent"
-            return insights
-
-    raise AgentError(f"{field_name} agent did not return a structured review (stop_reason={response.stop_reason})")
+    raise AgentError(f"{field_name} agent did not return a structured review (stop_reason={res.stop_reason})")
 
 
 def _run_master_agent(spec: dict, field_insights: list) -> dict:
-    client = _get_client()
     findings_summary = "\n".join(
         f"- [{i['source']}] ({i['severity']}/{i['category']}) {i['finding']}" for i in field_insights
     ) or "(no findings from any field agent)"
@@ -205,27 +191,15 @@ Field agents' findings so far:
 
 Check for cross-field consistency issues and write the overall summary."""
 
-    try:
-        response = client.messages.create(
-            model="claude-sonnet-5",
-            max_tokens=1200,
-            system=system,
-            tools=[MASTER_REVIEW_TOOL],
-            tool_choice={"type": "tool", "name": "submit_master_review"},
-            messages=[{"role": "user", "content": user}],
-        )
-    except Exception as e:  # noqa: BLE001
-        raise AgentError(f"master agent failed: {e}") from e
+    res = _ask(system, user, MASTER_REVIEW_TOOL, 1200, "master agent")
+    if res.input is not None:
+        result = res.input
+        for insight in result.get("consistency_insights", []):
+            insight["category"] = "consistency"
+            insight["source"] = "master_agent"
+        return result
 
-    for block in response.content:
-        if getattr(block, "type", None) == "tool_use" and block.name == "submit_master_review":
-            result = block.input
-            for insight in result.get("consistency_insights", []):
-                insight["category"] = "consistency"
-                insight["source"] = "master_agent"
-            return result
-
-    raise AgentError(f"master agent did not return a structured review (stop_reason={response.stop_reason})")
+    raise AgentError(f"master agent did not return a structured review (stop_reason={res.stop_reason})")
 
 
 def _compute_readiness(all_insights: list) -> str:

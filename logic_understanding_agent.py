@@ -17,10 +17,9 @@ to be read by a person.
 """
 
 import json
-import os
 import re
 
-import anthropic
+import llm_client
 
 LOGIC_UNDERSTANDING_SYSTEM_PROMPT = """You are a clinical data programmer explaining, \
 in plain language and step by step, how you understand a CDM report \
@@ -150,57 +149,40 @@ def run_logic_understanding(spec: dict, supporting_doc_block: str = "") -> dict:
     genuinely unusable even after sanitization and one retry -- never
     returns a partial/garbage result silently, but also never discards a
     substantially-good response over one missing supplementary field."""
-    api_key = os.environ.get("ANTHROPIC_API_KEY")
-    if not api_key:
-        raise AgentError("ANTHROPIC_API_KEY is not set.")
-
-    client = anthropic.Anthropic(api_key=api_key)
+    if not llm_client.available():
+        raise AgentError(llm_client.not_configured_message())
 
     last_error = None
     for attempt in range(3):  # bumped from 2 -- logic_steps is the one CRITICAL
         # field (see _sanitize_understanding below); a persistent failure here fully
-        # blocks the step, so a little more retry resilience is cheap insurance,
-        # especially combined with the token bump below. tool_choice forcing
-        # constrains the tool NAME, not a hard guarantee every nested field
-        # matches its declared type on every call, so retries are worth it
+        # blocks the step, so a little more retry resilience is cheap insurance.
+        # A forced structured answer constrains the tool NAME, not a hard guarantee every
+        # nested field matches its declared type on every call, so retries are worth it
         # before surfacing an error to the user.
         try:
-            # messages.stream() + get_final_message(), not messages.create() --
-            # same fix as every other agent in this project (see
-            # cql_agents.run_spec_review's comment for the full reasoning).
-            with client.messages.stream(
-                model="claude-sonnet-5",
-                max_tokens=24000,  # bumped from 16000 -- same reasoning as CQL generation's
-                # own bump: adaptive thinking shares this budget with the actual response, and
-                # a genuinely complex spec (many domains, many conditions) can need real
-                # reasoning before producing the full structured walkthrough. A real
-                # "missing or empty logic_steps" report, surviving even the existing retry,
-                # is consistent with the response being cut off before logic_steps got written
-                # (which -- per the tool schema's property order -- comes after domains and
-                # before the later fields, so truncation partway through could plausibly land
-                # exactly there).
+            # max_tokens 24000 (bumped from 16000): thinking shares this budget with the response on
+            # models with adaptive thinking, and a complex spec (many domains/conditions) needs real
+            # reasoning before the full structured walkthrough; a "missing or empty logic_steps" report
+            # that survived the retry is consistent with a cut-off before logic_steps was written.
+            res = llm_client.call_tool(
                 system=LOGIC_UNDERSTANDING_SYSTEM_PROMPT,
-                tools=[LOGIC_UNDERSTANDING_TOOL],
-                tool_choice={"type": "tool", "name": "submit_logic_understanding"},
-                messages=[{"role": "user", "content": build_understanding_user_prompt(spec, supporting_doc_block)}],
-            ) as stream:
-                response = stream.get_final_message()
-        except Exception as e:  # noqa: BLE001
-            last_error = AgentError(f"Claude API request failed: {e}")
+                user=build_understanding_user_prompt(spec, supporting_doc_block),
+                tool=LOGIC_UNDERSTANDING_TOOL, max_tokens=24000, model="claude-sonnet-5",
+            )
+        except llm_client.LLMClientError as e:
+            last_error = AgentError(str(e))
             continue
 
-        for block in response.content:
-            if getattr(block, "type", None) == "tool_use" and block.name == "submit_logic_understanding":
-                try:
-                    return _sanitize_understanding(block.input)
-                except AgentError as e:
-                    last_error = e
-                    break  # fall through to retry
+        if res.input is not None:
+            try:
+                return _sanitize_understanding(res.input)
+            except AgentError as e:
+                last_error = e
+                continue  # retry
+        if res.stop_reason in ("max_tokens", "invalid_json"):
+            last_error = AgentError("Logic understanding was cut off or was not valid structured output (ran out of tokens, or not valid JSON).")
         else:
-            if response.stop_reason == "max_tokens":
-                last_error = AgentError("Logic understanding was cut off before finishing (ran out of tokens).")
-            else:
-                last_error = AgentError(f"Model did not return a structured understanding (stop_reason={response.stop_reason}).")
+            last_error = AgentError(f"Model did not return a structured understanding (stop_reason={res.stop_reason}).")
 
     raise last_error
 

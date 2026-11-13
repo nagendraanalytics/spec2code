@@ -9,7 +9,6 @@ to exist relative to the current working directory).
 main.py should import from here, not the other way around.
 """
 
-import os
 from typing import Optional
 
 import llm_client
