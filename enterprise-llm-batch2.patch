@@ -1,0 +1,508 @@
+diff --git a/.env.example b/.env.example
+index cb8e116..c514d1b 100644
+--- a/.env.example
++++ b/.env.example
+@@ -17,7 +17,7 @@ GENAI_USER_ID=spec2code
+ # ANTHROPIC_API_KEY=
+ # ANTHROPIC_BASE_URL=      (company gateway, optional)
+ # ANTHROPIC_MODEL=
+-# NOTE: agents not yet moved to llm_client.py (see MIGRATION below) still read ANTHROPIC_API_KEY directly.
++# NOTE: a few agents (spec gap chat, code cross-reference, SAS cross-validation, spec suggestion, rule proposer, synthetic data/validation) still read ANTHROPIC_API_KEY directly until they move to llm_client.py.
+ 
+ # Optional -- all shown values are the actual defaults if omitted
+ DATABASE_URL=sqlite:///./cdm_spec_to_cql.db
+diff --git a/code_gen_agents.py b/code_gen_agents.py
+index 6bc4134..c4a7a02 100644
+--- a/code_gen_agents.py
++++ b/code_gen_agents.py
+@@ -23,10 +23,9 @@ cql_agents.run_cql_generation(). This is a separate, opt-in function --
+ main.py and orchestration/graph.py's tier5_claude_node do not call this.
+ """
+ 
+-import os
+ from typing import Optional
+ 
+-import anthropic
++import llm_client
+ 
+ import chain_guardrails
+ import guardrails
+@@ -62,13 +61,6 @@ class AgentError(Exception):
+     pass
+ 
+ 
+-def _get_client() -> anthropic.Anthropic:
+-    api_key = os.environ.get("ANTHROPIC_API_KEY")
+-    if not api_key:
+-        raise AgentError("ANTHROPIC_API_KEY is not set.")
+-    return anthropic.Anthropic(api_key=api_key)
+-
+-
+ def _spec_text(spec: dict) -> str:
+     return (
+         f"Report ID: {spec.get('reportId', '')}\n"
+@@ -81,24 +73,13 @@ def _spec_text(spec: dict) -> str:
+ 
+ 
+ def _call_tool_agent(step_name: str, system: str, user: str, tool: dict) -> dict:
+-    client = _get_client()
+     try:
+-        response = client.messages.create(
+-            model="claude-sonnet-5",
+-            max_tokens=1500,
+-            system=system,
+-            tools=[tool],
+-            tool_choice={"type": "tool", "name": tool["name"]},
+-            messages=[{"role": "user", "content": user}],
+-        )
+-    except Exception as e:  # noqa: BLE001
++        res = llm_client.call_tool(system=system, user=user, tool=tool, max_tokens=1500, model="claude-sonnet-5")
++    except llm_client.LLMClientError as e:
+         raise AgentError(f"{step_name} agent failed: {e}") from e
+-
+-    for block in response.content:
+-        if getattr(block, "type", None) == "tool_use" and block.name == tool["name"]:
+-            return block.input
+-
+-    raise AgentError(f"{step_name} agent did not call its tool (stop_reason={response.stop_reason})")
++    if res.input is not None:
++        return res.input
++    raise AgentError(f"{step_name} agent did not call its tool (stop_reason={res.stop_reason})")
+ 
+ 
+ # ---------------------------------------------------------------------
+diff --git a/cot_generation.py b/cot_generation.py
+index 275f800..88267f8 100644
+--- a/cot_generation.py
++++ b/cot_generation.py
+@@ -19,7 +19,7 @@ import os
+ import re
+ from typing import Callable, Optional
+ 
+-import anthropic
++import llm_client
+ 
+ MODEL = "claude-sonnet-5"
+ MAX_TOKENS = 16000
+@@ -280,27 +280,19 @@ def _summary(chk: dict, repaired: bool, attempts: int, history: Optional[list] =
+ # ------------------------------------------------------------------ the call
+ 
+ def _call(system: str, user: str, tool: dict, error_cls) -> dict:
+-    api_key = os.environ.get("ANTHROPIC_API_KEY")
+-    if not api_key:
+-        raise error_cls("ANTHROPIC_API_KEY is not set.")
+-    client = anthropic.Anthropic(api_key=api_key)
++    if not llm_client.available():
++        raise error_cls(llm_client.not_configured_message())
+     try:
+-        with client.messages.stream(
+-            model=MODEL, max_tokens=MAX_TOKENS, system=system, tools=[tool],
+-            tool_choice={"type": "tool", "name": tool["name"]},
+-            messages=[{"role": "user", "content": user}],
+-        ) as stream:
+-            response = stream.get_final_message()
+-    except Exception as e:  # noqa: BLE001
++        res = llm_client.call_tool(system=system, user=user, tool=tool, max_tokens=MAX_TOKENS, model=MODEL)
++    except llm_client.LLMClientError as e:
+         if "credit balance is too low" in str(e):
+             raise error_cls("The Anthropic API credit balance is too low. Add credits (Plans & Billing in the Anthropic console), then retry.") from e
+-        raise error_cls(f"Claude API request failed: {e}") from e
+-    for block in response.content:
+-        if getattr(block, "type", None) == "tool_use" and block.name == tool["name"]:
+-            return block.input
+-    if response.stop_reason == "max_tokens":
+-        raise error_cls("Generation was cut off before finishing (ran out of tokens).")
+-    raise error_cls(f"Model did not return structured output (stop_reason={response.stop_reason}).")
++        raise error_cls(str(e)) from e
++    if res.input is not None:
++        return res.input
++    if res.stop_reason in ("max_tokens", "invalid_json"):
++        raise error_cls("Generation was cut off or was not valid structured output (ran out of tokens, or not valid JSON).")
++    raise error_cls(f"Model did not return structured output (stop_reason={res.stop_reason}).")
+ 
+ 
+ def _audit(spec: dict, code: str, code_field: str, error_cls) -> list:
+diff --git a/r_agents.py b/r_agents.py
+index 5a96566..52c0a52 100644
+--- a/r_agents.py
++++ b/r_agents.py
+@@ -13,9 +13,8 @@ ground truth for these specific report specs. See code_gen_registry.py's
+ "unverified_beta" status and generation_router.py's allow_unverified gate.
+ """
+ 
+-import os
+ 
+-import anthropic
++import llm_client
+ 
+ import clinical_modules
+ 
+@@ -126,30 +125,16 @@ def run_r_generation(spec: dict) -> dict:
+     """Returns {"r_code": ..., "explanation": ...}. UNVERIFIED BETA --
+     callers must have already gone through generation_router.py's
+     allow_unverified gate; this function doesn't re-check it."""
+-    api_key = os.environ.get("ANTHROPIC_API_KEY")
+-    if not api_key:
+-        raise AgentError("ANTHROPIC_API_KEY is not set.")
+-
+-    client = anthropic.Anthropic(api_key=api_key)
++    if not llm_client.available():
++        raise AgentError(llm_client.not_configured_message())
+     try:
+-        # See cql_agents.run_spec_review's comment for why this is
+-        # messages.stream() + get_final_message(), not messages.create().
+-        with client.messages.stream(
+-            model="claude-sonnet-5",
+-            max_tokens=8000,
+-            system=R_SYSTEM_PROMPT,
+-            tools=[R_TOOL],
+-            tool_choice={"type": "tool", "name": "submit_r_code"},
+-            messages=[{"role": "user", "content": build_r_user_prompt(spec)}],
+-        ) as stream:
+-            response = stream.get_final_message()
+-    except Exception as e:  # noqa: BLE001
+-        raise AgentError(f"Claude API request failed: {e}") from e
+-
+-    for block in response.content:
+-        if getattr(block, "type", None) == "tool_use" and block.name == "submit_r_code":
+-            return block.input
+-
+-    if response.stop_reason == "max_tokens":
+-        raise AgentError("R generation was cut off before finishing (ran out of tokens).")
+-    raise AgentError(f"Model did not return structured R code (stop_reason={response.stop_reason}).")
++        res = llm_client.call_tool(system=R_SYSTEM_PROMPT, user=build_r_user_prompt(spec), tool=R_TOOL,
++                                   max_tokens=8000, model="claude-sonnet-5")
++    except llm_client.LLMClientError as e:
++        raise AgentError(str(e)) from e
++
++    if res.input is not None:
++        return res.input
++    if res.stop_reason in ("max_tokens", "invalid_json"):
++        raise AgentError("R generation was cut off or was not valid structured output (ran out of tokens, or not valid JSON).")
++    raise AgentError(f"Model did not return structured R code (stop_reason={res.stop_reason}).")
+diff --git a/sas_agents.py b/sas_agents.py
+index 86c09d9..6adf760 100644
+--- a/sas_agents.py
++++ b/sas_agents.py
+@@ -10,9 +10,8 @@ correct output. See code_gen_registry.py's "unverified_beta" status and
+ generation_router.py's allow_unverified gate.
+ """
+ 
+-import os
+ 
+-import anthropic
++import llm_client
+ 
+ import clinical_modules
+ 
+@@ -126,30 +125,16 @@ def run_sas_generation(spec: dict) -> dict:
+     """Returns {"sas_code": ..., "explanation": ...}. UNVERIFIED BETA --
+     callers must have already gone through generation_router.py's
+     allow_unverified gate; this function doesn't re-check it."""
+-    api_key = os.environ.get("ANTHROPIC_API_KEY")
+-    if not api_key:
+-        raise AgentError("ANTHROPIC_API_KEY is not set.")
+-
+-    client = anthropic.Anthropic(api_key=api_key)
++    if not llm_client.available():
++        raise AgentError(llm_client.not_configured_message())
+     try:
+-        # See cql_agents.run_spec_review's comment for why this is
+-        # messages.stream() + get_final_message(), not messages.create().
+-        with client.messages.stream(
+-            model="claude-sonnet-5",
+-            max_tokens=8000,
+-            system=SAS_SYSTEM_PROMPT,
+-            tools=[SAS_TOOL],
+-            tool_choice={"type": "tool", "name": "submit_sas_code"},
+-            messages=[{"role": "user", "content": build_sas_user_prompt(spec)}],
+-        ) as stream:
+-            response = stream.get_final_message()
+-    except Exception as e:  # noqa: BLE001
+-        raise AgentError(f"Claude API request failed: {e}") from e
+-
+-    for block in response.content:
+-        if getattr(block, "type", None) == "tool_use" and block.name == "submit_sas_code":
+-            return block.input
+-
+-    if response.stop_reason == "max_tokens":
+-        raise AgentError("SAS generation was cut off before finishing (ran out of tokens).")
+-    raise AgentError(f"Model did not return structured SAS code (stop_reason={response.stop_reason}).")
++        res = llm_client.call_tool(system=SAS_SYSTEM_PROMPT, user=build_sas_user_prompt(spec), tool=SAS_TOOL,
++                                   max_tokens=8000, model="claude-sonnet-5")
++    except llm_client.LLMClientError as e:
++        raise AgentError(str(e)) from e
++
++    if res.input is not None:
++        return res.input
++    if res.stop_reason in ("max_tokens", "invalid_json"):
++        raise AgentError("SAS generation was cut off or was not valid structured output (ran out of tokens, or not valid JSON).")
++    raise AgentError(f"Model did not return structured SAS code (stop_reason={res.stop_reason}).")
+diff --git a/sas_migration_agent.py b/sas_migration_agent.py
+index 2e6cc40..1cc05ac 100644
+--- a/sas_migration_agent.py
++++ b/sas_migration_agent.py
+@@ -28,9 +28,8 @@ sort order) gets flagged explicitly in migration_notes for human review
+ -- never silently guessed or dropped.
+ """
+ 
+-import os
+ 
+-import anthropic
++import llm_client
+ 
+ SAS_MIGRATION_SYSTEM_PROMPT = """You are helping migrate a legacy SAS clinical report \
+ program to a new platform. You will be given raw SAS code (which may \
+@@ -110,33 +109,19 @@ def run_sas_migration(sas_code: str) -> dict:
+     "reportScenarios": ..., "sorting": ..., "migration_notes": ...}.
+     Raises AgentError on failure -- never returns a partial/garbage
+     result silently."""
+-    api_key = os.environ.get("ANTHROPIC_API_KEY")
+-    if not api_key:
+-        raise AgentError("ANTHROPIC_API_KEY is not set.")
+-
+-    client = anthropic.Anthropic(api_key=api_key)
++    if not llm_client.available():
++        raise AgentError(llm_client.not_configured_message())
+     try:
+-        # See cql_agents.run_spec_review's comment for why this is
+-        # messages.stream() + get_final_message(), not messages.create().
+-        with client.messages.stream(
+-            model="claude-sonnet-5",
+-            max_tokens=16000,
+-            system=SAS_MIGRATION_SYSTEM_PROMPT,
+-            tools=[SAS_MIGRATION_TOOL],
+-            tool_choice={"type": "tool", "name": "submit_sas_migration"},
+-            messages=[{"role": "user", "content": build_sas_migration_user_prompt(sas_code)}],
+-        ) as stream:
+-            response = stream.get_final_message()
+-    except Exception as e:  # noqa: BLE001
+-        raise AgentError(f"Claude API request failed: {e}") from e
+-
+-    for block in response.content:
+-        if getattr(block, "type", None) == "tool_use" and block.name == "submit_sas_migration":
+-            return _sanitize_migration_result(block.input)
+-
+-    if response.stop_reason == "max_tokens":
+-        raise AgentError("SAS migration was cut off before finishing (ran out of tokens).")
+-    raise AgentError(f"Model did not return a structured migration result (stop_reason={response.stop_reason}).")
++        res = llm_client.call_tool(system=SAS_MIGRATION_SYSTEM_PROMPT, user=build_sas_migration_user_prompt(sas_code), tool=SAS_MIGRATION_TOOL,
++                                   max_tokens=16000, model="claude-sonnet-5")
++    except llm_client.LLMClientError as e:
++        raise AgentError(str(e)) from e
++
++    if res.input is not None:
++        return _sanitize_migration_result(res.input)
++    if res.stop_reason in ("max_tokens", "invalid_json"):
++        raise AgentError("SAS migration was cut off or was not valid structured output (ran out of tokens, or not valid JSON).")
++    raise AgentError(f"Model did not return a structured migration result (stop_reason={res.stop_reason}).")
+ 
+ 
+ _STRING_FIELDS = ["description", "columnHeading", "logic", "reportScenarios", "sorting", "migration_notes"]
+diff --git a/sql_agents.py b/sql_agents.py
+index 1bdc41c..8c569d5 100644
+--- a/sql_agents.py
++++ b/sql_agents.py
+@@ -19,10 +19,9 @@ generation_router.py's allow_unverified opt-in gate, which is what
+ callers must pass through before this module is ever invoked.
+ """
+ 
+-import os
+ from typing import Optional
+ 
+-import anthropic
++import llm_client
+ 
+ import clinical_modules
+ 
+@@ -148,30 +147,16 @@ def run_sql_generation(spec: dict) -> dict:
+     failure. This is the UNVERIFIED BETA tier -- callers must have
+     already gone through generation_router.py's allow_unverified gate
+     before calling this; this function does not re-check that itself."""
+-    api_key = os.environ.get("ANTHROPIC_API_KEY")
+-    if not api_key:
+-        raise AgentError("ANTHROPIC_API_KEY is not set.")
+-
+-    client = anthropic.Anthropic(api_key=api_key)
++    if not llm_client.available():
++        raise AgentError(llm_client.not_configured_message())
+     try:
+-        # See cql_agents.run_spec_review's comment for why this is
+-        # messages.stream() + get_final_message(), not messages.create().
+-        with client.messages.stream(
+-            model="claude-sonnet-5",
+-            max_tokens=8000,
+-            system=SQL_SYSTEM_PROMPT,
+-            tools=[SQL_TOOL],
+-            tool_choice={"type": "tool", "name": "submit_sql"},
+-            messages=[{"role": "user", "content": build_sql_user_prompt(spec)}],
+-        ) as stream:
+-            response = stream.get_final_message()
+-    except Exception as e:  # noqa: BLE001
+-        raise AgentError(f"Claude API request failed: {e}") from e
+-
+-    for block in response.content:
+-        if getattr(block, "type", None) == "tool_use" and block.name == "submit_sql":
+-            return block.input
+-
+-    if response.stop_reason == "max_tokens":
+-        raise AgentError("SQL generation was cut off before finishing (ran out of tokens).")
+-    raise AgentError(f"Model did not return structured SQL (stop_reason={response.stop_reason}).")
++        res = llm_client.call_tool(system=SQL_SYSTEM_PROMPT, user=build_sql_user_prompt(spec), tool=SQL_TOOL,
++                                   max_tokens=8000, model="claude-sonnet-5")
++    except llm_client.LLMClientError as e:
++        raise AgentError(str(e)) from e
++
++    if res.input is not None:
++        return res.input
++    if res.stop_reason in ("max_tokens", "invalid_json"):
++        raise AgentError("SQL generation was cut off or was not valid structured output (ran out of tokens, or not valid JSON).")
++    raise AgentError(f"Model did not return structured SQL (stop_reason={res.stop_reason}).")
+diff --git a/test_codegen_agents_via_wrapper.py b/test_codegen_agents_via_wrapper.py
+new file mode 100644
+index 0000000..6744d14
+--- /dev/null
++++ b/test_codegen_agents_via_wrapper.py
+@@ -0,0 +1,120 @@
++"""The code generation agents moved to llm_client run correctly through the enterprise wrapper (only enterprise_llm.complete is patched)."""
++import json
++
++import pytest
++
++import code_gen_agents as cga
++import cot_generation as cg
++import enterprise_llm
++import llm_client
++import r_agents
++import sas_agents
++import sas_migration_agent as mig
++import sql_agents
++
++SPEC = {"reportId": "R1", "description": "AEs", "columnHeading": "Subject", "logic": "Show AE rows", "reportScenarios": "", "sorting": "Subject"}
++
++
++@pytest.fixture(autouse=True)
++def _env(monkeypatch):
++    monkeypatch.delenv("LLM_PROVIDER", raising=False)
++    monkeypatch.setattr(enterprise_llm.time, "sleep", lambda s: None)
++
++
++def reply(monkeypatch, *texts):
++    seq = list(texts)
++    calls = []
++
++    def fake(system, user, **k):
++        calls.append(k)
++        return seq.pop(0) if len(seq) > 1 else seq[0]
++    monkeypatch.setattr(enterprise_llm, "complete", fake)
++    return calls
++
++
++CASES = [
++    (sas_agents.run_sas_generation, (SPEC,), {"sas_code": "proc sql; quit;", "explanation": "e"}, "sas_code", sas_agents.AgentError),
++    (r_agents.run_r_generation, (SPEC,), {"r_code": "library(dplyr)", "explanation": "e"}, "r_code", r_agents.AgentError),
++    (sql_agents.run_sql_generation, (SPEC,), {"sql": "SELECT 1", "explanation": "e"}, "sql", sql_agents.AgentError),
++]
++
++
++@pytest.mark.parametrize("fn,args,good,field,err", CASES)
++def test_generation_ok(monkeypatch, fn, args, good, field, err):
++    calls = reply(monkeypatch, json.dumps(good))
++    assert fn(*args)[field] == good[field] and calls[0]["max_tokens"] == 8000
++
++
++@pytest.mark.parametrize("fn,args,good,field,err", CASES)
++def test_generation_truncated_fails_cleanly(monkeypatch, fn, args, good, field, err):
++    reply(monkeypatch, '{"' + field + '": "SELECT 1 FR')
++    with pytest.raises(err) as e:
++        fn(*args)
++    assert "cut off" in str(e.value)
++
++
++@pytest.mark.parametrize("fn,args,good,field,err", CASES)
++def test_generation_not_configured(monkeypatch, fn, args, good, field, err):
++    monkeypatch.delenv("GENAI_AUTH_CLIENT_SECRET")
++    with pytest.raises(err) as e:
++        fn(*args)
++    assert llm_client.is_config_error(e.value)
++
++
++@pytest.mark.parametrize("fn,args,good,field,err", CASES)
++def test_generation_api_failure_is_an_agent_error(monkeypatch, fn, args, good, field, err):
++    def boom(*a, **k): raise enterprise_llm.LLMError("chat failed (500): down")
++    monkeypatch.setattr(enterprise_llm, "complete", boom)
++    with pytest.raises(err):
++        fn(*args)
++
++
++# ---- SAS migration
++GOOD_MIG = dict(description="d", columnHeading="c", logic="l", reportScenarios="", sorting="", migration_notes="n")
++
++
++def test_migration_ok(monkeypatch):
++    calls = reply(monkeypatch, json.dumps(GOOD_MIG))
++    assert mig.run_sas_migration("proc sql; quit;")["logic"] == "l" and calls[0]["max_tokens"] == 16000
++
++
++def test_migration_unusable_result_is_refused(monkeypatch):
++    reply(monkeypatch, json.dumps(dict(GOOD_MIG, description="", logic="")))
++    with pytest.raises(mig.AgentError):
++        mig.run_sas_migration("proc sql; quit;")
++
++
++# ---- the six-step CQL decomposition
++def test_a_decomposition_step_through_the_wrapper(monkeypatch):
++    reply(monkeypatch, json.dumps({"domains": [{"form": "AE", "reason": "r"}]}))
++    assert cga.run_domains_agent(SPEC)["domains"][0]["form"] == "AE"
++
++
++def test_a_decomposition_step_names_itself_on_failure(monkeypatch):
++    reply(monkeypatch, "nonsense")
++    with pytest.raises(cga.AgentError) as e:
++        cga.run_domains_agent(SPEC)
++    assert "domains agent" in str(e.value)
++
++
++# ---- the CoT generation call
++TOOL = {"name": "t", "description": "d", "input_schema": {"type": "object", "properties": {"sql": {"type": "string"}}, "required": ["sql"]}}
++
++
++def test_cot_call_ok(monkeypatch):
++    reply(monkeypatch, '{"sql": "SELECT 1"}')
++    assert cg._call("s", "u", TOOL, RuntimeError) == {"sql": "SELECT 1"}
++
++
++def test_cot_call_cut_off(monkeypatch):
++    reply(monkeypatch, '{"sql": "SELECT')
++    with pytest.raises(RuntimeError) as e:
++        cg._call("s", "u", TOOL, RuntimeError)
++    assert "cut off" in str(e.value)
++
++
++def test_cot_call_not_configured(monkeypatch):
++    monkeypatch.delenv("GENAI_MODEL_ID")
++    with pytest.raises(RuntimeError) as e:
++        cg._call("s", "u", TOOL, RuntimeError)
++    assert llm_client.is_config_error(e.value)
+diff --git a/test_cot_generation.py b/test_cot_generation.py
+index 088500c..ed73240 100644
+--- a/test_cot_generation.py
++++ b/test_cot_generation.py
+@@ -205,13 +205,16 @@ def test_code_left_in_the_explanation_is_recovered_without_another_call(monkeypa
+ 
+ def test_low_credit_error_is_plain(monkeypatch):
+     import anthropic
++    monkeypatch.setenv("LLM_PROVIDER", "anthropic")
++    monkeypatch.setenv("ANTHROPIC_API_KEY", "test-key")
++    monkeypatch.setenv("ANTHROPIC_MODEL", "m")
+ 
+     class Boom:
+         def __init__(self, **k): pass
+         class messages:
+             @staticmethod
+             def stream(**k): raise Exception("Error code: 400 - Your credit balance is too low to access the Anthropic API")
+-    monkeypatch.setattr(cg.anthropic, "Anthropic", Boom)
++    monkeypatch.setattr(anthropic, "Anthropic", Boom)
+     with pytest.raises(RuntimeError) as e:
+         cg._call("s", "u", {"name": "t"}, RuntimeError)
+     assert "credit balance is too low" in str(e.value) and "Add credits" in str(e.value)

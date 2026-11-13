@@ -19,7 +19,7 @@ import os
 import re
 from typing import Callable, Optional
 
-import anthropic
+import llm_client
 
 MODEL = "claude-sonnet-5"
 MAX_TOKENS = 16000
@@ -280,27 +280,19 @@ def _summary(chk: dict, repaired: bool, attempts: int, history: Optional[list] =
 # ------------------------------------------------------------------ the call
 
 def _call(system: str, user: str, tool: dict, error_cls) -> dict:
-    api_key = os.environ.get("ANTHROPIC_API_KEY")
-    if not api_key:
-        raise error_cls("ANTHROPIC_API_KEY is not set.")
-    client = anthropic.Anthropic(api_key=api_key)
+    if not llm_client.available():
+        raise error_cls(llm_client.not_configured_message())
     try:
-        with client.messages.stream(
-            model=MODEL, max_tokens=MAX_TOKENS, system=system, tools=[tool],
-            tool_choice={"type": "tool", "name": tool["name"]},
-            messages=[{"role": "user", "content": user}],
-        ) as stream:
-            response = stream.get_final_message()
-    except Exception as e:  # noqa: BLE001
+        res = llm_client.call_tool(system=system, user=user, tool=tool, max_tokens=MAX_TOKENS, model=MODEL)
+    except llm_client.LLMClientError as e:
         if "credit balance is too low" in str(e):
             raise error_cls("The Anthropic API credit balance is too low. Add credits (Plans & Billing in the Anthropic console), then retry.") from e
-        raise error_cls(f"Claude API request failed: {e}") from e
-    for block in response.content:
-        if getattr(block, "type", None) == "tool_use" and block.name == tool["name"]:
-            return block.input
-    if response.stop_reason == "max_tokens":
-        raise error_cls("Generation was cut off before finishing (ran out of tokens).")
-    raise error_cls(f"Model did not return structured output (stop_reason={response.stop_reason}).")
+        raise error_cls(str(e)) from e
+    if res.input is not None:
+        return res.input
+    if res.stop_reason in ("max_tokens", "invalid_json"):
+        raise error_cls("Generation was cut off or was not valid structured output (ran out of tokens, or not valid JSON).")
+    raise error_cls(f"Model did not return structured output (stop_reason={res.stop_reason}).")
 
 
 def _audit(spec: dict, code: str, code_field: str, error_cls) -> list:

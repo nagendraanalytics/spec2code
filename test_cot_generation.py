@@ -205,13 +205,16 @@ def test_code_left_in_the_explanation_is_recovered_without_another_call(monkeypa
 
 def test_low_credit_error_is_plain(monkeypatch):
     import anthropic
+    monkeypatch.setenv("LLM_PROVIDER", "anthropic")
+    monkeypatch.setenv("ANTHROPIC_API_KEY", "test-key")
+    monkeypatch.setenv("ANTHROPIC_MODEL", "m")
 
     class Boom:
         def __init__(self, **k): pass
         class messages:
             @staticmethod
             def stream(**k): raise Exception("Error code: 400 - Your credit balance is too low to access the Anthropic API")
-    monkeypatch.setattr(cg.anthropic, "Anthropic", Boom)
+    monkeypatch.setattr(anthropic, "Anthropic", Boom)
     with pytest.raises(RuntimeError) as e:
         cg._call("s", "u", {"name": "t"}, RuntimeError)
     assert "credit balance is too low" in str(e.value) and "Add credits" in str(e.value)

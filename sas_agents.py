@@ -10,9 +10,8 @@ correct output. See code_gen_registry.py's "unverified_beta" status and
 generation_router.py's allow_unverified gate.
 """
 
-import os
 
-import anthropic
+import llm_client
 
 import clinical_modules
 
@@ -126,30 +125,16 @@ def run_sas_generation(spec: dict) -> dict:
     """Returns {"sas_code": ..., "explanation": ...}. UNVERIFIED BETA --
     callers must have already gone through generation_router.py's
     allow_unverified gate; this function doesn't re-check it."""
-    api_key = os.environ.get("ANTHROPIC_API_KEY")
-    if not api_key:
-        raise AgentError("ANTHROPIC_API_KEY is not set.")
-
-    client = anthropic.Anthropic(api_key=api_key)
+    if not llm_client.available():
+        raise AgentError(llm_client.not_configured_message())
     try:
-        # See cql_agents.run_spec_review's comment for why this is
-        # messages.stream() + get_final_message(), not messages.create().
-        with client.messages.stream(
-            model="claude-sonnet-5",
-            max_tokens=8000,
-            system=SAS_SYSTEM_PROMPT,
-            tools=[SAS_TOOL],
-            tool_choice={"type": "tool", "name": "submit_sas_code"},
-            messages=[{"role": "user", "content": build_sas_user_prompt(spec)}],
-        ) as stream:
-            response = stream.get_final_message()
-    except Exception as e:  # noqa: BLE001
-        raise AgentError(f"Claude API request failed: {e}") from e
+        res = llm_client.call_tool(system=SAS_SYSTEM_PROMPT, user=build_sas_user_prompt(spec), tool=SAS_TOOL,
+                                   max_tokens=8000, model="claude-sonnet-5")
+    except llm_client.LLMClientError as e:
+        raise AgentError(str(e)) from e
 
-    for block in response.content:
-        if getattr(block, "type", None) == "tool_use" and block.name == "submit_sas_code":
-            return block.input
-
-    if response.stop_reason == "max_tokens":
-        raise AgentError("SAS generation was cut off before finishing (ran out of tokens).")
-    raise AgentError(f"Model did not return structured SAS code (stop_reason={response.stop_reason}).")
+    if res.input is not None:
+        return res.input
+    if res.stop_reason in ("max_tokens", "invalid_json"):
+        raise AgentError("SAS generation was cut off or was not valid structured output (ran out of tokens, or not valid JSON).")
+    raise AgentError(f"Model did not return structured SAS code (stop_reason={res.stop_reason}).")

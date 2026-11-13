@@ -19,10 +19,9 @@ generation_router.py's allow_unverified opt-in gate, which is what
 callers must pass through before this module is ever invoked.
 """
 
-import os
 from typing import Optional
 
-import anthropic
+import llm_client
 
 import clinical_modules
 
@@ -148,30 +147,16 @@ def run_sql_generation(spec: dict) -> dict:
     failure. This is the UNVERIFIED BETA tier -- callers must have
     already gone through generation_router.py's allow_unverified gate
     before calling this; this function does not re-check that itself."""
-    api_key = os.environ.get("ANTHROPIC_API_KEY")
-    if not api_key:
-        raise AgentError("ANTHROPIC_API_KEY is not set.")
-
-    client = anthropic.Anthropic(api_key=api_key)
+    if not llm_client.available():
+        raise AgentError(llm_client.not_configured_message())
     try:
-        # See cql_agents.run_spec_review's comment for why this is
-        # messages.stream() + get_final_message(), not messages.create().
-        with client.messages.stream(
-            model="claude-sonnet-5",
-            max_tokens=8000,
-            system=SQL_SYSTEM_PROMPT,
-            tools=[SQL_TOOL],
-            tool_choice={"type": "tool", "name": "submit_sql"},
-            messages=[{"role": "user", "content": build_sql_user_prompt(spec)}],
-        ) as stream:
-            response = stream.get_final_message()
-    except Exception as e:  # noqa: BLE001
-        raise AgentError(f"Claude API request failed: {e}") from e
+        res = llm_client.call_tool(system=SQL_SYSTEM_PROMPT, user=build_sql_user_prompt(spec), tool=SQL_TOOL,
+                                   max_tokens=8000, model="claude-sonnet-5")
+    except llm_client.LLMClientError as e:
+        raise AgentError(str(e)) from e
 
-    for block in response.content:
-        if getattr(block, "type", None) == "tool_use" and block.name == "submit_sql":
-            return block.input
-
-    if response.stop_reason == "max_tokens":
-        raise AgentError("SQL generation was cut off before finishing (ran out of tokens).")
-    raise AgentError(f"Model did not return structured SQL (stop_reason={response.stop_reason}).")
+    if res.input is not None:
+        return res.input
+    if res.stop_reason in ("max_tokens", "invalid_json"):
+        raise AgentError("SQL generation was cut off or was not valid structured output (ran out of tokens, or not valid JSON).")
+    raise AgentError(f"Model did not return structured SQL (stop_reason={res.stop_reason}).")

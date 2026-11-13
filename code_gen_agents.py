@@ -23,10 +23,9 @@ cql_agents.run_cql_generation(). This is a separate, opt-in function --
 main.py and orchestration/graph.py's tier5_claude_node do not call this.
 """
 
-import os
 from typing import Optional
 
-import anthropic
+import llm_client
 
 import chain_guardrails
 import guardrails
@@ -62,13 +61,6 @@ class AgentError(Exception):
     pass
 
 
-def _get_client() -> anthropic.Anthropic:
-    api_key = os.environ.get("ANTHROPIC_API_KEY")
-    if not api_key:
-        raise AgentError("ANTHROPIC_API_KEY is not set.")
-    return anthropic.Anthropic(api_key=api_key)
-
-
 def _spec_text(spec: dict) -> str:
     return (
         f"Report ID: {spec.get('reportId', '')}\n"
@@ -81,24 +73,13 @@ def _spec_text(spec: dict) -> str:
 
 
 def _call_tool_agent(step_name: str, system: str, user: str, tool: dict) -> dict:
-    client = _get_client()
     try:
-        response = client.messages.create(
-            model="claude-sonnet-5",
-            max_tokens=1500,
-            system=system,
-            tools=[tool],
-            tool_choice={"type": "tool", "name": tool["name"]},
-            messages=[{"role": "user", "content": user}],
-        )
-    except Exception as e:  # noqa: BLE001
+        res = llm_client.call_tool(system=system, user=user, tool=tool, max_tokens=1500, model="claude-sonnet-5")
+    except llm_client.LLMClientError as e:
         raise AgentError(f"{step_name} agent failed: {e}") from e
-
-    for block in response.content:
-        if getattr(block, "type", None) == "tool_use" and block.name == tool["name"]:
-            return block.input
-
-    raise AgentError(f"{step_name} agent did not call its tool (stop_reason={response.stop_reason})")
+    if res.input is not None:
+        return res.input
+    raise AgentError(f"{step_name} agent did not call its tool (stop_reason={res.stop_reason})")
 
 
 # ---------------------------------------------------------------------

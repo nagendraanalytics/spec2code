@@ -28,9 +28,8 @@ sort order) gets flagged explicitly in migration_notes for human review
 -- never silently guessed or dropped.
 """
 
-import os
 
-import anthropic
+import llm_client
 
 SAS_MIGRATION_SYSTEM_PROMPT = """You are helping migrate a legacy SAS clinical report \
 program to a new platform. You will be given raw SAS code (which may \
@@ -110,33 +109,19 @@ def run_sas_migration(sas_code: str) -> dict:
     "reportScenarios": ..., "sorting": ..., "migration_notes": ...}.
     Raises AgentError on failure -- never returns a partial/garbage
     result silently."""
-    api_key = os.environ.get("ANTHROPIC_API_KEY")
-    if not api_key:
-        raise AgentError("ANTHROPIC_API_KEY is not set.")
-
-    client = anthropic.Anthropic(api_key=api_key)
+    if not llm_client.available():
+        raise AgentError(llm_client.not_configured_message())
     try:
-        # See cql_agents.run_spec_review's comment for why this is
-        # messages.stream() + get_final_message(), not messages.create().
-        with client.messages.stream(
-            model="claude-sonnet-5",
-            max_tokens=16000,
-            system=SAS_MIGRATION_SYSTEM_PROMPT,
-            tools=[SAS_MIGRATION_TOOL],
-            tool_choice={"type": "tool", "name": "submit_sas_migration"},
-            messages=[{"role": "user", "content": build_sas_migration_user_prompt(sas_code)}],
-        ) as stream:
-            response = stream.get_final_message()
-    except Exception as e:  # noqa: BLE001
-        raise AgentError(f"Claude API request failed: {e}") from e
+        res = llm_client.call_tool(system=SAS_MIGRATION_SYSTEM_PROMPT, user=build_sas_migration_user_prompt(sas_code), tool=SAS_MIGRATION_TOOL,
+                                   max_tokens=16000, model="claude-sonnet-5")
+    except llm_client.LLMClientError as e:
+        raise AgentError(str(e)) from e
 
-    for block in response.content:
-        if getattr(block, "type", None) == "tool_use" and block.name == "submit_sas_migration":
-            return _sanitize_migration_result(block.input)
-
-    if response.stop_reason == "max_tokens":
-        raise AgentError("SAS migration was cut off before finishing (ran out of tokens).")
-    raise AgentError(f"Model did not return a structured migration result (stop_reason={response.stop_reason}).")
+    if res.input is not None:
+        return _sanitize_migration_result(res.input)
+    if res.stop_reason in ("max_tokens", "invalid_json"):
+        raise AgentError("SAS migration was cut off or was not valid structured output (ran out of tokens, or not valid JSON).")
+    raise AgentError(f"Model did not return a structured migration result (stop_reason={res.stop_reason}).")
 
 
 _STRING_FIELDS = ["description", "columnHeading", "logic", "reportScenarios", "sorting", "migration_notes"]
