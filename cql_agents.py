@@ -12,7 +12,7 @@ main.py should import from here, not the other way around.
 import os
 from typing import Optional
 
-import anthropic
+import llm_client
 
 # ---------------------------------------------------------------------
 # Spec Review (gate, runs before generation)
@@ -525,102 +525,51 @@ class AgentError(Exception):
     FastAPI, a state field for LangGraph)."""
 
 
-def _get_client() -> anthropic.Anthropic:
-    api_key = os.environ.get("ANTHROPIC_API_KEY")
-    if not api_key:
-        raise AgentError("ANTHROPIC_API_KEY is not set. Add it to .env and restart the server.")
-    return anthropic.Anthropic(api_key=api_key)
+def _ask(system: str, user: str, tool: dict, max_tokens: int):
+    """One forced-tool call through llm_client (the enterprise wrapper by default; see llm_client.py). Returns its ToolResult."""
+    try:
+        return llm_client.call_tool(system=system, user=user, tool=tool, max_tokens=max_tokens, model="claude-sonnet-5")
+    except llm_client.LLMClientError as e:
+        raise AgentError(str(e)) from e
 
 
 def run_spec_review(spec: dict) -> dict:
     """Returns {"readiness": ..., "insights": [...], "summary": ...}.
     Raises AgentError on any failure -- never returns a partial/garbage
     result silently."""
-    client = _get_client()
-    try:
-        # messages.stream() + get_final_message(), not messages.create() --
-        # the Anthropic SDK requires streaming for any request whose
-        # max_tokens makes a >10-minute completion plausible (real error hit
-        # in production once generation's budget was raised to 24000; every
-        # Claude call in this project got the same fix regardless of its
-        # own max_tokens, since the same class of failure could hit any of
-        # them as budgets grow). get_final_message() returns the same
-        # Message shape (.content, .stop_reason) create() would have, so
-        # nothing downstream of this call needed to change.
-        with client.messages.stream(
-            model="claude-sonnet-5",
-            max_tokens=8000,  # bumped 2000 -> 3000 -> 8000. Sonnet 5 has adaptive thinking on
-            # by default, and thinking tokens count against this SAME budget as the actual
-            # response -- for a genuinely complex real spec, the model can spend a meaningful
-            # chunk of a small budget on reasoning before writing any output at all, which is a
-            # different (and less obvious) truncation risk than "the output text itself is long."
-            # Confirmed via docs: Sonnet 5 supports up to 128k output tokens, so there's large
-            # safe headroom above 8000 with no risk of the API rejecting the value.
-            system=SPEC_REVIEW_SYSTEM_PROMPT,
-            tools=[SPEC_REVIEW_TOOL],
-            tool_choice={"type": "tool", "name": "submit_spec_review"},
-            messages=[{"role": "user", "content": build_review_user_prompt(spec)}],
-        ) as stream:
-            response = stream.get_final_message()
-    except Exception as e:  # noqa: BLE001
-        raise AgentError(f"Claude API request failed: {e}") from e
-
-    result = extract_tool_input(response, "submit_spec_review")
-    if result is None:
-        if response.stop_reason == "max_tokens":
+    # max_tokens 8000: thinking tokens count against the same budget as the response on models with adaptive
+    # thinking, so a genuinely complex spec can spend a meaningful part of a small budget before writing output.
+    res = _ask(SPEC_REVIEW_SYSTEM_PROMPT, build_review_user_prompt(spec), SPEC_REVIEW_TOOL, 8000)
+    if res.input is None:
+        if res.stop_reason in ("max_tokens", "invalid_json"):
             raise AgentError(
-                "Review was cut off before finishing (ran out of tokens) -- this spec may have "
+                "Review was cut off or was not valid structured output -- this spec may have "
                 "generated more findings than the current max_tokens budget allows."
             )
-        raise AgentError(f"Model did not return a structured review (stop_reason={response.stop_reason}).")
-    return result
+        raise AgentError(f"Model did not return a structured review (stop_reason={res.stop_reason}).")
+    return res.input
 
 
 def run_cql_generation(spec: dict, few_shot_block: str = "", metadata_block: str = "", learned_patterns_block: str = "", supporting_doc_block: str = "") -> dict:
     """Returns {"cql": ..., "explanation": ...}. Raises AgentError on
     genuine failure (network/API error, or a truncated/malformed tool
-    call). Previously used plain-text JSON parsing instead of
-    tool_choice -- the ONE agent in this project that didn't. That meant
-    a truncated response fell back to showing the ENTIRE raw model
-    output (JSON wrapper syntax included, e.g. a partial `{"cql": "SELECT...`
-    string) as if it were the CQL itself -- not just incomplete, but not
-    valid CQL syntax at all, which is what a real "formatting is broken"
-    report traced back to. Switched to the same tool_choice pattern every
-    other agent uses: block.input is already a properly-typed dict on
-    success, and a truncated/malformed response now fails cleanly with a
-    clear AgentError instead of leaking a JSON fragment as pseudo-CQL."""
-    client = _get_client()
-    try:
-        # See run_spec_review's comment on why this is messages.stream() +
-        # get_final_message() rather than messages.create().
-        with client.messages.stream(
-            model="claude-sonnet-5",
-            max_tokens=32000,  # bumped from 24000 -- confirmed via docs Sonnet 5 supports up to
-            # 128k output tokens, so there's still large headroom. Repeated real-world truncation
-            # reports even at 24000 confirm at least some real specs need more than that; the
-            # switch to tool_choice above also means a truncation now fails cleanly rather than
-            # leaking a JSON fragment, so a higher budget is pure upside with no new downside.
-            system=CQL_SYSTEM_PROMPT,
-            tools=[CQL_TOOL],
-            tool_choice={"type": "tool", "name": "submit_cql"},
-            messages=[{"role": "user", "content": build_generation_user_prompt(spec, few_shot_block, metadata_block, learned_patterns_block, supporting_doc_block)}],
-        ) as stream:
-            response = stream.get_final_message()
-    except Exception as e:  # noqa: BLE001
-        raise AgentError(f"Claude API request failed: {e}") from e
-
-    for block in response.content:
-        if getattr(block, "type", None) == "tool_use" and block.name == "submit_cql":
-            result = block.input
-            if not isinstance(result, dict) or not result.get("cql"):
-                raise AgentError("Model returned an empty or malformed CQL result.")
-            return result
-
-    if response.stop_reason == "max_tokens":
+    call). Uses a forced structured answer (tool_choice on the Anthropic
+    provider, a schema-checked JSON object on the enterprise wrapper), so a
+    truncated response fails cleanly with a clear AgentError instead of
+    leaking a JSON fragment as pseudo-CQL (the real "formatting is broken"
+    report this was introduced to fix)."""
+    # max_tokens 32000: repeated real-world truncation reports even at 24000 showed some real specs need more.
+    res = _ask(CQL_SYSTEM_PROMPT,
+               build_generation_user_prompt(spec, few_shot_block, metadata_block, learned_patterns_block, supporting_doc_block),
+               CQL_TOOL, 32000)
+    if res.input is not None:
+        if not isinstance(res.input, dict) or not res.input.get("cql"):
+            raise AgentError("Model returned an empty or malformed CQL result.")
+        return res.input
+    if res.stop_reason in ("max_tokens", "invalid_json"):
         raise AgentError(
-            "Response was cut off before finishing (ran out of tokens) -- this spec may need "
-            "an even higher token budget, or may be complex enough to need breaking into "
-            "smaller pieces. Try again; if it keeps happening on this exact spec, that's a "
-            "useful signal to report."
+            "Response was cut off or was not valid structured output (ran out of tokens, or not valid JSON) -- "
+            "this spec may need an even higher token budget, or may be complex enough to need breaking into "
+            "smaller pieces. Try again; if it keeps happening on this exact spec, that's a useful signal to report."
         )
-    raise AgentError(f"Model did not return a structured CQL result (stop_reason={response.stop_reason}).")
+    raise AgentError(f"Model did not return a structured CQL result (stop_reason={res.stop_reason}).")

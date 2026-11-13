@@ -31,6 +31,7 @@ import study_setup
 import spec_history_import
 import code_gen_registry
 import cql_agents
+import llm_client
 import db
 import generation_router
 import logic_understanding_agent
@@ -213,7 +214,7 @@ def health():
     """Liveness probe for Kubernetes and the UI's status indicator. Reports
     only whether the process is up and whether a model key is configured --
     never the key itself."""
-    return {"status": "ok", "modelKeyConfigured": bool(os.environ.get("ANTHROPIC_API_KEY"))}
+    return {"status": "ok", "modelKeyConfigured": llm_client.available()}
 
 
 @app.get("/api/modules")
@@ -273,7 +274,7 @@ def extract(body: dict):
     try:
         result = spec_extraction_agent.run_spec_extraction(raw_text)
     except spec_extraction_agent.AgentError as e:
-        status_code = 500 if "ANTHROPIC_API_KEY" in str(e) else 400
+        status_code = 500 if llm_client.is_config_error(e) else 400
         return JSONResponse(status_code=status_code, content={"error": str(e)})
     return result
 
@@ -299,7 +300,7 @@ def spec_gap_chat(body: dict):
     try:
         result = spec_gap_chat_agent.run_gap_chat_turn(spec, extraction_notes, transcript)
     except spec_gap_chat_agent.AgentError as e:
-        status_code = 500 if "ANTHROPIC_API_KEY" in str(e) else 502
+        status_code = 500 if llm_client.is_config_error(e) else 502
         return JSONResponse(status_code=status_code, content={"error": str(e)})
     return result
 
@@ -336,7 +337,7 @@ def _understand_core(spec: ReportSpec, db_session: Session, tenant_id: str):
     try:
         result = logic_understanding_agent.run_logic_understanding(agent_spec, supporting_doc_block)
     except logic_understanding_agent.AgentError as e:
-        status_code = 500 if "ANTHROPIC_API_KEY" in str(e) else 502
+        status_code = 500 if llm_client.is_config_error(e) else 502
         return JSONResponse(status_code=status_code, content={"error": str(e)})
     if kb is not None:
         result["knowledge"] = knowledge_binding.summary(kb, applied=True)
@@ -362,7 +363,7 @@ def suggest_spec(body: dict):
     try:
         result = spec_suggestion_agent.run_spec_suggestion(spec, review)
     except spec_suggestion_agent.AgentError as e:
-        status_code = 500 if "ANTHROPIC_API_KEY" in str(e) else 502
+        status_code = 500 if llm_client.is_config_error(e) else 502
         return JSONResponse(status_code=status_code, content={"error": str(e)})
     return result
 
@@ -402,7 +403,7 @@ def synthetic_validation(
     try:
         result = synthetic_validation_agent.run_synthetic_validation(spec, generated_code, language, metadata_block)
     except synthetic_validation_agent.AgentError as e:
-        status_code = 500 if "ANTHROPIC_API_KEY" in str(e) else 502
+        status_code = 500 if llm_client.is_config_error(e) else 502
         return JSONResponse(status_code=status_code, content={"error": str(e)})
     return result
 
@@ -434,7 +435,7 @@ def _review_core(spec: ReportSpec, db_session: Session, tenant_id: str):
     try:
         result = cql_agents.run_spec_review(agent_spec)
     except cql_agents.AgentError as e:
-        status_code = 500 if "ANTHROPIC_API_KEY" in str(e) else 502
+        status_code = 500 if llm_client.is_config_error(e) else 502
         return JSONResponse(status_code=status_code, content={"error": str(e)})
 
     store.save_review(db_session, tenant_id, spec_row.id, result)
@@ -476,12 +477,8 @@ def _generate_core(
     Spec review is NOT re-run here -- that's /api/review's job;
     force_generate defaults True because getting here at all implies the
     caller already decided to proceed."""
-    api_key = os.environ.get("ANTHROPIC_API_KEY")
-    if not api_key:
-        return JSONResponse(
-            status_code=500,
-            content={"error": "ANTHROPIC_API_KEY is not set. Add it to .env and restart the server."},
-        )
+    if not llm_client.available():
+        return JSONResponse(status_code=500, content={"error": llm_client.not_configured_message()})
     if not spec.reportId.strip() or not spec.description.strip():
         return JSONResponse(status_code=400, content={"error": "Report ID and Description are required."})
 
@@ -898,7 +895,7 @@ def crossref_spec_code(body: dict):
     try:
         result = spec_code_crossref_agent.run_crossref(spec, legacy_code)
     except spec_code_crossref_agent.AgentError as e:
-        status_code = 500 if "ANTHROPIC_API_KEY" in str(e) else 502
+        status_code = 500 if llm_client.is_config_error(e) else 502
         return JSONResponse(status_code=status_code, content={"error": str(e)})
     return result
 
@@ -1368,8 +1365,8 @@ def batch_scan(body: ScanFolder):
 @app.post("/api/batch")
 def batch_create(body: BatchCreate, db_session: Session = Depends(db.get_session), tenant_id: str = Depends(get_tenant_id)):
     opts = body.options
-    if not os.environ.get("ANTHROPIC_API_KEY"):
-        return JSONResponse(status_code=500, content={"error": "ANTHROPIC_API_KEY is not set. Add it to .env and restart the server."})
+    if not llm_client.available():
+        return JSONResponse(status_code=500, content={"error": llm_client.not_configured_message()})
     if not clinical_modules.is_known(opts.specType):
         return JSONResponse(status_code=400, content={"error": f"Unknown spec type '{opts.specType}'."})
     if not clinical_modules.is_known_listing_type(opts.specType, opts.listingType):
