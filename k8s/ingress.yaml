@@ -3,6 +3,12 @@ kind: Ingress
 metadata:
   name: spec2code
   namespace: default
+  annotations:
+    nginx.ingress.kubernetes.io/auth-type: basic
+    nginx.ingress.kubernetes.io/auth-secret: spec2code-basic-auth
+    nginx.ingress.kubernetes.io/auth-realm: "Authentication Required - Spec2Code"
+    # If you are using cert-manager for TLS, keep your existing annotation here, e.g.:
+    # cert-manager.io/cluster-issuer: letsencrypt-prod
 spec:
   ingressClassName: nginx
   rules:
@@ -16,3 +22,8 @@ spec:
                 name: spec2code
                 port:
                   number: 8002
+  # If you have a TLS block, it should look like this:
+  # tls:
+  #   - hosts:
+  #       - dev.spec2code.167.233.202.196.nip.io
+  #     secretName: spec2code-tls
